@@ -60,28 +60,46 @@
 				</div>
 			</div>
 			<div class="portlet-body form">
-				<table class="datatables table">
+				<table class="table">
 					<thead>
 						<tr>
 							<th>Created at</th>
 							<th>Outlet</th>
 							<th>Product</th>
+							<th>Qty</th>
 							<th>Modifiers</th>
 							<th>Notes</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($favorites as $favorite)
+						@if($favorites['data']??false)
+						@foreach($favorites['data'] as $favorite)
 						<tr>
 							<td>{{date('d M Y H:i',strtotime($favorite['created_at']))}}</td>
 							<td>{{$favorite['outlet']['outlet_code']}} - {{$favorite['outlet']['outlet_name']}}</td>
 							<td>{{$favorite['product']['product_code']}} - {{$favorite['product']['product_name']}}</td>
+							<td>{{$favorite['product_qty']}}</td>
 							<td><ul><li>{!!implode('</li><li>',array_column($favorite['modifiers'],'text'))!!}</li></ul></td>
 							<td>{{$favorite['notes']}}</td>
 						</tr>
 						@endforeach
+						@else
+						<tr>
+							<td class="text-center text-muted" colspan="6"><em>No Favorites</em></td>
+						</tr>
+						@endif
 					</tbody>
 				</table>
+				<div class="row">
+					<div class="col-md-offset-8 col-md-4 text-right" style="padding-left:0px;padding-right:0px;">
+						<div class="pagination" style="margin-top: 0px;margin-bottom: 0px;">
+							<ul class="pagination" style="margin-top: 0px;margin-bottom: 0px;">
+								<li class="page-first {{$favorites['prev_page_url']?'':'disabled'}}"><a href="{{$favorites['prev_page_url']?url()->current().'?page='.($favorites['current_page']-1):'javascript:void(0)'}}">«</a></li>
+								<li class="page-last {{$favorites['next_page_url']?'':'disabled'}}"><a href="{{$favorites['next_page_url']?url()->current().'?page='.($favorites['current_page']+1):'javascript:void(0)'}}">»</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

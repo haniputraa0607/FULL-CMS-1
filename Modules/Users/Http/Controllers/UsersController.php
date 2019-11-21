@@ -852,7 +852,7 @@ class UsersController extends Controller
 					];
 			return view('users::password', $data);
 		}
-		$data['favorites'] = MyHelper::post('users/favorite',['phone'=>$phone])['result']??[];
+		$data['favorites'] = MyHelper::post('users/favorite?page='.($request->page?:1),['phone'=>$phone])['result']??[];
 		return view('users::favorite', $data);
 	}
 }
