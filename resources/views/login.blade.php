@@ -49,7 +49,7 @@
         <!-- BEGIN LOGO -->
         <div class="logo">
             <a href="index.html">
-                <img src="{{env('S3_URL_VIEW') }}{{ ('images/logo.png')}}" alt="" style="height:70px; margin: 40px" /> </a>
+                <img src="{{env('S3_URL_VIEW') }}{{ ('images/logo_login.png')}}" alt="" style="height: 150px;margin: 20px;" /> </a>
         </div>
         <!-- END LOGO -->
         <!-- BEGIN LOGIN -->
