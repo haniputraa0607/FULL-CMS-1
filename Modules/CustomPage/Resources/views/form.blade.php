@@ -207,7 +207,19 @@
                 placeholder: 'News Content Long',
                 tabsize: 2,
                 height: 120,
-                fontNames: ['Open Sans'],
+                toolbar: [
+                    ['style', ['style']],
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['misc', ['fullscreen', 'codeview', 'help']]
+                ],
+                fontNames: ['Product Sans'],
+                fontNamesIgnoreCheck: ['Product Sans'],
                 callbacks: {
                     onFocus: function() {
                         $('#tutorial1').attr('src', "{{env('S3_URL_VIEW') }}{{('img/news/news3.png')}}")
@@ -462,6 +474,7 @@
             /* BUTTON */
             $('#featureButton').on('switchChange.bootstrapSwitch', function(event, state) {
                 actionForm('featureButton', state);
+                $('#custom_page_button_form').val('Call').trigger('change')
             });
 
             /* DATE */
@@ -616,9 +629,16 @@
             if (this.value == "Open Page") {
                 $('#inputValue').hide().prop('required',false);
                 $('#selectValue').show().prop('required',true);
-            } else {
+            } else if (this.value == "Call") {
                 $('#inputValue').show().prop('required',true);
                 $('#selectValue').hide().prop('required',false);
+                $('input[name="custom_page_button_form_text_value"]').attr("placeholder", "Example: 0811223344");
+                $('#lable_button_form').replaceWith('<label class="control-label" id="lable_button_form">Number<span class="required" aria-required=""> * </span> </label>')
+            } else if (this.value == "Link") {
+                $('#inputValue').show().prop('required',true);
+                $('#selectValue').hide().prop('required',false);
+                $('input[name="custom_page_button_form_text_value"]').attr("placeholder", "Example: https://www.youtube.com/watch?v=u9_2wWSOQ");
+                $('#lable_button_form').replaceWith('<label class="control-label" id="lable_button_form">Link<span class="required" aria-required=""> * </span> </label>')
             }
         })
     </script>
@@ -882,7 +902,7 @@
                         <div class="form-group featureDate">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label">Date Start <span class="required" aria-required="true"> * </span> </label>
                                 </div>
                                 <div class="col-md-5">
@@ -901,7 +921,7 @@
                         <div class="form-group featureDate">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label">Date End <span class="required" aria-required="true"> * </span> </label>
                                 </div>
                                 <div class="col-md-5">
@@ -938,7 +958,7 @@
                         <div class="form-group featureTime">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label">Time Start <span class="required" aria-required="true"> * </span> </label>
                                 </div>
                                 <div class="col-md-4">
@@ -957,7 +977,7 @@
                         <div class="form-group featureTime">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label">Time End <span class="required" aria-required="true"> * </span> </label>
                                 </div>
                                 <div class="col-md-4">
@@ -994,10 +1014,10 @@
                         <div class="form-group featureLocation">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label">Location Name <span class="required" aria-required="true"> * </span> </label>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-8">
                                     <input type="text" id="field_event_location" class="form-control featureLocationForm field_event" name="custom_page_event_location_name" @if (isset($detail['custom_page_event_location_name'])) value="{{$detail['custom_page_event_location_name']}}" disabled @elseif (isset($result['custom_page_event_location_name'])) value="{{$result['custom_page_event_location_name']}}" @else value="{{ old('custom_page_event_location_name') }}" @endif placeholder="Location name or name of a place">
                                 </div>
                             </div>
@@ -1006,10 +1026,10 @@
                         <div class="form-group featureLocation">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label">Contact Person</label>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-8">
                                     <input type="text" id="field_event_contact" class="form-control field_event" name="custom_page_event_location_phone" @if (isset($detail['custom_page_event_location_phone'])) value="{{$detail['custom_page_event_location_phone']}}" disabled @elseif (isset($result['custom_page_event_location_phone'])) value="{{$result['custom_page_event_location_phone']}}" @else value="{{ old('custom_page_event_location_phone') }}" @endif placeholder="Contact Person in location">
                                 </div>
                             </div>
@@ -1018,10 +1038,10 @@
                         <div class="form-group featureLocation">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label">Address </label>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-8">
                                     <textarea type="text" id="field_event_address" class="form-control field_event" name="custom_page_event_location_address" placeholder="Event's Address">@if (isset($detail['custom_page_event_location_address'])) {{$detail['custom_page_event_location_address']}} @elseif (isset($result['custom_page_event_location_address'])) {{$result['custom_page_event_location_address']}} @else {{ old('custom_page_event_location_address') }} @endif</textarea>
                                 </div>
                             </div>
@@ -1030,10 +1050,10 @@
                         <div class="form-group featureLocation">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label">Maps
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-8">
                                     <input id="pac-input"  id="field_event_map" class="controls field_event" type="text" placeholder="Enter a location" style="padding:10px;width:50%" onkeydown="if (event.keyCode == 13) return false;" name="custom_page_event_location_map" @if (isset($detail['custom_page_event_location_map'])) value="{{$detail['custom_page_event_location_map']}}" disabled @elseif (isset($result['custom_page_event_location_map'])) value="{{$result['custom_page_event_location_map']}}" @else value="{{ old('custom_page_event_location_map') }}" @endif>
                                     <div id="map-canvas" style="width:900;height:380px;"></div>
                                 </div>
@@ -1043,10 +1063,10 @@
                         <div class="form-group featureLocation">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label"></label>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-8">
                                     <div class="col-md-6">
                                         <input type="text" id="field_event_latitude" class="form-control" name="custom_page_event_latitude" @if (isset($detail['custom_page_event_latitude'])) value="{{$detail['custom_page_event_latitude']}}" disabled @elseif (isset($result['custom_page_event_latitude'])) value="{{$result['custom_page_event_latitude']}}" @else value="{{ old('custom_page_event_latitude') }}" @endif id="lat" readonly>
                                     </div>
@@ -1078,10 +1098,10 @@
                         <div class="form-group featureVideo">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label">Title <span class="required" aria-required="true"> * </span> </label>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-8">
                                     <input type="text" id="field_video_text" class="form-control featureVideoForm" name="custom_page_video_text" @if (isset($detail['custom_page_video_text'])) value="{{$detail['custom_page_video_text']}}" disabled @elseif (isset($result['custom_page_video_text'])) value="{{$result['custom_page_video_text']}}" @else value="{{ old('custom_page_video_text') }}" @endif placeholder="Featured Video Title">
                                 </div>
                             </div>
@@ -1090,10 +1110,10 @@
                         <div class="form-group featureVideo">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label">Link Video <span class="required" aria-required="true"> * </span> </label>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-8">
                                     <input name="custom_page_video" id="field_video_link" type="url" class="form-control featureVideoForm" @if (isset($detail['custom_page_video'])) value="{{$detail['custom_page_video']}}" disabled @elseif (isset($result['custom_page_video'])) value="{{$result['custom_page_video']}}" @else value="{{ old('custom_page_video') }}" @endif placeholder="Example: https://www.youtube.com/watch?v=u9_2wWSOQ">
                                 </div>
                             </div>
@@ -1120,10 +1140,10 @@
                         <div class="form-group featureOutlet">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label">Title <span class="required" aria-required="true"> * </span> </label>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-8">
                                     <input type="text" id="field_outlte_title" class="form-control featureOutletForm" name="custom_page_outlet_text" @if (isset($detail['custom_page_outlet_text'])) value="{{$detail['custom_page_outlet_text']}}" disabled @elseif (isset($result['custom_page_outlet_text'])) value="{{$result['custom_page_outlet_text']}}" @else value="{{ old('custom_page_outlet_text') }}" @endif placeholder="Featured Outlet Title">
                                 </div>
                             </div>
@@ -1132,10 +1152,10 @@
                         <div class="form-group featureOutlet">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label">Outlet <span class="required" aria-required="true"> * </span> </label>
                                 </div>
-                                <div class="col-md-9" id="selectOutlet">
+                                <div class="col-md-8" id="selectOutlet">
                                     <select id="outlet"  id="field_outlet_select" class="form-control select2-multiple featureOutletForm" multiple data-placeholder="Select Outlet" name="id_outlet[]">
                                         <optgroup label="Outlet List">
                                             @php
@@ -1180,10 +1200,10 @@
                         <div class="form-group featureProduct">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label">Title <span class="required" aria-required="true"> * </span> </label>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-8">
                                     <input type="text" id="field_product_title" class="form-control featureProductForm" name="custom_page_product_text" @if (isset($detail['custom_page_product_text'])) value="{{$detail['custom_page_product_text']}}" disabled @elseif (isset($result['custom_page_product_text'])) value="{{$result['custom_page_product_text']}}" @else value="{{ old('custom_page_product_text') }}" @endif placeholder="Featured Product Title">
                                 </div>
                             </div>
@@ -1192,10 +1212,10 @@
                         <div class="form-group featureProduct">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label">Product <span class="required" aria-required="true"> * </span> </label>
                                 </div>
-                                <div class="col-md-9" id="selectProduct">
+                                <div class="col-md-8" id="selectProduct">
                                     <select id="field_product_select" class="form-control select2-multiple featureProductForm" multiple data-placeholder="Select Product" name="id_product[]">
                                         <optgroup label="Product List">
                                             @php
@@ -1239,14 +1259,14 @@
                         <div class="form-group featureButton">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="control-label">Button Form <span class="required" aria-required="true"> * </span> </label>
                                 </div>
-                                <div class="col-md-9" id="selectProduct">
+                                <div class="col-md-8" id="selectProduct">
                                     <select class="form-control" id="custom_page_button_form" name="custom_page_button_form" @if (isset($detail)) disabled @endif>
                                         <option value="Call" @if (isset($detail['custom_page_button_form']) && $detail['custom_page_button_form'] == "Call") selected @elseif (isset($result['custom_page_button_form']) && $result['custom_page_button_form'] == "Call") selected @else @endif>Call</option>
                                         <option value="Link" @if (isset($detail['custom_page_button_form']) && $detail['custom_page_button_form'] == "Link") selected @elseif (isset($result['custom_page_button_form']) && $result['custom_page_button_form'] == "Link") selected @else @endif>Link</option>
-                                        <option value="Open Page" @if (isset($detail['custom_page_button_form']) && $detail['custom_page_button_form'] == "Open Page") selected @elseif (isset($result['custom_page_button_form']) && $result['custom_page_button_form'] == "Open Page") selected @else @endif>Open Page</option>
+                                        {{-- <option value="Open Page" @if (isset($detail['custom_page_button_form']) && $detail['custom_page_button_form'] == "Open Page") selected @elseif (isset($result['custom_page_button_form']) && $result['custom_page_button_form'] == "Open Page") selected @else @endif>Open Page</option> --}}
                                     </select>
                                 </div>
                             </div>
@@ -1255,13 +1275,13 @@
                         <div class="form-group featureButton">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <div class="col-md-3">
-                                    <label class="control-label">Value<span class="required" aria-required=""> * </span> </label>
+                                <div class="col-md-4">
+                                    <label class="control-label" id="lable_button_form">Value<span class="required" aria-required=""> * </span> </label>
                                 </div>
-                                <div id="inputValue" class="col-md-9">
-                                    <input type="text" class="form-control" name="custom_page_button_form_text" @if (isset($detail['custom_page_button_form_text'])) value="{{$detail['custom_page_button_form_text']}}" disabled @elseif (isset($result['custom_page_button_form_text'])) value="{{$result['custom_page_button_form_text']}}" @else value="{{ old('custom_page_button_form_text') }}" @endif placeholder="Featured Button Value">
+                                <div id="inputValue" class="col-md-8">
+                                    <input type="text" class="form-control" name="custom_page_button_form_text_value" @if (isset($detail['custom_page_button_form_text_value'])) value="{{$detail['custom_page_button_form_text_value']}}" disabled @elseif (isset($result['custom_page_button_form_text_value'])) value="{{$result['custom_page_button_form_text_value']}}" @else value="{{ old('custom_page_button_form_text_value') }}" @endif placeholder="Featured Button Value">
                                 </div>
-                                <div hidden id="selectValue" class="col-md-9">
+                                {{-- <div hidden id="selectValue" class="col-md-9">
                                     <select class="form-control" id="custom_page_button_form_text" name="custom_page_button_form_text" @if (isset($detail)) disabled @endif>
                                         <option value="Home" @if (isset($detail['custom_page_button_form_text']) && $detail['custom_page_button_form_text'] == "Home") selected @elseif (isset($result['custom_page_button_form_text']) && $result['custom_page_button_form_text'] == "Home") selected @else @endif>Home</option>
                                         <option value="News" @if (isset($detail['custom_page_button_form_text']) && $detail['custom_page_button_form_text'] == "News") selected @elseif (isset($result['custom_page_button_form_text']) && $result['custom_page_button_form_text'] == "News") selected @else @endif>News</option>
@@ -1273,6 +1293,18 @@
                                         <option value="Link" @if (isset($detail['custom_page_button_form_text']) && $detail['custom_page_button_form_text'] == "Link") selected @elseif (isset($result['custom_page_button_form_text']) && $result['custom_page_button_form_text'] == "Link") selected @else @endif>Link</option>
                                         <option value="Logout" @if (isset($detail['custom_page_button_form_text']) && $detail['custom_page_button_form_text'] == "Logout") selected @elseif (isset($result['custom_page_button_form_text']) && $result['custom_page_button_form_text'] == "Logout") selected @else @endif>Logout</option>
                                     </select>
+                                </div> --}}
+                            </div>
+                        </div>
+
+                        <div class="form-group featureButton">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <div class="col-md-4">
+                                    <label class="control-label">Text Button<span class="required" aria-required=""> * </span> </label>
+                                </div>
+                                <div id="inputValue" class="col-md-8">
+                                    <input type="text" class="form-control" name="custom_page_button_form_text_button" @if (isset($detail['custom_page_button_form_text_button'])) value="{{$detail['custom_page_button_form_text_button']}}" disabled @elseif (isset($result['custom_page_button_form_text_button'])) value="{{$result['custom_page_button_form_text_button']}}" @else value="{{ old('custom_page_button_form_text_button') }}" @endif placeholder="Featured Button Value">
                                 </div>
                             </div>
                         </div>

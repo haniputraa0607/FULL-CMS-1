@@ -14,6 +14,3 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'custom-p
     Route::get('delete/{id}', ['middleware' => 'config_control:50', 'uses' => 'CustomPageController@destroy']);
 });
 
-Route::group(['prefix' => 'custom-page', 'namespace' => 'Modules\CustomPage\Http\Controllers'], function () {
-    Route::get('webview/{id}', ['uses' => 'CustomPageController@webviewCustomPage']);
-});
