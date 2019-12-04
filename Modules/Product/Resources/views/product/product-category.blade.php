@@ -268,7 +268,7 @@
 										<tbody>
 											@if(!empty($product))
 												@foreach($product as $value)
-													@if ($value['category']['id_product_category'] == $cat['id_product_category'])
+													@if (($value['category'][0]['id_product_category']??false) == $cat['id_product_category'])
 													<tr>
 														<td>{{ $value['product_code'] }}</td>
 														<td>
@@ -283,14 +283,14 @@
 																		<option value="0">Uncategorize</option>
 																		@if (!empty($category))
 																			@foreach($category as $suw)
-																				@if ($suw['id_product_category'] == $value['id_product_category'])
+																				@if ($suw['id_product_category'] == ($value['category'][0]['id_product_category']??false))
 																					<option value="{{ $suw['id_product_category'] }}" selected>{{ $suw['product_category_name'] }}</option>
 																				@else
 																					<option value="{{ $suw['id_product_category'] }}">{{ $suw['product_category_name'] }}</option>
 																				@endif
 																				@if (!empty($suw['child']))
 																					@foreach ($suw['child'] as $child)
-																						@if ($child['id_product_category'] == $value['id_product_category'])
+																						@if ($child['id_product_category'] == ($value['category'][0]['id_product_category']??false))
 																						<option value="{{ $child['id_product_category'] }}" data-ampas="{{ $child['product_category_name'] }}" selected>&nbsp;&nbsp;&nbsp;{{ $child['product_category_name'] }}</option>
 																						@else
 																						<option value="{{ $child['id_product_category'] }}" data-ampas="{{ $child['product_category_name'] }}">&nbsp;&nbsp;&nbsp;{{ $child['product_category_name'] }}</option>
@@ -323,7 +323,7 @@
 										<tbody>
 											@if(!empty($product))
 												@foreach($product as $value)
-													@if ($value['category']['id_product_category'] == $cat['id_product_category'])
+													@if (($value['category'][0]['id_product_category']??false) == $cat['id_product_category'])
 													<tr>
 														<td>{{ $value['product_code'] }}</td>
 														<td>
@@ -338,14 +338,14 @@
 																		<option value="0">Uncategorize</option>
 																		@if (!empty($category))
 																			@foreach($category as $suw)
-																				@if ($suw['id_product_category'] == $value['id_product_category'])
+																				@if ($suw['id_product_category'] == ($value['category'][0]['id_product_category']??false))
 																					<option value="{{ $suw['id_product_category'] }}" selected>{{ $suw['product_category_name'] }}</option>
 																				@else
 																					<option value="{{ $suw['id_product_category'] }}">{{ $suw['product_category_name'] }}</option>
 																				@endif
 																				@if (!empty($suw['child']))
 																					@foreach ($suw['child'] as $child)
-																						@if ($child['id_product_category'] == $value['id_product_category'])
+																						@if ($child['id_product_category'] == ($value['category'][0]['id_product_category']??false))
 																						<option value="{{ $child['id_product_category'] }}" data-ampas="{{ $child['product_category_name'] }}" selected>&nbsp;&nbsp;&nbsp;{{ $child['product_category_name'] }}</option>
 																						@else
 																						<option value="{{ $child['id_product_category'] }}" data-ampas="{{ $child['product_category_name'] }}">&nbsp;&nbsp;&nbsp;{{ $child['product_category_name'] }}</option>
@@ -378,7 +378,7 @@
 										<tbody>
 											@if(!empty($product))
 												@foreach($product as $value)
-													@if ($value['category']['id_product_category'] == $child['id_product_category'])
+													@if (($value['category'][0]['id_product_category']??false) == $child['id_product_category'])
 													<tr>
 														<td>{{ $value['product_code'] }}</td>
 														<td>
@@ -393,14 +393,14 @@
 																		<option value="0">Uncategorize</option>
 																		@if (!empty($category))
 																			@foreach($category as $suw)
-																				@if ($suw['id_product_category'] == $value['id_product_category'])
+																				@if ($suw['id_product_category'] == ($value['category'][0]['id_product_category']??false))
 																					<option value="{{ $suw['id_product_category'] }}" selected>{{ $suw['product_category_name'] }}</option>
 																				@else
 																					<option value="{{ $suw['id_product_category'] }}">{{ $suw['product_category_name'] }}</option>
 																				@endif
 																				@if (!empty($suw['child']))
 																					@foreach ($suw['child'] as $child)
-																						@if ($child['id_product_category'] == $value['id_product_category'])
+																						@if ($child['id_product_category'] == ($value['category'][0]['id_product_category']??false))
 																						<option value="{{ $child['id_product_category'] }}" data-ampas="{{ $child['product_category_name'] }}" selected>&nbsp;&nbsp;&nbsp;{{ $child['product_category_name'] }}</option>
 																						@else
 																						<option value="{{ $child['id_product_category'] }}" data-ampas="{{ $child['product_category_name'] }}">&nbsp;&nbsp;&nbsp;{{ $child['product_category_name'] }}</option>
