@@ -1099,17 +1099,24 @@ class SettingController extends Controller
             'submenu_active' => 'setting-text-menu-list'
         ];
 
-        $request = MyHelper::get('setting/text_menu_list');
+        $request = MyHelper::post('setting/text_menu_list',['webview' => 1]);
         if(isset($request['result']) && !empty($request['result'])) {
-            $data['text_menu_list'] = $request['result'];
-        }
-        else {
-            $data['text_menu_list'] = [
-                'text_menu_home' => [],
-                'text_menu_account'=> []
+            $data['menu_list'] = $request['result'];
+        }else {
+            $data['menu_list'] = [
+                'main_menu' => [],
+                'other_menu'=> []
             ];
         }
 
+        $configMenu = MyHelper::get('setting/text_menu/configs');
+        if(isset($configMenu['result']) && !empty($configMenu['result'])) {
+            $data['config_main_menu'] = $configMenu['result']['config_main_menu'];
+            $data['config_other_menu'] = $configMenu['result']['config_other_menu'];
+        }else{
+            $data['config_main_menu'] = [];
+            $data['config_other_menu'] = [];
+        }
         return view('setting::text_menu', $data);
     }
 
@@ -1117,9 +1124,11 @@ class SettingController extends Controller
         $post = $request->except('_token');
         $allData = $request->all();
 
-        if($category == 'menu-account' && isset($allData['images'])){
+        if(isset($allData['images'])){
             foreach($allData['images'] as $key => $value){
-                $allData['images'][$key] = MyHelper::encodeImage($allData['images'][$key]);
+                if($allData['images'][$key] !== null){
+                    $allData['images'][$key] = MyHelper::encodeImage($allData['images'][$key]);
+                }
             }
         }
 
@@ -1130,10 +1139,10 @@ class SettingController extends Controller
 
         $result = MyHelper::post('setting/text_menu/update', $post);
 
-        if($category == 'menu-account') {
-            return parent::redirect($result, 'Text menu has been updated.', 'setting/text_menu#text_menu_account');
+        if($category == 'other-menu') {
+            return parent::redirect($result, 'Text menu has been updated.', 'setting/text_menu#other_menu');
         }else{
-            return parent::redirect($result, 'Text menu has been updated.', 'setting/text_menu#text_menu_home');
+            return parent::redirect($result, 'Text menu has been updated.', 'setting/text_menu#main_menu');
         }
     }
 
