@@ -459,6 +459,43 @@
 			</li>
 			@endif
 
+			@if(MyHelper::hasAccess([91], $configs)&&MyHelper::hasAccess([180,181,182,183,184,185,186], $grantedFeature))
+			<li class="nav-item {{($menu_active == 'product-modifier') ? 'active' : ''}}">
+				<a href="javascript:;" class="nav-link nav-toggle">
+					<i class="fa fa-puzzle-piece"></i>
+					<span class="title">Product Modifier</span>
+					<span class="arrow {{($menu_active == 'product-modifier') ? 'open' : ''}}"></span>
+				</a>
+				<ul class="sub-menu">
+					@if(MyHelper::hasAccess([181], $grantedFeature))
+					<li class="nav-item {{($submenu_active == 'product-modifier-new') ? 'active open' : ''}}">
+						<a href="{{url('product/modifier/create')}}" class="nav-link ">
+							<span class="title">New Product Modifier</span>
+						</a>
+					</li>
+					@endif
+					@if(MyHelper::hasAccess([182,183,184], $grantedFeature))
+					<li class="nav-item {{($submenu_active == 'product-modifier-list') ? 'active open' : ''}}">
+						<a href="{{url('product/modifier')}}" class="nav-link ">
+							<span class="title">Product Modifier List</span>
+						</a>
+					</li>
+					@endif
+					<!-- <li class="nav-item {{($submenu_active == 'product-tag-list') ? 'active open' : ''}}">
+						<a href="{{url('product/tag')}}" class="nav-link ">
+							<span class="title">Tag List</span>
+						</a>
+					</li> -->
+					@if(MyHelper::hasAccess([185,186], $grantedFeature))
+					<li class="nav-item {{($submenu_active == 'product-modifier-price') ? 'active open' : ''}}">
+						<a href="{{url('product/modifier/price')}}" class="nav-link ">
+							<span class="title">Product Modifier Price</span>
+						</a>
+					</li>
+					@endif
+				</ul>
+			</li>
+			@endif
 
 		@endif
 

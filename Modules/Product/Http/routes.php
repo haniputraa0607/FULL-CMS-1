@@ -48,6 +48,11 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'product'
 	});
 
 	/**
+	 * modifier
+	 */
+	Route::resource('modifier','ModifierController');
+
+	/**
 	 * discount
 	 */
 	Route::group(['prefix' => 'discount'], function() {
