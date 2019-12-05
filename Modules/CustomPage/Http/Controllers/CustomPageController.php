@@ -63,7 +63,7 @@ class CustomPageController extends Controller
     public function store(Request $request)
     {
         $post = $request->except('_token');
-
+        
         $post['custom_page_description'] = preg_replace('/(img style="width: )([0-9]+)(px)/', 'img style="width: 100%', $post['custom_page_description']);
 
         if (isset($post['custom_page_description'])) {
@@ -91,6 +91,13 @@ class CustomPageController extends Controller
             $post['custom_page_event_date_end'] = date('Y-m-d', strtotime($post['custom_page_event_date_end']));
         }
 
+        if (isset($post['custom_page_button_form'])) {
+            if (isset($post['custom_page_button_form_text_button'])) {
+                $post['custom_page_button_form_text'] = json_encode(['value' => $post['custom_page_button_form_text_value'], 'button' => $post['custom_page_button_form_text_button']]);
+            } else {
+                $post['custom_page_button_form_text'] = json_encode(['value' => $post['custom_page_button_form_text_value']]);
+            }
+        }
         // set waktu
         if (isset($post['custom_page_event_time_start'])) {
             $post['custom_page_event_time_start'] = date('H:i:s', strtotime($post['custom_page_event_time_start']));
@@ -137,7 +144,10 @@ class CustomPageController extends Controller
         ];
 
         $action = MyHelper::post('custom-page/detail', ['id_custom_page' => $id_custom_page]);
-
+        
+        $action['result']['custom_page_button_form_text_button'] = json_decode($action['result']['custom_page_button_form_text'], true)['button'];
+        $action['result']['custom_page_button_form_text_value'] = json_decode($action['result']['custom_page_button_form_text'], true)['value'];
+        
         $data['detail'] = $action['result'];
 
         // get outlet
