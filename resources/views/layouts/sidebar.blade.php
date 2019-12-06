@@ -830,6 +830,44 @@
 					</li>
 					@endif
 				@endif
+
+				@if(MyHelper::hasAccess([179,180,181,182,183], $grantedFeature))
+					<li class="nav-item {{($menu_active == 'welcome-voucher') ? 'active open' : ''}}">
+						<a href="javascript:;" class="nav-link nav-toggle">
+							<i class="fa fa-ticket"></i>
+							<span class="title">Welcome Voucher</span>
+							<span class="arrow {{($menu_active == 'welcome-voucher') ? 'open' : ''}}"></span>
+						</a>
+						<ul class="sub-menu">
+							@if(MyHelper::hasAccess([181], $grantedFeature))
+								<li class="nav-item {{($submenu_active == 'welcome-voucher-create') ? 'active open' : ''}}">
+									<a href="{{url('welcome-voucher/create')}}" class="nav-link ">
+										<span class="title">New Welcome Voucher</span>
+									</a>
+								</li>
+							@endif
+							@if(MyHelper::hasAccess([179], $grantedFeature))
+								<li class="nav-item {{($submenu_active == 'welcome-voucher-list') ? 'active open' : ''}}">
+									<a href="{{url('welcome-voucher')}}" class="nav-link ">
+										<span class="title">Welcome Voucher List</span>
+									</a>
+								</li>
+							@endif
+							@if(MyHelper::hasAccess([179,182], $grantedFeature))
+								<li class="nav-item {{($submenu_active == 'welcome-voucher-setting') ? 'active open' : ''}}">
+									<a href="{{url('welcome-voucher/setting')}}" class="nav-link ">
+										<span class="title">Welcome Voucher Setting</span>
+									</a>
+								</li>
+							@endif
+							<li class="nav-item {{($submenu_active == 'deals-autoresponse-welcome-voucher') ? 'active open' : ''}}">
+								<a href="{{url('transaction/autoresponse/receive-welcome-voucher')}}" class="nav-link ">
+									<span class="title">[Response] Welcome Voucher</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+				@endif
 			@endif
 
 			@if(MyHelper::hasAccess([72], $grantedFeature))

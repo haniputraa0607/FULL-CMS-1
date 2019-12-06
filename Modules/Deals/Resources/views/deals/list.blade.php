@@ -152,10 +152,12 @@ $grantedFeature     = session('granted_features');
                         <th> Promo ID </th>
                         <th> Title </th>
                         <th> Brand </th>
-                        @if($deals_type != "Hidden")
-                        <th> Date Publish </th>
+                        @if($deals_type != "Hidden" && $deals_type !='WelcomeVoucher')
+                            <th> Date Publish </th>
                         @endif
-                        <th> Date Start </th>
+                        @if($deals_type !='WelcomeVoucher')
+                            <th> Date Start </th>
+                        @endif
                         <th> Action </th>
                     </tr>
                 </thead>
@@ -167,6 +169,7 @@ $grantedFeature     = session('granted_features');
                                 <td>{{ $value['deals_promo_id'] }}</td>
                                 <td>{{ $value['deals_title'] }}</td>
                                 <td>{{ $value['brand']['name_brand']??'Not Set' }}</td>
+                                @if($deals_type !='WelcomeVoucher')
                                 @if($deals_type != "Hidden")
                                 <td>
                                     @php
@@ -191,17 +194,23 @@ $grantedFeature     = session('granted_features');
                                         {{ date('d M Y', strtotime($value['deals_start'])) }} - {{ date('d M Y', strtotime($value['deals_end'])) }}
                                     @endif
                                 </td>
+                                @endif
                                 <td style="width: 80px;">
-                                    @if($deals_type == "Deals" && MyHelper::hasAccess([76], $grantedFeature))
+                                    @if($deals_type == "Deals" && MyHelper::hasAccess([76], $grantedFeature) && $value['deals_total_claimed'] == 0)
                                         <a data-toggle="confirmation" data-popout="true" class="btn btn-sm red delete" data-id="{{ $value['id_deals'] }}"><i class="fa fa-trash-o"></i></a>
                                     @endif
-                                    @if($deals_type == "Hidden" && MyHelper::hasAccess([81], $grantedFeature))
+                                    @if($deals_type == "Hidden" && MyHelper::hasAccess([81], $grantedFeature) && $value['deals_total_claimed'] == 0)
+                                        <a data-toggle="confirmation" data-popout="true" class="btn btn-sm red delete" data-id="{{ $value['id_deals'] }}"><i class="fa fa-trash-o"></i></a>
+                                    @endif
+                                    @if($deals_type == "WelcomeVoucher" && MyHelper::hasAccess([183], $grantedFeature) && $value['deals_total_claimed'] == 0)
                                         <a data-toggle="confirmation" data-popout="true" class="btn btn-sm red delete" data-id="{{ $value['id_deals'] }}"><i class="fa fa-trash-o"></i></a>
                                     @endif
                                     @if ($deals_type == "Deals" && MyHelper::hasAccess([73], $grantedFeature))
                                     <a href="{{ url('deals/detail') }}/{{ $value['id_deals'] }}/{{ $value['deals_promo_id'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
                                     @elseif ($deals_type == "Point" && MyHelper::hasAccess([73], $grantedFeature))
                                     <a href="{{ url('deals-point/detail') }}/{{ $value['id_deals'] }}/{{ $value['deals_promo_id'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
+                                    @elseif ($deals_type == "WelcomeVoucher" && MyHelper::hasAccess([180], $grantedFeature))
+                                        <a href="{{ url('welcome-voucher/detail') }}/{{ $value['id_deals'] }}/{{ $value['deals_promo_id'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
                                     @else
                                         @if(MyHelper::hasAccess([78], $grantedFeature))
                                             <a href="{{ url('inject-voucher/detail') }}/{{ $value['id_deals'] }}/{{ $value['deals_promo_id'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>

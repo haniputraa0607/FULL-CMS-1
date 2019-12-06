@@ -57,3 +57,13 @@ Route::group(['middleware' => ['web'], 'prefix' => 'webview', 'namespace' => 'Mo
     Route::get('deals/{id_deals}/{deals_type}', 'WebviewDealsController@dealsDetail');
     Route::get('mydeals/{id_deals_user}', 'WebviewDealsController@dealsClaim');
 });
+
+/* Welcome Voucher */
+Route::group(['middleware' => ['web', 'validate_session', 'config_control:26'], 'prefix' => 'welcome-voucher', 'namespace' => 'Modules\Deals\Http\Controllers'], function () {
+    Route::any('/', ['middleware' => 'feature_control:77', 'uses' => 'DealsController@deals']);
+    Route::any('create', ['middleware' => 'feature_control:79', 'uses' => 'DealsController@welcomeVoucherCreate']);
+    Route::any('detail/{id}/{promo}', ['middleware' => 'feature_control:78', 'uses' => 'DealsController@detail']);
+    Route::any('update', ['middleware' => 'feature_control:80', 'uses' => 'DealsController@updateReq']);
+    Route::any('setting', 'DealsController@welcomeVoucherSetting');
+    Route::any('update/status', 'DealsController@welcomeVoucherUpdateStatus');
+});
