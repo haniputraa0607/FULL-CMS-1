@@ -126,12 +126,12 @@
                         <label for="multiple" class="control-label col-md-3">Type
                             <span class="required" aria-required="true"> *
                             </span>
-                            <i class="fa fa-question-circle tooltips" data-original-title="Jenis modifier, pilih Other Type jika ingin memasukkan tipe lain yang belum ada" data-container="body"></i>
+                            <i class="fa fa-question-circle tooltips" data-original-title="Jenis modifier, pilih New Type jika ingin memasukkan tipe lain yang belum ada" data-container="body"></i>
                         </label>
                         <div class="col-md-4">
                             <div class="input-icon right">
                                 <select class="form-control select2" name="type_dropdown" id="type_dropdown" data-placeholder="Select Type" required>
-                                    <option value="0">Other Type</option>
+                                    <option value="0">New Type</option>
                                     @foreach($types as $type)
                                     <option value="{{ $type }}" @if($modifier['type']==$type) selected @endif>{{ $type }}</option>
                                     @endforeach

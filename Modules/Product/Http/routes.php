@@ -50,6 +50,8 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'product'
 	/**
 	 * modifier
 	 */
+	Route::get('modifier/price/{id_outlet?}', ['middleware' => 'feature_control:185', 'uses' => 'ModifierController@listPrice']);
+	Route::post('modifier/price/{id_outlet}', ['middleware' => 'feature_control:186', 'uses' => 'ModifierController@updatePrice']);
 	Route::resource('modifier','ModifierController');
 
 	/**
