@@ -133,7 +133,7 @@
                                 <select class="form-control select2" name="type_dropdown" id="type_dropdown" data-placeholder="Select Type" required>
                                     <option value="0">New Type</option>
                                     @foreach($types as $type)
-                                    <option value="{{ $type }}" @if($modifier['type']==$type) selected @endif>{{ $type }}</option>
+                                    <option value="{{ $type }}" @if(old('type_dropdown',$modifier['type'])==$type) selected @endif>{{ $type }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -153,31 +153,34 @@
                         <div class="col-md-4">
                             <div class="input-icon right">
                                 <select  class="form-control select2" name="modifier_type" id="modifier_type" data-placeholder="Select scope" required>
-                                    <option value="Global" @if($modifier['modifier_type']=='Global') selected @endif>Global</option>
-                                    <option value="Specific" @if($modifier['modifier_type']=='Specific') selected @endif>Specific</option>
+                                    <option value="Global" @if(old('modifier_type',$modifier['modifier_type'])=='Global') selected @endif>Global</option>
+                                    <option value="Specific" @if(old('modifier_type',$modifier['modifier_type'])=='Specific') selected @endif>Specific</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="form-group" id="specific-form">
+                        <div class="col-md-offset-3 col-md-8">
+                            <div class="alert alert-info" style="margin-right: -14px">Modifiers will be available on the product if any of the conditions set below are met</div>
+                        </div>
                         <div class="col-md-offset-3 col-md-2">
                             <div class="input-icon right">
-                                <input type="checkbox" id="product_checkbox" @if(!empty($modifier['products'])) checked @endif/> <label for="product_checkbox"> Product</label>
+                                <input type="checkbox" id="product_checkbox" @if(!empty(old('id_product',$modifier['products']))) checked @endif/> <label for="product_checkbox"> Product</label>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="input-icon right form-group">
+                            <div class="input-icon form-group">
                                 <select  class="form-control select2" multiple id="product_value" name="id_product[]" data-placeholder="select product" required>
                                     <option></option>
                                     @foreach($subject['products'] as $var)
-                                    <option value="{{$var['id']}}" @if(in_array($var['id'],array_column($modifier['products'],'id_product'))) selected @endif>{{$var['text']}}</option>
+                                    <option value="{{$var['id']}}" @if(in_array($var['id'],old('id_product',array_column($modifier['products'],'id_product')))) selected @endif>{{$var['text']}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-offset-3 col-md-2">
                             <div class="input-icon right">
-                                <input type="checkbox" id="category_checkbox" @if(!empty($modifier['product_categories'])) checked @endif/> <label for="category_checkbox"> Category</label>
+                                <input type="checkbox" id="category_checkbox" @if(!empty(old('id_product_category',$modifier['product_categories']))) checked @endif/> <label for="category_checkbox"> Category</label>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -185,14 +188,14 @@
                                 <select  class="form-control select2" multiple id="category_value" name="id_product_category[]" data-placeholder="select product category" required>
                                     <option></option>
                                     @foreach($subject['product_categories'] as $var)
-                                    <option value="{{$var['id']}}" @if(in_array($var['id'],array_column($modifier['product_categories'],'id_product_category'))) selected @endif>{{$var['text']}}</option>
+                                    <option value="{{$var['id']}}" @if(in_array($var['id'],old('id_product_category',array_column($modifier['product_categories'],'id_product_category')))) selected @endif>{{$var['text']}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-offset-3 col-md-2">
                             <div class="input-icon right">
-                                <input type="checkbox" id="brand_checkbox" @if(!empty($modifier['brands'])) checked @endif/> <label for="brand_checkbox"> Brand</label>
+                                <input type="checkbox" id="brand_checkbox" @if(!empty(old('id_brand',$modifier['brands']))) checked @endif/> <label for="brand_checkbox"> Brand</label>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -200,7 +203,7 @@
                                 <select  class="form-control select2" multiple id="brand_value" name="id_brand[]" data-placeholder="select brand" required>
                                     <option></option>
                                     @foreach($subject['brands'] as $var)
-                                    <option value="{{$var['id']}}" @if(in_array($var['id'],array_column($modifier['brands'],'id_brand'))) selected @endif>{{$var['text']}}</option>
+                                    <option value="{{$var['id']}}" @if(in_array($var['id'],old('id_brand',array_column($modifier['brands'],'id_brand')))) selected @endif>{{$var['text']}}</option>
                                     @endforeach
                                 </select>
                             </div>

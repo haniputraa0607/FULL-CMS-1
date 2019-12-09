@@ -87,7 +87,7 @@ class ModifierController extends Controller
         if(($result['status']??false) == 'success'){
             return redirect('product/modifier/create')->with('success',['Success create modifier']);
         }else{
-             return back()->withErrors($result['messages']??['Something went wrong']);
+            return back()->withErrors($result['messages']??['Something went wrong'])->withInput();
         }
     }
 
@@ -154,7 +154,7 @@ class ModifierController extends Controller
         if(($result['status']??false) == 'success'){
             return back()->with('success',['Success update modifier']);
         }else{
-             return back()->withErrors($result['messages']??['Something went wrong']);
+            return back()->withErrors($result['messages']??['Something went wrong'])->withInput();
         }
     }
 

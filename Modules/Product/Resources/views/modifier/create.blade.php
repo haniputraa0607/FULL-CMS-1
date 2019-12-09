@@ -133,7 +133,7 @@
                                 <select class="form-control select2" name="type_dropdown" id="type_dropdown" data-placeholder="select type" required>
                                     <option value="0">New Type</option>
                                     @foreach($types as $type)
-                                    <option value="{{ $type }}">{{ $type }}</option>
+                                    <option value="{{ $type }}" @if(old('type_dropdown')==$type) selected @endif>{{ $type }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -153,16 +153,19 @@
                         <div class="col-md-4">
                             <div class="input-icon right">
                                 <select  class="form-control select2" name="modifier_type" id="modifier_type" data-placeholder="select scope" required>
-                                    <option value="Global">Global</option>
-                                    <option value="Specific">Specific</option>
+                                    <option value="Global" @if(old('modifier_type')=='Global') selected @endif>Global</option>
+                                    <option value="Specific" @if(old('modifier_type')=='Specific') selected @endif>Specific</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="form-group" id="specific-form">
+                        <div class="col-md-offset-3 col-md-8">
+                            <div class="alert alert-info" style="margin-right: -14px">Modifiers will be available on the product if any of the conditions set below are met</div>
+                        </div>
                         <div class="col-md-offset-3 col-md-2">
                             <div class="input-icon right">
-                                <input type="checkbox" id="product_checkbox"/> <label for="product_checkbox"> Product</label>
+                                <input type="checkbox" id="product_checkbox" @if(!empty(old('id_product',[]))) checked @endif/> <label for="product_checkbox"> Product</label>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -170,14 +173,14 @@
                                 <select  class="form-control select2" multiple id="product_value" name="id_product[]" data-placeholder="select product" required>
                                     <option></option>
                                     @foreach($subject['products'] as $var)
-                                    <option value="{{$var['id']}}">{{$var['text']}}</option>
+                                    <option value="{{$var['id']}}" @if(in_array($var['id'],old('id_product',[]))) selected @endif>{{$var['text']}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-offset-3 col-md-2">
                             <div class="input-icon right">
-                                <input type="checkbox" id="category_checkbox"/> <label for="category_checkbox"> Category</label>
+                                <input type="checkbox" id="category_checkbox" @if(!empty(old('id_product_category',[]))) checked @endif/> <label for="category_checkbox"> Category</label>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -185,14 +188,14 @@
                                 <select  class="form-control select2" multiple id="category_value" name="id_product_category[]" data-placeholder="select product category" required>
                                     <option></option>
                                     @foreach($subject['product_categories'] as $var)
-                                    <option value="{{$var['id']}}">{{$var['text']}}</option>
+                                    <option value="{{$var['id']}}" @if(in_array($var['id'],old('id_product_category',[]))) selected @endif>{{$var['text']}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-offset-3 col-md-2">
                             <div class="input-icon right">
-                                <input type="checkbox" id="brand_checkbox"/> <label for="brand_checkbox"> Brand</label>
+                                <input type="checkbox" id="brand_checkbox" @if(!empty(old('id_brand',[]))) checked @endif/> <label for="brand_checkbox"> Brand</label>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -200,7 +203,7 @@
                                 <select  class="form-control select2" multiple id="brand_value" name="id_brand[]" data-placeholder="select brand" required>
                                     <option></option>
                                     @foreach($subject['brands'] as $var)
-                                    <option value="{{$var['id']}}">{{$var['text']}}</option>
+                                    <option value="{{$var['id']}}" @if(in_array($var['id'],old('id_brand',[]))) selected @endif>{{$var['text']}}</option>
                                     @endforeach
                                 </select>
                             </div>
