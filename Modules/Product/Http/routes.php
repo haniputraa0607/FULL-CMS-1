@@ -50,9 +50,17 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'product'
 	/**
 	 * modifier
 	 */
-	Route::get('modifier/price/{id_outlet?}', ['middleware' => 'feature_control:185', 'uses' => 'ModifierController@listPrice']);
-	Route::post('modifier/price/{id_outlet}', ['middleware' => 'feature_control:186', 'uses' => 'ModifierController@updatePrice']);
-	Route::resource('modifier','ModifierController');
+	Route::group(['prefix' => 'modifier'], function() {
+		Route::get('price/{id_outlet?}', ['middleware' => 'feature_control:185', 'uses' => 'ModifierController@listPrice']);
+		Route::post('price/{id_outlet}', ['middleware' => 'feature_control:186', 'uses' => 'ModifierController@updatePrice']);
+
+		Route::get('/', ['middleware' => 'feature_control:185', 'uses' => 'ModifierController@index']);
+		Route::get('/create', ['middleware' => 'feature_control:181', 'uses' => 'ModifierController@create']);
+		Route::post('/', ['middleware' => 'feature_control:181', 'uses' => 'ModifierController@store']);
+		Route::get('/{id}', ['middleware' => 'feature_control:182', 'uses' => 'ModifierController@show']);
+		Route::put('/{id}', ['middleware' => 'feature_control:183', 'uses' => 'ModifierController@update']);
+		Route::delete('/{id}', ['middleware' => 'feature_control:184', 'uses' => 'ModifierController@delete']);
+	});
 
 	/**
 	 * discount

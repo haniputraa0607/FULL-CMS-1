@@ -152,7 +152,7 @@ class ModifierController extends Controller
         }
         $result = MyHelper::post('product/modifier/update',$post);
         if(($result['status']??false) == 'success'){
-            return back()->with('success',['Success update modifier']);
+            return redirect('product/modifier/'.$post['code'])->with('success',['Success update modifier']);
         }else{
             return back()->withErrors($result['messages']??['Something went wrong'])->withInput();
         }
