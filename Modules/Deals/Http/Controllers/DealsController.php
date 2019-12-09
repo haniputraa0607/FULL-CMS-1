@@ -89,7 +89,11 @@ class DealsController extends Controller
 
         $save = MyHelper::post('deals/create', $post);
         if (isset($save['status']) && $save['status'] == "success") {
-            $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
+            if($post['deals_type'] == 'WelcomeVoucher'){
+                $rpage = 'welcome-voucher';
+            }else{
+                $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
+            }
             if ($post['deals_voucher_type'] == "List Vouchers") {
                 return parent::redirect($this->saveVoucherList($save['result']['id_deals'], $post['voucher_code']), "Deals has been created.","$rpage/detail/{$save['result']['id_deals']}/{$save['result']['deals_promo_id']}");
             }
@@ -224,6 +228,33 @@ class DealsController extends Controller
                 $post['deals_type'] = "Subscription";
                 $data['deals_type'] = "Subscription";
 
+            break;
+            case 'welcome-voucher':
+                if($type == "create"){
+                    $data = [
+                        'title'          => 'Welcome Voucher',
+                        'sub_title'      => 'Welcome Voucher Create',
+                        'menu_active'    => 'welcome-voucher',
+                        'submenu_active' => 'welcome-voucher-create'
+                    ];
+                }elseif($type == "setting"){
+                    $data = [
+                        'title'          => 'Welcome Voucher',
+                        'sub_title'      => 'Welcome Voucher Setting',
+                        'menu_active'    => 'welcome-voucher',
+                        'submenu_active' => 'welcome-voucher-setting'
+                    ];
+                }else {
+                    $data = [
+                        'title'          => 'Welcome Voucher',
+                        'sub_title'      => 'Welcome Voucher List',
+                        'menu_active'    => 'welcome-voucher',
+                        'submenu_active' => 'welcome-voucher-list'
+                    ];
+                }
+                // IDENTIFIER
+                $post['deals_type'] = "WelcomeVoucher";
+                $data['deals_type'] = "WelcomeVoucher";
             break;
             default:
                 if ($type == "") {
@@ -412,7 +443,11 @@ class DealsController extends Controller
             $data['conditions'] = [];
         }
 
-        return view('deals::deals.detail', $data);
+        if($post['deals_type'] == 'WelcomeVoucher'){
+            return view('deals::welcome_voucher.detail', $data);
+        }else{
+            return view('deals::deals.detail', $data);
+        }
     }
 
     /* */
@@ -547,8 +582,12 @@ class DealsController extends Controller
         unset($post['deals_promo_id_promoid']);
         unset($post['deals_promo_id_nominal']);
 
-        $post['deals_start']         = date('Y-m-d H:i:s', strtotime($post['deals_start']));
-        $post['deals_end']           = date('Y-m-d H:i:s', strtotime($post['deals_end']));
+        if(isset($post['deals_start'])){
+            $post['deals_start']         = date('Y-m-d H:i:s', strtotime($post['deals_start']));
+        }
+        if(isset($post['deals_end'])){
+            $post['deals_end']           = date('Y-m-d H:i:s', strtotime($post['deals_end']));
+        }
 
         if (isset($post['deals_publish_start'])) {
             $post['deals_publish_start'] = date('Y-m-d H:i:s', strtotime($post['deals_publish_start']));
@@ -896,4 +935,83 @@ class DealsController extends Controller
             return $delete;
         }
     }
+
+    /* ====================== Start Welcome Voucher ====================== */
+    function welcomeVoucherCreate(Create $request) {
+        $post = $request->except('_token');
+
+        if (empty($post)) {
+            $identifier = $this->identifier();
+            $dataDeals  = $this->dataDeals($identifier, "create");
+            $data       = $dataDeals['data'];
+
+            // DATA BRAND
+            $data['brands'] = parent::getData(MyHelper::post('brand/list', ['web' => 1]));
+
+            // DATA PRODUCT
+            $data['product'] = parent::getData(MyHelper::get('product/list?log_save=0'));
+
+            return view('deals::welcome_voucher.create', $data);
+        }
+        else {
+
+            if (isset($post['deals_description'])) {
+                $post['deals_description'] = preg_replace("/<\\/?font(.|\\s)*?>/", '', $post['deals_description']);
+            }
+
+            /* IF HAS IMPORT DATA */
+            if (isset($post['import_file']) && !empty($post['import_file'])) {
+                return $this->importDataExcel($post['import_file']);
+            }
+
+            /* SAVE DEALS */
+            return $this->saveDefaultDeals($post);
+        }
+    }
+
+    function welcomeVoucherSetting(Request $request){
+        $post = $request->except('_token');
+        $identifier = $this->identifier();
+        $dataDeals  = $this->dataDeals($identifier, "setting");
+        $data       = $dataDeals['data'];
+        if($post){
+            $updateSetting =  MyHelper::post('deals/welcome-voucher/setting/update', $post);
+            if($updateSetting){
+                return redirect('welcome-voucher/setting')->withSuccess(['Setting Welcome Voucher has been updated.']);
+            }else{
+                return redirect('welcome-voucher/setting')->withErrors(['Setting Welcome Vouche failed.']);
+            }
+        }
+        $setting = MyHelper::post('deals/welcome-voucher/setting', $post);
+        $listDeals = MyHelper::post('deals/welcome-voucher/list/deals', ['deals_type' => 'WelcomeVoucher', 'web' => 1]);
+
+        if(isset($setting['status']) && $setting['status'] == 'success'){
+            $data['setting'] = $setting['data']['setting'];
+            $data['deals'] = $setting['data']['deals'];
+        }else{
+            $data['setting'] = [];
+            $data['deals'] = [];
+        }
+
+        if(isset($listDeals['status']) && $listDeals['status'] == 'success'){
+            $data['all_deals'] = $listDeals['result'];
+        }else{
+            $data['all_deals'] = [];
+        }
+
+        return view('deals::welcome_voucher.setting', $data);
+    }
+
+    function welcomeVoucherUpdateStatus(Request $request){
+        $post = $request->except('_token');
+        $update = MyHelper::post('deals/welcome-voucher/setting/update/status', $post);
+        if (isset($update['status']) && $update['status'] == "success") {
+            return ['status' => 'success'];
+        }elseif (isset($update['status']) && $update['status'] == 'fail') {
+            return ['status' => 'fail', 'messages' => $update['messages']];
+        } else {
+            return ['status' => 'fail', 'messages' => 'Something went wrong. Failed update status welcome pack'];
+        }
+    }
+    /* ====================== End Welcome Voucher ====================== */
 }

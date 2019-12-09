@@ -121,6 +121,12 @@ class TransactionController extends Controller
                 $data['submenu_active'] = 'rejected-order-point-refund';
                 break;
 
+            case 'receive-welcome-voucher':
+                $data['title'] = 'Auto Response '.ucfirst(str_replace('-',' ',$subject));
+                $data['menu_active'] = 'welcome-voucher';
+                $data['submenu_active'] = 'deals-autoresponse-welcome-voucher';
+                break;
+
             default:
                 # code...
                 break;
