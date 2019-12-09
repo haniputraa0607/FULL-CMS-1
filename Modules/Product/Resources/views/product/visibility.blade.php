@@ -236,7 +236,7 @@
                                                 @if (empty($pro['category']))
                                                     <td>Uncategorize</td>
                                                 @else
-                                                    <td>{{ $pro['category']['product_category_name'] }}</td>
+                                                    <td>{{ $pro['category'][0]['product_category_name'] }}</td>
                                                 @endif
                                                 <td> {{ $pro['product_name'] }} </td>
                                                 <td style="width:10px">

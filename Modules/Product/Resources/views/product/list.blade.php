@@ -251,7 +251,7 @@
                                 @if (empty($value['category']))
                                     <td>Uncategorize</td>
                                 @else
-                                    <td>{{ $value['category']['product_category_name'] }}</td>
+                                    <td>{{ $value['category'][0]['product_category_name']??'Uncategories' }}</td>
                                 @endif
                                 <td>{{ $value['product_name'] }}</td>
                                 <td>

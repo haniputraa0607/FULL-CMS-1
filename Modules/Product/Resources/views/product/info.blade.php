@@ -20,7 +20,7 @@
                                 <option value="{{ $suw['id_product_category'] }}" @if (($syu['category'][0]['id_product_category']??false) == $suw['id_product_category']) selected @endif>{{ $suw['product_category_name'] }}</option>
                                 @if (!empty($suw['child']))
                                     @foreach ($suw['child'] as $child)
-                                        <option value="{{ $child['id_product_category'] }}" @if ($syu['id_product_category'] == $child['id_product_category']) selected @endif data-ampas="{{ $child['product_category_name'] }}">&nbsp;&nbsp;&nbsp;{{ $child['product_category_name'] }}</option>
+                                        <option value="{{ $child['id_product_category'] }}" @if (($syu['category'][0]['id_product_category']??false) == $child['id_product_category']) selected @endif data-ampas="{{ $child['product_category_name'] }}">&nbsp;&nbsp;&nbsp;{{ $child['product_category_name'] }}</option>
                                     @endforeach
                                 @endif
                             @endforeach
