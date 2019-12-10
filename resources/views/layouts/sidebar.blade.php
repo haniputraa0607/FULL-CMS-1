@@ -1299,12 +1299,50 @@
 		@endif
 		@endif
 
-		@if(MyHelper::hasAccess([124], $grantedFeature))
-			<li class="nav-item {{($menu_active == 'fraud-detection') ? 'active' : ''}}">
-				<a href="{{url('setting-fraud-detection')}}" class="nav-link">
+		@if(MyHelper::hasAccess([192,193,194,195,196], $grantedFeature))
+			<li class="nav-item {{($menu_active == 'fraud-detection') ? 'active open' : ''}}">
+				<a href="javascript:;" class="nav-link nav-toggle">
 					<i class="fa fa-exclamation"></i>
 					<span class="title">Fraud Detection</span>
+					<span class="arrow {{($menu_active == 'fraud-detection') ? 'open' : ''}}"></span>
 				</a>
+				<ul class="sub-menu">
+					@if(MyHelper::hasAccess([192], $grantedFeature))
+						<li class="nav-item {{($submenu_active == 'fraud-detection-update') ? 'active open' : ''}}">
+							<a href="{{url('setting-fraud-detection')}}" class="nav-link ">
+								<span class="title">Fraud Detection Settings</span>
+							</a>
+						</li>
+					@endif
+					@if(MyHelper::hasAccess([193], $grantedFeature))
+						<li class="nav-item {{($submenu_active == 'report-fraud-device') ? 'active open' : ''}}">
+							<a href="{{url('fraud-detection/report/device')}}" class="nav-link ">
+								<span class="title">Report Fraud Device</span>
+							</a>
+						</li>
+					@endif
+					@if(MyHelper::hasAccess([194], $grantedFeature))
+						<li class="nav-item {{($submenu_active == 'report-fraud-transaction-day') ? 'active open' : ''}}">
+							<a href="{{url('fraud-detection/report/transaction-day')}}" class="nav-link ">
+								<span class="title">Report Fraud Transaction Day</span>
+							</a>
+						</li>
+					@endif
+					@if(MyHelper::hasAccess([195], $grantedFeature))
+						<li class="nav-item {{($submenu_active == 'report-fraud-transaction-week') ? 'active open' : ''}}">
+							<a href="{{url('fraud-detection/report/transaction-week')}}" class="nav-link ">
+								<span class="title">Report Fraud Transaction Week</span>
+							</a>
+						</li>
+					@endif
+					@if(MyHelper::hasAccess([196], $grantedFeature))
+						<li class="nav-item {{($submenu_active == 'suspend-user') ? 'active open' : ''}}">
+							<a href="{{url('fraud-detection/suspend-user')}}" class="nav-link ">
+								<span class="title">List User Fraud</span>
+							</a>
+						</li>
+					@endif
+				</ul>
 			</li>
 		@endif
 
