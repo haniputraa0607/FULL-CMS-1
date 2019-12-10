@@ -32,13 +32,14 @@
 				tabsize: 2,
 				height: 120,
 				toolbar: [
-                  ['style', ['style']],
-                  ['style', ['bold', 'underline', 'clear']],
-                  ['color', ['color']],
-                  ['para', ['ul', 'ol', 'paragraph']],
-                  ['insert', ['table']],
-                  ['insert', ['link', 'picture', 'video']],
-                  ['misc', ['fullscreen', 'codeview', 'help']]
+                    ['style', ['style']],
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['misc', ['fullscreen', 'codeview', 'help']]
                 ],
 				callbacks: {
 					onImageUpload: function(files){
@@ -55,6 +56,11 @@
 								// console.log(data);
 							}
 						});
+					},
+					onPaste: function (e) {
+						var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+						e.preventDefault();
+						document.execCommand('insertText', false, bufferText);
 					}
 				}
 			});
