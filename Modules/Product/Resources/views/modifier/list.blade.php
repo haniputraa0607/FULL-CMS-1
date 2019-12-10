@@ -68,8 +68,7 @@
                         <th> Name </th>
                         <th> Scope </th>
                         <th> Type </th>
-                        <th> Created At </th>
-                        <th> Last Update </th>
+                        <th> Default Visibility </th>
                         @if(MyHelper::hasAccess([182,183,184], $grantedFeature))
                             <th> Action </th>
                         @endif
@@ -85,8 +84,7 @@
                                 <td>{{$modifier['text']}}</td>
                                 <td>{{$modifier['modifier_type']}}</td>
                                 <td>{{$modifier['type']}}</td>
-                                <td>{{date('d M Y @ H:i',strtotime($modifier['created_at']))}}</td>
-                                <td>{{date('d M Y @ H:i',strtotime($modifier['updated_at']))}}</td>
+                                <td><input type="checkbox" class="make-switch default-visibility" data-size="small" data-on-color="info" data-on-text="Visible" data-off-color="default" data-id="{{$modifier['id_product_modifier']}}" data-off-text="Invisible" value="1" @if($modifier['product_modifier_visibility']=='Visible') checked @endif></td>
                                 @if(MyHelper::hasAccess([182,183,184], $grantedFeature))
                                 <td>
                                     <form action="{{url('product/modifier/'.$modifier['id_product_modifier'])}}" method="POST" class="form-inline">
