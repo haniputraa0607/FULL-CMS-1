@@ -233,6 +233,9 @@ class ModifierController extends Controller
         $result = MyHelper::post('product/modifier/update-price',$post);
         if(($result['status']??false)=='success'){
             return back()->with('success',['Success update price']);
+        }else{
+            return $result;
+            return back()->withErrors(['Fail update price']);
         }
     }
 }
