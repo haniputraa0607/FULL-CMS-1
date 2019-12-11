@@ -59,6 +59,7 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'product'
 		Route::post('/', ['middleware' => 'feature_control:186', 'uses' => 'ModifierController@store']);
 		Route::get('/{id}', ['middleware' => 'feature_control:187', 'uses' => 'ModifierController@show']);
 		Route::put('/{id}', ['middleware' => 'feature_control:188', 'uses' => 'ModifierController@update']);
+		Route::patch('/{id}', ['middleware' => 'feature_control:188', 'uses' => 'ModifierController@update']);
 		Route::delete('/{id}', ['middleware' => 'feature_control:189', 'uses' => 'ModifierController@destroy']);
 	});
 
