@@ -130,7 +130,7 @@
                         </label>
                         <div class="col-md-4">
                             <div class="input-icon right">
-                                <input type="checkbox" class="make-switch default-visibility" data-size="small" data-on-color="info" data-on-text="Visible" data-off-color="default" data-off-text="Invisible" name="product_modifier_visibility" value="1" @if(old('product_modifier_visibility',$modifier['product_modifier_visibility']=='Visible')) checked @endif>
+                                <input type="checkbox" class="make-switch default-visibility" data-size="small" data-on-color="info" data-on-text="Visible" data-off-color="default" data-off-text="Hidden" name="product_modifier_visibility" value="1" @if(old('product_modifier_visibility',$modifier['product_modifier_visibility']=='Visible')) checked @endif>
                             </div>
                         </div>
                     </div>
