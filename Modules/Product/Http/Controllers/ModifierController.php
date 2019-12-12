@@ -151,6 +151,7 @@ class ModifierController extends Controller
                 return ['status'=>'fail'];
             }
             $post += $modifier;
+            $post['patch'] = 1;
             $result = MyHelper::post('product/modifier/update',$post);
             return $result;
         }
