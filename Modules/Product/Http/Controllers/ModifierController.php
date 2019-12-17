@@ -145,6 +145,16 @@ class ModifierController extends Controller
     public function update(Request $request, $id)
     {
         $post =  $request->except(['_token','_method']);
+        if($request->isMethod('patch')){
+            $modifier = MyHelper::post('product/modifier/detail',['id_product_modifier'=>$id])['result']??false;
+            if(!$modifier){
+                return ['status'=>'fail'];
+            }
+            $post += $modifier;
+            $post['patch'] = 1;
+            $result = MyHelper::post('product/modifier/update',$post);
+            return $result;
+        }
         $post['type'] = $post['type_dropdown'];
         $post['id_product_modifier'] = $id;
         if($post['type'] == '0'){
@@ -154,7 +164,10 @@ class ModifierController extends Controller
         if(($result['status']??false) == 'success'){
             return redirect('product/modifier/'.$post['code'])->with('success',['Success update modifier']);
         }else{
-            return back()->withErrors($result['messages']??['Something went wrong'])->withInput();
+            if(stristr($result['message']??'', 'SQLSTATE[23000]')){
+                $result['message'] = 'Another modifier with code "'.$post['code'].'" aready exist';
+            }
+            return back()->withErrors($result['messages']??[$result['message']??'Something went wrong'])->withInput();
         }
     }
 
@@ -221,6 +234,9 @@ class ModifierController extends Controller
         $result = MyHelper::post('product/modifier/update-price',$post);
         if(($result['status']??false)=='success'){
             return back()->with('success',['Success update price']);
+        }else{
+            return $result;
+            return back()->withErrors(['Fail update price']);
         }
     }
 }

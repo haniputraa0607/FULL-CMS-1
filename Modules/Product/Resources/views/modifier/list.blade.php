@@ -26,6 +26,38 @@
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
+        var manual = 1;
+        $(document).ready(function(){
+            $('table').on('switchChange.bootstrapSwitch','.default-visibility',function(){
+                if(!manual){
+                    manual=1;
+                    return false;
+                }
+                var switcher=$(this);
+                var newState=switcher.bootstrapSwitch('state');
+                $.ajax({
+                    method:'PATCH',
+                    url:"{{url('product/modifier')}}/"+switcher.data('id'),
+                    data:{
+                        product_modifier_visibility:newState?1:0,
+                        _token:"{{csrf_token()}}"
+                    },
+                    success:function(data){
+                        if(data.status == 'success'){
+                            toastr.info("Success update visibility");
+                        }else{
+                            manual=0;
+                            toastr.warning("Fail update visibility");
+                            switcher.bootstrapSwitch('state',!newState);
+                        }
+                    }
+                }).fail(function(data){
+                    manual=0;
+                    toastr.warning("Fail update visibility");
+                    switcher.bootstrapSwitch('state',!newState);
+                });
+            });
+        });
     </script>
 
 @endsection
@@ -68,8 +100,7 @@
                         <th> Name </th>
                         <th> Scope </th>
                         <th> Type </th>
-                        <th> Created At </th>
-                        <th> Last Update </th>
+                        <th> Default Visibility </th>
                         @if(MyHelper::hasAccess([182,183,184], $grantedFeature))
                             <th> Action </th>
                         @endif
@@ -85,8 +116,7 @@
                                 <td>{{$modifier['text']}}</td>
                                 <td>{{$modifier['modifier_type']}}</td>
                                 <td>{{$modifier['type']}}</td>
-                                <td>{{date('d M Y @ H:i',strtotime($modifier['created_at']))}}</td>
-                                <td>{{date('d M Y @ H:i',strtotime($modifier['updated_at']))}}</td>
+                                <td><input type="checkbox" class="make-switch default-visibility" data-size="small" data-on-color="info" data-on-text="Visible" data-off-color="default" data-id="{{$modifier['id_product_modifier']}}" data-off-text="Hidden" value="1" @if($modifier['product_modifier_visibility']=='Visible') checked @endif></td>
                                 @if(MyHelper::hasAccess([182,183,184], $grantedFeature))
                                 <td>
                                     <form action="{{url('product/modifier/'.$modifier['id_product_modifier'])}}" method="POST" class="form-inline">

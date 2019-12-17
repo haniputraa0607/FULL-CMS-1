@@ -123,6 +123,18 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-md-3 control-label">Default Visibility
+                            <span class="required" aria-required="true"> *
+                            </span>
+                            <i class="fa fa-question-circle tooltips" data-original-title="Default visibility untuk modifier apabila di outlet tidak di atur" data-container="body"></i>
+                        </label>
+                        <div class="col-md-4">
+                            <div class="input-icon right">
+                                <input type="checkbox" class="make-switch default-visibility" data-size="small" data-on-color="info" data-on-text="Visible" data-off-color="default" data-off-text="Hidden" name="product_modifier_visibility" value="1" @if(old('product_modifier_visibility',$modifier['product_modifier_visibility']=='Visible')) checked @endif>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="multiple" class="control-label col-md-3">Type
                             <span class="required" aria-required="true"> *
                             </span>

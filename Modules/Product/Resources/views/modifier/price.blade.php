@@ -91,6 +91,9 @@
                             <th> No </th>
                             <th> Modifier </th>
                             <th> Price </th>
+                            <th> Visible </th>
+                            <th> Stock </th>
+                            <th> Status </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -98,9 +101,29 @@
                             @foreach($modifiers['data'] as $modifier)
                                 @php $start++  @endphp
                                 <tr>
-                                    <td>{{$start}}</td>
+                                    <td style="width: 1%">{{$start}}</td>
                                     <td>{{$modifier['code']}} - {{$modifier['text']}}</td>
-                                    <td><input type="text" class="form-control price" name="prices[{{$modifier['id_product_modifier']}}]" value="{{$modifier['product_modifier_price']}}" style="max-width: 120px" /></td>
+                                    <td style="width: 15%"><input type="text" class="form-control price" name="prices[{{$modifier['id_product_modifier']}}][product_modifier_price]" value="{{$modifier['product_modifier_price']}}" style="max-width: 120px" /></td>
+                                    <td style="width: 15%">
+                                        <select class="form-control" name="prices[{{$modifier['id_product_modifier']}}][product_modifier_visibility]">
+                                            <option></option>
+                                            <option value="Visible" @if($modifier['product_modifier_visibility']=='Visible') selected @endif>Visible</option>
+                                            <option value="Hidden" @if($modifier['product_modifier_visibility']=='Hidden') selected @endif>Hidden</option>
+                                        </select>
+                                    </td>
+                                    <td style="width: 15%">
+                                        <select class="form-control" name="prices[{{$modifier['id_product_modifier']}}][product_modifier_stock_status]">
+                                            <option value="Available" @if($modifier['product_modifier_stock_status']=='Available') selected @endif>Available</option>
+                                            <option value="Sold Out" @if($modifier['product_modifier_stock_status']=='Sold Out') selected @endif>Sold Out</option>
+                                        </select>
+                                    </td>
+                                    <td style="width: 15%">
+                                        <input type="text" class="form-control" value="{{$modifier['product_modifier_status']}}" style="max-width: 120px" disabled />
+<!--                                         <select class="form-control" name="prices[{{$modifier['id_product_modifier']}}][product_modifier_status]">
+                                            <option value="Active" @if($modifier['product_modifier_status']=='Active') selected @endif>Active</option>
+                                            <option value="Inactive" @if($modifier['product_modifier_status']=='Inactive') selected @endif>Inactive</option>
+                                        </select> -->
+                                    </td>
                                 </tr>
                             @endforeach
                         @endif
