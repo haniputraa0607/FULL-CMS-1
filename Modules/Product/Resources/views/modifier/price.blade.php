@@ -6,6 +6,7 @@
  ?>
  @extends('layouts.main')
 
+@include('list_filter')
 @section('page-style')
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
@@ -26,7 +27,54 @@
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/scripts/datatable.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script>
+    @yield('filter_script')
     <script type="text/javascript">
+        rules = {
+            all_product_modifier :{
+                display:'All Product Modifier',
+                operator:[],
+                opsi:[]
+            },
+            code :{
+                display:'Code',
+                operator:[
+                    ['=','='],
+                    ['like','like']
+                ],
+                opsi:[]
+            },
+            text :{
+                display:'Name',
+                operator:[
+                    ['=','='],
+                    ['like','like']
+                ],
+                opsi:[]
+            },
+            modifier_type :{
+                display:'Scope',
+                operator:[],
+                opsi:[
+                    ['Global','Global'],
+                    ['Specific','Specific']
+                ]
+            },
+            type :{
+                display:'Type',
+                operator:[],
+                opsi:[
+                    ['Ice','Ice']
+                ]
+            },
+            product_modifier_visibility :{
+                display:'Default Visibility',
+                operator:[],
+                opsi:[
+                    ['Visible','Visible'],
+                    ['Hidden', 'Hidden']
+                ]
+            },
+        };
         $('.price').inputmask("numeric", {
             radixPoint: ",",
             groupSeparator: ".",
@@ -68,6 +116,7 @@
 
     @include('layouts.notifications')
 
+    @yield('filter_view')
     <div class="portlet light bordered">
         <div class="portlet-title">
             <div class="caption">
