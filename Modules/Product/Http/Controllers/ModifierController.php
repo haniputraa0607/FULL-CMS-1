@@ -22,13 +22,22 @@ class ModifierController extends Controller
             'sub_title'      => 'List Product Modifier',
             'menu_active'    => 'product-modifier',
             'submenu_active' => 'product-modifier-list',
+            'filter_title'   => 'Filter Product Modifier',
         ];
+        if(session('product_modifier_filter')){
+            $post=session('product_modifier_filter');
+            $data['rule']=array_map('array_values', $post['rule']);
+            $data['operator']=$post['operator'];
+        }else{
+            $post = [];
+        }
         $page = $request->page;
         if(!$page){
             $page = 1;
         }
         $data['start'] = ($page-1)*10;
-        $data['modifiers'] = MyHelper::get('product/modifier?page='.$page)['result']??[];
+        $data['modifiers'] = MyHelper::post('product/modifier?page='.$page,$post)['result']??[];
+        $data['total'] = $data['modifiers']['total'];
         $data['next_page'] = $data['modifiers']['next_page_url']?url()->current().'?page='.($page+1):'';
         $data['prev_page'] = $data['modifiers']['prev_page_url']?url()->current().'?page='.($page-1):'';
         return view('product::modifier.list',$data);
@@ -79,6 +88,14 @@ class ModifierController extends Controller
     public function store(Request $request)
     {
         $post =  $request->except('_token');
+        if($post['rule']??false){
+            session(['product_modifier_filter'=>$post]);
+            return redirect('product/modifier');
+        }
+        if($post['clear']??false){
+            session(['product_modifier_filter'=>null]);
+            return redirect('product/modifier');
+        }
         $post['type'] = $post['type_dropdown'];
         if($post['type'] == '0'){
             $post['type'] =$post['type_textbox'];
