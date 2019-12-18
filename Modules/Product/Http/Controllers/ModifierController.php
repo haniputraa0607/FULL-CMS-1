@@ -223,7 +223,7 @@ class ModifierController extends Controller
             'sub_title'      => 'Product Modifier Prices',
             'menu_active'    => 'product-modifier',
             'submenu_active' => 'product-modifier-price',
-            'filter_title'   => 'Filter Product',
+            'filter_title'   => 'Filter Product Modifier',
         ];
         if(session('product_modifier_price_filter')){
             $post=session('product_modifier_price_filter');
