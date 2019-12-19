@@ -56,6 +56,7 @@
                 operator:[],
                 opsi:[
                     ['Global','Global'],
+                    ['Global Brand','Global Brand'],
                     ['Specific','Specific']
                 ]
             },
