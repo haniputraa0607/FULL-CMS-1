@@ -36,6 +36,8 @@ class ModifierController extends Controller
             $page = 1;
         }
         $data['start'] = ($page-1)*10;
+        $types = MyHelper::get('product/modifier/type')['result']??[];
+        $data['types'] = array_map(function($q){return [$q,$q];},$types);
         $data['modifiers'] = MyHelper::post('product/modifier?page='.$page,$post)['result']??[];
         $data['total'] = $data['modifiers']['total'];
         $data['next_page'] = $data['modifiers']['next_page_url']?url()->current().'?page='.($page+1):'';
