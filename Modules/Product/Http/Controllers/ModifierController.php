@@ -241,6 +241,8 @@ class ModifierController extends Controller
         $data['key'] = $id_outlet;
         $data['outlets'] = $outlets;
         $post['id_outlet'] = $id_outlet;
+        $types = MyHelper::get('product/modifier/type')['result']??[];
+        $data['types'] = array_map(function($q){return [$q,$q];},$types);
         $data['modifiers'] = MyHelper::post('product/modifier/list-price?page='.$page,$post)['result']??[];
         $data['total'] = $data['modifiers']['total'];
         $data['paginator'] = new LengthAwarePaginator($data['modifiers']['data'], $data['modifiers']['total'], $data['modifiers']['per_page'], $data['modifiers']['current_page'], ['path' => url()->current()]);
