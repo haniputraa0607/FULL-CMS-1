@@ -54,15 +54,14 @@
                 operator:[],
                 opsi:[
                     ['Global','Global'],
+                    ['Global Brand','Global Brand'],
                     ['Specific','Specific']
                 ]
             },
             type :{
                 display:'Type',
                 operator:[],
-                opsi:[
-                    ['Ice','Ice']
-                ]
+                opsi:{!!json_encode($types)!!}
             },
             product_modifier_visibility :{
                 display:'Default Visibility',

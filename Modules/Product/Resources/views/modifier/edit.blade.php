@@ -28,14 +28,23 @@
             });
             $('#modifier_type').on('change',function(){
                 if($(this).val() == 'Specific'){
+                    $('#global-brand-form select,#global-brand-form input').attr('disabled','disabled');
+                    $('#global-brand-form').addClass('hidden');
                     $('#specific-form select,#specific-form input').removeAttr('disabled');
                     $('#specific-form').removeClass('hidden');
                     $('#product_checkbox').change();
                     $('#category_checkbox').change();
                     $('#brand_checkbox').change();
-                }else{
+                }else if($(this).val() == 'Global Brand'){
                     $('#specific-form select,#specific-form input').attr('disabled','disabled');
                     $('#specific-form').addClass('hidden');
+                    $('#global-brand-form select,#global-brand-form input').removeAttr('disabled');
+                    $('#global-brand-form').removeClass('hidden');
+                }else{
+                    $('#specific-form select,#specific-form input').attr('disabled','disabled');
+                    $('#specific-form select,#specific-form input').attr('disabled','disabled');
+                    $('#specific-form').addClass('hidden');
+                    $('#global-brand-form').addClass('hidden');
                 }
             });
             $('#specific-form').on('change','#product_checkbox',function(){
@@ -166,7 +175,29 @@
                             <div class="input-icon right">
                                 <select  class="form-control select2" name="modifier_type" id="modifier_type" data-placeholder="Select scope" required>
                                     <option value="Global" @if(old('modifier_type',$modifier['modifier_type'])=='Global') selected @endif>Global</option>
+                                    <option value="Global Brand" @if(old('modifier_type',$modifier['modifier_type'])=='Global Brand') selected @endif>Global Brand</option>
                                     <option value="Specific" @if(old('modifier_type',$modifier['modifier_type'])=='Specific') selected @endif>Specific</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="global-brand-form">
+                        <div class="col-md-offset-3 col-md-8">
+                            <div class="alert alert-info" style="margin-right: -14px">Modifiers will be available on this selected brand</div>
+                        </div>
+                        <div class="col-md-offset-3 col-md-2">
+                            <div class="input-icon right">
+                                <input type="checkbox" class="invisible" /> 
+                                <label for="brand_checkbox"> Brand</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-icon right form-group">
+                                <select  class="form-control select2" multiple name="id_brand[]" data-placeholder="select brand" required>
+                                    <option></option>
+                                    @foreach($subject['brands'] as $var)
+                                    <option value="{{$var['id']}}" @if(in_array($var['id'],old('id_brand',array_column($modifier['brands'],'id_brand')))) selected @endif>{{$var['text']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
