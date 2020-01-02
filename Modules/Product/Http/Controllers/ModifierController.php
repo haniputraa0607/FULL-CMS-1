@@ -78,7 +78,7 @@ class ModifierController extends Controller
                 'id' => $var['id_brand'],
                 'text' => $var['name_brand']
             ];
-        },MyHelper::get('brand/list')['result']??[]);
+        },MyHelper::get('brand/be/list')['result']??[]);
         return view('product::modifier.create',$data);
     }
 
@@ -150,7 +150,7 @@ class ModifierController extends Controller
                 'id' => $var['id_brand'],
                 'text' => $var['name_brand']
             ];
-        },MyHelper::get('brand/list')['result']??[]);
+        },MyHelper::get('brand/be/list')['result']??[]);
 
         return view('product::modifier.edit',$data);
     }

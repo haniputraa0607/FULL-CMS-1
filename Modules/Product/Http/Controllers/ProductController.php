@@ -251,7 +251,7 @@ class ProductController extends Controller
             $data['parent'] = $this->category();
             $tags = MyHelper::get('product/tag/list');
             $data['tags'] = parent::getData($tags);
-            $data['brands'] = MyHelper::get('brand/list')['result']??[];
+            $data['brands'] = MyHelper::get('brand/be/list')['result']??[];
             return view('product::product.create', $data);
         }
         else {
@@ -357,7 +357,7 @@ class ProductController extends Controller
 				$data['outlet'] = $outlet['result'];
             }
 
-            $data['brands'] = MyHelper::get('brand/list')['result']??[];
+            $data['brands'] = MyHelper::get('brand/be/list')['result']??[];
 
             $nextId = MyHelper::get('product/next/'.$data['product'][0]['id_product']);
             if (isset($nextId['result']['product_code'])) {
