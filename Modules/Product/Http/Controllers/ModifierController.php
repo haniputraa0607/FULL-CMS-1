@@ -64,14 +64,14 @@ class ModifierController extends Controller
                 'id' => $var['id_product'],
                 'text' => $var['product_code'].' - '.$var['product_name']
             ];
-        },MyHelper::get('product/list')['result']??[]);
+        },MyHelper::get('product/be/list')['result']??[]);
 
         $data['subject']['product_categories'] = array_map(function($var){
             return [
                 'id' => $var['id_product_category'],
                 'text' => $var['product_category_name']
             ];
-        },MyHelper::get('product/category/list')['result']??[]);
+        },MyHelper::get('product/category/be/list')['result']??[]);
 
         $data['subject']['brands'] = array_map(function($var){
             return [
@@ -136,14 +136,14 @@ class ModifierController extends Controller
                 'id' => $var['id_product'],
                 'text' => $var['product_code'].' - '.$var['product_name']
             ];
-        },MyHelper::get('product/list')['result']??[]);
+        },MyHelper::get('product/be/list')['result']??[]);
 
         $data['subject']['product_categories'] = array_map(function($var){
             return [
                 'id' => $var['id_product_category'],
                 'text' => $var['product_category_name']
             ];
-        },MyHelper::get('product/category/list')['result']??[]);
+        },MyHelper::get('product/category/be/list')['result']??[]);
 
         $data['subject']['brands'] = array_map(function($var){
             return [
@@ -209,7 +209,7 @@ class ModifierController extends Controller
      */
     public function listPrice(Request $request,$id_outlet=null)
     {
-        $outlets = MyHelper::get('outlet/list')['result']??[];
+        $outlets = MyHelper::get('outlet/be/list')['result']??[];
         if(!$outlets){
             return back()->withErrors(['Something went wrong']);
         }

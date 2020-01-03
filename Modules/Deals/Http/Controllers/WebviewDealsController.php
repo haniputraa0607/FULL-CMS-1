@@ -24,7 +24,7 @@ class WebviewDealsController extends Controller
         $post['deals_type'] = $deals_type;
         $post['web'] = 1;
 
-        $data['deals'] = parent::getData(MyHelper::postWithBearer('deals/list', $post, $bearer));
+        $data['deals'] = parent::getData(MyHelper::postWithBearer('deals/be/list', $post, $bearer));
 
         if (empty($data['deals'])) {
             return [

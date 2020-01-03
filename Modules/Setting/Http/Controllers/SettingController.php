@@ -209,7 +209,7 @@ class SettingController extends Controller
             'submenu_active' => 'faq-list'
         ];
 
-        $faqList = MyHelper::get('setting/faq');
+        $faqList = MyHelper::get('setting/be/faq');
 
         if (isset($faqList['status']) && $faqList['status'] == 'success') {
             $data['result'] = $faqList['result'];
@@ -254,7 +254,7 @@ class SettingController extends Controller
             'submenu_active' => 'faq-sort'
         ];
 
-        $faqList = MyHelper::get('setting/faq');
+        $faqList = MyHelper::get('setting/be/faq');
 
         if (isset($faqList['status']) && $faqList['status'] == 'success') {
             $data['result'] = $faqList['result'];
@@ -591,7 +591,7 @@ class SettingController extends Controller
 
         // deals
         $dp=['deals_type'=>'Deals','forSelect2'=>true];
-        $request = MyHelper::post('deals/list',$dp);
+        $request = MyHelper::post('deals/be/list',$dp);
         $data['deals'] = $request['result']??[];
 
         // news for banner
@@ -599,14 +599,14 @@ class SettingController extends Controller
             'published' => 1,
             'admin' => 1
         ];
-        $request = MyHelper::post('news/list', $news_req);
+        $request = MyHelper::post('news/be/list', $news_req);
         if(isset($request['result']))
             $data['news'] = $request['result'];
         else
             $data['news'] = [];
 
         // complete profile
-        $request = MyHelper::get('setting/complete-profile');
+        $request = MyHelper::get('setting/be/complete-profile');
         if(isset($request['result'])) {
             $data['complete_profile'] = $request['result'];
         }
@@ -1058,7 +1058,7 @@ class SettingController extends Controller
             $post['complete_profile_point'] = 0;
 
             // update complete profile
-            $result = MyHelper::post('setting/complete-profile', $post);
+            $result = MyHelper::post('setting/be/complete-profile', $post);
 
             return parent::redirect($result, 'User Profile Completing has been updated.', 'setting/complete-profile');
         }else{
@@ -1067,7 +1067,7 @@ class SettingController extends Controller
                 'menu_active'    => 'profile-completion',
                 'submenu_active' => 'complete-profile'
             ];
-            $request = MyHelper::get('setting/complete-profile');
+            $request = MyHelper::get('setting/be/complete-profile');
             if(isset($request['result'])) {
                 $data['complete_profile'] = $request['result'];
             }
@@ -1099,7 +1099,7 @@ class SettingController extends Controller
             'submenu_active' => 'setting-text-menu-list'
         ];
 
-        $request = MyHelper::post('setting/text_menu_list',['webview' => 1]);
+        $request = MyHelper::post('setting/be/text_menu_list',['webview' => 1]);
         if(isset($request['result']) && !empty($request['result'])) {
             $data['menu_list'] = $request['result'];
         }else {

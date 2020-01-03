@@ -226,7 +226,7 @@ class ReportController extends Controller
 
             if($getCity['status'] == 'success') $data['city'] = $getCity['result']; else $data['city'] = null;
 
-            $getMembership = MyHelper::post('membership/list', $post);
+            $getMembership = MyHelper::post('membership/be/list', $post);
             if($getMembership['status'] == 'success'){
                 $data['membership'] = $getMembership['result'];
             }else{
@@ -282,7 +282,7 @@ class ReportController extends Controller
 
             if($getCity['status'] == 'success') $data['city'] = $getCity['result']; else $data['city'] = null;
 
-            $getMembership = MyHelper::post('membership/list', $post);
+            $getMembership = MyHelper::post('membership/be/list', $post);
             if($getMembership['status'] == 'success'){
                 $data['membership'] = $getMembership['result'];
             }else{

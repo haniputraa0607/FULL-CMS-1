@@ -32,7 +32,7 @@ class ProductController extends Controller
             'submenu_active' => 'product-position',
         ];
 
-        $catParent = MyHelper::get('product/category/list');
+        $catParent = MyHelper::get('product/category/be/list');
 
         if (isset($catParent['status']) && $catParent['status'] == "success") {
             $data['category'] = $catParent['result'];
@@ -41,7 +41,7 @@ class ProductController extends Controller
             $data['category'] = [];
         }
 
-        $product = MyHelper::get('product/list');
+        $product = MyHelper::get('product/be/list');
 
         if (isset($product['status']) && $product['status'] == "success") {
             $data['product'] = $product['result'];
@@ -92,7 +92,7 @@ class ProductController extends Controller
 			}
 		}
 
-		$catParent = MyHelper::get('product/category/list');
+		$catParent = MyHelper::get('product/category/be/list');
 
         if (isset($catParent['status']) && $catParent['status'] == "success") {
             $data['category'] = $catParent['result'];
@@ -101,7 +101,7 @@ class ProductController extends Controller
             $data['category'] = [];
         }
 
-        $product = MyHelper::get('product/list');
+        $product = MyHelper::get('product/be/list');
 
         if (isset($product['status']) && $product['status'] == "success") {
             $data['product'] = $product['result'];
@@ -127,8 +127,8 @@ class ProductController extends Controller
 
     public function example()
     {
-        $listProduct = MyHelper::get('product/list');
-        $listOutlet = MyHelper::post('outlet/list', ['admin' => 1, 'type' => 'export']);
+        $listProduct = MyHelper::get('product/be/list');
+        $listOutlet = MyHelper::post('outlet/be/list', ['admin' => 1, 'type' => 'export']);
         $dataPrice = [];
 
         if (isset($listProduct['status']) && $listProduct['status'] == 'fail') {
@@ -226,7 +226,7 @@ class ProductController extends Controller
     function category() {
         $data = [];
 
-        $catParent = MyHelper::get('product/category/list');
+        $catParent = MyHelper::get('product/category/be/list');
 
         if (isset($catParent['status']) && $catParent['status'] == "success") {
             return $data = $catParent['result'];
@@ -298,7 +298,7 @@ class ProductController extends Controller
             'submenu_active' => 'product-list',
         ];
 
-        $product = MyHelper::post('product/list', ['admin_list' => 1]);
+        $product = MyHelper::post('product/be/list', ['admin_list' => 1]);
 		// print_r($product);exit;
         if (isset($product['status']) && $product['status'] == "success") {
             $data['product'] = $product['result'];
@@ -313,7 +313,7 @@ class ProductController extends Controller
     }
 
 	function listProductAjax(Request $request) {
-        $product = MyHelper::get('product/list?log_save=0');
+        $product = MyHelper::get('product/be/list?log_save=0');
 
         if (isset($product['status']) && $product['status'] == "success") {
             $data = $product['result'];
@@ -335,7 +335,7 @@ class ProductController extends Controller
             'submenu_active' => 'product-list',
         ];
 
-        $product = MyHelper::post('product/list', ['product_code' => $code, 'outlet_prices' => 1]);
+        $product = MyHelper::post('product/be/list', ['product_code' => $code, 'outlet_prices' => 1]);
         // dd($product);
         if (isset($product['status']) && $product['status'] == "success") {
             $data['product'] = $product['result'];
@@ -351,7 +351,7 @@ class ProductController extends Controller
             $data['parent'] = $this->category();
             $tags = MyHelper::get('product/tag/list');
             $data['tags'] = parent::getData($tags);
-			$outlet = MyHelper::post('outlet/list', ['admin' => 1, 'id_product' => $data['product'][0]['id_product']]);
+			$outlet = MyHelper::post('outlet/be/list', ['admin' => 1, 'id_product' => $data['product'][0]['id_product']]);
             // return $outlet;
 			if (isset($outlet['status']) && $outlet['status'] == 'success') {
 				$data['outlet'] = $outlet['result'];
@@ -567,7 +567,7 @@ class ProductController extends Controller
             return $this->priceProcess($post);
         }
         $data['admin'] = 1;
-        $outlet = MyHelper::post('outlet/list', $data);
+        $outlet = MyHelper::post('outlet/be/list', $data);
         if (isset($outlet['status']) && $outlet['status'] == 'success') {
             $data['outlet'] = $outlet['result'];
         } elseif (isset($outlet['status']) && $outlet['status'] == 'fail') {
@@ -584,9 +584,9 @@ class ProductController extends Controller
         }
 
         if(isset($page)){
-            $product = MyHelper::post('product/list?page='.$page, $data);
+            $product = MyHelper::post('product/be/list?page='.$page, $data);
         }else{
-            $product = MyHelper::post('product/list', $data);
+            $product = MyHelper::post('product/be/list', $data);
         }
         if (isset($product['status']) && $product['status'] == 'success') {
             $data['product'] = $product['result']['data'];
@@ -731,7 +731,7 @@ class ProductController extends Controller
 
         }
 
-        $outlet = MyHelper::get('outlet/list');
+        $outlet = MyHelper::get('outlet/be/list');
         if (isset($outlet['status']) && $outlet['status'] == 'success') {
             $data['outlet'] = $outlet['result'];
         } elseif (isset($outlet['status']) && $outlet['status'] == 'fail') {
@@ -747,10 +747,10 @@ class ProductController extends Controller
         }
 
         if($page){
-            $product = MyHelper::post('product/list?page='.$page, ['visibility' => $visibility, 'id_outlet' => $data['key'], 'pagination' => true]);
+            $product = MyHelper::post('product/be/list?page='.$page, ['visibility' => $visibility, 'id_outlet' => $data['key'], 'pagination' => true]);
             $data['page'] = $page;
         }else{
-            $product = MyHelper::post('product/list', ['visibility' => $visibility, 'id_outlet' => $data['key'], 'pagination' => true]);
+            $product = MyHelper::post('product/be/list', ['visibility' => $visibility, 'id_outlet' => $data['key'], 'pagination' => true]);
             $data['page'] = 1;
         }
         // dd($product);
@@ -799,11 +799,11 @@ class ProductController extends Controller
             // select all product in all outlet
             if(isset($post['allOutlet'])){
                 Session::put('idVisibility_allOutlet', true);
-                $outlet = MyHelper::get('outlet/list');
+                $outlet = MyHelper::get('outlet/be/list');
                 if (isset($outlet['status']) && $outlet['status'] == 'success') {
                     foreach ($outlet['result'] as $o => $dataOutlet) {
                         $ses_allProduct[$dataOutlet['id_outlet']] = true;
-                        $product = MyHelper::post('product/list', ['visibility' => $post['visibility'], 'id_outlet' => $dataOutlet['id_outlet']]);
+                        $product = MyHelper::post('product/be/list', ['visibility' => $post['visibility'], 'id_outlet' => $dataOutlet['id_outlet']]);
                         if (isset($product['status']) && $product['status'] == 'success') {
                             $page = 1;
                             $i = 1;
@@ -824,7 +824,7 @@ class ProductController extends Controller
             else if(isset($post['allProduct'])){
                 $ses_allProduct[$post['key']] = true;
                 Session::put('idVisibility_allProduct',$ses_allProduct);
-                $product = MyHelper::post('product/list', ['visibility' => $post['visibility'], 'id_outlet' => $post['key']]);
+                $product = MyHelper::post('product/be/list', ['visibility' => $post['visibility'], 'id_outlet' => $post['key']]);
                 if (isset($product['status']) && $product['status'] == 'success') {
                     $page = 1;
                     $i = 1;

@@ -72,7 +72,8 @@ class MyHelper
               'client_id'     => env('PASSWORD_CREDENTIAL_ID'),
               'client_secret' => env('PASSWORD_CREDENTIAL_SECRET'),
               'username'      => $request->input('username'),
-              'password'      => $request->input('password')
+              'password'      => $request->input('password'),
+			  'api-be'        => 1
           ],
       ]);
       return json_decode($response->getBody(), true);
@@ -248,12 +249,16 @@ class MyHelper
     }
   }
 
-  public static function postFile($url, $name_field, $path){ 
+  public static function postFile($url, $name_field, $path,$postData=null){ 
     $api = env('APP_API_URL'); 
     $client = new Client(); 
 
     $ses = session('access_token');
-
+	if($path){
+      $content=fopen($path, 'r');
+    }else{
+      $content='';
+    }
     $content = array( 
       'headers' => [ 
         'Authorization' => $ses, 
@@ -263,12 +268,18 @@ class MyHelper
       'multipart' => [ 
           [ 
               'name'     => $name_field, 
-              'contents' => fopen($path, 'r'), 
+              'contents' => $content, 
               // 'filename' => $name 
           ] 
       ] 
     ); 
 
+	if(is_array($postData)){
+      $postData=array_map(function($val,$key){
+        return array('name'=>$key,'contents'=>json_encode($val));
+      }, $postData,array_keys($postData));
+      array_push($content['multipart'],...$postData);
+    }															 
     try {
       $response = $client->post($api.'api/'.$url,$content);
       if(!is_array(json_decode($response->getBody(), true)));

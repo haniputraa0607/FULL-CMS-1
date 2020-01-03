@@ -138,7 +138,7 @@ class TagController extends Controller
         if (isset($tag['status']) && $tag['status'] == "success") {
             $data['tag'] = $tag['result'];
 
-            $product = MyHelper::post('product/list', $data);
+            $product = MyHelper::post('product/be/list', $data);
             if (isset($product['status']) && $product['status'] == "success") {
                 $data['products'] = $product['result'];
             }

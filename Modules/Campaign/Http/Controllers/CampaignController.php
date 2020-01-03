@@ -479,16 +479,16 @@ class CampaignController extends Controller
 		$getCourier = MyHelper::get('courier/list');
 		if($getCourier['status'] == 'success') $data['couriers'] = $getCourier['result']; else $data['couriers'] = [];
 
-		$getOutlet = MyHelper::get('outlet/list');
+		$getOutlet = MyHelper::get('outlet/be/list');
 		if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
 
-		$getProduct = MyHelper::get('product/list');
+		$getProduct = MyHelper::get('product/be/list');
 		if (isset($getProduct['status']) && $getProduct['status'] == 'success') $data['products'] = $getProduct['result']; else $data['products'] = [];
 
 		$getTag = MyHelper::get('product/tag/list');
 		if (isset($getTag['status']) && $getTag['status'] == 'success') $data['tags'] = $getTag['result']; else $data['tags'] = [];
 
-		$getMembership = MyHelper::post('membership/list', []);
+		$getMembership = MyHelper::post('membership/be/list', []);
 		if (isset($getMembership['status']) && $getMembership['status'] == 'success') $data['memberships'] = $getMembership['result']; else $data['memberships'] = [];
 
 		if(isset($getApiKey['status']) && $getApiKey['status'] == 'success' && $getApiKey['result']['value']){
@@ -532,16 +532,16 @@ class CampaignController extends Controller
 			$getCourier = MyHelper::get('courier/list');
 			if(isset($getCourier['status']) && $getCourier['status'] == 'success') $data['couriers'] = $getCourier['result']; else $data['couriers'] = [];
 
-			$getOutlet = MyHelper::get('outlet/list');
+			$getOutlet = MyHelper::get('outlet/be/list');
 			if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
 
-			$getProduct = MyHelper::get('product/list');
+			$getProduct = MyHelper::get('product/be/list');
 			if (isset($getProduct['status']) && $getProduct['status'] == 'success') $data['products'] = $getProduct['result']; else $data['products'] = [];
 
 			$getTag = MyHelper::get('product/tag/list');
 			if (isset($getTag['status']) && $getTag['status'] == 'success') $data['tags'] = $getTag['result']; else $data['tags'] = [];
 
-			$getMembership = MyHelper::post('membership/list',[]);
+			$getMembership = MyHelper::post('membership/be/list',[]);
 			if (isset($getMembership['status']) && $getMembership['status'] == 'success') $data['memberships'] = $getMembership['result']; else $data['memberships'] = [];
 
 			$getApiKey = MyHelper::get('setting/whatsapp');
@@ -583,16 +583,16 @@ class CampaignController extends Controller
 				$data['textreplaces'] = $test['result'];
 			}
 
-			$getOutlet = MyHelper::get('outlet/list');
+			$getOutlet = MyHelper::get('outlet/be/list');
 			if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
 
-			$getProduct = MyHelper::get('product/list');
+			$getProduct = MyHelper::get('product/be/list');
 			if (isset($getProduct['status']) && $getProduct['status'] == 'success') $data['products'] = $getProduct['result']; else $data['products'] = [];
 
 			$getTag = MyHelper::get('product/tag/list');
 			if (isset($getTag['status']) && $getTag['status'] == 'success') $data['tags'] = $getTag['result']; else $data['tags'] = [];
 
-			$getMembership = MyHelper::post('membership/list',[]);
+			$getMembership = MyHelper::post('membership/be/list',[]);
 			if (isset($getMembership['status']) && $getMembership['status'] == 'success') $data['memberships'] = $getMembership['result']; else $data['memberships'] = [];
 
 			return view('campaign::create-step-2', $data);
@@ -703,16 +703,16 @@ class CampaignController extends Controller
 				$data['setting'] = $setting['result'];
 			}
 
-			$getOutlet = MyHelper::get('outlet/list');
+			$getOutlet = MyHelper::get('outlet/be/list');
 			if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
 
-			$getProduct = MyHelper::get('product/list');
+			$getProduct = MyHelper::get('product/be/list');
 			if (isset($getProduct['status']) && $getProduct['status'] == 'success') $data['products'] = $getProduct['result']; else $data['products'] = [];
 
 			$getTag = MyHelper::get('product/tag/list');
 			if (isset($getTag['status']) && $getTag['status'] == 'success') $data['tags'] = $getTag['result']; else $data['tags'] = [];
 
-			$getMembership = MyHelper::post('membership/list',[]);
+			$getMembership = MyHelper::post('membership/be/list',[]);
 			if (isset($getMembership['status']) && $getMembership['status'] == 'success') $data['memberships'] = $getMembership['result']; else $data['memberships'] = [];
 
 			return view('campaign::create-step-3', $data);

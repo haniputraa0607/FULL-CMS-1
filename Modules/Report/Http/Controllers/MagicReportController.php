@@ -69,11 +69,11 @@ class MagicReportController extends Controller
             $data[$key] = $value;
         }
 
-        $data['allProducts'] = parent::getData(MyHelper::get('product/list'));
+        $data['allProducts'] = parent::getData(MyHelper::get('product/be/list'));
 
         $data['allTags'] = parent::getData(MyHelper::get('product/tag/list'));
 
-        $data['outlet'] = parent::getData(MyHelper::get('outlet/list'));
+        $data['outlet'] = parent::getData(MyHelper::get('outlet/be/list'));
 
         Session::forget('exclude_rec');
         $getRecommendation = MyHelper::get('report/magic/recommendation');

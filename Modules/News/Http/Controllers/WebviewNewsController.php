@@ -27,7 +27,7 @@ class WebviewNewsController extends Controller
         //     return view('error', ['msg' => 'Url method is POST']);
         // }
 
-        $news = MyHelper::postWithBearer('news/list', ['id_news'=> $id], $bearer);
+        $news = MyHelper::postWithBearer('news/be/list', ['id_news'=> $id], $bearer);
         $totalOutlet = 0;
         $outlet = MyHelper::getWithBearer('outlet/list?log_save=0', $bearer);
         if (isset($outlet['status']) && $outlet['status'] == "success") {

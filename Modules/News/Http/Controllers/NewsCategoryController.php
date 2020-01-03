@@ -24,7 +24,7 @@ class NewsCategoryController extends Controller
         ];
 
         // get category
-        $data['categories']    = $this->getData(MyHelper::post('news/category',['all'=>1]));
+        $data['categories']    = $this->getData(MyHelper::post('news/be/category',['all'=>1]));
         return view('news::category.index',$data);
     }
 
@@ -55,10 +55,10 @@ class NewsCategoryController extends Controller
 
         $update = MyHelper::post('news/category/create', ['category_name'=>$post['category_name']]);
         if (isset($update['status']) && $update['status'] == "success") {
-            return redirect('news/category')->with('success',['Create category success']);
+            return redirect('news/be/category')->with('success',['Create category success']);
         }
         else {
-            return redirect('news/category')->withErrors(['Create category fail']);
+            return redirect('news/be/category')->withErrors(['Create category fail']);
         }
     }
 

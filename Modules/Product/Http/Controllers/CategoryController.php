@@ -33,7 +33,7 @@ class CategoryController extends Controller
             /**
              * category parent
              */
-            $catParent = MyHelper::post('product/category/list', ['id_parent_category' => 0]);
+            $catParent = MyHelper::post('product/category/be/list', ['id_parent_category' => 0]);
 
             if (isset($catParent['status']) && $catParent['status'] == "success") {
                 $data['parent'] = $catParent['result'];
@@ -74,7 +74,7 @@ class CategoryController extends Controller
         /**
          * category product list
          */
-        $category = MyHelper::get('product/category/list'); 
+        $category = MyHelper::get('product/category/be/list');
         // print_r($category); exit();
 
         if (isset($category['status']) && $category['status'] == "success") {
@@ -101,7 +101,7 @@ class CategoryController extends Controller
         /**
          * category product
          */
-        $category = MyHelper::post('product/category/list', ['id_product_category' => $id]);
+        $category = MyHelper::post('product/category/be/list', ['id_product_category' => $id]);
 
         if (isset($category['status']) && $category['status'] == "success") {
             $data['category'] = $category['result'];
@@ -120,7 +120,7 @@ class CategoryController extends Controller
             /**
              * category product list
              */
-            $category = MyHelper::post('product/category/list', ['id_parent_category' => 0]);
+            $category = MyHelper::post('product/category/be/list', ['id_parent_category' => 0]);
 
             if (isset($category['status']) && $category['status'] == "success") {
                 $data['parent'] = $category['result'];

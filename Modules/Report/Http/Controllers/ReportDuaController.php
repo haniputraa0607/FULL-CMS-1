@@ -184,7 +184,7 @@ class ReportDuaController extends Controller
 
         $data['date_start'] = $date_start;
         $data['date_end']   = $date_end;        
-        $data['product']    = parent::getData(MyHelper::post('product/list', ['id_product' => $id]));
+        $data['product']    = parent::getData(MyHelper::post('product/be/list', ['id_product' => $id]));
 
         return view('report::report_product_detail', $data);
     }
@@ -324,7 +324,7 @@ class ReportDuaController extends Controller
 
         $data['date_start'] = $date_start;
         $data['date_end']   = $date_end;        
-        $data['outlet']    = parent::getData(MyHelper::post('outlet/list', ['id_outlet' => $id]));
+        $data['outlet']    = parent::getData(MyHelper::post('outlet/be/list', ['id_outlet' => $id]));
 
         return view('report::report_outlet_detail', $data);
     }
@@ -418,7 +418,7 @@ class ReportDuaController extends Controller
         }
 
         /* OUTLET */
-        $data['outlet'] = parent::getData(MyHelper::get('outlet/list'));
+        $data['outlet'] = parent::getData(MyHelper::get('outlet/be/list'));
 
         return view('report::report_global_new', $data);
     }
