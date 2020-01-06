@@ -753,11 +753,30 @@ class UsersController extends Controller
     public function delete($phone)
     {
 		$deleteUser = MyHelper::post('users/delete', ['phone' => $phone]);
-		// print_r($deleteUser);exit;
 		if($deleteUser['status'] == 'success'){
 			return back()->withSuccess($deleteUser['result']);
 		} else{
 			return back()->withErrors($deleteUser['messages']);
+		}
+	}
+
+	public function deleteLogApp($id)
+    {
+		$deleteUserLog = MyHelper::post('users/delete/log', ['id_log_activities_apps' => $id]);
+		if($deleteUserLog['status'] == 'success'){
+			return back()->withSuccess($deleteUserLog['result']);
+		} else{
+			return back()->withErrors($deleteUserLog['messages']);
+		}
+	}
+	
+	public function deleteLogBE($id)
+    {
+		$deleteUserLog = MyHelper::post('users/delete/log', ['id_log_activities_be' => $id]);
+		if($deleteUserLog['status'] == 'success'){
+			return back()->withSuccess($deleteUserLog['result']);
+		} else{
+			return back()->withErrors($deleteUserLog['messages']);
 		}
     }
 	
@@ -793,7 +812,7 @@ class UsersController extends Controller
 		
 		// print_r($post);exit;
 		$getLog = MyHelper::post('users/activity', $post);
-
+		// dd($getLog);
 		if(isset($getLog['status']) && $getLog['status'] == 'success') {
             $data['content']['mobile'] = $getLog['result']['mobile']['data'];
             $data['content']['be'] = $getLog['result']['be']['data'];

@@ -25,6 +25,8 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'user', '
 	Route::any('activity/export', ['middleware' => 'feature_control:6', 'uses' => 'UsersController@getExportActivities']);
     Route::any('search/reset', ['middleware' => 'feature_control:2', 'uses' => 'UsersController@searchReset']);
     Route::get('delete/{phone}', ['middleware' => 'feature_control:5', 'uses' => 'UsersController@delete']);
+	Route::get('delete/logApp/{id}', ['middleware' => 'feature_control:5', 'uses' => 'UsersController@deleteLogApp']);
+	Route::get('delete/logBE/{id}', ['middleware' => 'feature_control:5', 'uses' => 'UsersController@deleteLogBE']);
     Route::any('detail/{phone}', ['middleware' => 'feature_control:2', 'uses' => 'UsersController@show']);
     Route::any('detail/{phone}/favorite', ['middleware' => 'feature_control:2', 'uses' => 'UsersController@favorite']);
     Route::any('detail/log/{phone}', ['middleware' => 'feature_control:2', 'uses' => 'UsersController@showLog']);
