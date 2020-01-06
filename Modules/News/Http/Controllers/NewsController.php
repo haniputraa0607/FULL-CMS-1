@@ -25,14 +25,14 @@ class NewsController extends Controller
         ];
 
         // get outlet
-        $data['news']    = parent::getData(MyHelper::post('news/list', ['admin'=> 1]));
+        $data['news']    = parent::getData(MyHelper::post('news/be/list', ['admin'=> 1]));
 
         return view('news::index', $data);
     }
 	
 	public function indexAjax()
     {
-		$news = MyHelper::post('news/list?log_save=0', ['admin'=> 1]);
+		$news = MyHelper::post('news/be/list?log_save=0', ['admin'=> 1]);
 		if (isset($news['status']) && $news['status'] == "success") {
             $data = $news['result'];
         }
@@ -55,10 +55,10 @@ class NewsController extends Controller
             ];
 
             // get outlet
-            $data['outlet']    = parent::getData(MyHelper::get('outlet/list'));
-            $data['categories']    = parent::getData(MyHelper::get('news/category'));
+            $data['outlet']    = parent::getData(MyHelper::get('outlet/be/list'));
+            $data['categories']    = parent::getData(MyHelper::get('news/be/category'));
             // get product
-            $data['product']   = parent::getData(MyHelper::get('product/list'));
+            $data['product']   = parent::getData(MyHelper::get('product/be/list'));
             
             return view('news::create', $data);
         }
@@ -237,21 +237,21 @@ class NewsController extends Controller
                     'submenu_active' => 'news-list',
             ];
 
-            $news    = parent::getData(MyHelper::post('news/list', ['id_news' => $id_news,'admin'=>1]));
+            $news    = parent::getData(MyHelper::post('news/be/list', ['id_news' => $id_news,'admin'=>1]));
 			
             if (empty($news)) {
                 return back()->withErrors(['Data news not found.']);
             }
             else {
                 $data['news'] = $news;
-                $data['categories']    = parent::getData(MyHelper::get('news/category'));
+                $data['categories']    = parent::getData(MyHelper::get('news/be/category'));
             }
 
             // get outlet
-            $data['outlet']    = parent::getData(MyHelper::get('outlet/list'));
+            $data['outlet']    = parent::getData(MyHelper::get('outlet/be/list'));
             
             // get product
-            $data['product']   = parent::getData(MyHelper::get('product/list'));
+            $data['product']   = parent::getData(MyHelper::get('product/be/list'));
             
             // print_r($data); exit();
             return view('news::update', $data);

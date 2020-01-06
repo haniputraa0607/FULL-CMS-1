@@ -43,9 +43,9 @@ class VoucherController extends Controller
             if (!empty($voucher)) {
                 $data['voucher'] = $voucher;
 
-                $data['product']   = parent::getData(MyHelper::get('product/list'));
+                $data['product']   = parent::getData(MyHelper::get('product/be/list'));
                 $data['treatment'] = parent::getData(MyHelper::get('treatment/list'));
-                $data['outlet']    = parent::getData(MyHelper::get('outlet/list'));
+                $data['outlet']    = parent::getData(MyHelper::get('outlet/be/list'));
 
                 // print_r($data); exit();
                 $jumlah             = count($data['outlet']);
@@ -140,9 +140,9 @@ class VoucherController extends Controller
                 'submenu_active' => 'voucher-new'
             ];
 
-            $data['product']   = parent::getData(MyHelper::get('product/list'));
+            $data['product']   = parent::getData(MyHelper::get('product/be/list'));
             $data['treatment'] = parent::getData(MyHelper::get('treatment/list'));
-            $data['outlet']    = parent::getData(MyHelper::get('outlet/list'));
+            $data['outlet']    = parent::getData(MyHelper::get('outlet/be/list'));
 
             return view('voucher::create', $data);
         }

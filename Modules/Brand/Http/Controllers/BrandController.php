@@ -233,7 +233,7 @@ class BrandController extends Controller
             $action = MyHelper::post('brand/outlet/list', ['id_brand' => $post['id_brand']]);
             return $action;
         } elseif (end($urlNow) == 'product') {
-            $action = MyHelper::post('brand/product/list', ['id_brand' => $post['id_brand']]);
+            $action = MyHelper::post('brand/product/be/list', ['id_brand' => $post['id_brand']]);
             return $action;
         }
     }

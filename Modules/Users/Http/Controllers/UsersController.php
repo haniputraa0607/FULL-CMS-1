@@ -166,13 +166,13 @@ class UsersController extends Controller
 			$getProvince = MyHelper::get('province/list');
 			if($getProvince['status'] == 'success') $data['province'] = $getProvince['result']; else $data['province'] = null;
 			
-			$getOutlet = MyHelper::get('outlet/list');
+			$getOutlet = MyHelper::get('outlet/be/list');
 			if($getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = null;
 
-			$getCelebrate = MyHelper::get('setting/celebrate_list');
+			$getCelebrate = MyHelper::get('setting/be/celebrate_list');
 			if($getCelebrate['status'] == 'success') $data['celebrate'] = $getCelebrate['result']; else $data['celebrate'] = null;
 
-			$getJob = MyHelper::get('setting/jobs_list');
+			$getJob = MyHelper::get('setting/be/jobs_list');
 			if($getJob['status'] == 'success') $data['job'] = $getJob['result']; else $data['job'] = null;
 			
 			return view('users::create', $data);
@@ -212,7 +212,7 @@ class UsersController extends Controller
 					  'submenu_active'    => 'admin-outlet-create'
 					];
 					
-			$getOutlet = MyHelper::get('outlet/list');
+			$getOutlet = MyHelper::get('outlet/be/list');
 			// print_r($getOutlet);exit;
 			if($getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = null;
 			return view('users::create_admin_outlet', $data);
@@ -404,13 +404,13 @@ class UsersController extends Controller
 		$getOutlet = MyHelper::get('outlet/list?log_save=0');
 		if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
 			
-		$getProduct = MyHelper::get('product/list?log_save=0');
+		$getProduct = MyHelper::get('product/be/list?log_save=0');
 		if (isset($getProduct['status']) && $getProduct['status'] == 'success') $data['products'] = $getProduct['result']; else $data['products'] = [];
 		
 		$getTag = MyHelper::get('product/tag/list?log_save=0');
 		if (isset($getTag['status']) && $getTag['status'] == 'success') $data['tags'] = $getTag['result']; else $data['tags'] = [];
 
-		$getMembership = MyHelper::post('membership/list?log_save=0',[]);
+		$getMembership = MyHelper::post('membership/be/list?log_save=0',[]);
 		if (isset($getMembership['status']) && $getMembership['status'] == 'success') $data['memberships'] = $getMembership['result']; else $data['memberships'] = [];
 		
 		$data['table_title'] = "User list order by ".$data['order_field'].", ".$data['order_method']."ending (".$data['begin']." to ".$data['jumlah']." From ".$data['total']." data)";
@@ -512,7 +512,7 @@ class UsersController extends Controller
 			}
 		}
 		if(isset($post['password'])){
-			$checkpin = MyHelper::post('users/pin/check', array('phone' => Session::get('phone'), 'pin' => $post['password'], 'admin_panel' => 1));
+			$checkpin = MyHelper::post('users/pin/check/be', array('phone' => Session::get('phone'), 'pin' => $post['password'], 'admin_panel' => 1));
 			if($checkpin['status'] != "success")
 				return back()->withErrors(['invalid_credentials' => 'Invalid PIN'])->withInput();
 			else 
@@ -583,7 +583,7 @@ class UsersController extends Controller
 		$getVoucher = MyHelper::post('deals/voucher/user?log_save=0', ['phone' => $phone]);
 // 		return $getVoucher;
 		
-		$getInbox = MyHelper::post('inbox/user',['phone'=>$phone]);
+		$getInbox = MyHelper::post('inbox/be/user',['phone'=>$phone]);
 
 		$data = [ 'title'             => 'User',
 				  'menu_active'       => 'user',
@@ -596,8 +596,8 @@ class UsersController extends Controller
 		$data['featuresall'] = null;
 		$data['featuresmodule'] = null;
 		$data['voucher'] = null;
-		$data['celebrates'] = MyHelper::get('setting/celebrate_list')['result']??[];
-		$data['jobs'] = MyHelper::get('setting/jobs_list')['result']??[];
+		$data['celebrates'] = MyHelper::get('setting/be/celebrate_list')['result']??[];
+		$data['jobs'] = MyHelper::get('setting/be/jobs_list')['result']??[];
 		if(isset($getUser['result'])){
 			$data['profile'] = $getUser['result'];
 // 			$data['trx'] = $getUser['trx'];
@@ -857,7 +857,7 @@ class UsersController extends Controller
 				  'submenu_active'    => 'user-list'
 				];
 		if(isset($post['password'])){
-			$checkpin = MyHelper::post('users/pin/check', array('phone' => Session::get('phone'), 'pin' => $post['password'], 'admin_panel' => 1));
+			$checkpin = MyHelper::post('users/pin/check/be', array('phone' => Session::get('phone'), 'pin' => $post['password'], 'admin_panel' => 1));
 			if($checkpin['status'] != "success")
 				return back()->withErrors(['invalid_credentials' => 'Invalid PIN'])->withInput();
 			else 

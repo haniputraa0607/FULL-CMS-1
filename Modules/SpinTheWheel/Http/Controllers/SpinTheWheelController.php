@@ -24,7 +24,7 @@ class SpinTheWheelController extends Controller
         ];
         
         $post['deals_type'] = 'Spin';
-        $spin_item = MyHelper::post('deals/list', $post);
+        $spin_item = MyHelper::post('deals/be/list', $post);
         if (isset($spin_item['status']) && $spin_item['status'] == "success") {
             $data['items'] = $spin_item['result'];
         }
@@ -87,7 +87,7 @@ class SpinTheWheelController extends Controller
         
         $post['id_deals'] = $id_deals;
         $post['deals_type'] = "Spin";
-        $spin_item = MyHelper::post('deals/list', $post);
+        $spin_item = MyHelper::post('deals/be/list', $post);
 
         if (isset($spin_item['status']) && $spin_item['status'] == "success") {
             $data['item'] = $spin_item['result'][0];
@@ -162,7 +162,7 @@ class SpinTheWheelController extends Controller
         ];
 
         $post_list['deals_type'] = 'Spin';
-        $spin_item = MyHelper::post('deals/list', $post_list);
+        $spin_item = MyHelper::post('deals/be/list', $post_list);
         if (isset($spin_item['status']) && $spin_item['status'] == "success") {
             $data['items'] = $spin_item['result'];
         }

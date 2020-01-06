@@ -67,16 +67,16 @@ class AutopromotionController extends Controller
 		$getCourier = MyHelper::get('courier/list');
 		if($getCourier['status'] == 'success') $data['couriers'] = $getCourier['result']; else $data['couriers'] = [];
 		
-		$getOutlet = MyHelper::get('outlet/list');
+		$getOutlet = MyHelper::get('outlet/be/list');
 		if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
 		
-		$getProduct = MyHelper::get('product/list');
+		$getProduct = MyHelper::get('product/be/list');
 		if (isset($getProduct['status']) && $getProduct['status'] == 'success') $data['products'] = $getProduct['result']; else $data['products'] = [];
 		
 		$getTag = MyHelper::get('product/tag/list');
 		if (isset($getTag['status']) && $getTag['status'] == 'success') $data['tags'] = $getTag['result']; else $data['tags'] = [];
 		
-		$getMembership = MyHelper::post('membership/list', []);
+		$getMembership = MyHelper::post('membership/be/list', []);
 		if (isset($getMembership['status']) && $getMembership['status'] == 'success') $data['memberships'] = $getMembership['result']; else $data['memberships'] = [];
 
 		return view('campaign::create-step-1', $data);

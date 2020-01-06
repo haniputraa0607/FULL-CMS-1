@@ -32,7 +32,7 @@ class AdvertController extends Controller
 
                 $data['page']   = $type;
                 $data['advert'] = parent::getData(MyHelper::post('advert', ['page' => $type]));
-                $data['news'] = parent::getData(MyHelper::post('news/list', ['admin' => 1]));
+                $data['news'] = parent::getData(MyHelper::post('news/be/list', ['admin' => 1]));
                 return view('advert::index', $data);
             }
             else {

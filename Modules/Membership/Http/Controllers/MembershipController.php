@@ -52,7 +52,7 @@ class MembershipController extends Controller
 				}
 			}
 		} else {
-			$action = MyHelper::post('membership/list', []);
+			$action = MyHelper::post('membership/be/list', []);
 			if (isset($action['status']) && $action['status'] == 'success') {
 				$data['result'] = array_map(function($var){
 					$var['benefit_text']=json_decode($var['benefit_text']);
@@ -99,7 +99,7 @@ class MembershipController extends Controller
 			'submenu_active' => 'membership-list',
 		];
 		if (empty($post)) {
-			$query = MyHelper::post('membership/list', ['id_membership' => $id_membership]);
+			$query = MyHelper::post('membership/be/list', ['id_membership' => $id_membership]);
 			if (isset($query['status']) && $query['status'] == "success") {
 				$data['data'] = $query['result'][0];
 				return view('membership::update', $data);

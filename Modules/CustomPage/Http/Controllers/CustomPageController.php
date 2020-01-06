@@ -22,7 +22,7 @@ class CustomPageController extends Controller
             'submenu_active'    => 'custom-page-list'
         ];
 
-        $action = MyHelper::get('custom-page/list');
+        $action = MyHelper::get('custom-page/be/list');
 
         if (isset($action['status']) && $action['status'] == 'success') {
             $data['result'] = $action['result'];
@@ -47,10 +47,10 @@ class CustomPageController extends Controller
         ];
 
         // get outlet
-        $data['outlet']    = $this->getData(MyHelper::get('outlet/list'));
+        $data['outlet']    = $this->getData(MyHelper::get('outlet/be/list'));
 
         // get product
-        $data['product']   = $this->getData(MyHelper::get('product/list'));
+        $data['product']   = $this->getData(MyHelper::get('product/be/list'));
 
         return view('custompage::form', $data);
     }
@@ -151,10 +151,10 @@ class CustomPageController extends Controller
         $data['detail'] = $action['result'];
 
         // get outlet
-        $data['outlet']    = $this->getData(MyHelper::get('outlet/list'));
+        $data['outlet']    = $this->getData(MyHelper::get('outlet/be/list'));
 
         // get product
-        $data['product']   = $this->getData(MyHelper::get('product/list'));
+        $data['product']   = $this->getData(MyHelper::get('product/be/list'));
 
         return view('custompage::form', $data);
     }
@@ -177,10 +177,10 @@ class CustomPageController extends Controller
         $data['result'] = $action['result'];
 
         // get outlet
-        $data['outlet']    = $this->getData(MyHelper::get('outlet/list'));
+        $data['outlet']    = $this->getData(MyHelper::get('outlet/be/list'));
 
         // get product
-        $data['product']   = $this->getData(MyHelper::get('product/list'));
+        $data['product']   = $this->getData(MyHelper::get('product/be/list'));
 
         return view('custompage::form', $data);
     }

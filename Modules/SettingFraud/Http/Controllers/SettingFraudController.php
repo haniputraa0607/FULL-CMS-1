@@ -279,7 +279,7 @@ class SettingFraudController extends Controller
                 'menu_active'    => 'fraud-detection',
                 'submenu_active' => 'report-fraud-transaction-day',
             ];
-            $getOutlet = MyHelper::get('outlet/list');
+            $getOutlet = MyHelper::get('outlet/be/list');
             if($getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
         }elseif($type == 'transaction-week'){
             $type_view = 'transaction_week';
@@ -289,7 +289,7 @@ class SettingFraudController extends Controller
                 'menu_active'    => 'fraud-detection',
                 'submenu_active' => 'report-fraud-transaction-week',
             ];
-            $getOutlet = MyHelper::get('outlet/list');
+            $getOutlet = MyHelper::get('outlet/be/list');
             if($getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
         }
 
