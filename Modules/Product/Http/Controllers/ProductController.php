@@ -312,6 +312,31 @@ class ProductController extends Controller
 
     }
 
+    function image(Request $request) {
+        $post = $request->except('_token');
+        if (!empty($post)) {
+            $name = explode('.',$request->file('file')->getClientOriginalName())[0];
+            $post = MyHelper::encodeImage($request->file('file'));
+            $save = MyHelper::post('product/photo/createAjax', ['name' => $name, 'photo' => $post]);
+            return $save;
+        }
+        $data = [
+            'title'          => 'Product',
+            'sub_title'      => 'List Product',
+            'menu_active'    => 'product',
+            'submenu_active' => 'product-list-image',
+        ];
+        $product = MyHelper::post('product/list', ['admin_list' => 1]);
+		// dd($product);
+        if (isset($product['status']) && $product['status'] == "success") {
+            $data['product'] = $product['result'];
+        }
+        else {
+            $data['product'] = [];
+        }
+        return view('product::product.image', $data);
+    }
+
 	function listProductAjax(Request $request) {
         $product = MyHelper::get('product/be/list?log_save=0');
 
