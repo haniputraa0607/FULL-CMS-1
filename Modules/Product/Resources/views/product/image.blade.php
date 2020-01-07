@@ -2,6 +2,7 @@
     use App\Lib\MyHelper;
     $grantedFeature     = session('granted_features');
     $configs    		= session('configs');
+
  ?>
  @extends('layouts.main')
 
@@ -191,6 +192,7 @@
         Dropzone.options.myDropzone = {
             maxFilesize: 12,
             acceptedFiles: "image/*",
+            parallelUploads: 1,
             init: function () {
                 this.on("thumbnail", function(file) {
                     if (file.width == 300 || file.height == 300) {
@@ -211,6 +213,8 @@
             success: function(file, response) 
             {
                 if (response.status == 'success') {
+                    filename = file.name.split('.')
+                    $("#"+filename[0]).replaceWith('<td id="'+filename[0]+'"><img style="width: 75px;" src="'+response.result.url_product_photo+'" alt=""></td>');
                     toastr.success("Photo has been updated.")
                 } else {
                     toastr.warning("Make sure name file same as Product Code.")
@@ -291,9 +295,9 @@
                                 <td>{{ $value['product_code'] }}</td>
                                 <td>{{ $value['product_name'] }}</td>
                                 @if (empty($value['photos']))
-                                    <td>No Image</td>
+                                    <td id="{{$value['product_code']}}">No Image</td>
                                 @else
-                                    <td><img style="width: 75px;" src="{{env('AWS_URL').$value['photos'][0]['product_photo'] }}" alt=""></td>
+                                    <td id="{{$value['product_code']}}"><img style="width: 75px;" src="{{env('AWS_URL').$value['photos'][0]['product_photo'] }}" alt=""></td>
                                 @endif
                             </tr>
                         @endforeach
