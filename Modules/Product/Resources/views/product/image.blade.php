@@ -191,6 +191,7 @@
         Dropzone.options.myDropzone = {
             maxFilesize: 12,
             acceptedFiles: "image/*",
+            parallelUploads: 1,
             init: function () {
                 this.on("thumbnail", function(file) {
                     if (file.width == 300 || file.height == 300) {
@@ -211,6 +212,8 @@
             success: function(file, response) 
             {
                 if (response.status == 'success') {
+                    filename = file.name.split('.')
+                    $("#"+filename[0]).attr("src",response.result.url_product_photo);
                     toastr.success("Photo has been updated.")
                 } else {
                     toastr.warning("Make sure name file same as Product Code.")
