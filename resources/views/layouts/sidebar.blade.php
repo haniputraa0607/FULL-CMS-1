@@ -1427,14 +1427,14 @@
 				<h3 class="uppercase" style="color: #10704e;font-weight: 600;">About</h3>
 			</li>
 
-			<!--@if(MyHelper::hasAccess([85], $grantedFeature))-->
-			<!--<li class="nav-item {{($menu_active == 'about') ? 'active' : ''}}">-->
-			<!--	<a href="{{url('setting/about')}}" class="nav-link nav-toggle">-->
-			<!--		<i class="icon-info"></i>-->
-			<!--		<span class="title">About Us</span>-->
-			<!--	</a>-->
-			<!--</li>-->
-			<!--@endif-->
+			@if(MyHelper::hasAccess([85], $grantedFeature))
+			<li class="nav-item {{($menu_active == 'about') ? 'active' : ''}}">
+				<a href="{{url('setting/about')}}" class="nav-link nav-toggle">
+					<i class="icon-info"></i>
+					<span class="title">About</span>
+				</a>
+			</li>
+			@endif
 
 			@if(MyHelper::hasAccess([88,89], $grantedFeature))
 			<li class="nav-item {{($menu_active == 'faq') ? 'active' : ''}}">
@@ -1494,7 +1494,7 @@
 			@endif -->
 		@endif
 
-		<!-- @if(MyHelper::hasAccess([125,126,127,128,129], $grantedFeature))
+		@if(MyHelper::hasAccess([125,126,127,128,129], $grantedFeature))
 			<li class="heading" style="height: 50px;padding: 25px 15px 10px;">
 				<h3 class="uppercase" style="color: #10704e;font-weight: 600;">Report</h3>
 			</li>
@@ -1504,13 +1504,13 @@
 					<span class="title">Report</span>
 				</a>
 			</li>
-			{{-- <li class="nav-item {{($menu_active == 'report-compare') ? 'active' : ''}}">
+			<li class="nav-item {{($menu_active == 'report-compare') ? 'active' : ''}}">
 				<a href="{{url('report/compare')}}" class="nav-link nav-toggle">
 					<i class="icon-graph"></i>
 					<span class="title">Compare Report</span>
 				</a>
-			</li> --}}
-			{{-- @if(MyHelper::hasAccess([125], $grantedFeature))
+			</li>
+			@if(MyHelper::hasAccess([125], $grantedFeature))
 			<li class="nav-item {{($menu_active == 'report-global') ? 'active' : ''}}">
 				<a href="{{url('report/global')}}" class="nav-link nav-toggle">
 					<i class="icon-graph"></i>
@@ -1541,17 +1541,17 @@
 					<span class="title">Outlet</span>
 				</a>
 			</li>
-			@endif --}}
-		@endif -->
+			@endif
+		@endif
 
-		{{-- @if(MyHelper::hasAccess([129], $grantedFeature))
+		@if(MyHelper::hasAccess([129], $grantedFeature))
 		<li class="nav-item {{($menu_active == 'report-magic') ? 'active' : ''}}">
 			<a href="{{url('report/magic')}}" class="nav-link nav-toggle">
 				<i class="icon-graph"></i>
 				<span class="title">Magic Report</span>
 			</a>
 		</li>
-		@endif --}}
+		@endif
 
 	</ul>
 	<!-- END SIDEBAR MENU -->
