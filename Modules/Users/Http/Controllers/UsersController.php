@@ -512,7 +512,7 @@ class UsersController extends Controller
 			}
 		}
 		if(isset($post['password'])){
-			$checkpin = MyHelper::post('users/pin/check/be', array('phone' => Session::get('phone'), 'pin' => $post['password'], 'admin_panel' => 1));
+			$checkpin = MyHelper::post('users/pin/check-backend', array('phone' => Session::get('phone'), 'pin' => $post['password'], 'admin_panel' => 1));
 			if($checkpin['status'] != "success")
 				return back()->withErrors(['invalid_credentials' => 'Invalid PIN'])->withInput();
 			else 
@@ -857,7 +857,7 @@ class UsersController extends Controller
 				  'submenu_active'    => 'user-list'
 				];
 		if(isset($post['password'])){
-			$checkpin = MyHelper::post('users/pin/check/be', array('phone' => Session::get('phone'), 'pin' => $post['password'], 'admin_panel' => 1));
+			$checkpin = MyHelper::post('users/pin/check-backend', array('phone' => Session::get('phone'), 'pin' => $post['password'], 'admin_panel' => 1));
 			if($checkpin['status'] != "success")
 				return back()->withErrors(['invalid_credentials' => 'Invalid PIN'])->withInput();
 			else 
