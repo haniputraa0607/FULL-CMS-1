@@ -443,14 +443,14 @@
 											<li class="list-group-item" style="padding: 5px !important;" title="User Gender">
 												@if($profile['gender'] == 'Male')<i class="fa fa-male"></i> {{$profile['gender']}} </li>@else<i class="fa fa-female"></i> {{$profile['gender']}} </li>
 												@endif
-                                            <li class="list-group-item" style="padding: 5px !important;" title="Users Celebrate">
-                                                <i class="fa fa-calendar-check-o"></i> {{$profile['celebrate']}} </li>
-                                            <li class="list-group-item" style="padding: 5px !important;" title="User's Job">
-                                                <i class="fa fa-black-tie"></i> {{$profile['job']}} </li>
+{{--                                            <li class="list-group-item" style="padding: 5px !important;" title="Users Celebrate">--}}
+{{--                                                <i class="fa fa-calendar-check-o"></i> {{$profile['celebrate']}} </li>--}}
+{{--                                            <li class="list-group-item" style="padding: 5px !important;" title="User's Job">--}}
+{{--                                                <i class="fa fa-black-tie"></i> {{$profile['job']}} </li>--}}
 											<li class="list-group-item" style="padding: 5px !important;" title="User City & Province">
 												<i class="fa fa-map"></i> {{$profile['city_name']}}, {{$profile['province_name']}} </li>
-                                            <li class="list-group-item" style="padding: 5px !important;" title="User Address">
-                                                <i class="fa fa-map-pin"></i> {{$profile['address']}} </li>
+{{--                                            <li class="list-group-item" style="padding: 5px !important;" title="User Address">--}}
+{{--                                                <i class="fa fa-map-pin"></i> {{$profile['address']}} </li>--}}
 											<li class="list-group-item" style="padding: 5px !important;" title="User Birthday">
 												<i class="fa fa-birthday-cake"></i> @if($profile['birthday']){{date("d F Y", strtotime($profile['birthday']))}} @endif</li>
 											<li class="list-group-item" style="padding: 5px !important;" title="User Register date & time">
