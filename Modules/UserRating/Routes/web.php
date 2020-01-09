@@ -11,6 +11,7 @@
 |
 */
 
-Route::prefix('userrating')->group(function() {
-    Route::get('/', 'UserRatingController@index');
+Route::prefix('user-rating')->group(function() {
+    Route::get('/detail/{id}', 'UserRatingController@show');
+    Route::get('/{key?}', 'UserRatingController@index');
 });

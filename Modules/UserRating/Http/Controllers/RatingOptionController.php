@@ -8,7 +8,7 @@ use Illuminate\Routing\Controller;
 
 use App\Lib\MyHelper;
 
-class UserRatingController extends Controller
+class RatingOptionController extends Controller
 {
     public function index(Request $request,$key = '')
     {                    
@@ -44,8 +44,13 @@ class UserRatingController extends Controller
             'menu_active'    => 'user-rating',
             'submenu_active' => 'user-rating-detail'
         ];
+        $ids = explode('#',base64_decode($id));
+        if(!is_numeric($ids[0])||!is_numeric($ids[1])){
+            return back()->withErrors(['User rating not found']);
+        }
         $post = [
-            'id' => $id
+            'id_user_rating' => $ids[0]??'',
+            'id_transaction' => $ids[1]??''
         ];
         $data['rating'] = MyHelper::post('user-rating/detail',$post)['result']??false;
         if(!$data['rating']){
