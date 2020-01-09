@@ -1156,7 +1156,7 @@ class TransactionController extends Controller
             'date_end'       => date('Y-m-d')
         ];
 
-        $getList = MyHelper::get('transaction/'.$key.'?page='.$request->get('page'));
+        $getList = MyHelper::get('transaction/be/'.$key.'?page='.$request->get('page'));
 
             if (!empty($getList['result']['data'])) {
                 $data['trx']          = $getList['result']['data'];
