@@ -142,6 +142,7 @@ class SettingController extends Controller
             'menu_active'    => $active,
             'submenu_active' => $sub,
             'sub_title'       => $subTitle,
+            'subTitle'       => $subTitle,
             'label'          => $label,
             'colLabel'       => $colLabel,
             'colInput'       => $colInput
@@ -1179,6 +1180,35 @@ class SettingController extends Controller
                 'payment_fail_messages'=>$payment_fail_messages
             ];
             return view('setting::confirmation-messages.confirmation-messages',$data);
+        }
+    }
+
+    public function phoneNumberSetting(Request $request){
+        $getSetting = MyHelper::get('setting/phone');
+
+        $data = [
+            'title'   		=> 'Phone Setting',
+            'menu_active'    => 'setting-phone',
+            'submenu_active' => 'setting-phone'
+        ];
+
+        if(($getSetting['status']??'')=='success'){
+            $data['result'] = $getSetting['result'];
+        }else{
+            $data['result'] = [];
+        }
+
+        return view('setting::phone-setting', $data);
+    }
+
+    public function updatePhoneNumberSetting(Request $request){
+        $post = $request->except('_token');
+        $updateSetting = MyHelper::post('setting/phone/update', $post);
+
+        if(($updateSetting['status']??'')=='success'){
+            return redirect('setting/phone')->with('success',['Success update phone setting']);
+        }else{
+            return redirect('setting/phone')->withErrors([$updateSetting['message']]);
         }
     }
 }
