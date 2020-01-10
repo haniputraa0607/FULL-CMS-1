@@ -136,7 +136,7 @@ class OutletController extends Controller
                     return parent::redirect($save, 'Outlet has been created.', 'outlet/detail/'.$save['result']['outlet_code'].'#photo');
                 }
                 else {
-                    return parent::redirect($save, 'Outlet has been created.', 'outlet/be/list');
+                    return parent::redirect($save, 'Outlet has been created.', 'outlet/list');
                 }
             }else {
                    if (isset($save['errors'])) {
@@ -516,7 +516,7 @@ class OutletController extends Controller
             }
             else {
                 $e = ['e' => 'Data outlet not found.'];
-                return redirect('outlet/be/list')->witherrors($e);
+                return redirect('outlet/list')->witherrors($e);
             }
 
             return view('outlet::outlet_holiday_update', $data);
@@ -575,7 +575,7 @@ class OutletController extends Controller
                 $save = MyHelper::post('outlet/import', ['data_import' => $dataimport]);
 
                 if (isset($save['status']) && $save['status'] == "success") {
-                    return parent::redirect($save, $save['message'], 'outlet/be/list');
+                    return parent::redirect($save, $save['message'], 'outlet/list');
                 }else {
                     if (isset($save['errors'])) {
                         return back()->withErrors($save['errors'])->withInput();
