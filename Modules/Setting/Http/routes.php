@@ -39,8 +39,8 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'setting'
     Route::post('text_menu/update/{category}', 'SettingController@updateTextMenu');
 
     /*Setting Phone*/
-    Route::get('phone', 'SettingController@phoneNumberSetting');
-    Route::post('phone/update', 'SettingController@updatePhoneNumberSetting');
+    Route::get('phone', ['middleware' => 'feature_control:211','SettingController@phoneNumberSetting']);
+    Route::post('phone/update', ['middleware' => 'feature_control:211','SettingController@updatePhoneNumberSetting']);
 
     Route::any('home', 'SettingController@homeSetting');
 	Route::any('date', 'SettingController@dateSetting');
