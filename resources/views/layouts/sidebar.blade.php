@@ -1206,6 +1206,28 @@
 				@endif
 			@endif
 
+			@if(MyHelper::hasAccess([206,207,208,209,210], $grantedFeature))
+			<li class="nav-item {{($menu_active == 'point-injection') ? 'active' : ''}}">
+				<a href="javascript:;" class="nav-link nav-toggle">
+					<i class="icon-diamond"></i>
+					<span class="title">Point Injection</span>
+					<span class="arrow {{($menu_active == 'point-injection') ? 'open' : ''}}"></span>
+				</a>
+				<ul class="sub-menu">
+					<li class="nav-item {{($submenu_active == 'point-injection-create') ? 'active open' : ''}}">
+						<a href="{{url('point-injection/create')}}" class="nav-link ">
+							<span class="title">New Point Injection</span>
+						</a>
+					</li>
+					<li class="nav-item {{($submenu_active == 'point-injection-create') ? 'active open' : ''}}">
+						<a href="{{url('point-injection')}}" class="nav-link ">
+							<span class="title">List Point Injection</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+			@endif
+
 			@if(MyHelper::hasAccess([114,115,116,117,118], $grantedFeature))
 				<li class="nav-item {{($menu_active == 'inboxglobal') ? 'active' : ''}}">
 					<a href="javascript:;" class="nav-link nav-toggle">
