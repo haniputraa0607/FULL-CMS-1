@@ -83,6 +83,7 @@
             <thead>
               <tr>
                   <th>User Name</th>
+                  <th>User Phone</th>
                   <th>{{env('POINT_NAME', 'Points')}}</th>
                   <th>Source</th>
                   <th>Grand Total</th>
@@ -100,6 +101,13 @@
                                 <td>{{ $res['user']['name'] }}</td>
                             @elseif(isset($res['name']))
                                 <td>{{ $res['name'] }}</td>
+                            @else
+                                <td></td>
+                            @endif
+                            @if (isset($res['user']['phone']))
+                                <td>{{ $res['user']['phone'] }}</td>
+                            @elseif(isset($res['phone']))
+                                <td>{{ $res['phone'] }}</td>
                             @else
                                 <td></td>
                             @endif
