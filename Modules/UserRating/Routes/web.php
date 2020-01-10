@@ -19,5 +19,6 @@ Route::prefix('user-rating')->group(function() {
     	Route::post('delete','RatingOptionController@delete');
     });
     Route::get('/detail/{id}', 'UserRatingController@show');
-    Route::get('/{key?}', 'UserRatingController@index');
+    Route::get('/', 'UserRatingController@index');
+    Route::post('/', 'UserRatingController@setFilter');
 });

@@ -25,14 +25,32 @@ class UserRatingController extends Controller
         if($key){
             $post['outlet_code'] = $key;
         }
+        if(session('rating_list_filter')){
+            $post=session('rating_list_filter');
+            $data['rule']=array_map('array_values', $post['rule']);
+            $data['operator']=$post['operator'];
+        }
         $data['ratingData'] = MyHelper::post('user-rating?page='.$page,$post)['result']??[];
         $outlets = MyHelper::get('outlet/be/list')['result']??[];
+        $data['total'] = count($data['ratingData']['data']??[]);
         $data['outlets'] = array_map(function($var){
             return [$var['id_outlet'],$var['outlet_name']];
         },$outlets);
         $data['next_page'] = $data['ratingData']['next_page_url']?url()->current().'?page='.($page+1):'';
         $data['prev_page'] = $data['ratingData']['prev_page_url']?url()->current().'?page='.($page-1):'';
         return view('userrating::index',$data);
+    }
+
+    public function setFilter(Request $request)
+    {
+        $post = $request->except('_token');
+        if($post['rule']??false){
+            session(['rating_list_filter'=>$post]);
+        }elseif($post['clear']??false){
+            session(['rating_list_filter'=>null]);
+            session(['rating_list_filter'=>null]);
+        }
+        return back();
     }
 
     /**
