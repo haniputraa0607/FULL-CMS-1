@@ -359,11 +359,11 @@
 					@endif
 					@if(MyHelper::hasAccess([2], $configs) || MyHelper::hasAccess([3], $configs))
 						@if(MyHelper::hasAccess([32, 33], $grantedFeature))
-						<li class="nav-item {{($submenu_active == 'outlet-export') ? 'active open' : ''}}">
-							<a href="{{url('outlet/export')}}" class="nav-link ">
-								<span class="title">Export Outlet</span>
-							</a>
-						</li>
+							<li class="nav-item {{($submenu_active == 'outlet-export-import') ? 'active open' : ''}}">
+								<a href="{{url('outlet/export-import')}}" class="nav-link ">
+									<span class="title">Export Import Outlet</span>
+								</a>
+							</li>
 						@endif
 					@endif
 				</ul>
