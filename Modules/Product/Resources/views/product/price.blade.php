@@ -185,8 +185,8 @@
 											<th> Category </th>
 											<th> Product </th>
 											<th> Price </th>
-											<th> Price Base </th>
-											<th> Price Tax </th>
+											<!--<th> Price Base </th>-->
+											<!--<th> Price Tax </th>-->
 											<th> Visible </th>
 											<th> Stock </th>
 											<th> POS Status </th>
@@ -213,10 +213,10 @@
 																		<input type="text" name="price[]" value="{{ $dpp['product_price'] }}" data-placeholder="input price" data-id="{{$pro['id_product']}}" class="form-control mt-repeater-input-inline price">
 																	</td>
 																	<td style="width: 15%">
-																		<input type="text" name="price_base[]" value="{{ $dpp['product_price_base'] }}" data-placeholder="input price" class="form-control mt-repeater-input-inline price_float" id="price_base_{{$pro['id_product']}}" readonly>
+																		<input type="text" name="price_base[]" value="{{ $dpp['product_price_base'] }}" data-placeholder="input price" class="form-control mt-repeater-input-inline price_float" id="price_base_{{$pro['id_product']}}" readonly hide>
 																	</td>
 																	<td style="width: 15%">
-																		<input type="text" name="price_tax[]" value="{{ $dpp['product_price_tax'] }}" data-placeholder="input price" class="form-control mt-repeater-input-inline price_float" id="price_tax_{{$pro['id_product']}}" readonly>
+																		<input type="text" name="price_tax[]" value="{{ $dpp['product_price_tax'] }}" data-placeholder="input price" class="form-control mt-repeater-input-inline price_float" id="price_tax_{{$pro['id_product']}}" readonly hide>
 																	</td>
 																	<td style="width:15%">
 																		<select class="form-control" name="visible[]">
@@ -242,10 +242,10 @@
 																<input type="text" name="price[]" data-placeholder="input price" class="form-control mt-repeater-input-inline price" data-id="{{$pro['id_product']}}">
 															</td>
 															<td style="width: 15%">
-																<input type="text" name="price_base[]" data-placeholder="input price" class="form-control mt-repeater-input-inline price_float" id="price_base_{{$pro['id_product']}}" readonly>
+																<input type="text" name="price_base[]" data-placeholder="input price" class="form-control mt-repeater-input-inline price_float" id="price_base_{{$pro['id_product']}}" readonly hide>
 															</td>
 															<td style="width: 15%">
-																<input type="text" name="price_tax[]" data-placeholder="input price" class="form-control mt-repeater-input-inline price_float" id="price_tax_{{$pro['id_product']}}" readonly>
+																<input type="text" name="price_tax[]" data-placeholder="input price" class="form-control mt-repeater-input-inline price_float" id="price_tax_{{$pro['id_product']}}" readonly hide>
 															</td>
 															<td style="width: 15%">
 																<select class="form-control" name="visible[]">
@@ -269,10 +269,10 @@
 																<input type="text" name="price[]" data-placeholder="input price" class="form-control mt-repeater-input-inline price" data-id="{{$pro['id_product']}}">
 															</td>
 															<td style="width: 15%">
-																<input type="text" name="price_base[]" data-placeholder="input price" class="form-control mt-repeater-input-inline price_float" id="price_base_{{$pro['id_product']}}" readonly>
+																<input type="text" name="price_base[]" data-placeholder="input price" class="form-control mt-repeater-input-inline price_float" id="price_base_{{$pro['id_product']}}" readonly hide>
 															</td>
 															<td style="width: 15%">
-																<input type="text" name="price_tax[]" data-placeholder="input price" class="form-control mt-repeater-input-inline price_float" id="price_tax_{{$pro['id_product']}}" readonly>
+																<input type="text" name="price_tax[]" data-placeholder="input price" class="form-control mt-repeater-input-inline price_float" id="price_tax_{{$pro['id_product']}}" readonly hide>
 															</td>
 															<td style="width: 15%">
 																<select class="form-control" name="visible[]">
