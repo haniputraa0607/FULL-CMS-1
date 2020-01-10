@@ -44,7 +44,7 @@
     </td>\
     <td>\
     <div class="form-group">\
-    <input type="text" class="form-control" name="rule[::n::][question]" placeholder="Question for user" value="::question::" required>\
+    <input type="text" class="form-control" name="rule[::n::][question]" placeholder="Question for user" value="::question::" maxlength="40" required>\
     </div>\
     </td>\
     <td style="width: 200px">\
@@ -77,7 +77,7 @@
         }
         replacer.options.forEach(function(vrb,ix){
             htmlOptions+=('<div class="input-group" style="margin-bottom: 5px">\
-                <input type="text" class="form-control" placeholder="Option" name="rule[::n::][options]['+ix+']" value="::option::" data-id-option="'+ix+'" required>\
+                <input type="text" class="form-control" placeholder="Option" name="rule[::n::][options]['+ix+']" value="::option::" data-id-option="'+ix+'" maxlength="20" required>\
                 <div class="input-group-btn">\
                 <button type="button" data-id="'+(current-1)+'" data-id-option="'+ix+'" class="btn red deleteOption"><i class="fa fa-times"></i></button>\
                 </div>\
