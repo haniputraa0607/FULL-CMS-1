@@ -2,6 +2,7 @@
 
 namespace Modules\Outlet\Http\Controllers;
 
+use App\Imports\BrandOutletImport;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
@@ -542,6 +543,17 @@ class OutletController extends Controller
         }
     }
 
+    function exportImport(Request $request) {
+        $data = [
+            'title'          => 'Outlet',
+            'sub_title'      => 'Export & Import Outlet',
+            'menu_active'    => 'outlet',
+            'submenu_active' => 'outlet-export-import',
+        ];
+        $data['brands'] = MyHelper::get('brand/be/list')['result']??[];
+        return view('outlet::export_import', $data);
+    }
+
     function import(Request $request) {
         $data = [
             'title'          => 'Outlet',
@@ -559,12 +571,12 @@ class OutletController extends Controller
         if (empty($post)) {
             $data = [
                 'title'          => 'Outlet',
-                'sub_title'      => 'Import Outlet',
+                'sub_title'      => 'Export & Import Outlet',
                 'menu_active'    => 'outlet',
-                'submenu_active' => 'outlet-import',
+                'submenu_active' => 'outlet-export-import',
             ];
-
-            return view('outlet::import', $data);
+            $data['brands'] = MyHelper::get('brand/be/list')['result']??[];
+            return view('outlet::export_import', $data);
         }else{
             if($request->file('import_file')){
 
@@ -573,6 +585,46 @@ class OutletController extends Controller
                 $dataimport = Excel::toArray(new FirstSheetOnlyImport(),$request->file('import_file'));
                 $dataimport = array_map(function($x){return (Object)$x;}, $dataimport[0]??[]);
                 $save = MyHelper::post('outlet/import', ['data_import' => $dataimport]);
+
+                if (isset($save['status']) && $save['status'] == "success") {
+                    return parent::redirect($save, $save['message'], 'outlet/list');
+                }else {
+                    if (isset($save['errors'])) {
+                        return back()->withErrors($save['errors'])->withInput();
+                    }
+
+                    if (isset($save['status']) && $save['status'] == "fail") {
+                        return back()->withErrors($save['messages'])->withInput();
+                    }
+                    return back()->withErrors(['Something when wrong. Please try again.'])->withInput();
+                }
+                return back()->withErrors(['Something when wrong. Please try again.'])->withInput();
+            }else{
+                return back()->withErrors(['File is required.'])->withInput();
+            }
+        }
+    }
+
+    function importBrand(Request $request) {
+        $post = $request->except('_token');
+
+        if (empty($post)) {
+            $data = [
+                'title'          => 'Outlet',
+                'sub_title'      => 'Export & Import Outlet',
+                'menu_active'    => 'outlet',
+                'submenu_active' => 'outlet-export-import',
+            ];
+            $data['brands'] = MyHelper::get('brand/be/list')['result']??[];
+            return view('outlet::export_import', $data);
+        }else{
+            if($request->file('import_file')){
+
+                $path = $request->file('import_file')->getRealPath();
+                $name = $request->file('import_file')->getClientOriginalName();
+                $dataimport = Excel::toArray(new BrandOutletImport(),$request->file('import_file'));
+                $dataimport = array_map(function($x){return (Object)$x;}, $dataimport[0]??[]);
+                $save = MyHelper::post('outlet/import-brand', ['data_import' => $dataimport]);
 
                 if (isset($save['status']) && $save['status'] == "success") {
                     return parent::redirect($save, $save['message'], 'outlet/list');
@@ -954,5 +1006,27 @@ class OutletController extends Controller
         }else{
             return back()->withErrors($update['messages']??['Something went wrong']);
         }
+    }
+
+    public function exportBrandOutle(Request $request){
+        $post=$request->except('_token');
+        $brand = MyHelper::post('brand/be/list', ['web' => 1]);
+        $codeOutlet =  MyHelper::get('outlet/list/code');
+
+        $data = [];
+        if(isset($codeOutlet['status']) && $codeOutlet['status'] == 'success'){
+            $count = count($codeOutlet['result']);
+            $result = $codeOutlet['result'];
+            for($i=0;$i<$count;$i++){
+                $data[$i]['code_outlet'] = $result[$i];
+                foreach ($brand['result'] as $value){
+                    $data[$i][$value['name_brand']] = '';
+                }
+            }
+        }
+
+        $dataExport['All Type'] = $data;
+        $dataExport = new MultisheetExport($dataExport);
+        return Excel::download($dataExport,'Data_Brand_'.date('Ymdhis').'.xls');
     }
 }
