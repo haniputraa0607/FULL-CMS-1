@@ -10,52 +10,31 @@ use App\Lib\MyHelper;
 
 class RatingOptionController extends Controller
 {
-    public function index(Request $request,$key = '')
+    public function index(Request $request)
     {                    
         $data = [
-            'title'          => 'User rating',
-            'sub_title'      => 'User rating List',
+            'title'          => 'User Rating',
+            'sub_title'      => 'Rating Option Rule',
             'menu_active'    => 'user-rating',
-            'submenu_active' => 'user-rating-list',
-            'key'            => $key
+            'submenu_active' => 'rating-option'
         ];
-        $page = $request->get('page')?:1;
-        $post = [];
-        if($key){
-            $post['outlet_code'] = $key;
-        }
-        $data['ratingData'] = MyHelper::post('user-rating?page='.$page,$post)['result']??[];
-        $data['outlets'] = MyHelper::get('outlet/be/list')['result']??[];
-        $data['next_page'] = $data['ratingData']['next_page_url']?url()->current().'?page='.($page+1):'';
-        $data['prev_page'] = $data['ratingData']['prev_page_url']?url()->current().'?page='.($page-1):'';
-        return view('userrating::index',$data);
+        $data['data'] = MyHelper::get('user-rating/option')['result']??[];
+        return view('userrating::option.index',$data);
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        $data = [
-            'title'          => 'User rating',
-            'sub_title'      => 'User rating Detail',
-            'menu_active'    => 'user-rating',
-            'submenu_active' => 'user-rating-detail'
-        ];
-        $ids = explode('#',base64_decode($id));
-        if(!is_numeric($ids[0])||!is_numeric($ids[1])){
-            return back()->withErrors(['User rating not found']);
+    public function store(Request $request){
+        $result = MyHelper::post('user-rating/option/update',$request->except('_token'));
+        if(($result['status']??false)!='success'){
+            return back()->withInput()->withErrors($result['messages']??['Something went wrong']);
         }
-        $post = [
-            'id_user_rating' => $ids[0]??'',
-            'id_transaction' => $ids[1]??''
-        ];
-        $data['rating'] = MyHelper::post('user-rating/detail',$post)['result']??false;
-        if(!$data['rating']){
-            return back()->withErrors(['User rating not found']);
-        }
-        return view('userrating::show',$data);
+        return back()->with('success',['Success update data']);
+    }
+
+    public function update(Request $request){
+        # code...
+    }
+
+    public function destroy(Request $request){
+        # code...
     }
 }

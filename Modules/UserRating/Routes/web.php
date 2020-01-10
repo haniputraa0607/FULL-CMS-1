@@ -12,6 +12,12 @@
 */
 
 Route::prefix('user-rating')->group(function() {
+    Route::group(['prefix'=>'option'],function(){
+    	Route::get('/','RatingOptionController@index');
+    	Route::post('/','RatingOptionController@store');
+    	Route::post('update','RatingOptionController@update');
+    	Route::post('delete','RatingOptionController@delete');
+    });
     Route::get('/detail/{id}', 'UserRatingController@show');
     Route::get('/{key?}', 'UserRatingController@index');
 });
