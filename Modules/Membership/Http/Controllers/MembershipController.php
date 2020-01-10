@@ -33,10 +33,10 @@ class MembershipController extends Controller
 				} else {
 					$post['membership'][$key]['membership_image'] = "";
 				}
-				if (isset($membership['membership_next_image'])) {
-					$post['membership'][$key]['membership_next_image'] = MyHelper::encodeImage($membership['membership_next_image']);
+				if (isset($membership['membership_bg_image'])) {
+					$post['membership'][$key]['membership_bg_image'] = MyHelper::encodeImage($membership['membership_bg_image']);
 				} else {
-					$post['membership'][$key]['membership_next_image'] = "";
+					$post['membership'][$key]['membership_bg_image'] = "";
 				}
 			}
 			$action = MyHelper::post('membership/update', $post);
