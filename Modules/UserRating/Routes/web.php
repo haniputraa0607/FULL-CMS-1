@@ -21,4 +21,6 @@ Route::prefix('user-rating')->group(function() {
     Route::get('/detail/{id}', 'UserRatingController@show');
     Route::get('/', 'UserRatingController@index');
     Route::post('/', 'UserRatingController@setFilter');
+    Route::get('setting', 'UserRatingController@setting');
+    Route::post('setting', 'UserRatingController@settingUpdate');
 });

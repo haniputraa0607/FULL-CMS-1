@@ -13,8 +13,8 @@ class UserRatingController extends Controller
     public function index(Request $request,$key = '')
     {                    
         $data = [
-            'title'          => 'User rating',
-            'sub_title'      => 'User rating List',
+            'title'          => 'User Rating',
+            'sub_title'      => 'User Rating List',
             'menu_active'    => 'user-rating',
             'submenu_active' => 'user-rating-list',
             'key'            => $key,
@@ -61,10 +61,10 @@ class UserRatingController extends Controller
     public function show($id)
     {
         $data = [
-            'title'          => 'User rating',
-            'sub_title'      => 'User rating Detail',
+            'title'          => 'User Rating',
+            'sub_title'      => 'User Rating Detail',
             'menu_active'    => 'user-rating',
-            'submenu_active' => 'user-rating-detail'
+            'submenu_active' => 'user-rating-list'
         ];
         $post = [
             'id' => $id
@@ -74,5 +74,40 @@ class UserRatingController extends Controller
             return back()->withErrors(['User rating not found']);
         }
         return view('userrating::show',$data);
+    }
+
+    public function setting(Request $request) {
+        $data = [
+            'title'          => 'User Rating',
+            'sub_title'      => 'User Rating Setting',
+            'menu_active'    => 'user-rating',
+            'submenu_active' => 'rating-setting'
+        ];
+        $ratings = MyHelper::post('setting',['key-like'=>'rating'])['result']??[];
+        $popups = MyHelper::post('setting',['key-like'=>'popup'])['result']??[];
+        $data['rating'] = [];
+        $data['popup'] = [];
+        foreach ($ratings as $rating) {
+            $data['setting'][$rating['key']] = $rating;
+        }
+        foreach ($popups as $popup) {
+            $data['setting'][$popup['key']] = $popup;
+        }
+        return view('userrating::setting',$data);
+    }
+
+    public function settingUpdate(Request $request) {
+        $data = [
+            'popup_min_interval' => ['value',$request->post('popup_min_interval')],
+            'popup_max_refuse' => ['value',$request->post('popup_max_refuse')],
+            'rating_question_text' => ['value_text',$request->post('rating_question_text')]
+        ];
+        $update = MyHelper::post('setting/update2',['update'=>$data]);
+        if(($update['status']??false)=='success'){
+            return back()->with('success',['Success update setting']);
+        }else{
+            dd($update);
+            return back()->withInput()->withErrors(['Failed update setting']);
+        }
     }
 }

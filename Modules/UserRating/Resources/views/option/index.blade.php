@@ -220,7 +220,7 @@
             </table>
             <div class="text-center">
                 <button class="btn blue" type="button" id="btnAddRule"><i class="fa fa-plus"></i> Add Rule</button>
-                <button class="btn green" type="submit" id="btnSave"><i class="fa fa-check"></i> Save</button>
+                <button class="btn yellow" type="submit" id="btnSave"><i class="fa fa-check"></i> Save</button>
             </div>
         </form>
     </div>
