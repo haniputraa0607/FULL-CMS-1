@@ -1274,6 +1274,17 @@
 			</li>
 		@endif
 
+		@if(MyHelper::hasAccess([93], $configs))
+		@if(MyHelper::hasAccess([211], $grantedFeature))
+			<li class="nav-item {{($menu_active == 'setting-phone') ? 'active' : ''}}">
+				<a href="{{url('setting/phone')}}" class="nav-link">
+					<i class="fa fa-phone"></i>
+					<span class="title">Setting Phone Number</span>
+				</a>
+			</li>
+		@endif
+		@endif
+
 		@if(MyHelper::hasAccess([160], $grantedFeature))
 			<li class="nav-item {{($menu_active == 'setting-text-menu') ? 'active' : ''}}">
 				<a href="{{url('setting/text_menu')}}" class="nav-link">

@@ -91,9 +91,9 @@
 	<div class="col-md-12">
 		<div class="portlet light portlet-fit bordered" >
 			<div class="portlet-body">
-				@if(Session::has('form'))
+				@if(Session::has('form-log'))
 					<?php
-						$search_param = Session::get('form');
+						$search_param = Session::get('form-log');
 						$search_param = array_filter($search_param);
 					?>
 					<div class="alert alert-block alert-success fade in">

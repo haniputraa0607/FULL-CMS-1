@@ -423,6 +423,7 @@ class UsersController extends Controller
 	public function searchReset()
     {
 		Session::forget('form');
+        Session::forget('form-log');
 		return back();
 	}
 
@@ -783,11 +784,11 @@ class UsersController extends Controller
 	public function activity(Request $request, $page = 1){
 		$post = $request->except('_token');
 
-		if(!empty(Session::get('form'))){
+		if(!empty(Session::get('form-log'))){
 			if(isset($post['take'])) $takes = $post['take'];
 			if(isset($post['order_field'])) $order_fields = $post['order_field'];
 			if(isset($post['order_method'])) $order_methods = $post['order_method'];
-			$post = Session::get('form');
+			$post = Session::get('form-log');
 			
 			if(isset($takes) && isset($order_fields) && isset ($order_methods)){
 				$post['take'] = $takes;
@@ -797,7 +798,7 @@ class UsersController extends Controller
 		}
 		
 		if(!empty($post)){
-			Session::put('form',$post);
+			Session::put('form-log',$post);
 		}
 		
 		$data = [ 'title'             => 'User',
