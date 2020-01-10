@@ -38,6 +38,10 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'setting'
     Route::any('text_menu', 'SettingController@textMenu');
     Route::post('text_menu/update/{category}', 'SettingController@updateTextMenu');
 
+    /*Setting Phone*/
+    Route::get('phone', 'SettingController@phoneNumberSetting');
+    Route::post('phone/update', 'SettingController@updatePhoneNumberSetting');
+
     Route::any('home', 'SettingController@homeSetting');
 	Route::any('date', 'SettingController@dateSetting');
     Route::get('{key}', 'SettingController@settingList');
