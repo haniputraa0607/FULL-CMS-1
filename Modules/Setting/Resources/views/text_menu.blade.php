@@ -110,20 +110,20 @@ $configs     		= session('configs');
 
 						<div class="row" style="margin-top: 2%;">
 							<div class="col-md-4">
-								<img class="zoom-in" src="{{ env('S3_URL_VIEW') }}images/text_menu/main_menu_1.jpg" height="200px" onclick="window.open(this.src)"/>
+								<img class="zoom-in" src="{{ env('S3_URL_VIEW') }}images/text_menu/main_menu_1.jpg" width="100%" onclick="window.open(this.src)"/>
 								<p style="text-align: center">(a)</p>
 							</div>
 							<div class="col-md-4">
-								<img class="zoom-in" src="{{ env('S3_URL_VIEW') }}images/text_menu/main_menu_2.jpg" height="200px" onclick="window.open(this.src)"/>
+								<img class="zoom-in" src="{{ env('S3_URL_VIEW') }}images/text_menu/main_menu_2.jpg" width="100%" onclick="window.open(this.src)"/>
 								<p style="text-align: center">(b)</p>
 							</div>
 							<div class="col-md-4">
-								<img class="zoom-in" src="{{ env('S3_URL_VIEW') }}images/text_menu/main_menu_3.jpg" height="200px" onclick="window.open(this.src)"/>
+								<img class="zoom-in" src="{{ env('S3_URL_VIEW') }}images/text_menu/main_menu_3.jpg" width="100%" onclick="window.open(this.src)"/>
 								<p style="text-align: center">(c)</p>
 							</div>
 							@if($config_main_menu['is_active'] == 1)
 								<div class="col-md-4">
-									<img class="zoom-in" src="{{ env('S3_URL_VIEW') }}images/text_menu/main_menu_4.jpg" height="200px" onclick="window.open(this.src)"/>
+									<img class="zoom-in" src="{{ env('S3_URL_VIEW') }}images/text_menu/main_menu_4.jpg" width="100%" onclick="window.open(this.src)"/>
 									<p style="text-align: center">(d)</p>
 								</div>
 							@endif

@@ -2,6 +2,7 @@
 
 namespace Modules\Outlet\Http\Controllers;
 
+use App\Imports\BrandOutletImport;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
@@ -10,6 +11,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use App\Lib\MyHelper;
 use Excel;
 use Validator;
+use Session;
+use Storage;
+use File;
+use ZipArchive;
 
 use App\Exports\MultisheetExport;
 use App\Imports\FirstSheetOnlyImport;
@@ -132,7 +137,7 @@ class OutletController extends Controller
                     return parent::redirect($save, 'Outlet has been created.', 'outlet/detail/'.$save['result']['outlet_code'].'#photo');
                 }
                 else {
-                    return parent::redirect($save, 'Outlet has been created.', 'outlet/be/list');
+                    return parent::redirect($save, 'Outlet has been created.', 'outlet/list');
                 }
             }else {
                    if (isset($save['errors'])) {
@@ -512,7 +517,7 @@ class OutletController extends Controller
             }
             else {
                 $e = ['e' => 'Data outlet not found.'];
-                return redirect('outlet/be/list')->witherrors($e);
+                return redirect('outlet/list')->witherrors($e);
             }
 
             return view('outlet::outlet_holiday_update', $data);
@@ -538,6 +543,17 @@ class OutletController extends Controller
         }
     }
 
+    function exportImport(Request $request) {
+        $data = [
+            'title'          => 'Outlet',
+            'sub_title'      => 'Export & Import Outlet',
+            'menu_active'    => 'outlet',
+            'submenu_active' => 'outlet-export-import',
+        ];
+        $data['brands'] = MyHelper::get('brand/be/list')['result']??[];
+        return view('outlet::export_import', $data);
+    }
+
     function import(Request $request) {
         $data = [
             'title'          => 'Outlet',
@@ -555,12 +571,12 @@ class OutletController extends Controller
         if (empty($post)) {
             $data = [
                 'title'          => 'Outlet',
-                'sub_title'      => 'Import Outlet',
+                'sub_title'      => 'Export & Import Outlet',
                 'menu_active'    => 'outlet',
-                'submenu_active' => 'outlet-import',
+                'submenu_active' => 'outlet-export-import',
             ];
-
-            return view('outlet::import', $data);
+            $data['brands'] = MyHelper::get('brand/be/list')['result']??[];
+            return view('outlet::export_import', $data);
         }else{
             if($request->file('import_file')){
 
@@ -571,7 +587,47 @@ class OutletController extends Controller
                 $save = MyHelper::post('outlet/import', ['data_import' => $dataimport]);
 
                 if (isset($save['status']) && $save['status'] == "success") {
-                    return parent::redirect($save, $save['message'], 'outlet/be/list');
+                    return parent::redirect($save, $save['message'], 'outlet/list');
+                }else {
+                    if (isset($save['errors'])) {
+                        return back()->withErrors($save['errors'])->withInput();
+                    }
+
+                    if (isset($save['status']) && $save['status'] == "fail") {
+                        return back()->withErrors($save['messages'])->withInput();
+                    }
+                    return back()->withErrors(['Something when wrong. Please try again.'])->withInput();
+                }
+                return back()->withErrors(['Something when wrong. Please try again.'])->withInput();
+            }else{
+                return back()->withErrors(['File is required.'])->withInput();
+            }
+        }
+    }
+
+    function importBrand(Request $request) {
+        $post = $request->except('_token');
+
+        if (empty($post)) {
+            $data = [
+                'title'          => 'Outlet',
+                'sub_title'      => 'Export & Import Outlet',
+                'menu_active'    => 'outlet',
+                'submenu_active' => 'outlet-export-import',
+            ];
+            $data['brands'] = MyHelper::get('brand/be/list')['result']??[];
+            return view('outlet::export_import', $data);
+        }else{
+            if($request->file('import_file')){
+
+                $path = $request->file('import_file')->getRealPath();
+                $name = $request->file('import_file')->getClientOriginalName();
+                $dataimport = Excel::toArray(new BrandOutletImport(),$request->file('import_file'));
+                $dataimport = array_map(function($x){return (Object)$x;}, $dataimport[0]??[]);
+                $save = MyHelper::post('outlet/import-brand', ['data_import' => $dataimport]);
+
+                if (isset($save['status']) && $save['status'] == "success") {
+                    return parent::redirect($save, $save['message'], 'outlet/list');
                 }else {
                     if (isset($save['errors'])) {
                         return back()->withErrors($save['errors'])->withInput();
@@ -763,6 +819,7 @@ class OutletController extends Controller
     public function qrcodeView(Request $request)
     {
         $post = $request->except('_token');
+
         $data = [
             'title'          => 'Outlet',
             'sub_title'      => 'Outlet QRCode',
@@ -770,10 +827,43 @@ class OutletController extends Controller
             'submenu_active' => 'outlet-qrcode',
         ];
 
+        $data['key'] = '';
+
         if(isset($post['page'])){
-            $outlet = MyHelper::post('outlet/be/list?page='.$post['page'], ['qrcode'=>true, 'qrcode_paginate'=>true]);
+            $dataPost = [
+                'qrcode' => true,
+                'qrcode_paginate' => true
+            ];
+            if(isset($post['key'])) {
+                Session::forget('key_search');
+                Session::put('key_search', $post['key']);
+                $data['key'] = $post['key'];
+                $dataPost['key_free'] = $post['key'];
+            }else{
+                if(Session::has('key_search')){
+                    $data['key'] = Session::get('key_search');
+                    $dataPost['key_free'] = Session::get('key_search');
+                }
+            }
+            $outlet = MyHelper::post('outlet/be/list?page='.$post['page'], $dataPost);
+
         }else{
-            $outlet = MyHelper::post('outlet/be/list', ['qrcode'=>true, 'qrcode_paginate'=>true]);
+            $dataPost = [
+                'qrcode' => true,
+                'qrcode_paginate' => true
+            ];
+            if(isset($post['key'])) {
+                Session::forget('key_search');
+                Session::put('key_search', $post['key']);
+                $data['key'] = $post['key'];
+                $dataPost['key_free'] = $post['key'];
+            }else{
+                if(Session::has('key_search')){
+                    $data['key'] = Session::get('key_search');
+                    $dataPost['key_free'] = Session::get('key_search');
+                }
+            }
+            $outlet = MyHelper::post('outlet/be/list', $dataPost);
         }
 
         $data['from'] = 0;
@@ -790,6 +880,61 @@ class OutletController extends Controller
             $data['outlet'] = [];
         }
         return view('outlet::qrcode_view', $data);
+    }
+
+    public function qrcodeExport()
+    {
+        ini_set('max_execution_time', '300');
+        if(Session::has('key_search')){
+            $dataPost['qrcode'] = true;
+            $dataPost['key_free'] = Session::get('key_search');
+        }else{
+            $dataPost['qrcode'] = true;
+        }
+        $outlet = MyHelper::post('outlet/be/list', $dataPost);
+        if (isset($outlet['status']) && $outlet['status'] == "success") {
+            $folderName = "QRCode_".date('Ymdhis');
+            $createFolder = Storage::makeDirectory('QRCODE/'.$folderName, $mode=0775);
+
+            if($createFolder){
+                foreach ($outlet['result'] as $val){
+                    $urlImage = $val['qrcode'];
+                    $newFilename = $val['outlet_name'].'.jpg';
+                    $putToStorange = Storage::put('QRCODE/'.$folderName.'/'.$newFilename, file_get_contents($urlImage));
+                }
+
+                $files = glob(storage_path('app/QRCODE/'.$folderName.'/*.jpg'));
+                $archiveFile = storage_path('app/QRCODE/'.$folderName.'.zip');
+                $zip = new ZipArchive;
+
+                if ($zip->open($archiveFile, ZipArchive::CREATE | ZipArchive::OVERWRITE)) {
+                    foreach ($files as $file) {
+                        if ($zip->addFile($file, basename($file))) {
+                            continue;
+                        } else {
+                            throw new Exception("file `{$file}` could not be added to the zip file: " . $zip->getStatusString());
+                        }
+                    }
+
+                    // close the archive.
+                    if ($zip->close()) {
+                        // archive is now downloadable ...
+                        File::deleteDirectory(storage_path('app/QRCODE/'.$folderName));
+                        return response()->download($archiveFile, basename($archiveFile))->deleteFileAfterSend(true);
+                    } else {
+                        return redirect('outlet/qrcode')->withErrors('Can not export this file');
+                    }
+                }
+            }
+        }
+        else {
+            return redirect('outlet/qrcode')->withErrors('Not found QRCode outlet');
+        }
+    }
+
+    public function  qrcodeReset(){
+        Session::forget('key_search');
+        return redirect('outlet/qrcode');
     }
 
     public function ajaxHandler(Request $request){
@@ -861,5 +1006,27 @@ class OutletController extends Controller
         }else{
             return back()->withErrors($update['messages']??['Something went wrong']);
         }
+    }
+
+    public function exportBrandOutle(Request $request){
+        $post=$request->except('_token');
+        $brand = MyHelper::post('brand/be/list', ['web' => 1]);
+        $codeOutlet =  MyHelper::get('outlet/list/code');
+
+        $data = [];
+        if(isset($codeOutlet['status']) && $codeOutlet['status'] == 'success'){
+            $count = count($codeOutlet['result']);
+            $result = $codeOutlet['result'];
+            for($i=0;$i<$count;$i++){
+                $data[$i]['code_outlet'] = $result[$i];
+                foreach ($brand['result'] as $value){
+                    $data[$i][$value['name_brand']] = '';
+                }
+            }
+        }
+
+        $dataExport['All Type'] = $data;
+        $dataExport = new MultisheetExport($dataExport);
+        return Excel::download($dataExport,'Data_Brand_'.date('Ymdhis').'.xls');
     }
 }

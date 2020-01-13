@@ -19,8 +19,13 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'outlet',
     Route::post('export', ['middleware' => ['feature_control:33', 'config_control:3'], 'uses' => 'OutletController@exportData']);
     Route::get('import', ['middleware' => ['feature_control:32,33', 'config_control:2,3,or'], 'uses' => 'OutletController@import']);
     Route::post('import', ['middleware' => 'feature_control:32', 'uses' => 'OutletController@importOutlet']);
-    Route::get('qrcode', ['middleware' => 'feature_control:32', 'uses' => 'OutletController@qrcodeView']);
+    Route::any('qrcode', ['middleware' => 'feature_control:32', 'uses' => 'OutletController@qrcodeView']);
+    Route::any('qrcode/export', ['middleware' => 'feature_control:32','uses' => 'OutletController@qrcodeExport']);
+    Route::any('qrcode/reset', ['middleware' => 'feature_control:32', 'uses' => 'OutletController@qrcodeReset']);
     Route::get('qrcode/print', ['middleware' => 'feature_control:32', 'uses' => 'OutletController@qrcodePrint']);
+    Route::get('export-import', ['middleware' => ['feature_control:32,33', 'config_control:2,3,or'], 'uses' => 'OutletController@exportImport']);
+    Route::post('import-brand', ['middleware' => 'feature_control:32', 'uses' => 'OutletController@importBrand']);
+    Route::get('export/brand-outlet', ['middleware' => 'feature_control:32', 'uses' => 'OutletController@exportBrandOutle']);
 
     // photo
     Route::post('photo/delete', ['middleware' => 'feature_control:31', 'uses' => 'OutletController@deletePhoto']);

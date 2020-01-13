@@ -293,31 +293,55 @@
 		$(".file").change(function(e) {
                 var _URL = window.URL || window.webkitURL;
                 var image, file;
+                var type = $(this).data('image');
                 var input = $(this);
+				console.log(type)
                 var cancelBtn = $(this).closest('.btn-file').closest('.aa').find('.btn.red.fileinput-exists');
                 if ((file = this.files[0])) {
                     image = new Image();
 
                     image.onload = function() {
-                    	if(this.width != 75 || this.height != 75){
-                            toastr.warning("Please check dimension of your photo.");
-                            $(this).val("");
-                            // $('#remove_square').click()
-                            // image.src = _URL.createObjectURL();
-							cancelBtn.click();
-                    	}else if(input.val().split('.').pop().toLowerCase() != 'png'){
-                            toastr.warning("Only PNG image allowed");
-                            $(this).val("");
-                            // $('#remove_square').click()
-                            // image.src = _URL.createObjectURL();
-							cancelBtn.click();
-                    	}else if(file.size > (50 * 1024)){
-                            toastr.warning("Max uploaded file is 50 KB");
-                            $(this).val("");
-                            // $('#remove_square').click()
-                            // image.src = _URL.createObjectURL();
-							cancelBtn.click();
-                    	}
+						if (type == 'level_image') {
+							if(this.width != 75 || this.height != 75){
+								toastr.warning("Please check dimension of your photo.");
+								$(this).val("");
+								// $('#remove_square').click()
+								// image.src = _URL.createObjectURL();
+								cancelBtn.click();
+							}else if(input.val().split('.').pop().toLowerCase() != 'png'){
+								toastr.warning("Only PNG image allowed");
+								$(this).val("");
+								// $('#remove_square').click()
+								// image.src = _URL.createObjectURL();
+								cancelBtn.click();
+							}else if(file.size > (50 * 1024)){
+								toastr.warning("Max uploaded file is 50 KB");
+								$(this).val("");
+								// $('#remove_square').click()
+								// image.src = _URL.createObjectURL();
+								cancelBtn.click();
+							}
+						} else if (type == 'bg_image') {
+							if(this.width != 245 || this.height != 140){
+								toastr.warning("Please check dimension of your photo.");
+								$(this).val("");
+								// $('#remove_square').click()
+								// image.src = _URL.createObjectURL();
+								cancelBtn.click();
+							}else if(input.val().split('.').pop().toLowerCase() != 'png'){
+								toastr.warning("Only PNG image allowed");
+								$(this).val("");
+								// $('#remove_square').click()
+								// image.src = _URL.createObjectURL();
+								cancelBtn.click();
+							}else if(file.size > (50 * 1024)){
+								toastr.warning("Max uploaded file is 50 KB");
+								$(this).val("");
+								// $('#remove_square').click()
+								// image.src = _URL.createObjectURL();
+								cancelBtn.click();
+							}
+						}
                     };
 
                     image.src = _URL.createObjectURL(file);
@@ -474,11 +498,11 @@
 													</div>
 
 													<div class="fileinput-preview fileinput-exists thumbnail" style="width: 75px;"> </div>
-													<div class="aa">
+													<div class="aa"  id="level_image">
 														<span class="btn default btn-file">
 															<span class="fileinput-new"> Select image </span>
 															<span class="fileinput-exists"> Change </span>
-															<input class="file" accept="image/png" type="file" name="membership_image">
+															<input class="file" accept="image/png" data-image="level_image" type="file" name="membership_image">
 														</span>
 														<a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
 													</div>
@@ -488,6 +512,41 @@
 									</div>
 
 									<div class="col-md-12" style="margin-top:20px">
+										<div class="input-icon right">
+											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
+												Background Card Image
+												<i class="fa fa-question-circle tooltips" data-original-title="Background card membership untuk ditampilkan pada aplikasi ketika membuka halaman detail membership." data-container="body"></i>
+												<br>
+												<span class="required" aria-required="true"> (245 x 140, Max 50 KB, Only PNG) </span>
+											</div>
+										</div>
+
+										<div class="col-md-4" >
+											<div class="input-icon right">
+												<div class="fileinput fileinput-new" data-provides="fileinput">
+													<div class="fileinput-new thumbnail" style="width: 245px;">
+														@if($membership['membership_bg_image'] != "")
+															<img src="{{env('S3_URL_API')}}{{$membership['membership_bg_image']}}" alt="" />
+														@else
+															<img src="https://www.placehold.it/245x140/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
+														@endif
+													</div>
+
+													<div class="fileinput-preview fileinput-exists thumbnail" style="width: 245px;"> </div>
+													<div class="aa" id="bg_image">
+														<span class="btn default btn-file">
+															<span class="fileinput-new"> Select image </span>
+															<span class="fileinput-exists"> Change </span>
+															<input class="file" accept="image/png" data-image="bg_image" type="file" name="membership_bg_image">
+														</span>
+														<a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									{{-- <div class="col-md-12" style="margin-top:20px">
 										<div class="input-icon right">
 											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
 												Next Level Image
@@ -523,7 +582,7 @@
 										<div class="col-md-3 next_level_preview" style="height: 0;overflow-y: all; transition-duration: .5s;opacity: 0">
 											<img src="{{env('S3_URL_VIEW')}}img/membership/preview_next_level_image.jpg" class="img-responsive"></img>
 										</div>
-									</div>
+									</div> --}}
 
 									<div class="col-md-12" style="margin-top:20px">
 										<div class="input-icon right">
@@ -632,7 +691,7 @@
 										@endif
 									@endif
 									{{-- cek configs membership benefit discount --}}
-									<!--@if(MyHelper::hasAccess([23], $configs))-->
+									{{-- <!--@if(MyHelper::hasAccess([23], $configs))-->
 									<!--	<div class="col-md-12" style="margin-top:20px">-->
 									<!--		<div class="input-icon right">-->
 									<!--			<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">-->
@@ -649,7 +708,7 @@
 									<!--			</div>-->
 									<!--		</div>-->
 									<!--	</div>-->
-									<!--@endif-->
+									<!--@endif--> --}}
 									{{-- cek configs membership benefit promo id --}}
 									@if(MyHelper::hasAccess([24], $configs))
 										<div class="col-md-12" style="margin-top:20px">
@@ -791,7 +850,7 @@
 									</div>
 									</div>
 
-									<div class="col-md-12" style="margin-top:20px">
+									{{-- <div class="col-md-12" style="margin-top:20px">
 									<div class="input-icon right">
 										<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
 											Level Text Color
@@ -803,34 +862,107 @@
 											<input type="text" name="membership_name_color" class="form-control colorpicker"  value="" data-color-format="rgb">
 										</div>
 									</div>
-									</div>
+									</div> --}}
 
 									<div class="col-md-12" style="margin-top:20px">
-									<div class="input-icon right">
-										<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
-											Level Image
-											<i class="fa fa-question-circle tooltips" data-original-title="Image background untuk info membership di aplikasi." data-container="body"></i>
-										</div>
-									</div>
-									<div class="col-md-4" >
 										<div class="input-icon right">
-											<div class="fileinput fileinput-new" data-provides="fileinput">
-												<div class="fileinput-new thumbnail" style="width: 75px;">
-													<img src="https://www.placehold.it/75x75/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
-												</div>
+											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
+												Level Image
+												<i class="fa fa-question-circle tooltips" data-original-title="Icon membership untuk ditampilkan pada aplikasi ketika membuka halaman detail membership." data-container="body"></i>
+												<br>
+												<span class="required" aria-required="true"> (75 x 75, Max 50 KB, Only PNG) </span>
+											</div>
+										</div>
 
-												<div class="fileinput-preview fileinput-exists thumbnail" style="width: 75px; height: 75px;"> </div>
-												<div>
-													<span class="btn default btn-file">
-														<span class="fileinput-new"> Select image </span>
-														<span class="fileinput-exists"> Change </span>
-														<input type="file" name="membership_image"> </span>
-													<a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+										<div class="col-md-4" >
+											<div class="input-icon right">
+												<div class="fileinput fileinput-new" data-provides="fileinput">
+													<div class="fileinput-new thumbnail" style="width: 75px;">
+														<img src="https://www.placehold.it/75x75/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
+													</div>
+
+													<div class="fileinput-preview fileinput-exists thumbnail" style="width: 75px;"> </div>
+													<div class="aa" id="level_image">
+														<span class="btn default btn-file">
+															<span class="fileinput-new"> Select image </span>
+															<span class="fileinput-exists"> Change </span>
+															<input class="file" accept="image/png"  data-image="level_image" type="file" name="membership_image">
+														</span>
+														<a href="javascript:;" class="btn red fileinput-exists"  data-image="bg_image" data-dismiss="fileinput"> Remove </a>
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
+
+									<div class="col-md-12" style="margin-top:20px">
+										<div class="input-icon right">
+											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
+												Background Card Image
+												<i class="fa fa-question-circle tooltips" data-original-title="Background card membership untuk ditampilkan pada aplikasi ketika membuka halaman detail membership." data-container="body"></i>
+												<br>
+												<span class="required" aria-required="true"> (245 x 140, Max 50 KB, Only PNG) </span>
+											</div>
+										</div>
+
+										<div class="col-md-4" >
+											<div class="input-icon right">
+												<div class="fileinput fileinput-new" data-provides="fileinput">
+													<div class="fileinput-new thumbnail" style="width: 245px;">
+														<img src="https://www.placehold.it/245x140/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
+													</div>
+
+													<div class="fileinput-preview fileinput-exists thumbnail" style="width: 245px;"> </div>
+													<div class="aa" id="bg_image">
+														<span class="btn default btn-file">
+															<span class="fileinput-new"> Select image </span>
+															<span class="fileinput-exists"> Change </span>
+															<input class="file" accept="image/png" type="file" name="membership_bg_image">
+														</span>
+														<a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
+
+									{{-- <div class="col-md-12" style="margin-top:20px">
+										<div class="input-icon right">
+											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
+												Next Level Image
+												<i class="fa fa-question-circle tooltips next_level_preview_trigger" data-original-title="Ikon next level membership yang akan ditampilkan di samping progress bar membership" data-container="body"></i>
+												<br>
+												<span class="required" aria-required="true"> (75 x 75, Max 50 KB, Only PNG) </span>
+											</div>
+										</div>
+
+										<div class="col-md-4" >
+											<div class="input-icon right">
+												<div class="fileinput fileinput-new" data-provides="fileinput">
+													<div class="fileinput-new thumbnail" style="width: 75px;">
+														@if($membership['membership_next_image'] != "")
+															<img src="{{env('S3_URL_API')}}{{$membership['membership_next_image']}}" alt="" />
+														@else
+															<img src="https://www.placehold.it/75x75/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
+														@endif
+													</div>
+
+													<div class="fileinput-preview fileinput-exists thumbnail" style="width: 75px;"> </div>
+													<div class="aa">
+														<span class="btn default btn-file">
+															<span class="fileinput-new"> Select image </span>
+															<span class="fileinput-exists"> Change </span>
+															<input class="file" accept="image/png" type="file" name="membership_next_image">
+														</span>
+														<a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-3 next_level_preview" style="height: 0;overflow-y: all; transition-duration: .5s;opacity: 0">
+											<img src="{{env('S3_URL_VIEW')}}img/membership/preview_next_level_image.jpg" class="img-responsive"></img>
+										</div>
+									</div> --}}
 
 									<div class="col-md-12" style="margin-top:20px">
 										<div class="input-icon right">
@@ -933,7 +1065,7 @@
 										@endif
 									@endif
 									{{-- cek configs membership benefit discount --}}
-									@if(MyHelper::hasAccess([23], $configs))
+									{{-- @if(MyHelper::hasAccess([23], $configs))
 										<div class="col-md-12" style="margin-top:20px">
 											<div class="input-icon right">
 												<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
@@ -950,7 +1082,7 @@
 												</div>
 											</div>
 										</div>
-									@endif
+									@endif --}}
 									{{-- cek configs membership benefit promo id --}}
 									@if(MyHelper::hasAccess([24], $configs))
 										<div class="col-md-12" style="margin-top:20px">
@@ -965,7 +1097,7 @@
 													<textarea class="form-control" name="benefit_promo_id"  placeholder="Promo ID Received"> @if(empty($membership['benefit_promo_id']))  @else {{$membership['benefit_promo_id']}} @endif</textarea>
 												</div> -->
 												<div class="inner-repeater">
-          											<div data-repeater-list="benefit_text">\
+          											<div data-repeater-list="benefit_text">
 														<div data-repeater-item="" class="row" style="margin-bottom:15px">
 															<div class="col-md-10">
 																<textarea type="text" name="benefit_text[]" class="form-control" placeholder="Benefit text"></textarea>
