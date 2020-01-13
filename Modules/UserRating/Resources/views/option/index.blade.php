@@ -209,9 +209,9 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th style="width: 100px">Star</th>
-                        <th>Question</th>
-                        <th>Options</th>
+                        <th style="width: 100px">Star <i class="fa fa-question-circle tooltips" data-original-title="Aturan jumlah bintang untuk pertanyaan yang akan disetel. Klik ikon ini untuk melihat detail." data-container="body" data-toggle="modal" data-target="#modalInfo"></i></th>
+                        <th>Question <i class="fa fa-question-circle tooltips" data-original-title="Pertanyaan yang akan ditamplikan setelah bintang yang disetel terpilih. Klik ikon ini untuk melihat detail." data-container="body" data-toggle="modal" data-target="#modalInfo"></i></th>
+                        <th>Options <i class="fa fa-question-circle tooltips" data-original-title="Pilihan yang akan muncul untuk menjawab pertanyaan yang diatur. Klik ikon ini untuk melihat detail." data-container="body" data-toggle="modal" data-target="#modalInfo"></i></th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -223,6 +223,18 @@
                 <button class="btn yellow" type="submit" id="btnSave"><i class="fa fa-check"></i> Save</button>
             </div>
         </form>
+    </div>
+</div>
+<div class="modal" tabindex="-1" id="modalInfo" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="{{env('S3_URL_VIEW')}}img/setting/rating_preview.png" style="max-height: 75vh">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
