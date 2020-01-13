@@ -767,6 +767,36 @@
 					</ul>
 				</li>
 				@endif
+				@if(MyHelper::hasAccess([92], $configs) && MyHelper::hasAccess([197,199], $grantedFeature) )
+				<li class="nav-item {{($menu_active == 'user-rating') ? 'active' : ''}}">
+					<a href="javascript:;" class="nav-link nav-toggle">
+						<i class="fa fa-star-o"></i>
+						<span class="title">User Rating</span>
+						<span class="arrow {{($menu_active == 'user-rating') ? 'open' : ''}}"></span>
+					</a>
+					<ul class="sub-menu">
+						@if(MyHelper::hasAccess([197], $grantedFeature))
+							<li class="nav-item {{($submenu_active == 'user-rating-list') ? 'active open' : ''}}">
+								<a href="{{url('user-rating')}}" class="nav-link ">
+									<span class="title">User Rating List</span>
+								</a>
+							</li>
+						@endif
+						@if(MyHelper::hasAccess([199], $grantedFeature))
+							<li class="nav-item {{($submenu_active == 'rating-option') ? 'active open' : ''}}">
+								<a href="{{url('user-rating/option')}}" class="nav-link ">
+									<span class="title">Rating Option</span>
+								</a>
+							</li>
+							<li class="nav-item {{($submenu_active == 'rating-setting') ? 'active open' : ''}}">
+								<a href="{{url('user-rating/setting')}}" class="nav-link ">
+									<span class="title">User Rating Setting</span>
+								</a>
+							</li>
+						@endif
+					</ul>
+				</li>
+				@endif
 			@endif
 		@endif
 

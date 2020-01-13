@@ -1124,7 +1124,7 @@ class TransactionController extends Controller
         $post['type'] = 'trx';
         $post['check'] = 1;
 
-        $check = MyHelper::post('transaction/detail/webview?log_save=0', $post);
+        $check = MyHelper::post('transaction/be/detail/webview?log_save=0', $post);
         // $check = MyHelper::post('outletapp/order/detail/view?log_save=0', $data);
     	if (isset($check['status']) && $check['status'] == 'success') {
     		$data['data'] = $check['result'];
