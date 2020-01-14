@@ -91,9 +91,9 @@
                 </div>
             </div>
         	<div class="row">
-        		<label class="col-md-3 control-label text-right">Sugestion</label>
+        		<label class="col-md-3 control-label text-right">Suggestion</label>
         		<div class="col-md-5">
-                    <input type="text" class="form-control" readonly value="{{$rating['sugestion']}}"/><br/>
+                    <input type="text" class="form-control" readonly value="{{$rating['suggestion']}}"/><br/>
                 </div>
         	</div>
         </div>
