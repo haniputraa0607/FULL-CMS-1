@@ -87,6 +87,7 @@ class UserRatingController extends Controller
         $popups = MyHelper::post('setting',['key-like'=>'popup'])['result']??[];
         $data['rating'] = [];
         $data['popup'] = [];
+        $data['options'] = MyHelper::get('user-rating/option')['result']??[];
         foreach ($ratings as $rating) {
             $data['setting'][$rating['key']] = $rating;
         }
@@ -104,10 +105,9 @@ class UserRatingController extends Controller
         ];
         $update = MyHelper::post('setting/update2',['update'=>$data]);
         if(($update['status']??false)=='success'){
-            return back()->with('success',['Success update setting']);
+            return redirect('user-rating/setting#tab_setting')->with('success',['Success update setting']);
         }else{
-            dd($update);
-            return back()->withInput()->withErrors(['Failed update setting']);
+            return redirect('user-rating/setting#setting')->withInput()->withErrors(['Failed update setting']);
         }
     }
 }

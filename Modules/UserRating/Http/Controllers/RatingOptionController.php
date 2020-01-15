@@ -27,14 +27,6 @@ class RatingOptionController extends Controller
         if(($result['status']??false)!='success'){
             return back()->withInput()->withErrors($result['messages']??['Something went wrong']);
         }
-        return back()->with('success',['Success update data']);
-    }
-
-    public function update(Request $request){
-        # code...
-    }
-
-    public function destroy(Request $request){
-        # code...
+        return back()->with('success',['Success update rating option']);
     }
 }
