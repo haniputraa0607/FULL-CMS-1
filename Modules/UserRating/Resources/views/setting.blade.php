@@ -244,7 +244,7 @@
                                 <div class="input-group">
                                     <input type="number" min="1" name="popup_min_interval" class="form-control" required value="{{old('popup_min_interval',$setting['popup_min_interval']['value']??'')}}" /><br/>
                                     <span class="input-group-addon">
-                                        Minutes
+                                        Seconds
                                     </span>
                                 </div>
                             </div>

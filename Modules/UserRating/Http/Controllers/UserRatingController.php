@@ -73,6 +73,20 @@ class UserRatingController extends Controller
         if(!$data['rating']){
             return back()->withErrors(['User rating not found']);
         }
+
+        $post['id_transaction'] = $data['rating']['id_transaction'];
+        $post['type'] = 'trx';
+        $post['check'] = 1;
+
+        $check = MyHelper::post('transaction/be/detail/webview?log_save=0', $post);
+        // $check = MyHelper::post('outletapp/order/detail/view?log_save=0', $data);
+        if (isset($check['status']) && $check['status'] == 'success') {
+            $data['data'] = $check['result'];
+        } elseif (isset($check['status']) && $check['status'] == 'fail') {
+            return view('error', ['msg' => 'Data failed']);
+        } else {
+            return view('error', ['msg' => 'Something went wrong, try again']);
+        }
         return view('userrating::show',$data);
     }
 
