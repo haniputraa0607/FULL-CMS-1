@@ -206,14 +206,14 @@
     <div class="portlet-body form form-horizontal" id="detailRating">
         <ul class="nav nav-tabs">
             <li class="active">
-                <a href="#tab_rating_option" data-toggle="tab"> Rating Option </a>
+                <a href="#tab_setting" data-toggle="tab"> Setting </a>
             </li>
             <li>
-                <a href="#tab_setting" data-toggle="tab"> Setting </a>
+                <a href="#tab_rating_option" data-toggle="tab"> Rating Option </a>
             </li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane fade in active" id="tab_rating_option">
+            <div class="tab-pane fade" id="tab_rating_option">
                 <form id="questionForm" action="{{url('user-rating/option')}}" method="POST">
                     @csrf
                     <table class="table">
@@ -234,7 +234,7 @@
                     </div>
                 </form>
             </div>
-            <div class="tab-pane fade" id="tab_setting">
+            <div class="tab-pane fade in active" id="tab_setting">
                 <form action="#" method="POST">
                     @csrf
                     <div class="row">
