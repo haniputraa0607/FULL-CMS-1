@@ -1194,8 +1194,12 @@ class SettingController extends Controller
 
         if(($getSetting['status']??'')=='success'){
             $data['result'] = $getSetting['result'];
+            $data['example_phone'] = $getSetting['result']['phone_code'].$getSetting['result']['example_phone'];
+            $data['length_example_phone'] = strlen($data['example_phone']);
         }else{
             $data['result'] = [];
+            $data['example_phone'] = '';
+            $data['length_example_phone'] = '';
         }
 
         return view('setting::phone-setting', $data);
