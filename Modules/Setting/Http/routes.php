@@ -40,7 +40,9 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'setting'
 
     /*Setting Phone*/
     Route::get('phone', ['middleware' => 'feature_control:211', 'uses' => 'SettingController@phoneNumberSetting']);
+
     Route::post('phone/update', ['middleware' => 'feature_control:211', 'uses' =>'SettingController@updatePhoneNumberSetting']);
+
 
     Route::any('home', 'SettingController@homeSetting');
 	Route::any('date', 'SettingController@dateSetting');

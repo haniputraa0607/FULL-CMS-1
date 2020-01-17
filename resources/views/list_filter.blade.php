@@ -107,7 +107,11 @@
 		html=html.replace('::subjectOption::',selectSubjectBuilder(rules,val[0]));
 		if(rules[val[0]].operator.length>0){//is operator exist
 			html=html.replace('::operatorOption::',selectOperatorBuilder(rules[val[0]].operator,val[1]));
-			html=html.replace('::otherVal::',inputBuilder(rules[val[0]].type,val[2]));
+			if(rules[val[0]].opsi.length>0){
+				html=html.replace('::otherVal::',selectOpsiBuilder(rules[val[0]].opsi,val[1]));
+			}else{
+				html=html.replace('::otherVal::',inputBuilder(rules[val[0]].type,val[2]));
+			}
 		}else if(rules[val[0]].opsi.length>0){
 			html=html.replace('::operatorOption::',selectOpsiBuilder(rules[val[0]].opsi,val[1]));
 			html=html.replace('::otherVal::','');
@@ -162,7 +166,12 @@
 				var oprview=selectOperatorBuilder(rules[value].operator,'',parId);
 				$(this).parents('.mt-repeater-cell').first().find('.optionCol').show();
 				$(this).parents('.mt-repeater-cell').first().find('.optionCol').html(oprview);
-				$(this).parents('.mt-repeater-cell').first().find('.valCol').html(inputBuilder(rules[value].type,'',parId));
+				if(rules[value].opsi.length>0){
+					var opsiview=selectOpsiBuilder(rules[value].opsi,'',parId);
+					$(this).parents('.mt-repeater-cell').first().find('.valCol').html(opsiview);
+				}else{
+					$(this).parents('.mt-repeater-cell').first().find('.valCol').html(inputBuilder(rules[value].type,'',parId));
+				}
 				$(this).parents('.mt-repeater-cell').first().find('.valCol').show();
 				$('.select2a').select2();
 			}else if(rules[value].opsi.length>0){

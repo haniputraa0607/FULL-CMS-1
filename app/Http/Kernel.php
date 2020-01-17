@@ -36,6 +36,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\IPAddressCheck::class,
         ],
 
         'api' => [
@@ -61,5 +62,6 @@ class Kernel extends HttpKernel
 		'validate_session'  => \App\Http\Middleware\ValidateSession::class,
 		'feature_control'   => \App\Http\Middleware\FeatureControl::class,
 		'config_control'   => \App\Http\Middleware\ConfigControl::class,
+        'check_ip'   => \App\Http\Middleware\IPAddressCheck::class,
     ];
 }

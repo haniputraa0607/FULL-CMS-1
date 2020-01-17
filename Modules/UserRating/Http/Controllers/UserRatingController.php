@@ -73,6 +73,20 @@ class UserRatingController extends Controller
         if(!$data['rating']){
             return back()->withErrors(['User rating not found']);
         }
+
+        $post['id_transaction'] = $data['rating']['id_transaction'];
+        $post['type'] = 'trx';
+        $post['check'] = 1;
+
+        $check = MyHelper::post('transaction/be/detail/webview?log_save=0', $post);
+        // $check = MyHelper::post('outletapp/order/detail/view?log_save=0', $data);
+        if (isset($check['status']) && $check['status'] == 'success') {
+            $data['data'] = $check['result'];
+        } elseif (isset($check['status']) && $check['status'] == 'fail') {
+            return view('error', ['msg' => 'Data failed']);
+        } else {
+            return view('error', ['msg' => 'Something went wrong, try again']);
+        }
         return view('userrating::show',$data);
     }
 
@@ -87,6 +101,7 @@ class UserRatingController extends Controller
         $popups = MyHelper::post('setting',['key-like'=>'popup'])['result']??[];
         $data['rating'] = [];
         $data['popup'] = [];
+        $data['options'] = MyHelper::get('user-rating/option')['result']??[];
         foreach ($ratings as $rating) {
             $data['setting'][$rating['key']] = $rating;
         }
@@ -104,10 +119,9 @@ class UserRatingController extends Controller
         ];
         $update = MyHelper::post('setting/update2',['update'=>$data]);
         if(($update['status']??false)=='success'){
-            return back()->with('success',['Success update setting']);
+            return redirect('user-rating/setting#tab_setting')->with('success',['Success update setting']);
         }else{
-            dd($update);
-            return back()->withInput()->withErrors(['Failed update setting']);
+            return redirect('user-rating/setting#setting')->withInput()->withErrors(['Failed update setting']);
         }
     }
 }

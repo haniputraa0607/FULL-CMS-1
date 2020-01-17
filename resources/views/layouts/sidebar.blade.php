@@ -784,11 +784,6 @@
 						</li>
 					@endif
 					@if(MyHelper::hasAccess([199], $grantedFeature))
-						<li class="nav-item {{($submenu_active == 'rating-option') ? 'active open' : ''}}">
-							<a href="{{url('user-rating/option')}}" class="nav-link ">
-								<span class="title">Rating Option</span>
-							</a>
-						</li>
 						<li class="nav-item {{($submenu_active == 'rating-setting') ? 'active open' : ''}}">
 							<a href="{{url('user-rating/setting')}}" class="nav-link ">
 								<span class="title">User Rating Setting</span>

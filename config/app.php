@@ -181,6 +181,7 @@ return [
         TimeHunter\LaravelGoogleReCaptchaV3\Providers\GoogleReCaptchaV3ServiceProvider::class,
         //Vinelab\Cdn\CdnServiceProvider::class,
         Bogardo\Mailgun\MailgunServiceProvider::class,
+        Stevebauman\Location\LocationServiceProvider::class,
     ],
 
     /*
@@ -233,6 +234,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'GoogleReCaptchaV3'=> TimeHunter\LaravelGoogleReCaptchaV3\Facades\GoogleReCaptchaV3::class,
         'Mailgun' => Bogardo\Mailgun\Facades\Mailgun::class,
+        'Location' => Stevebauman\Location\LocationServiceProvider::class,
     ],
 
 ];
