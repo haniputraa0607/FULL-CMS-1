@@ -658,6 +658,20 @@ class OutletController extends Controller
         return view('outlet::export', $data);
     }
 
+    function exportDataCity(Request $request) {
+        $post=$request->except('_token');
+        $cities = MyHelper::post('outlet/export-city',$post);
+        if (isset($cities['status']) && $cities['status'] == "success") {
+            $dataExport['All Type'] = $cities['result'];
+            $data = new MultisheetExport($dataExport);
+            return Excel::download($data,'Data_City_'.date('Ymdhis').'.xls');
+
+        }else {
+            return back()->withErrors(['Something when wrong. Please try again.'])->withInput();
+        }
+
+    }
+
     function exportData(Request $request) {
         $post=$request->except('_token');
         $outlet = MyHelper::post('outlet/export',$post);

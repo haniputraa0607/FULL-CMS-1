@@ -1,9 +1,9 @@
 <?php
-    use App\Lib\MyHelper;
-    $grantedFeature     = session('granted_features');
-    $configs    		= session('configs');
+use App\Lib\MyHelper;
+$grantedFeature     = session('granted_features');
+$configs    		= session('configs');
 
- ?>
+?>
 
 @extends('layouts.main')
 
@@ -34,7 +34,7 @@
             <div class="row">\
                 <div class="col-md-5 form-group">%select0%\
                 </div>\
-                <div class="col-md-1 text-center control-label">AND</div>\
+                <div class="col-md-2 text-center control-label">AND</div>\
                 <div class="col-md-5 form-group">%select1%\
                 </div><div class="col-md-1"><button data-id="%id%" class="btn btn-danger remover_btn" type="button"><i class="fa fa-times"></i></button></div>\
             </div>'
@@ -151,228 +151,269 @@
                 @endif
             </li>
             @if (!empty($sub_title))
-            <li>
-                <span>{{ $sub_title }}</span>
-            </li>
+                <li>
+                    <span>{{ $sub_title }}</span>
+                </li>
             @endif
         </ul>
     </div><br>
 
     @include('layouts.notifications')
 
-    @if(MyHelper::hasAccess([33], $grantedFeature))
-    <div class="portlet light bordered">
-        <div class="portlet-title">
-            <div class="caption">
-                <span class="caption-subject font-yellow sbold uppercase">Export Outlet</span>
-            </div>
-        </div>
-        <div class="portlet-body form">
-            <div class="m-heading-1 border-green m-bordered">
-                <p>Anda bisa melakukan export data outlet. Export data dibagi menjadi 3 tipe :</p><br>
-                <ul>
-                    <li>All : export semua data outlet dalam 1 sheet.</li>
-                    <li>Single : export outlet berdasarkan brand yang dipilih. Tiap brand akan dituliskan dalam sheet yang berbeda.</li>
-                    <li>Combo : export outlet berdasarkan brand yang dipilih. Tiap brand yang dipilih akan dituliskan dalam sheet yang berbeda. </li>
+    <div class="tab-pane" id="profileupdate">
+        <div class="row profile-account">
+            <div class="col-md-3">
+                <ul class="ver-inline-menu tabbable margin-bottom-10">
+                    <li class="active">
+                        <a data-toggle="tab" href="#tab_1-1"><i class="fa fa-database"></i> Export </a>
+                        <span class="after"> </span>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#tab_3-3"><i class="fa fa-database"></i> Import Outlet</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#tab_4-4"><i class="fa fa-database"></i> Import Brand Outlet </a>
+                    </li>
                 </ul>
             </div>
-            @if(MyHelper::hasAccess([24,25], $grantedFeature))
-                @if(MyHelper::hasAccess([24,25], $grantedFeature))
-                    <form class="form-horizontal" role="form" action="{{url('outlet/export')}}" method="post">
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Outlet Type <span class="required" aria-required="true"> * </span></label>
-                            <div class="col-md-9">
-                                <div class="md-radio-inline">
-                                    <div class="md-radio">
-                                        <input type="radio" id="radio_all" name="outlet_type" class="md-radiobtn" value="all" required checked>
-                                        <label for="radio_all">
-                                            <span></span>
-                                            <span class="check"></span>
-                                            <span class="box"></span> All </label>
-                                    </div>
-                                    <div class="md-radio">
-                                        <input type="radio" id="radio_single" name="outlet_type" class="md-radiobtn" value="single" required @if(old('outlet_type')=='single') checked @endif>
-                                        <label for="radio_single">
-                                            <span></span>
-                                            <span class="check"></span>
-                                            <span class="box"></span> Single </label>
-                                    </div>
-                                    <div class="md-radio">
-                                        <input type="radio" id="radio_multiple" name="outlet_type" class="md-radiobtn" value="combo" required  @if(old('outlet_type')=='combo') checked @endif>
-                                        <label for="radio_multiple">
-                                            <span></span>
-                                            <span class="check"></span>
-                                            <span class="box"></span> Combo </label>
+            <div class="col-md-9">
+                <div class="tab-content">
+                    <div id="tab_1-1" class="tab-pane active">
+                        @if(MyHelper::hasAccess([33], $grantedFeature))
+                            <div class="portlet light bordered">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <span class="caption-subject font-yellow sbold uppercase">Export Outlet</span>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form-group" id="select_brand_container">
-                            <label class="col-md-3 control-label">Brand<span class="required" aria-required="true"> * </span></label>
-                            <div class="col-md-9" id="brand_inner_container"></div>
-                            <div class="col-md-offset-3 col-md-9">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <button type="button" id="add_btn" class="btn blue">Add</button>
-                                        </div>
+                                <div class="portlet-body form">
+                                    <div class="m-heading-1 border-green m-bordered">
+                                        <p>Anda bisa melakukan export data outlet. Export data dibagi menjadi 3 tipe :</p><br>
+                                        <ul>
+                                            <li>All : export semua data outlet dalam 1 sheet.</li>
+                                            <li>Single : export outlet berdasarkan brand yang dipilih. Tiap brand akan dituliskan dalam sheet yang berbeda.</li>
+                                            <li>Combo : export outlet berdasarkan brand yang dipilih. Tiap brand yang dipilih akan dituliskan dalam sheet yang berbeda. </li>
+                                        </ul>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            {{ csrf_field() }}
-                            <div class="row">
-                                <div class="col-md-offset-3 col-md-9">
-                                    <div class="form-group">
-                                        <button type="submit" id="export_btn" class="btn green">Export</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                @endif
-            @endif
-        </div>
-    </div>
-    @endif
-
-    @if(MyHelper::hasAccess([32], $grantedFeature))
-    <div class="portlet light bordered">
-        <div class="portlet-title">
-            <div class="caption">
-                <span class="caption-subject font-yellow sbold uppercase">Import Outlet (Only in excel format)</span>
-            </div>
-        </div>
-        <div class="portlet-body form">
-            <div class="m-heading-1 border-green m-bordered">
-                <p>Anda bisa menambahkan dan mengubah data outlet dengan menggunakan hasil  export diatas dengan tipe export <b style="color: red">All</b>.</p>
-            </div>
-            @if(MyHelper::hasAccess([2], $configs))
-                @if(MyHelper::hasAccess([32], $grantedFeature))
-                    <form class="form-horizontal" role="form" action="{{url('outlet/import')}}" method="post" enctype="multipart/form-data">
-                        <div class="form-body">
-
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">File Outlet <span class="required" aria-required="true"> * </span></label>
-                                <div class="col-md-9">
-                                    <div class="fileinput fileinput-new" data-provides="fileinput">
-                                        <div class="input-group input-large">
-                                            <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
-                                                <i class="fa fa-file fileinput-exists"></i>&nbsp;
-                                                <span class="fileinput-filename"> </span>
-                                            </div>
-                                            <span class="input-group-addon btn default btn-file">
-                                                <span class="fileinput-new"> Select file </span>
-                                                <span class="fileinput-exists"> Change </span>
-                                                <input type="file" name="import_file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required> </span>
-                                            <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            {{ csrf_field() }}
-                            <div class="row">
-                                <div class="col-md-offset-3 col-md-9">
-                                    <button type="submit" class="btn green">Import</button>
-                                    <!-- <button type="button" class="btn default">Cancel</button> -->
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                @endif
-            @endif
-        </div>
-    </div>
-    @endif
-
-    @if(MyHelper::hasAccess([32], $grantedFeature))
-        <div class="portlet light bordered">
-            <div class="portlet-title">
-                <div class="caption">
-                    <span class="caption-subject font-yellow sbold uppercase">Import Brand Outlet (Only in excel format)</span>
-                </div>
-            </div>
-            <div class="portlet-body form">
-                <div class="m-heading-1 border-green m-bordered">
-                    <p>Anda bisa mengubah data brand outlet dengan contoh format excel dibawah ini. Data yang dibutuhkan untuk import brand adalah brand name dan outlet code.</p><br>
-                    Contoh data : <br><br>
-                    <table class="table table-striped table-bordered table-hover dt-responsive" width="30%">
-                        <thead>
-                            <tr>
-                                <th> code_outlet </th>
-                                <th> Brand 1 </th>
-                                <th> Brand 2 </th>
-                                <th> Brand 3 </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td> a01 </td>
-                                <td> YES </td>
-                                <td> NO </td>
-                                <td> YES </td>
-                            </tr>
-                            <tr>
-                                <td> a02 </td>
-                                <td> NO </td>
-                                <td> NO </td>
-                                <td> YES </td>
-                            </tr>
-                            <tr>
-                                <td> a03 </td>
-                                <td> YES </td>
-                                <td> NO </td>
-                                <td> YES </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                @if(MyHelper::hasAccess([2], $configs))
-                    @if(MyHelper::hasAccess([32], $grantedFeature))
-                        <form class="form-horizontal" role="form" action="{{url('outlet/import-brand')}}" method="post" enctype="multipart/form-data">
-                            <div class="form-body">
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Export Brand</label>
-                                    <div class="col-md-9">
-                                        <a href= "{{url('outlet/export/brand-outlet')}}"> <i class="fa fa-file-excel-o"></i> Brand </a>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">File Brand Outlet <span class="required" aria-required="true"> * </span></label>
-                                    <div class="col-md-9">
-                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                                            <div class="input-group input-large">
-                                                <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
-                                                    <i class="fa fa-file fileinput-exists"></i>&nbsp;
-                                                    <span class="fileinput-filename"> </span>
+                                    @if(MyHelper::hasAccess([24,25], $grantedFeature))
+                                        @if(MyHelper::hasAccess([24,25], $grantedFeature))
+                                            <form class="form-horizontal" role="form" action="{{url('outlet/export')}}" method="post">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label">Outlet Type <span class="required" aria-required="true"> * </span></label>
+                                                    <div class="col-md-9">
+                                                        <div class="md-radio-inline">
+                                                            <div class="md-radio">
+                                                                <input type="radio" id="radio_all" name="outlet_type" class="md-radiobtn" value="all" required checked>
+                                                                <label for="radio_all">
+                                                                    <span></span>
+                                                                    <span class="check"></span>
+                                                                    <span class="box"></span> All </label>
+                                                            </div>
+                                                            <div class="md-radio">
+                                                                <input type="radio" id="radio_single" name="outlet_type" class="md-radiobtn" value="single" required @if(old('outlet_type')=='single') checked @endif>
+                                                                <label for="radio_single">
+                                                                    <span></span>
+                                                                    <span class="check"></span>
+                                                                    <span class="box"></span> Single </label>
+                                                            </div>
+                                                            <div class="md-radio">
+                                                                <input type="radio" id="radio_multiple" name="outlet_type" class="md-radiobtn" value="combo" required  @if(old('outlet_type')=='combo') checked @endif>
+                                                                <label for="radio_multiple">
+                                                                    <span></span>
+                                                                    <span class="check"></span>
+                                                                    <span class="box"></span> Combo </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <span class="input-group-addon btn default btn-file">
+                                                <div class="form-group" id="select_brand_container">
+                                                    <label class="col-md-3 control-label">Brand<span class="required" aria-required="true"> * </span></label>
+                                                    <div class="col-md-9" id="brand_inner_container"></div>
+                                                    <div class="col-md-offset-3 col-md-9">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <button type="button" id="add_btn" class="btn blue">Add</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-actions">
+                                                    {{ csrf_field() }}
+                                                    <div class="row">
+                                                        <div class="col-md-offset-3 col-md-9">
+                                                            <div class="form-group">
+                                                                <button type="submit" id="export_btn" class="btn green">Export</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        @endif
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+
+                    <div id="tab_3-3" class="tab-pane">
+                        @if(MyHelper::hasAccess([32], $grantedFeature))
+                            <div class="portlet light bordered">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <span class="caption-subject font-yellow sbold uppercase">Import Outlet (Only in excel format)</span>
+                                    </div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <div class="m-heading-1 border-green m-bordered">
+                                        <p>Anda bisa menambahkan dan mengubah data outlet dengan menggunakan hasil  export diatas dengan tipe export <b style="color: red">All</b>.
+                                        </p>
+                                        <p style="color: red">Untuk kota silahkan menggunakan list kota yang ada dibawah ini, jika memasukkan kota yang tidak ada pada list maka data outlet tersebut akan gagal disimpan.</p>
+                                    </div>
+                                    @if(MyHelper::hasAccess([2], $configs))
+                                        @if(MyHelper::hasAccess([32], $grantedFeature))
+                                            <form class="form-horizontal" role="form" action="{{url('outlet/import')}}" method="post" enctype="multipart/form-data">
+                                                <div class="form-body">
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label">List City</label>
+                                                        <div class="col-md-9">
+                                                            <a href= "{{url('outlet/export-city')}}"> <i class="fa fa-file-excel-o"></i> Cities </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label">Sample Data</label>
+                                                        <div class="col-md-9">
+                                                            <a href= "{{url('outlet/sample_data_outlet.xls')}}"> <i class="fa fa-file-excel-o"></i> Sample Import Outlet </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label">File Outlet <span class="required" aria-required="true"> * </span></label>
+                                                        <div class="col-md-9">
+                                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                                <div class="input-group input-large">
+                                                                    <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
+                                                                        <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                                                        <span class="fileinput-filename"> </span>
+                                                                    </div>
+                                                                    <span class="input-group-addon btn default btn-file">
                                                 <span class="fileinput-new"> Select file </span>
                                                 <span class="fileinput-exists"> Change </span>
                                                 <input type="file" name="import_file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required> </span>
-                                                <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                                    <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-actions">
+                                                    {{ csrf_field() }}
+                                                    <div class="row">
+                                                        <div class="col-md-offset-3 col-md-9">
+                                                            <button type="submit" class="btn green">Import</button>
+                                                            <!-- <button type="button" class="btn default">Cancel</button> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        @endif
+                                    @endif
                                 </div>
                             </div>
-                            <div class="form-actions">
-                                {{ csrf_field() }}
-                                <div class="row">
-                                    <div class="col-md-offset-3 col-md-9">
-                                        <button type="submit" class="btn green">Import</button>
-                                        <!-- <button type="button" class="btn default">Cancel</button> -->
+                        @endif
+                    </div>
+
+                    <div id="tab_4-4" class="tab-pane">
+                        @if(MyHelper::hasAccess([32], $grantedFeature))
+                            <div class="portlet light bordered">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <span class="caption-subject font-yellow sbold uppercase">Import Brand Outlet (Only in excel format)</span>
                                     </div>
                                 </div>
+                                <div class="portlet-body form">
+                                    <div class="m-heading-1 border-green m-bordered">
+                                        <p>Anda bisa mengubah data brand outlet dengan contoh format excel dibawah ini. Data yang dibutuhkan untuk import brand adalah brand name dan outlet code.</p><br>
+                                        Contoh data : <br><br>
+                                        <table class="table table-striped table-bordered table-hover dt-responsive" width="30%">
+                                            <thead>
+                                            <tr>
+                                                <th> code_outlet </th>
+                                                <th> Brand 1 </th>
+                                                <th> Brand 2 </th>
+                                                <th> Brand 3 </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td> a01 </td>
+                                                <td> YES </td>
+                                                <td> NO </td>
+                                                <td> YES </td>
+                                            </tr>
+                                            <tr>
+                                                <td> a02 </td>
+                                                <td> NO </td>
+                                                <td> NO </td>
+                                                <td> YES </td>
+                                            </tr>
+                                            <tr>
+                                                <td> a03 </td>
+                                                <td> YES </td>
+                                                <td> NO </td>
+                                                <td> YES </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @if(MyHelper::hasAccess([2], $configs))
+                                        @if(MyHelper::hasAccess([32], $grantedFeature))
+                                            <form class="form-horizontal" role="form" action="{{url('outlet/import-brand')}}" method="post" enctype="multipart/form-data">
+                                                <div class="form-body">
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label">Export Brand</label>
+                                                        <div class="col-md-9">
+                                                            <a href= "{{url('outlet/export/brand-outlet')}}"> <i class="fa fa-file-excel-o"></i> Brand </a>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label">File Brand Outlet <span class="required" aria-required="true"> * </span></label>
+                                                        <div class="col-md-9">
+                                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                                <div class="input-group input-large">
+                                                                    <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
+                                                                        <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                                                        <span class="fileinput-filename"> </span>
+                                                                    </div>
+                                                                    <span class="input-group-addon btn default btn-file">
+                                                <span class="fileinput-new"> Select file </span>
+                                                <span class="fileinput-exists"> Change </span>
+                                                <input type="file" name="import_file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required> </span>
+                                                                    <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-actions">
+                                                    {{ csrf_field() }}
+                                                    <div class="row">
+                                                        <div class="col-md-offset-3 col-md-9">
+                                                            <button type="submit" class="btn green">Import</button>
+                                                            <!-- <button type="button" class="btn default">Cancel</button> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        @endif
+                                    @endif
+                                </div>
                             </div>
-                        </form>
-                    @endif
-                @endif
+                        @endif
+                    </div>
+                </div>
             </div>
         </div>
-    @endif
+    </div>
 @endsection
