@@ -125,7 +125,7 @@ $configs     		= session('configs');
 		<p>Menu ini digunakan untuk mengatur proses validasi nomor telepon pengguna.</p><br>
 		<ul>
 			<li>mengatur minimum dan maximal panjang nomor telepon</li>
-			<li>perhitungan panjang nomor akan dihitung mulai dari kode telepon <br> contoh : <br> nomor telepon = 62811133344 <br> panjang nomor = 11</li>
+			<li>perhitungan panjang nomor akan dihitung mulai dari kode telepon <br> contoh : <br> nomor telepon = {{$example_phone}} <br> panjang nomor = {{$length_example_phone}}</li>
 			<li>mengatur pesan yang akan ditampilkan kepengguna jika format nomor telepon tidak sesuai</li>
 		</ul>
 	</div>
@@ -135,25 +135,13 @@ $configs     		= session('configs');
 			<div class="form-group">
 				<div class="input-icon right">
 					<label class="col-md-4 control-label" style="text-align: left;">
-						Phone Code
-						<span class="required" aria-required="true"> * </span>
-						<i class="fa fa-question-circle tooltips" data-original-title="Kode nomor telepon negara" data-container="body"></i>
-					</label>
-				</div>
-				<div class="col-md-4">
-					<input class="form-control" type="text" id="code_number" name="code_number" value="{{$result[0]['code_number']}}" maxlength="5" required>
-				</div>
-			</div>
-			<div class="form-group">
-				<div class="input-icon right">
-					<label class="col-md-4 control-label" style="text-align: left;">
 						Minimum number length
 						<span class="required" aria-required="true"> * </span>
 						<i class="fa fa-question-circle tooltips" data-original-title="minimal panjang nomor telepon yang diijinkan" data-container="body"></i>
 					</label>
 				</div>
 				<div class="col-md-4">
-					<input class="form-control" type="text" id="min_num" name="min_length_number" maxlength="11" value="{{$result[0]['min_length_number']}}" required>
+					<input class="form-control" type="text" id="min_num" name="min_length_number" maxlength="11" value="{{$result['data']['min_length_number']}}" required>
 					<span id="message_min" style="display: none;color: red;">Please enter input below the maximum</span>
 				</div>
 			</div>
@@ -166,7 +154,7 @@ $configs     		= session('configs');
 					</label>
 				</div>
 				<div class="col-md-4">
-					<input class="form-control" type="text" id="max_num" name="max_length_number" maxlength="11" value="{{$result[0]['max_length_number']}}" required>
+					<input class="form-control" type="text" id="max_num" name="max_length_number" maxlength="11" value="{{$result['data']['max_length_number']}}" required>
 					<span id="message_max" style="display: none;color: red;">Please enter input above the minimum</span>
 				</div>
 			</div>
@@ -179,7 +167,7 @@ $configs     		= session('configs');
 					</label>
 				</div>
 				<div class="col-md-4">
-					<textarea class="form-control" type="text" name="message_failed" required>{{$result[0]['message_failed']}}</textarea>
+					<textarea class="form-control" type="text" name="message_failed" required>{{$result['data']['message_failed']}}</textarea>
 				</div>
 			</div>
 			{{--			<div class="form-group">--}}
