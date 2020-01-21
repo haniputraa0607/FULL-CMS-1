@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('user-rating')->group(function() {
+Route::prefix('user-rating')->middleware(['web', 'validate_session'])->group(function() {
 	Route::post('option','RatingOptionController@store');
     Route::get('/detail/{id}', 'UserRatingController@show');
     Route::get('/', 'UserRatingController@index');
