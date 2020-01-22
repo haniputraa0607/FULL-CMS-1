@@ -73,7 +73,7 @@ class MyHelper
               'client_secret' => env('PASSWORD_CREDENTIAL_SECRET'),
               'username'      => $request->input('username'),
               'password'      => $request->input('password'),
-			  'scope'        => 'ap'
+			  'scope'        => 'be'
           ],
       ]);
       return json_decode($response->getBody(), true);
