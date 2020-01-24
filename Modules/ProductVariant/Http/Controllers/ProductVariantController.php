@@ -104,6 +104,11 @@ class ProductVariantController extends Controller
         //
     }
     public function reorder(Request $request) {
-        return $request->except('_token');
+        $post = $request->except('_token');
+        $result = MyHelper::post('product-variant/reorder',$post);
+        if(($result['status']??false)=='success'){
+            return back()->with('success',['Success update order']);
+        }
+        return back()->withErrors($result['messages']??['Something went wrong']);
     }
 }

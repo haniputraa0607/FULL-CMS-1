@@ -51,11 +51,11 @@ $configs            = session('configs');
 <div class="portlet light bordered">
     <div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject sbold uppercase font-blue">List Product By Category</span>
+            <span class="caption-subject sbold uppercase font-blue">List Product Variant</span>
         </div>
     </div>
     <div class="portlet-body">
-        <form action="{{ url('product_variant/reorder') }}" method="post">
+        <form action="{{ url('product-variant/reorder') }}" method="post">
             <div class="row">
                 <div class="col-md-3 col-sm-3 col-xs-3">
                     <ul class="nav nav-tabs tabs-left sortable">
@@ -85,7 +85,7 @@ $configs            = session('configs');
                                     <tr>
                                         <td>{{$child['product_variant_code']}}</td>
                                         <td>{{$child['product_variant_name']}}</td>
-                                        <input type="hidden" name="parent[]" value="{{$child['id_product_variant']}}">
+                                        <input type="hidden" name="child[{{$child['parent']['id_product_variant']}}][]" value="{{$child['id_product_variant']}}">
                                     </tr>
                                     @endforeach
                                 </tbody>

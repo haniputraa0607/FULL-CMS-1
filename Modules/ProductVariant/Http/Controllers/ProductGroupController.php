@@ -6,15 +6,24 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
+use App\Lib\MyHelper;
+
 class ProductGroupController extends Controller
 {
     /**
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
-    {
-        return view('productvariant::index');
+    public function index(Request $request) {
+        $data = [
+            'title'          => 'Product Group',
+            'sub_title'      => 'List Product Group',
+            'menu_active'    => 'product-variant',
+            'submenu_active' => 'product-group-list',
+        ];
+        $page = $request->page?:1;
+        $data['product_groups'] = MyHelper::get('product-variant/group')['result']??[];
+        return view('productvariant::groups.list',$data);
     }
 
     /**
@@ -23,7 +32,14 @@ class ProductGroupController extends Controller
      */
     public function create()
     {
-        return view('productvariant::create');
+        $data = [
+            'title'          => 'Product Group',
+            'sub_title'      => 'New Product Group',
+            'menu_active'    => 'product-variant',
+            'submenu_active' => 'product-group-new',
+        ];
+        $data['categories'] = MyHelper::get('product/category/be/list')['result']??[];
+        return view('productvariant::groups.create',$data);
     }
 
     /**
@@ -33,17 +49,14 @@ class ProductGroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        return view('productvariant::show');
+        $post = $request->except('_token');
+        if($post['product_group_photo']??false){
+            $post['product_group_photo'] = MyHelper::encodeImage($post['product_group_photo']);
+        }
+        if($post['product_group_image_detail']??false){
+            $post['product_group_image_detail'] = MyHelper::encodeImage($post['product_group_image_detail']);
+        }
+        return $post;
     }
 
     /**
@@ -53,7 +66,7 @@ class ProductGroupController extends Controller
      */
     public function edit($id)
     {
-        return view('productvariant::edit');
+        return view('productvariant::groups.edit');
     }
 
     /**
