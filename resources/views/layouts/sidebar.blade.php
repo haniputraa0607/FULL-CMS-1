@@ -948,6 +948,34 @@
 			</li>
 			@endif
 
+			@if(MyHelper::hasAccess([95], $configs))
+				@if(MyHelper::hasAccess([221,222,223,224,225], $grantedFeature))
+				<li class="nav-item {{($menu_active == 'promo-campaign') ? 'active open' : ''}}">
+					<a href="javascript:;" class="nav-link nav-toggle">
+						<i class="fa fa-tag"></i>
+						<span class="title">Promo Campaign</span>
+						<span class="arrow {{($menu_active == 'promo-campaign') ? 'open' : ''}}"></span>
+					</a>
+					<ul class="sub-menu">
+						@if(MyHelper::hasAccess([223], $grantedFeature))
+						<li class="nav-item {{($submenu_active == 'promo-campaign-create') ? 'active open' : ''}}">
+							<a href="{{url('promo-campaign/create')}}" class="nav-link ">
+								<span class="title">New Promo Campaign</span>
+							</a>
+						</li>
+						@endif
+						@if(MyHelper::hasAccess([221], $grantedFeature))
+						<li class="nav-item {{($submenu_active == 'promo-campaign-list') ? 'active open' : ''}}">
+							<a href="{{url('promo-campaign')}}" class="nav-link ">
+								<span class="title">Promo Campaign List</span>
+							</a>
+						</li>
+						@endif
+					</ul>
+				</li>
+				@endif
+			@endif
+
 			@if(MyHelper::hasAccess([49], $configs))
 				@if(MyHelper::hasAccess([95], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'deals-autoresponse-claim-free-deals-success') ? 'active open' : ''}}">

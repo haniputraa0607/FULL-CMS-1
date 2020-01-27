@@ -653,6 +653,59 @@ class MyHelper
       return $string;
     }
   }
+
+  // terbaru, cuma nambah serialize + unserialize sih biar support array
+  public static function encrypt2019($value) {
+    if(!$value){return false;}
+    // biar support array
+    $text = serialize($value);
+    $skey = self::getkey();
+    $depan = substr($skey, 0, env('ENC_DD'));
+    $belakang = substr($skey, -env('ENC_DB'), env('ENC_DB'));
+    $ivlen = openssl_cipher_iv_length(env('ENC_CM'));
+    $iv = substr(hash('sha256', env('ENC_SI')), 0, $ivlen);
+    $crypttext = openssl_encrypt($text, env('ENC_CM'), $skey, 0, $iv);
+    return trim($depan . self::safe_b64encode($crypttext) . $belakang);
+  }
+
+  public static function decrypt2019($value) {
+    if(!$value){return false;}
+    $skey = self::parsekey($value);
+    $jumlah = strlen($value);
+    $value = substr($value, env('ENC_DD'), $jumlah-env('ENC_DD')-env('ENC_DB'));
+    $crypttext = self::safe_b64decode($value);
+    $ivlen = openssl_cipher_iv_length(env('ENC_CM'));
+    $iv = substr(hash('sha256', env('ENC_SI')), 0, $ivlen);
+    $decrypttext = openssl_decrypt($crypttext, env('ENC_CM'), $skey, 0, $iv);
+    // dikembalikan ke format array sewaktu return
+    return unserialize(trim($decrypttext));
+  }
+  
+  /**
+   * Create slug for resource based on id and created_at parameter
+   * @param  String $id         id of resource
+   * @param  String $created_at created_at value of item
+   * @return String             slug result
+   */
+  public static function createSlug($id,$created_at){
+    $combined = $id.'.'.$created_at;
+    $result = self::encrypt2019($combined);
+    return $result;
+  }
+
+  /**
+   * get id and created at from slug
+   * @param  String $slug given slug
+   * @return Array       id and created at or empty array if invalid slug
+   */
+  public static function explodeSlug($slug) {
+    $decripted = self::decrypt2019($slug);
+    $result = explode('.',$decripted);
+    if(!$result || (count($result) == 1 && empty($result[0]))){
+      return [];
+    }
+    return $result;
+  }
 }
 
 ?>
