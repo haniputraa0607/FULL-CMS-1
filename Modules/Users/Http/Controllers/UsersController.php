@@ -599,6 +599,7 @@ class UsersController extends Controller
 		$data['voucher'] = null;
 		$data['celebrates'] = MyHelper::get('setting/be/celebrate_list')['result']??[];
 		$data['jobs'] = MyHelper::get('setting/be/jobs_list')['result']??[];
+		$data['provinces'] = MyHelper::get('province/list')['result']??[];
 		if(isset($getUser['result'])){
 			$data['profile'] = $getUser['result'];
 // 			$data['trx'] = $getUser['trx'];
