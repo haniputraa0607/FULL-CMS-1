@@ -267,6 +267,7 @@ class UsersController extends Controller
 	
     public function index(Request $request, $page = 1)
     {
+    	$configs	= session('configs');
 		$post = $request->except('_token');
 		if(!empty(Session::get('form'))){
 			if(isset($post['take'])) $takes = $post['take'];
@@ -394,10 +395,13 @@ class UsersController extends Controller
 		
 		$getCity = MyHelper::get('city/list?log_save=0');
 		if($getCity['status'] == 'success') $data['city'] = $getCity['result']; else $data['city'] = [];
-		
-		$getProvince = MyHelper::get('province/list?log_save=0');
-		if($getProvince['status'] == 'success') $data['province'] = $getProvince['result']; else $data['province'] = [];
-		
+		if(MyHelper::hasAccess([96], $configs)){
+			$getProvince = MyHelper::get('province/list-custom?log_save=0');
+			if($getProvince['status'] == 'success') $data['province'] = $getProvince['result']; else $data['province'] = [];
+		}else{
+			$getProvince = MyHelper::get('province/list?log_save=0');
+			if($getProvince['status'] == 'success') $data['province'] = $getProvince['result']; else $data['province'] = [];
+		}
 		$getCourier = MyHelper::get('courier/list?log_save=0');
 		if($getCourier['status'] == 'success') $data['couriers'] = $getCourier['result']; else $data['couriers'] = [];
 		
@@ -502,6 +506,7 @@ class UsersController extends Controller
      */
     public function show($phone, Request $request)
     {
+    	$configs	= session('configs');
 		$post = $request->except('_token');
 		// print_r($post);exit;
 		if($request->post('action')=='delete_inbox'&&!empty($request->post('id_inbox'))){
@@ -599,7 +604,11 @@ class UsersController extends Controller
 		$data['voucher'] = null;
 		$data['celebrates'] = MyHelper::get('setting/be/celebrate_list')['result']??[];
 		$data['jobs'] = MyHelper::get('setting/be/jobs_list')['result']??[];
-		$data['provinces'] = MyHelper::get('province/list')['result']??[];
+		if(MyHelper::hasAccess([96], $configs)){
+			$data['provinces'] = MyHelper::get('province/list-custom')['result']??[];
+		}else{
+			$data['provinces'] = MyHelper::get('province/list')['result']??[];
+		}
 		if(isset($getUser['result'])){
 			$data['profile'] = $getUser['result'];
 // 			$data['trx'] = $getUser['trx'];
