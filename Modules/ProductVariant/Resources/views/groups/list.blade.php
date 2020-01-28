@@ -127,6 +127,7 @@ dom: "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>
                         <th>Code</th>
                         <th>Category</th>
                         <th>Name</th>
+                        <th>Variants</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -138,6 +139,7 @@ dom: "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>
                         <td>{{$group['product_group_code']}}</td>
                         <td>{{$group['product_category']['product_category_name']}}</td>
                         <td>{{$group['product_group_name']}}</td>
+                        <td>{{$group['products_count']}}</td>
                         <td class="text-center">
                             <a href="{{url('product-variant/group/'.$group['id_product_group'])}}" class="btn btn-sm blue">Detail</a>
                         </td>

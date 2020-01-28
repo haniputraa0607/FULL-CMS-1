@@ -56,7 +56,12 @@ class ProductGroupController extends Controller
         if($post['product_group_image_detail']??false){
             $post['product_group_image_detail'] = MyHelper::encodeImage($post['product_group_image_detail']);
         }
-        return $post;
+        $create = MyHelper::post('product-variant/group/create',$post);
+        if(($create['status']??false) == 'success'){
+            return back()->with('success',['Success create product group']);
+        }else{
+            return back()->withErrors($create['messages']??['Failed create product group'])->withInput();
+        }
     }
 
     /**
@@ -66,7 +71,23 @@ class ProductGroupController extends Controller
      */
     public function edit($id)
     {
-        return view('productvariant::groups.edit');
+        $data = [
+            'title'          => 'Product Group',
+            'sub_title'      => 'Detail Product Group',
+            'menu_active'    => 'product-variant',
+            'submenu_active' => 'product-group-list',
+        ];
+        $data['categories'] = MyHelper::get('product/category/be/list')['result']??[];
+        $product_group = MyHelper::post('product-variant/group/detail',['id_product_group'=>$id])['result']??[];
+        $variants = array_map(function($var){
+            $var['variants'] = explode(',', $var['variants']);
+            return $var;
+        }, $product_group['variants']);
+        $product_group['variants'] = $variants;
+        $data['product_group'] = $product_group;
+        $data['variants_tree'] = MyHelper::get('product-variant/tree')['result']??[];
+        $data['products'] = MyHelper::post('product-variant/available-product',['id_product_group'=>$id])['result']??[];
+        return view('productvariant::groups.detail',$data);
     }
 
     /**
