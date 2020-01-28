@@ -243,7 +243,9 @@ $configs     		= session('configs');
 								<th scope="col"> Phone </th>
 								<th scope="col"> Device </th>
 								<th scope="col"> Email </th>
+								@if(!MyHelper::hasAccess([96], $configs))
 								<th scope="col"> City </th>
+								@endif
 								<th scope="col"> Province </th>
 								<th scope="col"> Postal Code </th>
 								<th scope="col"> Gender </th>
@@ -299,8 +301,12 @@ $configs     		= session('configs');
 													@if($data['android_device'] != "" && $data['ios_device'] != "") Both @endif
 												</td>
 												<td> {{$data['email']}} </td>
+												@if(!MyHelper::hasAccess([96], $configs))
 												<td> {!!str_replace(" ","&nbsp;", $data['city_name'])!!} </td>
 												<td> {!!str_replace(" ","&nbsp;", $data['province_name'])!!} </td>
+												@else
+												<td> {!!str_replace(" ","&nbsp;", $data['province_custom_name'])!!} </td>
+												@endif
 												<td> {{$data['city_postal_code']}} </td>
 												<td> {{$data['gender']}} </td>
 												<td> {{$data['provider']}} </td>

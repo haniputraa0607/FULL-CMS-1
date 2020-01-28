@@ -447,8 +447,14 @@
 {{--                                                <i class="fa fa-calendar-check-o"></i> {{$profile['celebrate']}} </li>--}}
 {{--                                            <li class="list-group-item" style="padding: 5px !important;" title="User's Job">--}}
 {{--                                                <i class="fa fa-black-tie"></i> {{$profile['job']}} </li>--}}
-											<li class="list-group-item" style="padding: 5px !important;" title="User City & Province">
-												<i class="fa fa-map"></i> {{$profile['city_name']}}, {{$profile['province_name']}} </li>
+                                            
+                                            @if(MyHelper::hasAccess([96], $configs))
+											<li class="list-group-item" style="padding: 5px !important;" title="User Province">
+												<i class="fa fa-map"></i> {{$profile['province_name']}} </li>
+                                            @else
+                                            <li class="list-group-item" style="padding: 5px !important;" title="User City & Province">
+                                                <i class="fa fa-map"></i> {{$profile['city_name']}}, {{$profile['province_name']}} </li>
+                                            @endif
 {{--                                            <li class="list-group-item" style="padding: 5px !important;" title="User Address">--}}
 {{--                                                <i class="fa fa-map-pin"></i> {{$profile['address']}} </li>--}}
 											<li class="list-group-item" style="padding: 5px !important;" title="User Birthday">
@@ -1100,6 +1106,19 @@
 												<label class="control-label">Email</label>
 												<input type="text" name="email" placeholder="Email (Required & Unique)" class="form-control" value="{{$profile['email']}}" />
 											</div>
+                                            @if(MyHelper::hasAccess([96], $configs))
+                                            <div class="form-group">
+                                                <label class="control-label">Province</label>
+                                                <select name="id_province" class="form-control input-sm select2" data-placeholder="Search Province">
+                                                    <option value="">Select Province...</option>
+                                                    @if(isset($provinces))
+                                                        @foreach($provinces as $row)
+                                                            <option value="{{$row['id_province_custom']}}" @if(isset($profile['id_province'])) @if($row['id_province_custom'] == $profile['id_province']) selected @endif @endif>{{$row['province_name']}}</option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
+                                            @else
 											<div class="form-group">
 												<label class="control-label">City</label>
 												<select name="id_city" class="form-control input-sm select2" placeholder="Search City">
@@ -1111,6 +1130,7 @@
 													@endif
 												</select>
 											</div>
+                                            @endif
                                             <div class="form-group">
                                                 <label class="control-label">Address</label>
                                                 <input type="text" name="address" placeholder="User Address" class="form-control" value="{{$profile['address']}}" />
