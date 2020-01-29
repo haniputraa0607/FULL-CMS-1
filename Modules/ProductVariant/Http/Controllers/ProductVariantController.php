@@ -16,7 +16,7 @@ class ProductVariantController extends Controller
      */
     public function index(Request $request) {
         $data = [
-            'title'          => 'Product Variant',
+            'title'          => 'Complex Menu',
             'sub_title'      => 'List Product Variant',
             'menu_active'    => 'product-variant',
             'submenu_active' => 'product-variant-list',
@@ -37,7 +37,7 @@ class ProductVariantController extends Controller
      */
     public function create() {
         $data = [
-            'title'          => 'Product Variant',
+            'title'          => 'Complex Menu',
             'sub_title'      => 'New Product Variant',
             'menu_active'    => 'product-variant',
             'submenu_active' => 'product-variant-new',

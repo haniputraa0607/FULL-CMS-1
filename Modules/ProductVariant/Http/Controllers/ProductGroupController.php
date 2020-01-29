@@ -16,7 +16,7 @@ class ProductGroupController extends Controller
      */
     public function index(Request $request) {
         $data = [
-            'title'          => 'Product Group',
+            'title'          => 'Complex Menu',
             'sub_title'      => 'List Product Group',
             'menu_active'    => 'product-variant',
             'submenu_active' => 'product-group-list',
@@ -33,7 +33,7 @@ class ProductGroupController extends Controller
     public function create()
     {
         $data = [
-            'title'          => 'Product Group',
+            'title'          => 'Complex Menu',
             'sub_title'      => 'New Product Group',
             'menu_active'    => 'product-variant',
             'submenu_active' => 'product-group-new',
@@ -72,7 +72,7 @@ class ProductGroupController extends Controller
     public function edit($id)
     {
         $data = [
-            'title'          => 'Product Group',
+            'title'          => 'Complex Menu',
             'sub_title'      => 'Detail Product Group',
             'menu_active'    => 'product-variant',
             'submenu_active' => 'product-group-list',

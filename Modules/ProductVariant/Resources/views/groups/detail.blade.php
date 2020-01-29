@@ -44,6 +44,7 @@
 <script>
     var products = {!!json_encode(array_map(function($var){return ['id'=>$var['id_product'],'text'=>$var['product_name']];},$products))!!};
     var assignData = {!!json_encode($product_group['variants'])!!};
+    var removed = {};
     function assigner(){
         assignData.forEach(function(it){
             $(".selector"+it.variants.join('')).data("value",it.id_product);
@@ -51,22 +52,38 @@
         });
     }
     function productRemover(id_product){
-        console.log("before");
-        console.log(products);
         for(var i=0;i<products.length;i++){
             if(products[i].id == id_product){
+                removed[id_product] = products[i];
                 products.splice(i,1);
                 break;
             }
         }
-        console.log("after");
-        console.log(products);
     }
     function productAdder(id,text){
-        products.unshift({
-            id:id,
-            text:text
-        });
+        if(id && text){
+            products.unshift({
+                id:id,
+                text:text
+            });
+        }
+    }
+    function redrawSelect(){
+        var doms = $('.select2b');
+        for(var i=0;i<doms.length;i++){
+            var domi = $(doms[i]);
+            if(domi.parents('tr').hasClass('row-inactive') === false){
+                console.log(domi);
+                var id = domi.val();
+                var text = domi.find('option:selected').text();
+                var prd = products;
+                if( id && text){
+                    prd.unshift({id:id,text:text});
+                }
+                domi.html('');
+                domi.select2({data:prd});
+            }
+        }
     }
     $(document).ready(function(){
         assigner();
@@ -111,7 +128,6 @@
                         domLock.parents('.fileinput').find('.removeImage').click();
                     }
                     if (this.width != i_size.x || this.height != i_size.y) {
-                        console.log('width: '+this.width+' height:'+this.height);
                         toastr.warning("Please check dimension of your photo.");
                         domLock.parents('.fileinput').find('.removeImage').click();
                     }
@@ -141,8 +157,13 @@
             }
         });
         $('.select2b').on('change',function(){
-            productRemover($(this).data('id'));
+            var it = removed[$(this).data('id')];
+            if(it){
+                productAdder(it.id,it.text);
+            }
+            productRemover($(this).val());
             $(this).data('id',$(this).val());
+            redrawSelect();
         })
         $('.row-disabler').change();
     });
@@ -175,7 +196,7 @@
 <div class="portlet light bordered">
     <div class="portlet-title tabbable-line">
         <div class="caption">
-            <span class="caption-subject sbold uppercase font-blue">New Product Group</span>
+            <span class="caption-subject sbold uppercase font-blue">Detail Product Group</span>
         </div>
         <ul class="nav nav-tabs">
 

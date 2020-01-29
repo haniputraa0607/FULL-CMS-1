@@ -470,7 +470,7 @@
 			<li class="nav-item {{($menu_active == 'product-variant') ? 'active' : ''}}">
 				<a href="javascript:;" class="nav-link nav-toggle">
 					<i class="fa fa-object-group"></i>
-					<span class="title">Product Group & Variant</span>
+					<span class="title">Complex Menu</span>
 					<span class="arrow {{($menu_active == 'product-variant') ? 'open' : ''}}"></span>
 				</a>
 				<ul class="sub-menu">
@@ -510,21 +510,21 @@
 			<li class="nav-item {{($menu_active == 'product-modifier') ? 'active' : ''}}">
 				<a href="javascript:;" class="nav-link nav-toggle">
 					<i class="fa fa-puzzle-piece"></i>
-					<span class="title">Product Modifier</span>
+					<span class="title">Adds-on</span>
 					<span class="arrow {{($menu_active == 'product-modifier') ? 'open' : ''}}"></span>
 				</a>
 				<ul class="sub-menu">
 					@if(MyHelper::hasAccess([186], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-modifier-new') ? 'active open' : ''}}">
 						<a href="{{url('product/modifier/create')}}" class="nav-link ">
-							<span class="title">New Product Modifier</span>
+							<span class="title">New Adds-on</span>
 						</a>
 					</li>
 					@endif
 					@if(MyHelper::hasAccess([185,187,188,189], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-modifier-list') ? 'active open' : ''}}">
 						<a href="{{url('product/modifier')}}" class="nav-link ">
-							<span class="title">Product Modifier List</span>
+							<span class="title">Adds-on List</span>
 						</a>
 					</li>
 					@endif
@@ -536,7 +536,7 @@
 					@if(MyHelper::hasAccess([190,191], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-modifier-price') ? 'active open' : ''}}">
 						<a href="{{url('product/modifier/price')}}" class="nav-link ">
-							<span class="title">Product Modifier Price</span>
+							<span class="title">Adds-on Price</span>
 						</a>
 					</li>
 					@endif

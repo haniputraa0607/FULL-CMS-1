@@ -69,7 +69,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" style="margin-top: 10px">
+                        <div class="row" style="margin-top: 10px; margin-bottom: 10px">
                             <label class="col-md-4 control-label text-right">
                                 Image Detail
                                 <span class="required" aria-required="true"> * </span>
