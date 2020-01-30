@@ -68,41 +68,21 @@
             });
         }
     }
-    function redrawSelect(){
-        var doms = $('.select2b');
-        for(var i=0;i<doms.length;i++){
-            var domi = $(doms[i]);
-            if(domi.parents('tr').hasClass('row-inactive') === false){
-                console.log(domi);
-                var id = domi.val();
-                var text = domi.find('option:selected').text();
-                var prd = products;
-                if( id && text){
-                    prd.unshift({id:id,text:text});
-                }
-                domi.html('');
-                domi.select2({data:prd});
-            }
+    function allOption(id,text){
+        var html = '';
+        if(id && text){
+            html = '<option value="'+id+'" selected>'+text+'</option>';
+        }else{
+            html = '<option></option>';
         }
+        products.forEach(function(vrb){
+            html+='<option value="'+vrb.id+'" '+(id==vrb.id?'selected':'')+'>'+vrb.text+'</option>';
+        });
+        return html;
     }
+
     $(document).ready(function(){
         assigner();
-        $('#variant_type').on('change',function(){
-            switch($(this).val()){
-                case 'parent':
-                $('#parent').removeClass('hidden');
-                $('#child').addClass('hidden');
-                $('#child :input').attr('disabled','disabled');
-                $('#parent :input').removeAttr('disabled');
-                break;
-                case 'child':
-                $('#parent').addClass('hidden');
-                $('#child').removeClass('hidden');
-                $('#parent :input').attr('disabled','disabled');
-                $('#child :input').removeAttr('disabled');
-                break;
-            }
-        });
         $(".file").change(function(e) {
             var widthImg  = 0;
             var heightImg = 0;
@@ -142,9 +122,9 @@
                 $('#variant'+$(this).data('id')+'-container select').removeAttr('disabled');
                 $('#variant'+$(this).data('id')+'-container .select2b').select2({data:products});
                 var value = $('#variant'+$(this).data('id')+'-container .select2b').data('value');
+                $('#variant'+$(this).data('id')+'-container .select2b').html(allOption());
                 $('#variant'+$(this).data('id')+'-container .select2b').val(value);
                 $('#variant'+$(this).data('id')+'-container .select2b').change();
-                productRemover(value);
             }else{
                 var id = $('#variant'+$(this).data('id')+'-container select').val();
                 var text = $('#variant'+$(this).data('id')+'-container select option:selected').text();
@@ -154,6 +134,7 @@
                 $('#variant'+$(this).data('id')+'-container').addClass('row-inactive');
                 $('#variant'+$(this).data('id')+'-container select').attr('disabled','disabled');
                 $('#variant'+$(this).data('id')+'-container .select2b').html('').select2();
+                $('#variant'+$(this).data('id')+'-container .select2b').data('id',null);
             }
         });
         $('.select2b').on('change',function(){
@@ -163,7 +144,11 @@
             }
             productRemover($(this).val());
             $(this).data('id',$(this).val());
-            redrawSelect();
+        })
+        $('.select2b').on('select2:opening',function(){
+            var id = $(this).find('option:selected').attr('value');
+            var text = $(this).find('option:selected').text();
+            $(this).html(allOption(id,text));
         })
         $('.row-disabler').change();
     });

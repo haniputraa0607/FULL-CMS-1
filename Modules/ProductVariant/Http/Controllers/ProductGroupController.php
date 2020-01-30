@@ -98,7 +98,13 @@ class ProductGroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = $request->except('_token');
+        $post['id_product_group'] = $id;
+        $update = MyHelper::post('product-variant/group/assign',$post);
+        if(($update['status']??false) == 'success'){
+            return redirect('product-variant/group/'.$id.'#variants')->with('success',['Success update']);
+        }
+        return redirect('product-variant/group/'.$id.'#variants')->withErrors($update['messages']??['Something went wrong']);
     }
 
     /**
