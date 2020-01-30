@@ -19,6 +19,7 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'product-
 	    Route::post('/delete', ['middleware' => 'feature_control:1', 'uses' => 'ProductGroupController@destroy']);
 	    Route::get('/{id}', ['middleware' => 'feature_control:1', 'uses' => 'ProductGroupController@edit']);
 	    Route::post('/{id}', ['middleware' => 'feature_control:1', 'uses' => 'ProductGroupController@update']);
+	    Route::post('/{id}/assign', ['middleware' => 'feature_control:1', 'uses' => 'ProductGroupController@assign']);
 	});
     Route::get('/', ['middleware' => 'feature_control:212', 'uses' => 'ProductVariantController@index']);
     Route::get('/create', ['middleware' => 'feature_control:214', 'uses' => 'ProductVariantController@create']);

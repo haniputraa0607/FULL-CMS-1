@@ -1,4 +1,4 @@
-        <form action="#" method="post">
+        <form action="{{url()->current().'/assign'}}" method="post">
             @csrf
             <table class="table table-bordered table-hover">
                 <thead>

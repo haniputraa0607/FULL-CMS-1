@@ -90,13 +90,17 @@ class ProductGroupController extends Controller
         return view('productvariant::groups.detail',$data);
     }
 
+    public function update(Request $request) {
+        $post = $request->except('_token');
+    }
+
     /**
-     * Update the specified resource in storage.
+     * Assign products to product group
      * @param Request $request
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function assign(Request $request, $id)
     {
         $post = $request->except('_token');
         $post['id_product_group'] = $id;

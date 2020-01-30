@@ -62,7 +62,7 @@
                                         <span class="btn default btn-file">
                                             <span class="fileinput-new"> Select image </span>
                                             <span class="fileinput-exists"> Change </span>
-                                            <input type="file" accept="image/png" class="file" name="product_group_photo" data-type="photo" required> 
+                                            <input type="file" accept="image/png" class="file" name="product_group_photo" data-type="photo" @if(strpos($product_group['product_group_photo'],'default') !== false) required @endif> 
                                         </span>
                                         <a href="javascript:;" class="btn red default fileinput-exists removeImage" data-dismiss="fileinput"> Remove </a>
                                     </div>
@@ -92,7 +92,7 @@
                                         <span class="btn default btn-file">
                                             <span class="fileinput-new"> Select image </span>
                                             <span class="fileinput-exists"> Change </span>
-                                            <input type="file" accept="image/png" class="file" name="product_group_image_detail" data-type="image_detail" required> 
+                                            <input type="file" accept="image/png" class="file" name="product_group_image_detail" data-type="image_detail" @if(strpos($product_group['product_group_photo'],'default') !== false) required @endif> 
                                         </span>
                                         <a href="javascript:;" class="btn red default fileinput-exists removeImage" data-dismiss="fileinput"> Remove </a>
                                     </div>
