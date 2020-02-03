@@ -3,6 +3,7 @@
 Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'outlet', 'namespace' => 'Modules\Outlet\Http\Controllers'], function()
 {
     Route::get('list', ['middleware' => 'feature_control:24', 'uses' => 'OutletController@index']);
+    Route::any('ovo/list', ['middleware' => 'feature_control:24', 'uses' => 'OutletController@ovoList']);
     Route::any('ajax_handler', ['middleware' => 'feature_control:24', 'uses' => 'OutletController@ajaxHandler']);
     Route::get('getuser', ['middleware' => 'feature_control:40', 'uses' => 'OutletController@getUser']);
     Route::get('ajax', ['middleware' => 'feature_control:24', 'uses' => 'OutletController@indexAjax']);
