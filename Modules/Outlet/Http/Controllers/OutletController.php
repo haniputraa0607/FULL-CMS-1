@@ -45,6 +45,32 @@ class OutletController extends Controller
         return view('outlet::list', $data);
     }
 
+    public function ovoList(Request $request) {
+        $data = [
+            'title'          => 'Outlet',
+            'sub_title'      => 'Outlet List Ovo',
+            'menu_active'    => 'outlet',
+            'submenu_active' => 'outlet-list-ovo',
+        ];
+
+        $post = $request->except('_token');
+        if (!$post) {
+            $outlet = MyHelper::get('outlet/be/list/ovo');
+        } else {
+            $outlet = MyHelper::post('outlet/be/list/ovo', $post);
+            return parent::redirect($outlet, 'Outlet ovo has been changed.', 'outlet/ovo/list');
+        }
+        
+        if (isset($outlet['status']) && $outlet['status'] == "success") {
+            $data['outlet'] = $outlet['result'];
+        }
+        else {
+            $data['outlet'] = [];
+        }
+        
+        return view('outlet::list_ovo', $data);
+    }
+
 	public function indexAjax(Request $request) {
         $post = $request->except('_token');
 

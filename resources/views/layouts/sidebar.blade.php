@@ -333,6 +333,13 @@
 					</li>
 					@endif
 					@if(MyHelper::hasAccess([24], $grantedFeature))
+					<li class="nav-item {{($submenu_active == 'outlet-list-ovo') ? 'active open' : ''}}">
+						<a href="{{url('outlet/ovo/list')}}" class="nav-link ">
+							<span class="title">Outlet Ovo List</span>
+						</a>
+					</li>
+					@endif
+					@if(MyHelper::hasAccess([24], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'outlet-qrcode') ? 'active open' : ''}}">
 						<a href="{{url('outlet/qrcode')}}" class="nav-link ">
 							<span class="title">QRCode Outlet</span>
