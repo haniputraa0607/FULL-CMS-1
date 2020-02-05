@@ -80,7 +80,15 @@ class ProductVariantController extends Controller
      */
     public function edit($id)
     {
-        return view('productvariant::edit');
+        $data = [
+            'title'          => 'Complex Menu',
+            'sub_title'      => 'New Product Variant',
+            'menu_active'    => 'product-variant',
+            'submenu_active' => 'product-variant-new',
+        ];
+        $data['parents'] = MyHelper::post('product-variant',['rule'=>[['subject'=>'variant_type','operator'=>'=','parameter'=>'parent']]])['result']??[];
+        $data['variants'] = MyHelper::post('product-variant/detail',['product_variant_code'=>$id])['result']??[];
+        return view('productvariant::variants.edit',$data);
     }
 
     /**
@@ -105,6 +113,12 @@ class ProductVariantController extends Controller
     }
     public function reorder(Request $request) {
         $post = $request->except('_token');
+        $variants = [];
+        foreach ($post['variants']??[] as $key => $variant) {
+            $variant['id_product_variant'] = $key;
+            $variants[$key] = $variant;
+        }
+        $post['variants'] = $variants;
         $result = MyHelper::post('product-variant/reorder',$post);
         if(($result['status']??false)=='success'){
             return back()->with('success',['Success update order']);
