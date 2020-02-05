@@ -66,7 +66,6 @@
 							<th>Created at</th>
 							<th>Outlet</th>
 							<th>Product</th>
-							<th>Qty</th>
 							<th>Modifiers</th>
 							<th>Notes</th>
 						</tr>
@@ -78,8 +77,7 @@
 							<td>{{date('d M Y H:i',strtotime($favorite['created_at']))}}</td>
 							<td>{{$favorite['outlet']['outlet_code']}} - {{$favorite['outlet']['outlet_name']}}</td>
 							<td>{{$favorite['product']['product_code']}} - {{$favorite['product']['product_name']}}</td>
-							<td>{{$favorite['product_qty']}}</td>
-							<td><ul><li>{!!implode('</li><li>',array_column($favorite['modifiers'],'text'))!!}</li></ul></td>
+							<td>@if($favorite['modifiers'])<ul><li>{!!implode('</li><li>',array_column($favorite['modifiers'],'text'))!!}</li></ul>@else None @endif</td>
 							<td>{{$favorite['notes']}}</td>
 						</tr>
 						@endforeach
