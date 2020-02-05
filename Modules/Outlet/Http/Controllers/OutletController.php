@@ -201,7 +201,7 @@ class OutletController extends Controller
 
             if (isset($outlet['status']) && $outlet['status'] == "success") {
                 $data['outlet']    = $outlet['result'];
-                $product = MyHelper::get('product/be/list/price/'.$outlet['result'][0]['id_outlet']);
+                $product = MyHelper::get('product/list/price/'.$outlet['result'][0]['id_outlet']);
 
                 if (isset($product['status']) && $product['status'] == "success") {
                     $data['product']    = $product['result'];

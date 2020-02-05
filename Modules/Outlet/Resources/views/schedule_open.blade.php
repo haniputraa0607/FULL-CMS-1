@@ -3,22 +3,22 @@
   		<div class="form-group" id="parent">
   			@if (empty($outlet[0]['outlet_schedules']))
   				@php
-  					$sch = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+  					$sch = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   				@endphp
 
   				@foreach ($sch as $i => $val)
   					<div class="row">
-		            	<div class="col-md-1">
+		            	<div class="col-md-2">
 		                    <label style="margin-top: 5px;margin-left: 15px;">{{ $val }}</label>
 		                    <input type="hidden" name="day[]" value="{{ $val }}">
 		                </div>
 		                <div class="col-md-1">
 		                    <label style="margin-top: 5px;margin-left: 15px;">:</label>
 		                </div>
-		                <div class="col-md-3">
+		                <div class="col-md-2">
 		                    <input type="text" data-placeholder="select time start" class="form-control mt-repeater-input-inline kelas-open timepicker timepicker-no-seconds" name="open[]" @if (old('open') != '') value="{{ old('open') }}" @else value="07:00" @endif data-show-meridian="false" readonly>
 		                </div>
-		                <div class="col-md-3" style="padding-bottom: 5px">
+		                <div class="col-md-2" style="padding-bottom: 5px">
 		                    <input type="text" data-placeholder="select time end" class="form-control mt-repeater-input-inline kelas-close timepicker timepicker-no-seconds" name="close[]" @if (old('close') != '') value="{{ old('close') }}" @else value="22:00" @endif data-show-meridian="false" readonly>
 		                </div>
 						<div class="col-md-2" style="padding-bottom: 5px;margin-top: 5px;">
@@ -39,18 +39,27 @@
   				@endforeach
   			@else
   				@foreach ($outlet[0]['outlet_schedules'] as $i => $val)
+      				@php
+      					$sch['Minggu'] = 'Sunday';
+      					$sch['Senin'] = 'Monday';
+      					$sch['Selasa'] = 'Tuesday';
+      					$sch['Rabu'] = 'Wednesday';
+      					$sch['Kamis'] = 'Thursday';
+      					$sch['Jumat'] = 'Friday';
+      					$sch['Sabtu'] = 'Saturday';
+      				@endphp
   					<div class="row">
-		            	<div class="col-md-1">
-		                    <label style="margin-top: 5px;margin-left: 15px;">{{ $val['day'] }}</label>
+		            	<div class="col-md-2">
+		                    <label style="margin-top: 5px;margin-left: 15px;">{{ $sch[$val['day']] }}</label>
 		                    <input type="hidden" name="day[]" value="{{ $val['day'] }}">
 		                </div>
 		                <div class="col-md-1">
 		                    <label style="margin-top: 5px;margin-left: 15px;">:</label>
 		                </div>
-		                <div class="col-md-3">
+		                <div class="col-md-2">
 		                    <input type="text" data-placeholder="select time start" class="form-control mt-repeater-input-inline kelas-open timepicker timepicker-no-seconds" name="open[]" @if(isset($val['open'])) value="{{ date('H:i', strtotime($val['open'])) }}" @endif data-show-meridian="false" readonly>
 		                </div>
-		                <div class="col-md-3" style="padding-bottom: 5px">
+		                <div class="col-md-2" style="padding-bottom: 5px">
 		                    <input type="text" data-placeholder="select time end" class="form-control mt-repeater-input-inline kelas-close timepicker timepicker-no-seconds" name="close[]" @if(isset($val['open'])) value="{{ date('H:i', strtotime($val['close'])) }}" @endif data-show-meridian="false" readonly>
 		                </div>
 		                <div class="col-md-2" style="padding-bottom: 5px;margin-top: 5px;">

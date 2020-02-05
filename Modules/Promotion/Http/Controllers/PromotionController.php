@@ -23,9 +23,9 @@ class PromotionController extends Controller
 				  'menu_active'       => 'promotion',
 				  'submenu_active'    => 'promotion-list'
 				];
-				
+
 		$post = $request->except(['_token']);
-		
+
 		if(isset($post['reset'])){
 			Session::forget('promotion_name');
 		}
@@ -33,7 +33,7 @@ class PromotionController extends Controller
 			Session::put('promotion_name', $post['promotion_name']);
 			unset($post['page']);
 		}
-		
+
 		$getPromotionName = Session::get('promotion_name');
 		if(!empty($getPromotionName)){
 			$post['promotion_name'] = $getPromotionName;
@@ -71,31 +71,31 @@ class PromotionController extends Controller
 				  'menu_active'       => 'promotion',
 				  'submenu_active'    => 'promotion-create'
 				];
-				
+
 		$getCity = MyHelper::get('city/list?log_save=0');
 		if($getCity['status'] == 'success') $data['city'] = $getCity['result']; else $data['city'] = null;
-		
+
 		$getProvince = MyHelper::get('province/list?log_save=0');
 		if($getProvince['status'] == 'success') $data['province'] = $getProvince['result']; else $data['province'] = null;
-        
+
 		$getCourier = MyHelper::get('courier/list?log_save=0');
 		if($getCourier['status'] == 'success') $data['couriers'] = $getCourier['result']; else $data['couriers'] = null;
-		
-		$getOutlet = MyHelper::get('outlet/list?log_save=0');
+
+		$getOutlet = MyHelper::get('outlet/be/list?log_save=0');
 		if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = null;
-		
+
 		$getProduct = MyHelper::get('product/be/list?log_save=0');
 		if (isset($getProduct['status']) && $getProduct['status'] == 'success') $data['products'] = $getProduct['result']; else $data['products'] = null;
-		
+
 		$getTag = MyHelper::get('product/tag/list?log_save=0');
 		if (isset($getTag['status']) && $getTag['status'] == 'success') $data['tags'] = $getTag['result']; else $data['tags'] = [];
 
 		$getMembership = MyHelper::post('membership/be/list?log_save=0',[]);
 		if (isset($getMembership['status']) && $getMembership['status'] == 'success') $data['memberships'] = $getMembership['result']; else $data['memberships'] = [];
-		
+
         return view('promotion::create-step-1',$data);
     }
-	
+
     public function store(Request $request)
     {
 		$post = $request->except("_token");
@@ -108,7 +108,7 @@ class PromotionController extends Controller
 			return back()->withErrors($action['messages']);
 		}
     }
-	
+
 	public function step1($id_promotion){
 		$action = MyHelper::post('promotion/step2', ['id_promotion' => $id_promotion]);
 		// print_r($action);exit;
@@ -117,36 +117,36 @@ class PromotionController extends Controller
 					  'menu_active'       => 'promotion',
 					  'submenu_active'    => 'promotion-create'
 				];
-			
+
 			$data['result'] = $action['result'];
-			
+
 			$getCity = MyHelper::get('city/list?log_save=0');
 			if(isset($getCity['status']) && $getCity['status'] == 'success') $data['city'] = $getCity['result']; else $data['city'] = null;
-			
+
 			$getProvince = MyHelper::get('province/list?log_save=0');
 			if(isset($getProvince['status']) && $getProvince['status'] == 'success') $data['province'] = $getProvince['result']; else $data['province'] = null;
-			
+
 			$getCourier = MyHelper::get('courier/list?log_save=0');
 			if(isset($getCourier['status']) && $getCourier['status'] == 'success') $data['couriers'] = $getCourier['result']; else $data['couriers'] = null;
-			
-			$getOutlet = MyHelper::get('outlet/list?log_save=0');
+
+			$getOutlet = MyHelper::get('outlet/be/list?log_save=0');
 			if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = null;
-			
+
 			$getProduct = MyHelper::get('product/be/list?log_save=0');
 			if (isset($getProduct['status']) && $getProduct['status'] == 'success') $data['products'] = $getProduct['result']; else $data['products'] = null;
-			
+
 			$getTag = MyHelper::get('product/tag/list?log_save=0');
 			if (isset($getTag['status']) && $getTag['status'] == 'success') $data['tags'] = $getTag['result']; else $data['tags'] = [];
 
 			$getMembership = MyHelper::post('membership/be/list?log_save=0',[]);
 			if (isset($getMembership['status']) && $getMembership['status'] == 'success') $data['memberships'] = $getMembership['result']; else $data['memberships'] = [];
-		
+
 			return view('promotion::create-step-1', $data);
 		} else{
 			return back()->withErrors($action['messages']);
 		}
     }
-	
+
 	public function step1Post(Request $request, $id_promotion){
 		$post = $request->except(['_token','sample_1_length','files']);
 		$post['id_promotion'] = $id_promotion;
@@ -159,7 +159,7 @@ class PromotionController extends Controller
 			return back()->withErrors($action['messages']);
 		}
 	}
-	
+
 	public function step2($id_promotion){
 		// echo $id_promotion;exit;
 		$action = MyHelper::post('promotion/step2', ['id_promotion' => $id_promotion]);
@@ -170,24 +170,24 @@ class PromotionController extends Controller
 				  'submenu_active'    => 'promotion-create'
 				];
 			$test = MyHelper::get('autocrm/textreplace');
-			
+
 			$data['result'] = $action['result'];
 			if($test['status'] == 'success'){
 				$data['textreplaces'] = $test['result'];
 			}
-			
-			$getOutlet = MyHelper::get('outlet/list?log_save=0');
+
+			$getOutlet = MyHelper::get('outlet/be/list?log_save=0');
 			if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = null;
-			
+
 			$getProduct = MyHelper::get('product/be/list?log_save=0');
 			if (isset($getProduct['status']) && $getProduct['status'] == 'success') $data['products'] = $getProduct['result']; else $data['products'] = null;
-			
+
 			$getTag = MyHelper::get('product/tag/list?log_save=0');
 			if (isset($getTag['status']) && $getTag['status'] == 'success') $data['tags'] = $getTag['result']; else $data['tags'] = [];
 
 			$getMembership = MyHelper::post('membership/be/list?log_save=0',[]);
 			if (isset($getMembership['status']) && $getMembership['status'] == 'success') $data['memberships'] = $getMembership['result']; else $data['memberships'] = [];
-		
+
 			$deals = MyHelper::get('promotion/deals?log_save=0');
 			if (isset($deals['status']) && $deals['status'] == "success") {
 				$data['deals'] = $deals['result'];
@@ -208,11 +208,11 @@ class PromotionController extends Controller
 			return back()->withErrors($action['messages']);
 		}
     }
-	
+
 	public function step2Post(Request $request, $id_promotion){
 		$post = $request->except(['_token','sample_1_length','promotion_push_image','files']);
 		$post['id_promotion'] = $id_promotion;
-		
+
 		if (isset($request['promotion_push_image'])) {
 			foreach ($request['promotion_push_image'] as $key => $value) {
 				$post['promotion_push_image'][$key] = MyHelper::encodeImage($value);
@@ -236,7 +236,7 @@ class PromotionController extends Controller
 				}
 			}
 		}
-		
+
 		if (isset($post['promotion_email_content'])) {
             // remove tag <font>
             foreach ($post['promotion_email_content'] as $key => $email_content) {
@@ -246,7 +246,7 @@ class PromotionController extends Controller
 		// dd($post);exit;
 		$action = MyHelper::post('promotion/update', $post);
 		// dd($action);exit;
-		
+
 		if(isset($action['status']) && $action['status'] == 'success'){
 			if($post['promotion_type'] == 'Instant Campaign' && isset($post['send'])){
 				$sendCampaign = MyHelper::post('promotion/queue', ['id_promotion' => $id_promotion]);
@@ -259,7 +259,7 @@ class PromotionController extends Controller
 			return back()->withErrors($action['messages']);
 		}
     }
-	
+
 	public function step3($id_promotion, Request $request){
 		$post = $request->except('_token');
 		if ($request->ajax()) {
@@ -275,7 +275,7 @@ class PromotionController extends Controller
 
 			$data['result'] = Session::get('resultStep3');
 
-			return view('promotion::recipient', $data)->render();  
+			return view('promotion::recipient', $data)->render();
 		}else{
 			$action = MyHelper::post('promotion/step2', ['id_promotion' => $id_promotion, 'summary' => true]);
 			// dd($action);exit;
@@ -289,27 +289,27 @@ class PromotionController extends Controller
 
 				$getCity = MyHelper::get('city/list?log_save=0');
 				if($getCity['status'] == 'success') $data['city'] = $getCity['result']; else $data['city'] = null;
-				
+
 				$getProvince = MyHelper::get('province/list?log_save=0');
 				if($getProvince['status'] == 'success') $data['province'] = $getProvince['result']; else $data['province'] = null;
-				
+
 				$getCourier = MyHelper::get('courier/list?log_save=0');
 				if($getCourier['status'] == 'success') $data['couriers'] = $getCourier['result']; else $data['couriers'] = null;
-				
-				$getOutlet = MyHelper::get('outlet/list?log_save=0');
+
+				$getOutlet = MyHelper::get('outlet/be/list?log_save=0');
 				if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = null;
-				
+
 				$getProduct = MyHelper::get('product/be/list?log_save=0');
 				if (isset($getProduct['status']) && $getProduct['status'] == 'success') $data['products'] = $getProduct['result']; else $data['products'] = null;
-				
+
 				$getTag = MyHelper::get('product/tag/list?log_save=0');
 				if (isset($getTag['status']) && $getTag['status'] == 'success') $data['tags'] = $getTag['result']; else $data['tags'] = [];
 
 				$getMembership = MyHelper::post('membership/be/list?log_save=0',[]);
 				if (isset($getMembership['status']) && $getMembership['status'] == 'success') $data['memberships'] = $getMembership['result']; else $data['memberships'] = [];
-		
+
 				$setting = MyHelper::get('setting/email?is_log=0');
-			
+
 				if($setting['status'] == 'success'){
 					$data['setting'] = $setting['result'];
 				}
@@ -319,9 +319,9 @@ class PromotionController extends Controller
 				}else{
 					$recipient = MyHelper::post('promotion/recipient/list', ['id_promotion' => $id_promotion]);
 				}
-	
+
 				$data['users'] = new LengthAwarePaginator($recipient['result']['data'], $recipient['result']['total'], $recipient['result']['per_page'], $recipient['result']['current_page'], ['path' => url()->current()]);
-				
+
 				$data['from'] = $recipient['result']['from'];
 				$data['to'] = $recipient['result']['to'];
 				$data['total'] = $recipient['result']['total'];
@@ -335,7 +335,7 @@ class PromotionController extends Controller
 			}
 		}
 	}
-	
+
 	public function sentList($id_promotion_content, $page = null, $type = null){
 		if($page == null){
 			if($type == null){
@@ -407,13 +407,13 @@ class PromotionController extends Controller
 		}
 		return $list;
 	}
-	
+
     public function delete(Request $request){
 		$post = $request->except('_token');
 		$delete = MyHelper::post('promotion/delete', ['id_promotion' => $post['id_promotion']]);
 		return $delete;
 	}
-	
+
 	public function listDeals(Request $request){
 		$data = [
             'title'          => 'Promotion',
@@ -423,7 +423,7 @@ class PromotionController extends Controller
         ];
 
         $deals = MyHelper::get('promotion/deals');
-        
+
         if (isset($deals['status']) && $deals['status'] == "success") {
             $data['deals'] = $deals['result'];
         }
@@ -433,7 +433,7 @@ class PromotionController extends Controller
 
         return view('promotion::deals.list', $data);
 	}
-	
+
 	public function createDeals(Request $request){
 		$data = [
             'title'          => 'Promotion',
@@ -441,7 +441,7 @@ class PromotionController extends Controller
             'menu_active'    => 'promotion',
             'submenu_active' => 'new-deals-promotion',
 		];
-		
+
 		$post = $request->except('_token');
 		if($post){
 			if (isset($post['deals_image'])) {
@@ -450,7 +450,7 @@ class PromotionController extends Controller
 
 			$action = MyHelper::post('promotion/deals/save', $post);
 			// dd($action);
-			
+
 			if (isset($action['status']) && $action['status'] == "success") {
 				return redirect('promotion/deals')->withSuccess(['Deals has been created.']);
             }else {
@@ -461,18 +461,18 @@ class PromotionController extends Controller
 				if (isset($action['status']) && $action['status'] == "fail") {
 					return back()->withErrors($action['messages'])->withInput();
 				}
-				
+
 				return back()->withErrors(['Something when wrong. Please try again.'])->withInput();
 			}
 		}
 
 		$getOutlet = MyHelper::get('outlet/be/list');
 		if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlet'] = $getOutlet['result']; else $data['outlet'] = null;
-			
+
 
         return view('promotion::deals.create', $data);
 	}
-	
+
 	public function detailDeals(Request $request, $id){
 		$data = [
             'title'          => 'Promotion',
@@ -480,7 +480,7 @@ class PromotionController extends Controller
             'menu_active'    => 'promotion',
             'submenu_active' => 'deals-promotion',
 		];
-		
+
 		$post = $request->except('_token');
 		if($post){
 			// dd($post);
@@ -488,7 +488,7 @@ class PromotionController extends Controller
 			if (isset($post['deals_image'])) {
 				$post['deals_image']         = MyHelper::encodeImage($post['deals_image']);
 			}
-			
+
 			$action = MyHelper::post('promotion/deals/save', $post);
 
 			if (isset($action['status']) && $action['status'] == "success") {
@@ -501,14 +501,14 @@ class PromotionController extends Controller
 				if (isset($action['status']) && $action['status'] == "fail") {
 					return back()->withErrors($action['messages'])->withInput();
 				}
-				
+
 				return back()->withErrors(['Something when wrong. Please try again.'])->withInput();
 			}
 		}
 
-		$getOutlet = MyHelper::get('outlet/list?log_save=0');
+		$getOutlet = MyHelper::get('outlet/be/list?log_save=0');
 		if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlet'] = $getOutlet['result']; else $data['outlet'] = null;
-		
+
 		$deals = MyHelper::post('promotion/deals', ['id_deals_promotion_template' => $id]);
 		if (isset($deals['status']) && $deals['status'] == "success") {
 			$data['deals'] = $deals['result'][0];
@@ -521,11 +521,11 @@ class PromotionController extends Controller
 			if (isset($deals['status']) && $deals['status'] == "fail") {
 				return back()->withErrors($deals['messages']);
 			}
-			
+
 			return back()->withErrors(['Something when wrong. Please try again.']);
 		}
 
-		$getOutlet = MyHelper::get('outlet/list?log_save=0');
+		$getOutlet = MyHelper::get('outlet/be/list?log_save=0');
 		if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlet'] = $getOutlet['result']; else $data['outlet'] = null;
 
         return view('promotion::deals.detail', $data);

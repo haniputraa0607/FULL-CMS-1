@@ -326,7 +326,7 @@ class ProductController extends Controller
             'menu_active'    => 'product',
             'submenu_active' => 'product-list-image',
         ];
-        $product = MyHelper::post('product/list', ['admin_list' => 1]);
+        $product = MyHelper::post('product/be/list', ['admin_list' => 1]);
 		// dd($product);
         if (isset($product['status']) && $product['status'] == "success") {
             $data['product'] = $product['result'];
