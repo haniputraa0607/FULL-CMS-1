@@ -100,12 +100,12 @@ $configs     		= session('configs');
 						</div>
 					</div>
 					<div class="portlet-body">
-						<p>Menu ini digunakan untuk mengatur tulisan menu dan tulisan header pada menu utama aplikasi.</p>
+						<p>This menu is used to set the text menu and text header on the main menu application.</p>
 						<ul>
-							<li>Gambar (a) adalah urutan menu.</li>
-							<li>Gambar (b) adalah contoh tampilan untuk "Text Menu".</li>
-							<li>Gambar (c) adalah contoh tampilan untuk "Text Header".</li>
-							@if($config_main_menu['is_active'] == 1)<li>Gambar (d) adalah contoh tampilan untuk "Icon".</li>@endif
+							<li>Image (a) is a menu sequence.</li>
+							<li>Image (b) is an example display for "Text Menu".</li>
+							<li>Image (c) is an example display for "Text Header".</li>
+							@if($config_main_menu['is_active'] == 1)<li>Image (d) is an example display for "Icon".</li>@endif
 						</ul>
 
 						<div class="row" style="margin-top: 2%;">
@@ -257,12 +257,12 @@ $configs     		= session('configs');
 						</div>
 					</div>
 					<div class="portlet-body">
-						<p>Menu ini digunakan untuk mengatur tulisan menu, tulisan header, dan icon yang ada didalam daftar menu other.</p>
+						<p>This menu is used to set the text menu and text header on the main menu application.</p>
 						<ul>
-							<li>Gambar (a) adalah urutan menu.</li>
-							<li>Gambar (b) adalah contoh tampilan untuk "Text Menu".</li>
-							<li>Gambar (c) adalah contoh tampilan untuk "Text Header".</li>
-							@if($config_other_menu['is_active'] == 1)<li>Gambar (d) adalah contoh tampilan untuk "Icon".</li>@endif
+							<li>Image (a) is a menu sequence.</li>
+							<li>Image (b) is an example display for "Text Menu".</li>
+							<li>Image (c) is an example display for "Text Header".</li>
+							@if($config_other_menu['is_active'] == 1)<li>Image (d) is an example display for "Icon".</li>@endif
 						</ul>
 						<div class="row" style="margin-top: 2%;">
 							<div class="col-md-3">
