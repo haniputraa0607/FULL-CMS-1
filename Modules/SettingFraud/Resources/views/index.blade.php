@@ -930,16 +930,16 @@ $configs    		= session('configs');
             </div>
         </div>
         <div class="portlet-body">
-            <p>Setting Fraud Detection memiliki 3 tipe yaitu :</p>
+            <p>The Fraud Detection setting has 3 types:</p>
             <ul>
-                <li>Device : mengatur maksimal akun yang dapat digunakan dalam 1 device ID. Jika user sudah terkena fraud maka akan otomatis tidak bisa masuk.</li>
-                <li>Transaction in day : maksimal jumlah transaksi yang diperbolehkan dalam 1 hari untuk semua user</li>
-                <li>Transaction in week : mengatur maksimal jumlah transaksi yang diperbolehkan  dalam 1 minggu untuk semua user </li>
+                <li>Device : set a maximum of accounts that can be used in 1 device ID. If the user has been exposed to fraud, it will automatically not be able go in to application.</li>
+                <li>Transaction in day : set the maximum number of transactions allowed in 1 day for all users</li>
+                <li>Transaction in week : set the maximum number of transactions allowed in 1 week for all users</li>
             </ul>
-            <p>Anda bisa memberikan action untuk setiap tipe, action dibagi menjadi 2 yaitu :</p>
+            <p>You can provide actions for each type, actions are divided into 2 :</p>
             <ul>
-                <li>Auto Suspend : jika user melakukan pelanggaran sesuai dengan aturan yang ada maka account tersebut akan secara otomatis disaspend</li>
-                <li>Forward Admin : jika user melakukan pelanggaran sesuai dengan aturan yang ada maka akan mengirimkan notifikasi keadmin  </li>
+                <li>Auto Suspend : if the user violates the rules, the account will be automatically suspended</li>
+                <li>Forward Admin : if the user commits a violation in accordance with existing rules, system will send a notification to the admin</li>
             </ul>
         </div>
     </div>
@@ -1340,7 +1340,7 @@ $configs    		= session('configs');
                                                             <div class="input-group">
                                                                 <input type="number" class="form-control field_transaction_in_week price" min="1" name="auto_suspend_time_period" value="{{$result[0]['auto_suspend_time_period']}}">
                                                                 <span class="input-group-addon">
-                                                        hari
+                                                        days
                                                     </span>
                                                             </div>
                                                         </div>
@@ -1657,7 +1657,7 @@ $configs    		= session('configs');
                                                             <div class="input-group">
                                                                 <input type="number" class="form-control field_transaction_in_week price" min="1" name="auto_suspend_time_period" value="{{$result[1]['auto_suspend_time_period']}}">
                                                                 <span class="input-group-addon">
-                                                        hari
+                                                        days
                                                     </span>
                                                             </div>
                                                         </div>

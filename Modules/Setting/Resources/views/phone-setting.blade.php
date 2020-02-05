@@ -122,11 +122,11 @@ $configs     		= session('configs');
 	@include('layouts.notifications')
 	<br>
 	<div class="m-heading-1 border-green m-bordered">
-		<p>Menu ini digunakan untuk mengatur proses validasi nomor telepon pengguna.</p><br>
+		<p>This menu is used to set the validation of the user's phone number.</p><br>
 		<ul>
-			<li>mengatur minimum dan maximal panjang nomor telepon</li>
-			<li>perhitungan panjang nomor akan dihitung mulai dari kode telepon <br> contoh : <br> nomor telepon = {{$example_phone}} <br> panjang nomor = {{$length_example_phone}}</li>
-			<li>mengatur pesan yang akan ditampilkan kepengguna jika format nomor telepon tidak sesuai</li>
+			<li>set minimum and maximum length of phone numbers</li>
+			<li>number length calculation will be calculated starting from the phone code <br> example : <br> phone number = {{$example_phone}} <br> number length = {{$length_example_phone}}</li>
+			<li>set messages to be displayed to the user if the phone number format does not match</li>
 		</ul>
 	</div>
 	<br>
