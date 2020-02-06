@@ -196,7 +196,7 @@
 										@if (!empty($product))
 											@foreach ($product as $col => $pro)
 												<tr>
-													<td>@if(isset($pro['category']['product_category_name'])) {{ $pro['category']['product_category_name'] }} @else Uncategorized @endif</td>
+													<td>@if(isset($pro['category'][0]['product_category_name'])) {{ $pro['category'][0]['product_category_name'] }} @else Uncategorized @endif</td>
 													<td> {{ $pro['product_name'] }} </td>
 													<input type="hidden" name="id_outlet" value="{{ $key }}">
 													<input type="hidden" name="id_product[]" value="{{ $pro['id_product'] }}">
