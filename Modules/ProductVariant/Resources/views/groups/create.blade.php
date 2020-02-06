@@ -85,7 +85,12 @@
                 image.src = _URL.createObjectURL(file);
             }
         });
-        $('#variant_type').change();        
+        $('#variant_type').change();
+        $('.img-photo').hover(function(){
+            $('#img_preview').attr('src','{{env('S3_URL_VIEW')}}img/setting/product_photo_preview.png');
+        },function(){
+            $('#img_preview').attr('src','{{env('S3_URL_VIEW')}}img/setting/product_group_preview.png');
+        });
     });
 </script>
 @endsection
@@ -161,12 +166,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row img-photo">
                             <label class="col-md-4 control-label text-right">
                                 Image
                                 <span class="required" aria-required="true"> * </span>
                                 <br>
-                                <span class="required" aria-required="true"> (200 * 200) </span>
+                                <span class="required" aria-required="true"> (200 * 200) (PNG Only) </span>
                                 <i class="fa fa-question-circle tooltips" data-original-title="Gambar yang akan ditampilkan di daftar produk" data-container="body"></i>
                             </label>
                             <div class="col-md-7">
@@ -192,7 +197,7 @@
                                 Image Detail
                                 <span class="required" aria-required="true"> * </span>
                                 <br>
-                                <span class="required" aria-required="true"> (720 * 360) </span>
+                                <span class="required" aria-required="true"> (720 * 360) (PNG Only) </span>
                                 <i class="fa fa-question-circle tooltips" data-original-title="Gambar yang akan ditampilkan di detail produk" data-container="body"></i>
                             </label>
                             <div class="col-md-7">
@@ -225,7 +230,7 @@
                 </form>
             </div>
             <div class="preview col-md-4 pull-right" style="right: 0;top: 70px; position: sticky">
-                <img src="{{env('S3_URL_VIEW')}}img/setting/product_group_preview.png" class="img-responsive">
+                <img id="img_preview" src="{{env('S3_URL_VIEW')}}img/setting/product_group_preview.png" class="img-responsive">
             </div>
         </div>
     </div>
