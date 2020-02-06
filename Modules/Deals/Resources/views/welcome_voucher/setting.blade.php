@@ -472,7 +472,7 @@ $configs    		= session('configs');
                 }
             });
         });
-        
+
         function addDealsToList() {
             var list_deals_id = $("input[name='list_deals_id[]']")
                 .map(function(){return $(this).val();}).get();
@@ -512,7 +512,7 @@ $configs    		= session('configs');
             }
 
         }
-        
+
         function inCheck() {
             var list_deals_id = $("input[name='list_deals_id[]']")
                 .map(function(){return $(this).val();}).get();
@@ -588,11 +588,19 @@ $configs    		= session('configs');
                 <div class="portlet-body form">
                     <div class="row" style="margin-bottom: 5%;" class="col-md-12">
                         <div class="col-md-7">
-                            <select id="id_all_deals" class="form-control select2" placeholder="Search Deals">
-                                @foreach($all_deals as $val)
-                                    <option id="{{$val['id_deals']}}" value="{{$val['id_deals']}}">{{$val['name_brand']}} - {{$val['deals_title']}}</option>
-                                @endforeach
-                            </select>
+                            @if(MyHelper::hasAccess([95], $configs))
+                                <select id="id_all_deals" class="form-control select2" placeholder="Search Deals">
+                                    @foreach($all_deals as $val)
+                                        <option id="{{$val['id_deals']}}" value="{{$val['id_deals']}}">{{$val['name_brand']}} - {{$val['deals_title']}}</option>
+                                    @endforeach
+                                </select>
+                            @else
+                                <select id="id_all_deals" class="form-control select2" placeholder="Search Deals">
+                                    @foreach($all_deals as $val)
+                                        <option id="{{$val['id_deals']}}" value="{{$val['id_deals']}}">{{$val['deals_title']}}</option>
+                                    @endforeach
+                                </select>
+                            @endif
                         </div>
                         <div class="col-md-3">
                             <button class="btn green" onclick="addDealsToList()">Add Voucher</button>
@@ -603,20 +611,37 @@ $configs    		= session('configs');
                         {{ csrf_field() }}
                         <div id="list">
                             @foreach($deals as $val)
-                                <div class="row" id="div_{{$val['id_deals']}}" style="margin-bottom: 2%;">
-                                    <div class="col-md-1">
-                                        <a href="javascript:;" data-repeater-delete class="btn btn-danger mt-repeater-delete mt-repeater-del-right mt-repeater-btn-inline" onclick="deleteDeals('{{$val['id_deals']}}')">
-                                            <i class="fa fa-close"></i>
-                                        </a>
+                                @if(MyHelper::hasAccess([95], $configs))
+                                    <div class="row" id="div_{{$val['id_deals']}}" style="margin-bottom: 2%;">
+                                        <div class="col-md-1">
+                                            <a href="javascript:;" data-repeater-delete class="btn btn-danger mt-repeater-delete mt-repeater-del-right mt-repeater-btn-inline" onclick="deleteDeals('{{$val['id_deals']}}')">
+                                                <i class="fa fa-close"></i>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <textarea class="form-control" type="text" rows="2" disabled>{{$val['name_brand']}} - {{$val['deals_title']}}</textarea>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input class="form-control price input-required" placeholder="Total" name="list_deals_total[]" type="text" value="{{$val['deals_total']}}" required>
+                                        </div>
+                                        <input type="hidden" name="list_deals_id[]" value="{{$val['id_deals']}}">
                                     </div>
-                                    <div class="col-md-6">
-                                        <textarea class="form-control" type="text" rows="2" disabled>{{$val['name_brand']}} - {{$val['deals_title']}}</textarea>
+                                @else
+                                    <div class="row" id="div_{{$val['id_deals']}}" style="margin-bottom: 2%;">
+                                        <div class="col-md-1">
+                                            <a href="javascript:;" data-repeater-delete class="btn btn-danger mt-repeater-delete mt-repeater-del-right mt-repeater-btn-inline" onclick="deleteDeals('{{$val['id_deals']}}')">
+                                                <i class="fa fa-close"></i>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <textarea class="form-control" type="text" rows="2" disabled>{{$val['deals_title']}}</textarea>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input class="form-control price input-required" placeholder="Total" name="list_deals_total[]" type="text" value="{{$val['deals_total']}}" required>
+                                        </div>
+                                        <input type="hidden" name="list_deals_id[]" value="{{$val['id_deals']}}">
                                     </div>
-                                    <div class="col-md-2">
-                                        <input class="form-control price input-required" placeholder="Total" name="list_deals_total[]" type="text" value="{{$val['deals_total']}}" required>
-                                    </div>
-                                    <input type="hidden" name="list_deals_id[]" value="{{$val['id_deals']}}">
-                                </div>
+                                @endif
                             @endforeach
                         </div>
                     </form>
