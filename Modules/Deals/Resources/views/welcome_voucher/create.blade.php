@@ -1,5 +1,9 @@
 @extends('layouts.main')
+<?php
+use App\Lib\MyHelper;
+$configs    		= session('configs');
 
+?>
 @section('page-style')
 
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/datemultiselect/jquery-ui.css') }}" rel="stylesheet" type="text/css" />
@@ -237,6 +241,7 @@
                     }
                 };
             });
+            @if(MyHelper::hasAccess([97], $configs))
             $('select[name="id_brand"]').on('change',function(){
                 var id_brand=$('select[name="id_brand"]').val();
                 $.ajax({
@@ -270,6 +275,7 @@
                 });
             });
             $('select[name="id_brand"]').change();
+            @endif
         });
     </script>
 @endsection
@@ -345,7 +351,7 @@
                     </div>
                     --}}
                     @endif
-
+                    @if(MyHelper::hasAccess([97], $configs))
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -367,7 +373,7 @@
                             </div>
                         </div>
                     </div>
-
+                    @endif
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -534,20 +540,41 @@
                         </div>
                     </div>
 
-
-                    <div class="form-group">
-                        <div class="input-icon right">
-                            <label class="col-md-3 control-label">
-                            Outlet Available
-                            <span class="required" aria-required="true"> * </span>
-                            <i class="fa fa-question-circle tooltips" data-original-title="Pilih outlet yang memberlakukan deals tersebut" data-container="body"></i>
-                            </label>
+                    @if(MyHelper::hasAccess([97], $configs))
+                        <div class="form-group">
+                            <div class="input-icon right">
+                                <label class="col-md-3 control-label">
+                                    Outlet Available
+                                    <span class="required" aria-required="true"> * </span>
+                                    <i class="fa fa-question-circle tooltips" data-original-title="Pilih outlet yang memberlakukan deals tersebut" data-container="body"></i>
+                                </label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-control select2-multiple" data-placeholder="Select Outlet" name="id_outlet[]" multiple data-value="{{json_encode(old('id_outlet',[]))}}">
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-md-9">
-                            <select class="form-control select2-multiple" data-placeholder="Select Outlet" name="id_outlet[]" multiple data-value="{{json_encode(old('id_outlet',[]))}}">
-                            </select>
+                    @else
+                        <div class="form-group">
+                            <div class="input-icon right">
+                                <label class="col-md-3 control-label">
+                                    Outlet Available
+                                    <span class="required" aria-required="true"> * </span>
+                                    <i class="fa fa-question-circle tooltips" data-original-title="Pilih outlet yang memberlakukan deals tersebut" data-container="body"></i>
+                                </label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-control select2-multiple" data-placeholder="Select Outlet" name="id_outlet[]" multiple data-value="{{json_encode(old('id_outlet',[]))}}">
+                                    @if(!empty($outlets))
+                                        <option value="all">All Outlets</option>
+                                        @foreach($outlets as $row)
+                                            <option value="{{$row['id_outlet']}}">{{$row['outlet_code']}} - {{$row['outlet_name']}}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
                         </div>
-                    </div>
+                    @endif
 
                     <!-- IDENTIFIER DEALS OR HIDDEN -->
                     @include('deals::welcome_voucher.welcome_voucher_form')

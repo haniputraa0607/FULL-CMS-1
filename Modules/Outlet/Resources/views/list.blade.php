@@ -1,7 +1,9 @@
 <?php
-    use App\Lib\MyHelper;
-    $grantedFeature     = session('granted_features');
- ?>
+use App\Lib\MyHelper;
+$grantedFeature     = session('granted_features');
+$configs    		= session('configs');
+?>
+
 @extends('layouts.main')
 
 @section('page-style')
@@ -176,7 +178,9 @@
                     <tr>
                         <th> Code </th>
                         <th> Name </th>
+                        @if(MyHelper::hasAccess([97], $configs))
                         <th> Brand </th>
+                        @endif
                         <th> City </th>
                         <th> Open - Close </th>
                         <th> Status </th>
@@ -191,6 +195,7 @@
                             <tr>
                                 <td>{{ $value['outlet_code'] }}</td>
                                 <td>{{ $value['outlet_name'] }}</td>
+                                @if(MyHelper::hasAccess([97], $configs))
                                 <td>
                                     <ul style="padding-left: 20px;">
                                         @foreach ($value['brands'] as $item)
@@ -198,6 +203,7 @@
                                         @endforeach
                                     </ul>
                                 </td>
+                                @endif
                                 @if (empty($value['city']))
                                     <td> - </td>
                                 @else

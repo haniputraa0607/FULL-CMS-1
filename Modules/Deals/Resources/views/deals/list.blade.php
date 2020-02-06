@@ -1,6 +1,7 @@
 @include('deals::deals.list_filter')
 <?php
 use App\Lib\MyHelper;
+$configs    		= session('configs');
 $grantedFeature     = session('granted_features');
 ?>
 @extends('layouts.main')
@@ -151,7 +152,9 @@ $grantedFeature     = session('granted_features');
                         <th> No</th>
                         <th> Promo ID </th>
                         <th> Title </th>
+                        @if(MyHelper::hasAccess([97], $configs))
                         <th> Brand </th>
+                        @endif
                         @if($deals_type != "Hidden" && $deals_type !='WelcomeVoucher')
                             <th> Date Publish </th>
                         @endif
@@ -168,7 +171,9 @@ $grantedFeature     = session('granted_features');
                                 <td>{{ $key+1 }}</td>
                                 <td>{{ $value['deals_promo_id'] }}</td>
                                 <td>{{ $value['deals_title'] }}</td>
+                                @if(MyHelper::hasAccess([97], $configs))
                                 <td>{{ $value['brand']['name_brand']??'Not Set' }}</td>
+                                @endif
                                 @if($deals_type !='WelcomeVoucher')
                                 @if($deals_type != "Hidden")
                                 <td>

@@ -1,9 +1,14 @@
+<?php
+use App\Lib\MyHelper;
+$configs    		= session('configs');
+?>
 <div class="portlet-body form">
     <form id="form" class="form-horizontal" role="form" action=" @if($deals_type == "Deals") {{ url('deals/update') }} @else {{ url('welcome-voucher/update') }} @endif" method="post" enctype="multipart/form-data">
         @foreach ($deals as $key => $val)
 
             @if ($val['deals_type'] != "Point")
                 <div class="form-body">
+                    @if(MyHelper::hasAccess([97], $configs))
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -25,6 +30,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
 
                     <div class="form-group">
                         <div class="input-icon right">
@@ -220,19 +226,41 @@
                     @endphp
 
 
-                    <div class="form-group">
-                        <div class="input-icon right">
-                            <label class="col-md-3 control-label">
-                            Outlet Available
-                            <span class="required" aria-required="true"> * </span>
-                            <i class="fa fa-question-circle tooltips" data-original-title="Pilih outlet yang memberlakukan deals tersebut" data-container="body"></i>
-                            </label>
+                    @if(MyHelper::hasAccess([97], $configs))
+                        <div class="form-group">
+                            <div class="input-icon right">
+                                <label class="col-md-3 control-label">
+                                    Outlet Available
+                                    <span class="required" aria-required="true"> * </span>
+                                    <i class="fa fa-question-circle tooltips" data-original-title="Pilih outlet yang memberlakukan deals tersebut" data-container="body"></i>
+                                </label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-control select2-multiple" data-placeholder="Select Outlet" name="id_outlet[]" multiple data-value="{{json_encode($outletselected)}}">
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-md-9">
-                            <select class="form-control select2-multiple" data-placeholder="Select Outlet" name="id_outlet[]" multiple data-value="{{json_encode($outletselected)}}">
-                            </select>
+                    @else
+                        <div class="form-group">
+                            <div class="input-icon right">
+                                <label class="col-md-3 control-label">
+                                    Outlet Available
+                                    <span class="required" aria-required="true"> * </span>
+                                    <i class="fa fa-question-circle tooltips" data-original-title="Pilih outlet yang memberlakukan deals tersebut" data-container="body"></i>
+                                </label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-control select2-multiple" data-placeholder="Select Outlet" name="id_outlet[]" multiple data-value="{{json_encode($outletselected)}}">
+                                    @if(!empty($outlets))
+                                        <option value="all">All Outlets</option>
+                                        @foreach($outlets as $row)
+                                            <option value="{{$row['id_outlet']}}" @if(in_array($row['id_outlet'], $outletselected)) selected @endif)>{{$row['outlet_code']}} - {{$row['outlet_name']}}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
                         </div>
-                    </div>
+                    @endif
 
                     <div class="form-group">
                         <div class="input-icon right">

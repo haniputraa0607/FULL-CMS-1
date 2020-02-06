@@ -171,9 +171,11 @@ $configs    		= session('configs');
                     <li>
                         <a data-toggle="tab" href="#tab_3-3"><i class="fa fa-database"></i> Import Outlet</a>
                     </li>
+                    @if(MyHelper::hasAccess([97], $configs))
                     <li>
                         <a data-toggle="tab" href="#tab_4-4"><i class="fa fa-database"></i> Import Brand Outlet </a>
                     </li>
+                    @endif
                 </ul>
             </div>
             <div class="col-md-9">
