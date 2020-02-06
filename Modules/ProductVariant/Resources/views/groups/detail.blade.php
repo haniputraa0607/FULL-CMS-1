@@ -151,6 +151,11 @@
             $(this).html(allOption(id,text));
         })
         $('.row-disabler').change();
+        $('.img-photo').hover(function(){
+            $('#img_preview').attr('src','{{env('S3_URL_VIEW')}}img/setting/product_photo_preview.png');
+        },function(){
+            $('#img_preview').attr('src','{{env('S3_URL_VIEW')}}img/setting/product_group_preview.png');
+        });
     });
 </script>
 @endsection

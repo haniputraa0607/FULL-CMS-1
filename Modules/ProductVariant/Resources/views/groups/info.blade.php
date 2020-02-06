@@ -39,7 +39,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row img-photo">
                             <label class="col-md-4 control-label text-right">
                                 Image
                                 <span class="required" aria-required="true"> * </span>
@@ -111,6 +111,6 @@
                 </form>
             </div>
             <div class="preview col-md-4 pull-right" style="right: 0;top: 70px; position: sticky">
-                <img src="{{env('S3_URL_VIEW')}}img/setting/product_group_preview.png" class="img-responsive">
+                <img id="img_preview" src="{{env('S3_URL_VIEW')}}img/setting/product_group_preview.png" class="img-responsive">
             </div>
         </div>
