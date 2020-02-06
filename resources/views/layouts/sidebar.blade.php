@@ -275,6 +275,7 @@
 				@endif
 			@endif
 
+			@if(MyHelper::hasAccess([97], $configs))
 			@if(MyHelper::hasAccess([155,156,157,158,159], $grantedFeature))
 			<li class="nav-item {{($menu_active == 'brand') ? 'active' : ''}}">
 				<a href="javascript:;" class="nav-link nav-toggle">
@@ -306,6 +307,7 @@
 					@endif
 				</ul>
 			</li>
+			@endif
 			@endif
 
 			@if(MyHelper::hasAccess([24,26,32,33,34], $grantedFeature))
@@ -1609,6 +1611,7 @@
 				</a>
 			</li>
 			@endif
+			@if(MyHelper::hasAccess([98], $configs))
 			@if(MyHelper::hasAccess([154], $grantedFeature))
 			<li class="nav-item {{($menu_active == 'delivery-service') ? 'active' : ''}}">
 				<a href="{{url('delivery-service')}}" class="nav-link nav-toggle">
@@ -1616,6 +1619,7 @@
 					<span class="title">Delivery Services</span>
 				</a>
 			</li>
+			@endif
 			@endif
 			<!-- @if(MyHelper::hasAccess([87], $grantedFeature))
 			<li class="nav-item {{($menu_active == 'contact') ? 'active' : ''}}">

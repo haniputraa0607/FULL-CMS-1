@@ -1,5 +1,9 @@
 @extends('layouts.main')
+<?php
+use App\Lib\MyHelper;
+$configs    		= session('configs');
 
+?>
 @section('page-style')
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/datemultiselect/jquery-ui.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/datemultiselect/jquery-ui.multidatespicker.css') }}" rel="stylesheet" type="text/css" />

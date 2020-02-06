@@ -290,12 +290,21 @@ class DealsController extends Controller
     /* CREATE DEALS */
     function create(Create $request) {
         $post = $request->except('_token');
+        $configs = session('configs');
 
         if (empty($post)) {
             $identifier = $this->identifier();
             $dataDeals  = $this->dataDeals($identifier, "create");
             $data       = $dataDeals['data'];
 
+            if(!MyHelper::hasAccess([97], $configs)){
+                $outlet = MyHelper::get('outlet/be/list');
+                if(isset($outlet['status']) && $outlet['status'] == 'success'){
+                    $data['outlets'] = $outlet['result'];
+                }else{
+                    $data['outlets'] = [];
+                }
+            }
             // DATA BRAND
             $data['brands'] = parent::getData(MyHelper::get('brand/be/list'));
 
@@ -939,11 +948,21 @@ class DealsController extends Controller
     /* ====================== Start Welcome Voucher ====================== */
     function welcomeVoucherCreate(Create $request) {
         $post = $request->except('_token');
+        $configs = session('configs');
 
         if (empty($post)) {
             $identifier = $this->identifier();
             $dataDeals  = $this->dataDeals($identifier, "create");
             $data       = $dataDeals['data'];
+
+            if(!MyHelper::hasAccess([97], $configs)){
+                $outlet = MyHelper::get('outlet/be/list');
+                if(isset($outlet['status']) && $outlet['status'] == 'success'){
+                    $data['outlets'] = $outlet['result'];
+                }else{
+                    $data['outlets'] = [];
+                }
+            }
 
             // DATA BRAND
             $data['brands'] = parent::getData(MyHelper::post('brand/be/list', ['web' => 1]));

@@ -1,4 +1,8 @@
 @section('child-script')
+<?php
+use App\Lib\MyHelper;
+$configs  = session('configs');
+?>
 <script>
 	rules={
 		deals_title:{
@@ -54,11 +58,13 @@
 			operator:[],
 			opsi:{!!json_encode($outlets ?? [])!!}
 		},
+        @if(MyHelper::hasAccess([97], $configs))
 		id_brand:{
 			display:'Brand',
 			operator:[],
 			opsi:{!!json_encode($brands ?? [])!!}
 		},
+        @endif
 		deals_total_voucher:{
 			display:'Deals Total Voucher',
 			operator:[
