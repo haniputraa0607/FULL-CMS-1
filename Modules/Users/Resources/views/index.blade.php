@@ -241,26 +241,35 @@ $configs     		= session('configs');
 								<th scope="col"> Actions </th>
 								<th scope="col"> Name </th>
 								<th scope="col"> Phone </th>
-								<th scope="col"> Device </th>
 								<th scope="col"> Email </th>
-								@if(!MyHelper::hasAccess([96], $configs))
-								<th scope="col"> City </th>
-								@endif
-								<th scope="col"> Province </th>
-								<th scope="col"> Postal Code </th>
-								<th scope="col"> Gender </th>
-								<th scope="col"> Provider </th>
 								<th scope="col"> Birthday </th>
-								<th scope="col"> Age </th>
-								@if(MyHelper::hasAccess([18], $configs))
-									<th scope="col"> Points </th>
-								@endif
-								@if(MyHelper::hasAccess([19], $configs))
-									<th scope="col"> Balances </th>
-								@endif
-								<th scope="col"> Phone Verified </th>
-								<th scope="col"> Email Verified </th>
-								<th scope="col"> Register Date </th>
+								<th scope="col"> Gender </th>
+								<th scope="col"> Province </th>
+								<th scope="col"> Level </th>
+{{--								<th scope="col" style="width:450px !important"> No </th>--}}
+{{--								<th scope="col"> Actions </th>--}}
+{{--								<th scope="col"> Name </th>--}}
+{{--								<th scope="col"> Phone </th>--}}
+{{--								<th scope="col"> Device </th>--}}
+{{--								<th scope="col"> Email </th>--}}
+{{--								@if(!MyHelper::hasAccess([96], $configs))--}}
+{{--								<th scope="col"> City </th>--}}
+{{--								@endif--}}
+{{--								<th scope="col"> Province </th>--}}
+{{--								<th scope="col"> Postal Code </th>--}}
+{{--								<th scope="col"> Gender </th>--}}
+{{--								<th scope="col"> Provider </th>--}}
+{{--								<th scope="col"> Birthday </th>--}}
+{{--								<th scope="col"> Age </th>--}}
+{{--								@if(MyHelper::hasAccess([18], $configs))--}}
+{{--									<th scope="col"> Points </th>--}}
+{{--								@endif--}}
+{{--								@if(MyHelper::hasAccess([19], $configs))--}}
+{{--									<th scope="col"> Balances </th>--}}
+{{--								@endif--}}
+{{--								<th scope="col"> Phone Verified </th>--}}
+{{--								<th scope="col"> Email Verified </th>--}}
+{{--								<th scope="col"> Register Date </th>--}}
 
 							</tr>
 							</thead>
@@ -294,34 +303,61 @@ $configs     		= session('configs');
 												</td>
 												<td> {!!str_replace(" ","&nbsp;", $data['name'])!!} </td>
 												<td> {{$data['phone']}} </td>
-												<td>
-													@if($data['android_device'] == "" && $data['ios_device'] == "") None @endif
-													@if($data['android_device'] != "" && $data['ios_device'] == "") Android @endif
-													@if($data['android_device'] == "" && $data['ios_device'] != "") IOS @endif
-													@if($data['android_device'] != "" && $data['ios_device'] != "") Both @endif
-												</td>
 												<td> {{$data['email']}} </td>
-												@if(!MyHelper::hasAccess([96], $configs))
-												<td> {!!str_replace(" ","&nbsp;", $data['city_name'])!!} </td>
-												<td> {!!str_replace(" ","&nbsp;", $data['province_name'])!!} </td>
-												@else
-												<td> {!!str_replace(" ","&nbsp;", $data['province_custom_name'])!!} </td>
-												@endif
-												<td> {{$data['city_postal_code']}} </td>
-												<td> {{$data['gender']}} </td>
-												<td> {{$data['provider']}} </td>
 												<td> @if($data['birthday'] != ""){!!str_replace(" ","&nbsp;", date('d F Y', strtotime($data['birthday'])))!!}@else - @endif </td>
-												<td> {!!str_replace(" ","&nbsp;", $data['age'])!!} </td>
-												@if(MyHelper::hasAccess([18], $configs))
-													<td> {{$data['points']}} </td>
+												<td> {{$data['gender']}} </td>
+												@if(!MyHelper::hasAccess([96], $configs))
+													<td> {!!str_replace(" ","&nbsp;", $data['province_name'])!!} </td>
+												@else
+													<td> {!!str_replace(" ","&nbsp;", $data['province_custom_name'])!!} </td>
 												@endif
-												@if(MyHelper::hasAccess([19], $configs))
-													<td> {{$data['balance']}} </td>
-												@endif
-												<td> @if($data['phone_verified'] == 0) Not Verified @else Verified @endif </td>
-												<td> @if($data['email_verified'] == 0) Not Verified @else Verified @endif </td>
-												<td> {!!str_replace(" ","&nbsp;", date('d F Y H:i', strtotime($data['created_at'])))!!} </td>
+												<td> {{$data['level']}} </td>
 											</tr>
+{{--											<tr>--}}
+{{--												@endif--}}
+{{--												<td> {{$no+1}}--}}
+{{--													<label class="mt-checkbox"><input type="checkbox" value="1" name="users[{{$data['phone']}}]" id="check{{$data['phone']}}" class="md-check" /> <span></span></label>--}}
+{{--												</td>--}}
+{{--												<td>--}}
+{{--													@if(MyHelper::hasAccess([2], $grantedFeature))--}}
+{{--														<a class="btn btn-block yellow btn-xs" href="{{ url('user/detail', $data['phone']) }}"><i class="icon-pencil"></i> Detail </a>--}}
+{{--														<a class="btn btn-block blue btn-xs" href="{{ url('user/detail', $data['phone']) }}/favorite"><i class="icon-pencil"></i> Favorite </a>--}}
+{{--													@endif--}}
+
+{{--													@if(MyHelper::hasAccess([5], $grantedFeature))--}}
+{{--														<a class="btn btn-block red btn-xs" href="{{ url('user/delete', $data['phone']) }}" data-toggle="confirmation" data-placement="top"><i class="icon-close"></i> Delete </a>--}}
+{{--													@endif--}}
+{{--												</td>--}}
+{{--												<td> {!!str_replace(" ","&nbsp;", $data['name'])!!} </td>--}}
+{{--												<td> {{$data['phone']}} </td>--}}
+{{--												<td>--}}
+{{--													@if($data['android_device'] == "" && $data['ios_device'] == "") None @endif--}}
+{{--													@if($data['android_device'] != "" && $data['ios_device'] == "") Android @endif--}}
+{{--													@if($data['android_device'] == "" && $data['ios_device'] != "") IOS @endif--}}
+{{--													@if($data['android_device'] != "" && $data['ios_device'] != "") Both @endif--}}
+{{--												</td>--}}
+{{--												<td> {{$data['email']}} </td>--}}
+{{--												@if(!MyHelper::hasAccess([96], $configs))--}}
+{{--												<td> {!!str_replace(" ","&nbsp;", $data['city_name'])!!} </td>--}}
+{{--												<td> {!!str_replace(" ","&nbsp;", $data['province_name'])!!} </td>--}}
+{{--												@else--}}
+{{--												<td> {!!str_replace(" ","&nbsp;", $data['province_custom_name'])!!} </td>--}}
+{{--												@endif--}}
+{{--												<td> {{$data['city_postal_code']}} </td>--}}
+{{--												<td> {{$data['gender']}} </td>--}}
+{{--												<td> {{$data['provider']}} </td>--}}
+{{--												<td> @if($data['birthday'] != ""){!!str_replace(" ","&nbsp;", date('d F Y', strtotime($data['birthday'])))!!}@else - @endif </td>--}}
+{{--												<td> {!!str_replace(" ","&nbsp;", $data['age'])!!} </td>--}}
+{{--												@if(MyHelper::hasAccess([18], $configs))--}}
+{{--													<td> {{$data['points']}} </td>--}}
+{{--												@endif--}}
+{{--												@if(MyHelper::hasAccess([19], $configs))--}}
+{{--													<td> {{$data['balance']}} </td>--}}
+{{--												@endif--}}
+{{--												<td> @if($data['phone_verified'] == 0) Not Verified @else Verified @endif </td>--}}
+{{--												<td> @if($data['email_verified'] == 0) Not Verified @else Verified @endif </td>--}}
+{{--												<td> {!!str_replace(" ","&nbsp;", date('d F Y H:i', strtotime($data['created_at'])))!!} </td>--}}
+{{--											</tr>--}}
 							@endforeach
 							@endif
 

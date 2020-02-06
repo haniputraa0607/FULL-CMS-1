@@ -139,6 +139,7 @@ class UsersController extends Controller
 	}
 	
 	public function create(Request $request){
+        $configs	= session('configs');
 		$post = $request->except('_token');
 		if(isset($post) && !empty($post)){
 			// print_r($post);exit;
@@ -162,9 +163,12 @@ class UsersController extends Controller
 			$getCity = MyHelper::get('city/list');
 			
 			if($getCity['status'] == 'success') $data['city'] = $getCity['result']; else $data['city'] = null;
-			
-			$getProvince = MyHelper::get('province/list');
-			if($getProvince['status'] == 'success') $data['province'] = $getProvince['result']; else $data['province'] = null;
+
+            if(MyHelper::hasAccess([96], $configs)){
+                $data['province'] = MyHelper::get('province/list-custom')['result']??[];
+            }else{
+                $data['province'] = MyHelper::get('province/list')['result']??[];
+            }
 			
 			$getOutlet = MyHelper::get('outlet/be/list');
 			if($getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = null;

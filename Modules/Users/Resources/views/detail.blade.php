@@ -440,6 +440,8 @@
 												<i class="fa fa-mobile-phone"></i> {{$profile['phone']}} ({{$profile['provider']}}) </li>
 											<li class="list-group-item" style="padding: 5px !important;" title="User Email">
 												<i class="fa fa-envelope-o"></i> {{$profile['email']}} </li>
+											<li class="list-group-item" style="padding: 5px !important;" title="User Birthday">
+												<i class="fa fa-birthday-cake"></i> @if($profile['birthday']){{date("d F Y", strtotime($profile['birthday']))}} @endif</li>
 											<li class="list-group-item" style="padding: 5px !important;" title="User Gender">
 												@if($profile['gender'] == 'Male')<i class="fa fa-male"></i> {{$profile['gender']}} </li>@else<i class="fa fa-female"></i> {{$profile['gender']}} </li>
 												@endif
@@ -448,27 +450,25 @@
 {{--                                            <li class="list-group-item" style="padding: 5px !important;" title="User's Job">--}}
 {{--                                                <i class="fa fa-black-tie"></i> {{$profile['job']}} </li>--}}
                                             
-                                            @if(MyHelper::hasAccess([96], $configs))
+{{--                                            @if(MyHelper::hasAccess([96], $configs))--}}
 											<li class="list-group-item" style="padding: 5px !important;" title="User Province">
-												<i class="fa fa-map"></i> {{$profile['province_name']}} </li>
-                                            @else
-                                            <li class="list-group-item" style="padding: 5px !important;" title="User City & Province">
-                                                <i class="fa fa-map"></i> {{$profile['city_name']}}, {{$profile['province_name']}} </li>
-                                            @endif
+												<i class="fa fa-map"></i> @if(isset($profile['province_name'])){{$profile['province_name']}} @endif</li>
+{{--                                            @else--}}
+{{--                                            <li class="list-group-item" style="padding: 5px !important;" title="User City & Province">--}}
+{{--                                                <i class="fa fa-map"></i> {{$profile['city_name']}}, {{$profile['province_name']}} </li>--}}
+{{--                                            @endif--}}
 {{--                                            <li class="list-group-item" style="padding: 5px !important;" title="User Address">--}}
 {{--                                                <i class="fa fa-map-pin"></i> {{$profile['address']}} </li>--}}
-											<li class="list-group-item" style="padding: 5px !important;" title="User Birthday">
-												<i class="fa fa-birthday-cake"></i> @if($profile['birthday']){{date("d F Y", strtotime($profile['birthday']))}} @endif</li>
-											<li class="list-group-item" style="padding: 5px !important;" title="User Register date & time">
-												<i class="fa fa-registered"></i> {{date("d F Y", strtotime($profile['created_at']))}} </li>
-											<li class="list-group-item" style="padding: 5px !important;" title="User Membership">
-												<i class="icon-badge"></i> @if(isset($profile['user_membership']['membership_name'])){{$profile['user_membership']['membership_name']}} @endif</li>
-                        					<!-- <li class="list-group-item" style="padding: 5px !important;" title="User Relationship">
-												<i class="fa fa-heart"></i> { {$profile['relationship']} } </li> -->
-											<li class="list-group-item" style="padding: 5px !important;" title="Total {{env('POINT_NAME', 'Points')}} Obtained By The User">
-												<i class="fa fa-gift"></i> {{number_format($profile['balance_acquisition'], 0, ',', '.')}} </li>
-											<li class="list-group-item" style="padding: 5px !important;" title="Remaining User {{env('POINT_NAME', 'Points')}}">
-												<i class="fa fa-star"></i> {{number_format($profile['balance'], 0, ',', '.')}} </li>
+{{--											<li class="list-group-item" style="padding: 5px !important;" title="User Register date & time">--}}
+{{--												<i class="fa fa-registered"></i> {{date("d F Y", strtotime($profile['created_at']))}} </li>--}}
+{{--											<li class="list-group-item" style="padding: 5px !important;" title="User Membership">--}}
+{{--												<i class="icon-badge"></i> @if(isset($profile['user_membership']['membership_name'])){{$profile['user_membership']['membership_name']}} @endif</li>--}}
+{{--                        					<!-- <li class="list-group-item" style="padding: 5px !important;" title="User Relationship">--}}
+{{--												<i class="fa fa-heart"></i> { {$profile['relationship']} } </li> -->--}}
+{{--											<li class="list-group-item" style="padding: 5px !important;" title="Total {{env('POINT_NAME', 'Points')}} Obtained By The User">--}}
+{{--												<i class="fa fa-gift"></i> {{number_format($profile['balance_acquisition'], 0, ',', '.')}} </li>--}}
+{{--											<li class="list-group-item" style="padding: 5px !important;" title="Remaining User {{env('POINT_NAME', 'Points')}}">--}}
+{{--												<i class="fa fa-star"></i> {{number_format($profile['balance'], 0, ',', '.')}} </li>--}}
 										</ul>
 									</div>
 									<!--end col-md-8-->
@@ -1106,74 +1106,63 @@
 												<label class="control-label">Email</label>
 												<input type="text" name="email" placeholder="Email (Required & Unique)" class="form-control" value="{{$profile['email']}}" />
 											</div>
-                                            @if(MyHelper::hasAccess([96], $configs))
-                                            <div class="form-group">
-                                                <label class="control-label">Province</label>
-                                                <select name="id_province" class="form-control input-sm select2" data-placeholder="Search Province">
-                                                    <option value="">Select Province...</option>
-                                                    @if(isset($provinces))
-                                                        @foreach($provinces as $row)
-                                                            <option value="{{$row['id_province_custom']}}" @if(isset($profile['id_province'])) @if($row['id_province_custom'] == $profile['id_province']) selected @endif @endif>{{$row['province_name']}}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                            </div>
-                                            @else
-											<div class="form-group">
-												<label class="control-label">City</label>
-												<select name="id_city" class="form-control input-sm select2" placeholder="Search City">
-													<option value="">Select...</option>
-													@if(isset($city))
-														@foreach($city as $row)
-															<option value="{{$row['id_city']}}" @if(isset($profile['id_city'])) @if($row['id_city'] == $profile['id_city']) selected @endif @endif>{{$row['city_name']}}</option>
-														@endforeach
-													@endif
-												</select>
-											</div>
-                                            @endif
-                                            <div class="form-group">
-                                                <label class="control-label">Address</label>
-                                                <input type="text" name="address" placeholder="User Address" class="form-control" value="{{$profile['address']}}" />
-                                            </div>
-											<div class="form-group">
-												<label class="control-label">Celebrate</label>
-												<select name="celebrate" class="form-control input-sm select2" data-placeholder="Select Users Celebrate">
-													<option value=""></option>
-                                                    @php $was=false; @endphp
-                                                    @foreach($celebrates??[] as $celebrate)
-                                                    <option value="{{$celebrate}}" @if($celebrate==$profile['celebrate']) @php $was=true; @endphp selected @endif>{{$celebrate}}</option>
-                                                    @endforeach
-                                                    @if(!$was)
-                                                    <option value="{{$profile['celebrate']}}" selected>{{$profile['celebrate']}}</option>
-                                                    @endif
-												</select>
-											</div>
-                                            <div class="form-group">
-                                                <label class="control-label">Job</label>
-                                                <select name="job" class="form-control input-sm select2" data-placeholder="Select User's Job">
-                                                    <option value=""></option>
-                                                    @php $was=false; @endphp
-                                                    @foreach($jobs??[] as $job)
-                                                    <option value="{{$job}}" @if($job==$profile['job']) @php $was=true; @endphp selected @endif>{{$job}}</option>
-                                                    @endforeach
-                                                    @if(!$was)
-                                                    <option value="{{$profile['job']}}" selected>{{$profile['job']}}</option>
-                                                    @endif
-                                                </select>
-                                            </div>
-											<!-- <div class="form-group">
-												<label class="control-label">Relationship</label>
-												<select name="relationship" class="form-control input-sm select2">
-													<option value="">Select...</option>
-						                            <option value="In a Relationship" {{ ($profile['relationship']=="In a Relationship" ? "selected" : "") }}>In a Relationship</option>
-						                            <option value="Complicated" {{ ($profile['relationship']=="Complicated" ? "selected" : "") }}>Complicated</option>
-						                            <option value="Jomblo" {{ ($profile['relationship']=="Jomblo" ? "selected" : "") }}>Jomblo</option>
-												</select>
-											</div> -->
+{{--                                            @if(MyHelper::hasAccess([96], $configs))--}}
+{{--                                            @else--}}
+{{--											<div class="form-group">--}}
+{{--												<label class="control-label">City</label>--}}
+{{--												<select name="id_city" class="form-control input-sm select2" placeholder="Search City">--}}
+{{--													<option value="">Select...</option>--}}
+{{--													@if(isset($city))--}}
+{{--														@foreach($city as $row)--}}
+{{--															<option value="{{$row['id_city']}}" @if(isset($profile['id_city'])) @if($row['id_city'] == $profile['id_city']) selected @endif @endif>{{$row['city_name']}}</option>--}}
+{{--														@endforeach--}}
+{{--													@endif--}}
+{{--												</select>--}}
+{{--											</div>--}}
+{{--                                            @endif--}}
+{{--                                            <div class="form-group">--}}
+{{--                                                <label class="control-label">Address</label>--}}
+{{--                                                <input type="text" name="address" placeholder="User Address" class="form-control" value="{{$profile['address']}}" />--}}
+{{--                                            </div>--}}
+{{--											<div class="form-group">--}}
+{{--												<label class="control-label">Celebrate</label>--}}
+{{--												<select name="celebrate" class="form-control input-sm select2" data-placeholder="Select Users Celebrate">--}}
+{{--													<option value=""></option>--}}
+{{--                                                    @php $was=false; @endphp--}}
+{{--                                                    @foreach($celebrates??[] as $celebrate)--}}
+{{--                                                    <option value="{{$celebrate}}" @if($celebrate==$profile['celebrate']) @php $was=true; @endphp selected @endif>{{$celebrate}}</option>--}}
+{{--                                                    @endforeach--}}
+{{--                                                    @if(!$was)--}}
+{{--                                                    <option value="{{$profile['celebrate']}}" selected>{{$profile['celebrate']}}</option>--}}
+{{--                                                    @endif--}}
+{{--												</select>--}}
+{{--											</div>--}}
+{{--                                            <div class="form-group">--}}
+{{--                                                <label class="control-label">Job</label>--}}
+{{--                                                <select name="job" class="form-control input-sm select2" data-placeholder="Select User's Job">--}}
+{{--                                                    <option value=""></option>--}}
+{{--                                                    @php $was=false; @endphp--}}
+{{--                                                    @foreach($jobs??[] as $job)--}}
+{{--                                                    <option value="{{$job}}" @if($job==$profile['job']) @php $was=true; @endphp selected @endif>{{$job}}</option>--}}
+{{--                                                    @endforeach--}}
+{{--                                                    @if(!$was)--}}
+{{--                                                    <option value="{{$profile['job']}}" selected>{{$profile['job']}}</option>--}}
+{{--                                                    @endif--}}
+{{--                                                </select>--}}
+{{--                                            </div>--}}
+{{--											<!-- <div class="form-group">--}}
+{{--												<label class="control-label">Relationship</label>--}}
+{{--												<select name="relationship" class="form-control input-sm select2">--}}
+{{--													<option value="">Select...</option>--}}
+{{--						                            <option value="In a Relationship" {{ ($profile['relationship']=="In a Relationship" ? "selected" : "") }}>In a Relationship</option>--}}
+{{--						                            <option value="Complicated" {{ ($profile['relationship']=="Complicated" ? "selected" : "") }}>Complicated</option>--}}
+{{--						                            <option value="Jomblo" {{ ($profile['relationship']=="Jomblo" ? "selected" : "") }}>Jomblo</option>--}}
+{{--												</select>--}}
+{{--											</div> -->--}}
 											<div class="form-group">
 												<label class="control-label">Birthday</label>
 												<div class="input-group date date-picker margin-bottom-5" data-date-format="yyyy-mm-dd">
-													<input type="text" class="form-control form-filter input-sm date-picker" readonly name="birthday" placeholder="From"  value="{{date('d/m/Y', strtotime($profile['birthday']))}}">
+													<input type="text" class="form-control form-filter input-sm date-picker" name="birthday" placeholder="From"  value="{{date('d/m/Y', strtotime($profile['birthday']))}}">
 													<span class="input-group-btn">
 														<button class="btn btn-sm default" type="button">
 															<i class="fa fa-calendar"></i>
@@ -1182,18 +1171,59 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="control-label">Phone Verified</label>
-												<div class="mt-radio-inline">
-													<label class="mt-radio">
-														<input type="radio" name="phone_verified" id="optionsRadios1" value="1" @if($profile['phone_verified'] == '1') checked @endif > Verified
-														<span></span>
-													</label>
-													<label class="mt-radio">
-														<input type="radio" name="phone_verified" id="optionsRadios2" value="0" @if($profile['phone_verified'] == '0') checked @endif> Not Verified
-														<span></span>
-													</label>
-												</div>
+												<label class="control-label">Gender</label>
+												<select name="gender" class="form-control input-sm select2" data-placeholder="Search Gender">
+													<option value="">Select Gender...</option>
+													<option value="Male" @if($profile['gender'] == 'Male') selected @endif>Male</option>
+													<option value="Female" @if($profile['gender'] == 'Female') selected @endif>Female</option>
+												</select>
 											</div>
+											@if(MyHelper::hasAccess([96], $configs))
+											<div class="form-group">
+												<label class="control-label">Province</label>
+												<select name="id_province" class="form-control input-sm select2" data-placeholder="Search Province">
+													<option value="">Select Province...</option>
+													@if(isset($provinces) && !empty($provinces))
+														@foreach($provinces as $row)
+															<option value="{{$row['id_province_custom']}}" @if(isset($profile['id_province'])) @if($row['id_province_custom'] == $profile['id_province']) selected @endif @endif>{{$row['province_name']}}</option>
+														@endforeach
+													@endif
+												</select>
+											</div>
+											@else
+											<div class="form-group">
+												<label class="control-label">Province</label>
+												<select name="id_province" class="form-control input-sm select2" data-placeholder="Search Province">
+													<option value="">Select Province...</option>
+													@if(isset($provinces) && !empty($provinces))
+														@foreach($provinces as $row)
+															<option value="{{$row['id_province']}}" @if(isset($profile['id_province'])) @if($row['id_province'] == $profile['id_province']) selected @endif @endif>{{$row['province_name']}}</option>
+														@endforeach
+													@endif
+												</select>
+											</div>
+											@endif
+											<div class="form-group">
+												<label class="control-label">Level User</label>
+												<select name="level" class="form-control input-sm select2" data-placeholder="Search Level">
+													<option value="">Select Level...</option>
+													<option value="Admin" @if($profile['level'] == 'Admin') selected @endif>Admin</option>
+													<option value="Customer" @if($profile['level'] == 'Customer') selected @endif>Customer</option>
+												</select>
+											</div>
+{{--											<div class="form-group">--}}
+{{--												<label class="control-label">Phone Verified</label>--}}
+{{--												<div class="mt-radio-inline">--}}
+{{--													<label class="mt-radio">--}}
+{{--														<input type="radio" name="phone_verified" id="optionsRadios1" value="1" @if($profile['phone_verified'] == '1') checked @endif > Verified--}}
+{{--														<span></span>--}}
+{{--													</label>--}}
+{{--													<label class="mt-radio">--}}
+{{--														<input type="radio" name="phone_verified" id="optionsRadios2" value="0" @if($profile['phone_verified'] == '0') checked @endif> Not Verified--}}
+{{--														<span></span>--}}
+{{--													</label>--}}
+{{--												</div>--}}
+{{--											</div>--}}
 											<!-- <div class="form-group">
 												<label class="control-label">Email Verified</label>
 												<div class="mt-radio-inline">
