@@ -63,14 +63,14 @@ date_default_timezone_set('Asia/Jakarta');
             $(this).parents('.form-container').find('.nominal-view input').attr('disabled','disabled');
             $(this).parents('.form-container').find('.percent-view input').removeAttr('disabled');
             //trigger change
-            $('.percentable').change();
+            $('.percentable').keyup();
         }else if($(this).val() == 'Nominal'){
             $(this).parents('.form-container').addClass('show-nominal');
             $(this).parents('.form-container').removeClass('show-percent');
             $(this).parents('.form-container').find('.percent-view input').attr('disabled','disabled');
             $(this).parents('.form-container').find('.nominal-view input').removeAttr('disabled');
             //trigger change
-            $('.percentable').change();
+            $('.percentable').keyup();
         }else if($(this).val() == 'Cashback'){
             $(this).parents('.form-container').addClass('show-cashback');
             $(this).parents('.form-container').removeClass('show-discount');

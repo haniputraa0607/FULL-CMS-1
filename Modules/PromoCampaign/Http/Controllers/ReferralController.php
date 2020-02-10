@@ -93,7 +93,7 @@ class ReferralController extends Controller
         if(($update['status']??'')=='success'){
             return back()->with('success',['Success update setting']);
         }else{
-            return back()->withErrors(['Failed update setting']);
+            return back()->withInput()->withErrors($update['messages']??['Failed update setting']);
         }
     }
 }
