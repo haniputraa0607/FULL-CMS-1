@@ -1025,6 +1025,27 @@
 				@endif
 			@endif
 
+			@if(MyHelper::hasAccess([93], $configs))
+				@if(MyHelper::hasAccess([228], $grantedFeature))
+				<li class="nav-item {{($menu_active == 'referral') ? 'active open' : ''}}">
+					<a href="javascript:;" class="nav-link nav-toggle">
+						<i class="fa fa-user-plus"></i>
+						<span class="title">Referral</span>
+						<span class="arrow {{($menu_active == 'referral') ? 'open' : ''}}"></span>
+					</a>
+					<ul class="sub-menu">
+						@if(MyHelper::hasAccess([228], $grantedFeature))
+						<li class="nav-item {{($submenu_active == 'referral-setting') ? 'active open' : ''}}">
+							<a href="{{url('referral/setting')}}" class="nav-link ">
+								<span class="title">Referral Setting</span>
+							</a>
+						</li>
+						@endif
+					</ul>
+				</li>
+				@endif
+			@endif
+
 			@if(MyHelper::hasAccess([49], $configs))
 				@if(MyHelper::hasAccess([95], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'deals-autoresponse-claim-free-deals-success') ? 'active open' : ''}}">
