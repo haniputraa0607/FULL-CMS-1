@@ -39,19 +39,22 @@
 			<i class="fa fa-question-circle tooltips" data-original-title="Masukan rentang jumlah produk dan diskon" data-container="body"></i></label>
 		</div>
 		<hr>
-		<div class="col-md-6">
-			<div class="col-md-3 text-center">
+		<div class="col-md-8">
+			<div class="col-md-2 text-center">
 				<label>Min. Qty <i class="fa fa-question-circle tooltips" data-original-title="Jumlah minimal pembelian produk untuk mendapatkan diskon" data-container="body"></i></label>
 			</div>
-			<div class="col-md-3 text-center">
+			<div class="col-md-2 text-center">
 				<label>Max. Qty <i class="fa fa-question-circle tooltips" data-original-title="Jumlah maksimal pembelian produk untuk mendapatkan diskon" data-container="body"></i></label>
 			</div>
-			<div class="col-md-5 text-center">
+			<div class="{{ (($result['promo_campaign_tier_discount_rules'][0]['discount_type']??'') == 'Percent') ? 'col-md-3' : 'col-md-5'}}  text-center" id="bulk-label-div">
 				<label id="bulk-label" class="control-label"> {{ (($result['promo_campaign_tier_discount_rules'][0]['discount_type']??'') == 'Percent') ? 'Percent value' : 'Nominal value'}} </label><span class="required" aria-required="true">  </span><i class="fa fa-question-circle tooltips" data-original-title="Besar diskon yang diberikan" data-container="body"></i><br>
 				<div class="form-group">
 				</div>
 			</div>
-			<div class="col-md-1">
+			<div class="col-md-4 text-center" id="max-percent-discount-div" style="{{ (($result['promo_campaign_tier_discount_rules'][0]['discount_type']??'') == 'Percent') ? '' : 'display: none'}}">
+				<label class="control-label"> Max Percent Discount </label><span class="required" aria-required="true">  </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah diskon maksimal yang bisa didapatkan ketika menggunakan promo. Kosongkan jika maksimal persen mengikuti harga produk" data-container="body"></i><br>
+				<div class="form-group">
+				</div>
 			</div>
 		</div>
 	</div>
@@ -66,20 +69,19 @@
 <script type="text/javascript">
 	var lastError='';
 	var template='	<div class="row" data-id="::n::">\
-		<div class="col-md-6">\
-			<div class="col-md-3">\
+		<div class="col-md-8">\
+			<div class="col-md-2">\
 				<div class="form-group">\
 					<input type="text" class="form-control qty_mask ::classMinQty:: text-center" min="1" name="promo_rule[::n::][min_qty]" value="::min_qty::" required autocomplete="off">\
 				</div>\
 				<p class="text-danger help-block" style="padding-bottom:10px;margin-top:-10px">::error1::</p>\
 			</div>\
-			<div class="col-md-3">\
+			<div class="col-md-2">\
 				<div class="form-group">\
 					<input type="text" class="form-control qty_mask ::classMaxQty:: text-center" min="1" name="promo_rule[::n::][max_qty]" value="::max_qty::" required autocomplete="off">\
 				</div>\
 				<p class="text-danger help-block" style="padding-bottom:10px;margin-top:-10px">::error2::</p>\
 			</div>\
-			<div class="col-md-1 ::class_div_percent::">\</div>\
 			<div class="::class_div_input::">\
 				<div class="form-group">\
 					<div class="input-group">\
@@ -87,6 +89,14 @@
 						<input type="text" class="form-control discount_viewer text-center" id="discount_value::n::" data-target="promo_rule[::n::][discount_value]"  value="::discount_valuex::" required placeholder="::placeholder::" autocomplete="off">\
 						<input type="number" class="form-control discount_value" style="display:none" min="0" name="promo_rule[::n::][discount_value]" value="::discount_value::" ::discount_prop:: required>\
 						<div class="input-group-addon ::percent::">%</div>\
+					</div>\
+				</div>\
+			</div>\
+			<div class="col-md-4 max-percent-input ::class_div_max_percent::">\
+				<div class="form-group">\
+					<div class="input-group">\
+						<div class="input-group-addon">IDR</div>\
+						<input type="text" class="form-control text-center digit_mask" id="max_percent_discount::n::" data-target="promo_rule[::n::][max_percent_discount]"  value="::max_percent_discountx::" autocomplete="off" name="promo_rule[::n::][max_percent_discount]">\
 					</div>\
 				</div>\
 			</div>\
@@ -126,6 +136,9 @@
 			var placeholder = '100.000';
 			var it_min_qty = it['min_qty']+'';
 			var it_max_qty = it['max_qty']+'';
+			var max_percent_discount = it['max_percent_discount']+'';
+			max_percent_discount = max_percent_discount.replace(/,/g , '');
+			fmpd = parseInt(max_percent_discount);
 			it_min_qty = it_min_qty.replace(/,/g , '');
 			it_max_qty = it_max_qty.replace(/,/g , '');
 			it_min_qty = parseInt(it_min_qty);
@@ -145,7 +158,12 @@
 			}else{
 				var fdv='';
 			}
-			edited=edited.replace(/::n::/g,id).replace('::min_qty::',it['min_qty']).replace('::max_qty::',it['max_qty']).replace("::discount_value::",discount_value).replace("::discount_valuex::",fdv).replace("::nominal::", show_nominal).replace("::percent::", show_percent).replace("::class_div_input::", class_div_input).replace("::class_div_percent::", class_div_percent).replace("::placeholder::", placeholder);
+			// if(!isNaN(parseInt(max_percent_discount))){
+			// 	var fmpd=parseInt(max_percent_discount).toLocaleString('id');
+			// }else{
+			// 	var fmpd='';
+			// }
+			edited=edited.replace(/::n::/g,id).replace('::min_qty::',it['min_qty']).replace('::max_qty::',it['max_qty']).replace("::discount_value::",discount_value).replace("::discount_valuex::",fdv).replace("::nominal::", show_nominal).replace("::percent::", show_percent).replace("::class_div_input::", class_div_input).replace("::class_div_percent::", class_div_percent).replace("::placeholder::", placeholder).replace("::max_percent_discount::", it['max_percent_discount']).replace("::max_percent_discountx::", fmpd).replace("::class_div_max_percent::", show_percent);
 			if(it_min_qty-last<=0){
 				if(!lastErrorReal){
 					edited=edited.replace('::error1::','Min. Quantity should be greater than '+last).replace('::classMinQty::','red');
@@ -175,7 +193,7 @@
 		}
 
 		$('.digit_mask').inputmask({
-			removeMaskOnSubmit: "true", 
+			removeMaskOnSubmit: true, 
 			placeholder: "",
 			alias: "currency", 
 			digits: 0, 
@@ -229,9 +247,13 @@
 			if($('input[name="discount_type"]:checked').val()=='Percent'){
 				$('.discount_value').prop('max','100');
 				$('#bulk-label').text('Percent value');
+				$('#max-percent-discount-div, .max-percent-input').show();
+				$('#bulk-label-div').removeClass('col-md-5').addClass('col-md-3');
 			}else{
 				$('.discount_value').removeProp('max');
 				$('#bulk-label').text('Nominal value');
+				$('#max-percent-discount-div, .max-percent-input').hide();
+				$('#bulk-label-div').removeClass('col-md-3').addClass('col-md-5');
 			}
 		});
 		$('button[type="submit"]').on('click',function(){
@@ -254,6 +276,16 @@
 				value='';
 			}
 			$(this).val(value);
+		});
+
+		$('.digit_mask').inputmask({
+			removeMaskOnSubmit: "true", 
+			placeholder: "",
+			alias: "currency", 
+			digits: 0, 
+			rightAlign: false,
+			min: '0',
+			max: '999999999'
 		});
 		reOrder();
 	});

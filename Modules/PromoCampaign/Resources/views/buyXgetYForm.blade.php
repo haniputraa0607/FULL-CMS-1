@@ -16,20 +16,20 @@
 	<div class="row">
 		<div class="col-md-3">
 			<div class="col-md-6 text-center">
-				<label>Min. Qty <i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk X minimal untuk mendapatkan diskon produk Y" data-container="body"></i></label>
+				<label>Min. Qty <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk X minimal untuk mendapatkan diskon produk Y" data-container="body"></i></label>
 			</div>
 			<div class="col-md-6 text-center">
-				<label>Max. Qty <i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk X maksimal untuk mendapatkan diskon produk Y" data-container="body"></i></label>
+				<label>Max. Qty <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk X maksimal untuk mendapatkan diskon produk Y" data-container="body"></i></label>
 			</div>
 		</div>
 		<div class="col-md-9">
-			<div class="col-md-4 text-center">
-				<label>Product Benefit <i class="fa fa-question-circle tooltips" data-original-title="Produk Y yang akan diberikan diskon setelah pembelian produk X" data-container="body"></i></label>
-			</div>
-			<div class="col-md-3 text-center">
-				<label>Benefit <i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk Y yang akan dikenakan diskon setelah pembelian produk X </br></br> Free : jumlah product Y yang diberikan </br></br> Discount : Besar diskon yang diberikan pada produk Y" data-html="true" data-container="body"></i></label>
-			</div>
 			<div class="col-md-5 text-center">
+				<label>Product Benefit <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Produk Y yang akan diberikan diskon setelah pembelian produk X" data-container="body"></i></label>
+			</div>
+			<div class="col-md-6 text-center">
+				<label>Benefit <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk Y yang akan dikenakan diskon setelah pembelian produk X </br></br> Free : jumlah product Y yang diberikan </br></br> Discount : Besar diskon yang diberikan pada produk Y" data-html="true" data-container="body"></i></label>
+			</div>
+			<div class="col-md-1 text-center">
 			</div>
 		</div>
 	</div>
@@ -43,7 +43,7 @@
 @section('child-script2')
 <script type="text/javascript">
 	var lastError2='';
-	var template2='	<div class="row" data-id="::n::">\
+	var template2='<div class="row" data-id="::n::">\
 		<div class="col-md-3">\
 			<div class="col-md-6">\
 				<div class="form-group">\
@@ -59,40 +59,68 @@
 			</div>\
 		</div>\
 		<div class="col-md-9">\
-			<div class="col-md-4">\
+			<div class="col-md-5">\
 				<div class="form-group">\
 					<select name="promo_rule[::n::][benefit_id_product]" class="form-control product-selector select2" placeholder="Select product" style="width: 100%!important">::productList::</select>\
 				</div>\
 			</div>\
-			<div class="col-md-4">\
+			<div class="col-md-6">\
 				<select class="form-control benefit" name="promo_rule[::n::][benefit_type]">\
 					<option value="free" ::selected_free::> Free Product</option>\
 					<option value="nominal" ::selected_nominal::> Nominal Discount </option>\
 					<option value="percent" ::selected_percent::> Percent Discount </option>\
 		        </select>\
 			</div>\
-			<div class="col-md-3">\
-				<div class="form-group ::hide_qty::">\
-					<div class="input-group">\
-						<input type="text" class="form-control benefit_qty text-center digit_mask" min="0" name="promo_rule[::n::][benefit_qty]" value="::benefit_qty::" ::required_qty:: placeholder="Benefit Qty" autocomplete="off">\
-						<div class="input-group-addon">qty</div>\
-					</div>\
+			<div class="col-md-1">\
+				<button type="button" class="btn btn-danger btn-sm remove"><i class="fa fa-trash-o"></i></button>\
+			</div>\
+		</div>\
+		<div class="col-md-3">\
+		</div>\
+		<div class="col-md-9">\
+			<div class="col-md-5 text-right">\
+			</div>\
+			<div class="col-md-6">\
+				<div class="col-md-6 p-l-0 text-right">\
+					<label>Discount<span class="required" aria-required="true"> * </span></label>\
 				</div>\
-				<div class="form-group ::hide_nominal::">\
-					<div class="input-group">\
-						<div class="input-group-addon">IDR</div>\
-						<input type="text" class="form-control digit_mask text-center" min="0" name="promo_rule[::n::][discount_nominal]" value="::discount_nominal::" ::required_nominal:: placeholder="100000" autocomplete="off">\
+				<div class="col-md-6 p-l-r-0">\
+					<div class="form-group ::hide_qty::">\
+						<div class="input-group">\
+							<input type="text" class="form-control benefit_qty text-center digit_mask" min="0" name="promo_rule[::n::][benefit_qty]" value="::benefit_qty::" ::required_qty:: placeholder="Benefit Qty" autocomplete="off">\
+							<div class="input-group-addon">qty</div>\
+						</div>\
 					</div>\
-				</div>\
-				<div class="form-group ::hide_percent::">\
-					<div class="input-group">\
-						<input type="number" class="form-control discount_value max100 benefit_percent text-center" min="0" max="100" name="promo_rule[::n::][discount_percent]" value="::discount_value::"" ::discount_prop:: ::required_percent:: style="padding-left: 7px;padding-right: 7px;text-align: center;" placeholder="50" autocomplete="off">\
-						<div class="input-group-addon">%</div>\
+					<div class="form-group ::hide_nominal::">\
+						<div class="input-group">\
+							<div class="input-group-addon">IDR</div>\
+							<input type="text" class="form-control digit_mask text-center" min="0" name="promo_rule[::n::][discount_nominal]" value="::discount_nominal::" ::required_nominal:: placeholder="100000" autocomplete="off">\
+						</div>\
+					</div>\
+					<div class="form-group ::hide_percent::">\
+						<div class="input-group">\
+							<input type="number" class="form-control discount_value max100 benefit_percent text-center" min="0" max="100" name="promo_rule[::n::][discount_percent]" value="::discount_percent::" ::discount_prop:: ::required_percent:: style="padding-left: 7px;padding-right: 7px;text-align: center;" placeholder="50" autocomplete="off">\
+							<div class="input-group-addon">%</div>\
+						</div>\
 					</div>\
 				</div>\
 			</div>\
-			<div class="col-md-1">\
-				<button type="button" class="btn btn-danger btn-sm remove"><i class="fa fa-trash-o"></i></button>\
+			<div class="::hide_percent_max::">\
+				<div class="col-md-5 text-right">\
+				</div>\
+				<div class="col-md-6">\
+					<div class="col-md-6 p-l-0 text-right">\
+						<label>Max Discount</label>\
+					</div>\
+					<div class="col-md-6 p-l-r-0">\
+						<div class="form-group">\
+							<div class="input-group">\
+								<div class="input-group-addon">IDR</div>\
+								<input type="text" class="form-control digit_mask text-center" min="0" name="promo_rule[::n::][max_percent_discount]" value="::max_percent_discount::"  placeholder="100000" autocomplete="off">\
+							</div>\
+						</div>\
+					</div>\
+				</div>\
 			</div>\
 		</div>\
 	</div>';
@@ -125,18 +153,21 @@
 		database2.forEach(function(it,id){
 			var edited=template2;
 			var errorNow='';
-			var discount_value=it['discount_percent'];
+			var discount_value=it['discount_value'];
 			var discount_nominal_value=it['discount_nominal'];
+			var discount_percent_value=it['discount_percent'];
 			var qty = it['benefit_qty'];
 			var hide_qty = '';
 			var hide_nominal = '';
 			var hide_percent = '';
 			var selected_free = '';
 			var selected_nominal = '';
+			var hide_percent_max = '';
 			var selected_percent = '';
 			var required_qty = '';
 			var required_nominal = '';
 			var required_percent = '';
+			var max_percent_discount = it['max_percent_discount'];
 			var it_min_qty = it['min_qty_requirement']+'';
 			var it_max_qty = it['max_qty_requirement']+'';
 			it_min_qty = it_min_qty.replace(/,/g , '');
@@ -148,15 +179,18 @@
 
 				hide_nominal = 'd-none';
 				hide_percent = 'd-none';
+				hide_percent_max = 'd-none';
 				selected_free = 'selected';
 				required_qty = 'required';
 				discount_value = 100;
 				discount_nominal_value = ''
+				max_percent_discount = ''
 
 			}else if(it['benefit_type'] == "percent") {
 
 				hide_qty = 'd-none';
 				hide_nominal = 'd-none';
+				hide_percent_max = '';
 				selected_percent = 'selected';
 				required_percent = 'required';
 				discount_nominal_value = ''
@@ -165,28 +199,34 @@
 
 				hide_qty = 'd-none';
 				hide_percent = 'd-none';
+				hide_percent_max = 'd-none';
 				selected_nominal = 'selected';
 				required_nominal = 'required';
 				discount_value = '';
+				max_percent_discount = ''
 
 			}else {
 
-				if (it['discount_nominal']) {
+				if (it['discount_type'] == 'nominal') {
 
-					discount_nominal_value = it['discount_nominal'];
+					discount_nominal_value = it['discount_nominal'] ? it['discount_nominal'] : it['discount_value'];
 					hide_qty = 'd-none';
 					hide_percent = 'd-none';
+					hide_percent_max = 'd-none';
 					hide_nominal = '';
 					selected_nominal = 'selected';
 					required_qty = '';
 					required_nominal = 'required';
 					discount_value = '';
+					max_percent_discount = ''
 					
-				}else if (it['discount_percent'] && it['discount_percent'] != 100) {
+				}else if (it['discount_type'] =='percent' && it['discount_value'] != 100) {
 
+					discount_percent_value = it['discount_percent'] ? it['discount_percent'] : it['discount_value'];
 					hide_qty = 'd-none';
 					hide_nominal = 'd-none';
 					hide_percent = '';
+					hide_percent_max = '';
 					selected_percent = 'selected';
 					required_percent = 'required';
 					discount_nominal_value = ''
@@ -194,19 +234,39 @@
 				}else {
 					hide_nominal = 'd-none';
 					hide_percent = 'd-none';
+					hide_percent_max = 'd-none';
 					selected_free = 'selected';
 					discount_value = 100;
 					discount_nominal_value = ''
+					discount_percent_value = '';
+					max_percent_discount = ''
 
 				}
 
 			}
 
 			$('button[type="submit"]').prop('disabled', false);
-			if(it['discount_percent']-100>0){
+			if( (it['discount_value']-100)>0 && it['discount_type'] == "percent"){
 				discount_value=100;
 			}
-			edited=edited.replace(/::n::/g,id).replace('::min_qty::',it['min_qty_requirement']).replace('::max_qty::',it['max_qty_requirement']).replace('::discount_value::',discount_value).replace('::benefit_qty::',it['benefit_qty']).replace('::hide_qty::', hide_qty).replace('::hide_nominal::', hide_nominal).replace('::hide_percent::', hide_percent).replace('::selected_free::', selected_free).replace('::selected_nominal::', selected_nominal).replace('::selected_percent::', selected_percent).replace('::discount_nominal::',discount_nominal_value?discount_nominal_value:'').replace('::required_qty::',required_qty).replace('::required_nominal::',required_nominal).replace('::required_percent::',required_percent);
+			edited=edited.replace(/::n::/g,id)
+			.replace('::min_qty::',it['min_qty_requirement'])
+			.replace('::max_qty::',it['max_qty_requirement'])
+			.replace('::discount_value::',discount_value)
+			.replace('::benefit_qty::',it['benefit_qty'])
+			.replace('::hide_qty::', hide_qty)
+			.replace('::hide_nominal::', hide_nominal)
+			.replace('::hide_percent::', hide_percent)
+			.replace('::selected_free::', selected_free)
+			.replace('::selected_nominal::', selected_nominal)
+			.replace('::selected_percent::', selected_percent)
+			.replace('::discount_nominal::',discount_nominal_value?discount_nominal_value:'')
+			.replace('::discount_percent::',discount_percent_value?discount_percent_value:'')
+			.replace('::required_qty::',required_qty)
+			.replace('::required_nominal::',required_nominal)
+			.replace('::required_percent::',required_percent)
+			.replace('::hide_percent_max::', hide_percent_max)
+			.replace('::max_percent_discount::', max_percent_discount);
 
 			if(it_min_qty-last<=0){
 				if(!lastErrorReal){
