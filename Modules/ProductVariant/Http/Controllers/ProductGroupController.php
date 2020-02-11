@@ -90,8 +90,21 @@ class ProductGroupController extends Controller
         return view('productvariant::groups.detail',$data);
     }
 
-    public function update(Request $request) {
+    public function update(Request $request,$id) {
         $post = $request->except('_token');
+        $post['id_product_group'] = $id;
+        if($post['product_group_photo']??false){
+            $post['product_group_photo'] = MyHelper::encodeImage($post['product_group_photo']);
+        }
+        if($post['product_group_image_detail']??false){
+            $post['product_group_image_detail'] = MyHelper::encodeImage($post['product_group_image_detail']);
+        }
+        $request = MyHelper::post('product-variant/group/update',$post);
+        if(($request['status']??false)=='success'){
+            return back()->with('success',['Success update data']);
+        }else{
+            return back()->withInput()->withErrors($request['messages']??['Failed update data']);
+        }
     }
 
     /**
@@ -116,8 +129,13 @@ class ProductGroupController extends Controller
      * @param int $id
      * @return Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy(Request $request){
+        $post = $request->except('_token');
+        $request = MyHelper::post('product-variant/group/delete',$post);
+        if(($request['status']??false)=='success'){
+            return back()->with('success',['Success delete data']);
+        }else{
+            return back()->withInput()->withErrors($request['messages']??['Failed delete data']);
+        }
     }
 }
