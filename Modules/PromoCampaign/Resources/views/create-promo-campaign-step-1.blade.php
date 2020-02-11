@@ -218,9 +218,9 @@
 						result2 += characters.charAt(Math.floor(Math.random() * charactersLength));
 						result1 += characters.charAt(Math.floor(Math.random() * charactersLength));
 					}
-					$('#exampleCode').replaceWith("<span id='exampleCode'>"+prefix+'-'+result+"</span>")
-					$('#exampleCode1').replaceWith("<span id='exampleCode1'>"+prefix+'-'+result1+"</span>")
-					$('#exampleCode2').replaceWith("<span id='exampleCode2'>"+prefix+'-'+result2+"</span>")
+					$('#exampleCode').replaceWith("<span id='exampleCode'>"+prefix+result+"</span>")
+					$('#exampleCode1').replaceWith("<span id='exampleCode1'>"+prefix+result1+"</span>")
+					$('#exampleCode2').replaceWith("<span id='exampleCode2'>"+prefix+result2+"</span>")
 				});
 				$('input[name=total_coupon]').keyup(function() {
 					maxCharDigit = 28;
@@ -400,7 +400,7 @@
 							<span class="required" aria-required="true"> * </span>
 							<i class="fa fa-question-circle tooltips" data-original-title="Jumlah digit yang digenerate secara otomatis untuk akhiran kode" data-container="body"></i>
 							<div class="input-group col-md-12">
-								<input id="multipleNumberLastCode" type="number" class="form-control" name="number_last_code" placeholder="Total Digit Random Last Code" @if(isset($result['number_last_code']) && $result['number_last_code'] != "") value="{{$result['number_last_code']}}" @elseif(old('number_last_code') != "") value="{{old('number_last_code')}}" @endif autocomplete="off" oninput="validity.valid||(value='');" min="0">
+								<input id="multipleNumberLastCode" type="number" class="form-control" name="number_last_code" placeholder="Total Digit Random Last Code" @if(isset($result['number_last_code']) && $result['number_last_code'] != "") value="{{$result['number_last_code']}}" @elseif(old('number_last_code') != "") value="{{old('number_last_code')}}" @endif autocomplete="off" oninput="validity.valid||(value='');" min="6" max="15">
 							</div>
 						</div>
 						<div class="form-group">

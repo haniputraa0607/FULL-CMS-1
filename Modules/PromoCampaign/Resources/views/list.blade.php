@@ -141,6 +141,7 @@
                     }
                 },
                 order: [0, "asc"],
+                paging: false,
                 lengthMenu: [
                     [5, 10, 15, 20, -1],
                     [5, 10, 15, 20, "All"]

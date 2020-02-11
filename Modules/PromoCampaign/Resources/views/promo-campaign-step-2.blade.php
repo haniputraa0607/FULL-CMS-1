@@ -44,6 +44,16 @@
 		.text-decoration-none {
 			text-decoration: none!important;
 		}
+		.p-l-0{
+			padding-left: 0px;
+		}
+		.p-r-0{
+			padding-right: 0px;
+		}
+		.p-l-r-0{
+			padding-left: 0px;
+			padding-right: 0px;
+		}
 	</style>
 @endsection
 
@@ -353,10 +363,11 @@
 			if (discount_value == 'Nominal') {
 				$('input[name=discount_value]').removeAttr('max').val('').attr('placeholder', '100.000').inputmask({removeMaskOnSubmit: "true", placeholder: "", alias: "currency", digits: 0, rightAlign: false});
 				$('#product-discount-value').text('Discount Nominal');
-				$('#product-discount-addon').hide();
+				$('#product-discount-addon, #product-discount-percent-max-div').hide();
 				$('#product-addon-rp').show();
 				$('#product-discount-group').addClass('col-md-12');
 				$('#product-discount-group').removeClass('col-md-5');
+				$('input[name=max_percent_discount]').val('');
 			} else {
 				$('input[name=discount_value]').attr('max', 100).val('').attr('placeholder', '50').inputmask({
 					removeMaskOnSubmit: true,
@@ -369,7 +380,7 @@
 				});
 				$('#product-discount-value').text('Discount Percent Value');
 				$('#product-addon-rp').hide();
-				$('#product-discount-addon').show();
+				$('#product-discount-addon, #product-discount-percent-max-div').show();
 				$('#product-discount-group').addClass('col-md-5');
 				$('#product-discount-group').removeClass('col-md-12');
 			}
@@ -723,7 +734,7 @@
 									<div class="row">
 										<div class="col-md-2">
 											
-											<input required type="text" class="form-control text-center digit_mask" name="max_product" placeholder="max product" @if(isset($result['promo_campaign_product_discount_rules']['max_product']) && $result['promo_campaign_product_discount_rules']['max_product'] != "") value="{{$result['promo_campaign_product_discount_rules']['max_product']}}" @elseif(old('max_product') != "") value="{{old('max_product')}}" @endif min="0" oninput="validity.valid||(value='');" autocomplete="off">
+											<input required type="text" class="form-control text-center digit_mask" name="max_product" placeholder="" @if(isset($result['promo_campaign_product_discount_rules']['max_product']) && $result['promo_campaign_product_discount_rules']['max_product'] != "") value="{{$result['promo_campaign_product_discount_rules']['max_product']}}" @elseif(old('max_product') != "") value="{{old('max_product')}}" @endif min="0" oninput="validity.valid||(value='');" autocomplete="off">
 											
 										</div>
 									</div>
@@ -751,8 +762,22 @@
 											<i class="fa fa-question-circle tooltips" data-original-title="Jumlah diskon yang diberikan" data-container="body"></i>
 											<div class="input-group @if(isset($result['promo_campaign_product_discount_rules']['discount_type']) && $result['promo_campaign_product_discount_rules']['discount_type'] == "Percent") col-md-5 @else col-md-12 @endif" id="product-discount-group">
 												<div class="input-group-addon" id="product-addon-rp" @if(isset($result['promo_campaign_product_discount_rules']['discount_type']) && $result['promo_campaign_product_discount_rules']['discount_type'] == "Percent") style="display: none;" @endif>IDR</div>
-												<input required type="text" class="form-control text-center" name="discount_value" placeholder="Discount Value" @if(isset($result['promo_campaign_product_discount_rules']['discount_value']) && $result['promo_campaign_product_discount_rules']['discount_value'] != "") value="{{$result['promo_campaign_product_discount_rules']['discount_value']}}" @elseif(old('discount_value') != "") value="{{old('discount_value')}}" @endif min="0" oninput="validity.valid||(value='');" autocomplete="off">
+												<input required type="text" class="form-control text-center" name="discount_value" placeholder="" @if(isset($result['promo_campaign_product_discount_rules']['discount_value']) && $result['promo_campaign_product_discount_rules']['discount_value'] != "") value="{{$result['promo_campaign_product_discount_rules']['discount_value']}}" @elseif(old('discount_value') != "") value="{{old('discount_value')}}" @endif min="0" oninput="validity.valid||(value='');" autocomplete="off">
 												<div class="input-group-addon" id="product-discount-addon" @if(isset($result['promo_campaign_product_discount_rules']['discount_type']) && $result['promo_campaign_product_discount_rules']['discount_type'] == "Nominal") style="display: none;" @endif>%</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group" id="product-discount-percent-max-div" style="{{ ($result['promo_campaign_product_discount_rules']['discount_type']??false) == "Percent" ? '' : "display: none" }}">
+									<div class="row">
+										<div class="col-md-3">
+											<label class="control-label" id="product-discount-value">Max Percent Discount</label>
+											<i class="fa fa-question-circle tooltips" data-original-title="Jumlah diskon maksimal yang bisa didapatkan ketika menggunakan promo. Kosongkan jika maksimal persen mengikuti harga produk " data-container="body"></i>
+											<div class="input-group col-md-12">
+
+												<div class="input-group-addon">IDR</div>
+
+												<input type="text" class="form-control text-center digit_mask" name="max_percent_discount" placeholder="" value="{{$result['promo_campaign_product_discount_rules']['max_percent_discount']}}" min="0" oninput="validity.valid||(value='');" autocomplete="off">
 											</div>
 										</div>
 									</div>

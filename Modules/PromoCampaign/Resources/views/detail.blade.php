@@ -565,7 +565,19 @@
                                                         <td>{{ $res['max_qty_requirement'] }}</td>
                                                         <td><a href="{{ url('product/detail/'.$res['product']['product_code']??'') }}">{{ $res['product']['product_code'].' - '.$res['product']['product_name'] }}</a></td>
                                                         <td>{{ $res['benefit_qty'] }}</td>
-                                                        <td>{{ ( ($res['discount_percent']??'') == 100) ? 'Free' : ( ($res['discount_percent']??false) ? $res['discount_percent'].' %' : (($res['discount_nominal']??false) ? 'IDR '.number_format($res['discount_nominal']) : '' ) ) }}</td>
+                                                        <td>
+                                                        @if( ($res['discount_type']??false) == 'nominal' )
+                                                        	{{'IDR '.number_format($res['discount_value'])}}
+                                                        @elseif( ($res['discount_type']??false) == 'percent' )
+                                                        	@if( ($res['discount_value']??false) == 100 )
+                                                        		Free
+                                                        	@else
+                                                        		{{ ($res['discount_value']??false).'%' }}
+                                                        	@endif
+                                                        @endif
+                                                        </td>
+                                                        <td>
+                                                        {{ ( ($res['discount_percent']??'') == 100) ? 'Free' : ( ($res['discount_percent']??false) ? $res['discount_percent'].' %' : (($res['discount_nominal']??false) ? 'IDR '.number_format($res['discount_nominal']) : '' ) ) }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
