@@ -31,3 +31,8 @@ Route::group(['middleware' => ['web', 'validate_session', 'config_control:95'], 
     Route::any('step2/{slug}', 'PromoCampaignController@step2');
 
 });
+
+Route::group(['middleware' => ['web', 'validate_session', 'config_control:92'], 'prefix' => 'referral'], function () {
+    Route::get('setting', 'ReferralController@setting');
+    Route::post('setting', 'ReferralController@settingUpdate');
+});
