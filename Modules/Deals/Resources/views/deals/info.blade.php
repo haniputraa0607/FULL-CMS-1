@@ -14,7 +14,7 @@ $configs    		= session('configs');
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
                             Brand
-                            <span class="required" aria-required="true"> * </span>  
+                            <span class="required" aria-required="true"> * </span>
                             <i class="fa fa-question-circle tooltips" data-original-title="Pilih brand untuk deal ini" data-container="body"></i>
                             </label>
                         </div>
@@ -32,7 +32,7 @@ $configs    		= session('configs');
                         </div>
                     </div>
                     @endif
-                    
+
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -313,7 +313,7 @@ $configs    		= session('configs');
                                 </div>
                             </div>
                         </div>
-<!--                         <div class="col-md-3">
+                         <div class="col-md-3">
                             <div class="md-radio-inline">
                                 <div class="md-radio">
                                     <input type="radio" name="prices_by" id="radio8" value="money" class="prices md-radiobtn" required @if (!empty($val['deals_voucher_price_cash'])) checked @endif>
@@ -323,7 +323,7 @@ $configs    		= session('configs');
                                         <span class="box"></span> Money </label>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
 
                     <div class="form-group" id="prices" @if (empty($val['deals_voucher_price_point']) && empty($val['deals_voucher_price_cash'])) style="display: none;" @endif>
@@ -391,7 +391,7 @@ $configs    		= session('configs');
                             </div>
                         </div>
                     </div>
-{{-- 
+{{--
                     @if ($val['deals_voucher_type'] == "Auto generated" || $val['deals_voucher_type'] == "List Vouchers")
                     <div class="form-group">
                         <label class="col-md-3 control-label">Voucher Total <span class="required" aria-required="true"> * </span></label>
@@ -406,8 +406,8 @@ $configs    		= session('configs');
                         <label class="col-md-3 control-label"></label>
                         <div class="col-md-9">
                             <div class="col-md-3">
-                                <label class="control-label">Input Voucher 
-                                    <span class="required" aria-required="true"> * </span> 
+                                <label class="control-label">Input Voucher
+                                    <span class="required" aria-required="true"> * </span>
                                     <br> <small> Separated by new line </small>
                                 </label>
                             </div>
