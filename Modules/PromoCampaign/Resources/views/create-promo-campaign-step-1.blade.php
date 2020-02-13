@@ -223,16 +223,18 @@
 					$('#exampleCode2').replaceWith("<span id='exampleCode2'>"+prefix+result2+"</span>")
 				});
 				$('input[name=total_coupon]').keyup(function() {
-					maxCharDigit = 28;
-					hitungKemungkinan = Math.pow(maxCharDigit, $('#multipleNumberLastCode').val())
-					if (hitungKemungkinan >= $('input[name=total_coupon]').inputmask('unmaskedvalue')) {
-						$(':input[type="submit"]').prop('disabled', false);
-						$('#totalCoupon').removeClass( "has-error" );
-						$('#alertTotalCoupon').hide();
-					} else {
-						$(':input[type="submit"]').prop('disabled', true);
-						$('#totalCoupon').addClass( "has-error" );
-						$('#alertTotalCoupon').show();
+					if (code != 'Single') {
+						maxCharDigit = 28;
+						hitungKemungkinan = Math.pow(maxCharDigit, $('#multipleNumberLastCode').val())
+						if (hitungKemungkinan >= $('input[name=total_coupon]').inputmask('unmaskedvalue')) {
+							$(':input[type="submit"]').prop('disabled', false);
+							$('#totalCoupon').removeClass( "has-error" );
+							$('#alertTotalCoupon').hide();
+						} else {
+							$(':input[type="submit"]').prop('disabled', true);
+							$('#totalCoupon').addClass( "has-error" );
+							$('#alertTotalCoupon').show();
+						}
 					}
 				});
 			}
@@ -322,6 +324,14 @@
 						<select id="selectTag" name="promo_tag[]" class="form-control select2-multiple select2-hidden-accessible" multiple="multiple" tabindex="-1" aria-hidden="true"></select>
 					</div>
 					<div class="form-group">
+						<label for="selectTag" class="control-label">Product Type</label>
+						<i class="fa fa-question-circle tooltips" data-original-title="Tipe produk yang akan dikenakan kode promo" data-container="body"></i>
+						<select class="form-control" name="product_type">
+							<option value="single" @if(isset($result['product_type']) && $result['product_type'] == "single") selected @endif required> Single </option>
+							<option value="group" @if(isset($result['product_type']) && $result['product_type'] == "group") selected @endif> Group </option>
+                        </select>
+					</div>
+					<div class="form-group">
 						<label class="control-label">Start Date</label>
 						<span class="required" aria-required="true"> * </span>
                         <i class="fa fa-question-circle tooltips" data-original-title="Waktu dimulai berlakunya promo" data-container="body"></i>
@@ -380,7 +390,7 @@
 							<span class="required" aria-required="true"> * </span>
 							<i class="fa fa-question-circle tooltips" data-original-title="Kode promo yang dibuat" data-container="body"></i>
 							<div class="input-group col-md-12">
-								<input id="singlePromoCode" maxlength="15" type="text" class="form-control" name="promo_code" onkeyup="this.value=this.value.replace(/[^abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]/g,'');" placeholder="Promo Code" @if(isset($result['promo_code']) && $result['promo_campaign_promo_code']['promo_code'] != "") value="{{$result['promo_campaign_promo_code']['promo_code']}}" @elseif(old('promo_code') != "") value="{{old('promo_code')}}" @endif autocomplete="off">
+								<input id="singlePromoCode" maxlength="15" type="text" class="form-control" name="promo_code" onkeyup="this.value=this.value.replace(/[^abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]/g,'');" placeholder="Promo Code" @if(isset($result['promo_campaign_promo_codes'][0]['promo_code']) && $result['promo_campaign_promo_codes'][0]['promo_code'] != "") value="{{$result['promo_campaign_promo_codes'][0]['promo_code']}}" @elseif(old('promo_code') != "") value="{{old('promo_code')}}" @endif autocomplete="off">
 								<p id="alertSinglePromoCode" style="display: none;" class="help-block">Kode sudah pernah dibuat!</p>
 							</div>
 						</div>
@@ -422,7 +432,7 @@
 						<span class="required" aria-required="true"> * </span>
 						<i class="fa fa-question-circle tooltips" data-original-title="Limit penggunaan kode promo" data-container="body"></i>
 						<div class="input-group col-md-12">
-							<input required type="text" class="form-control digit_mask" name="limitation_usage" placeholder="Limit Usage" @if(isset($result['limitation_usage']) && $result['limitation_usage'] != "") value="{{$result['limitation_usage']}}" @elseif(old('limitation_usage') != "") value="{{old('total_coupon')}}" @endif autocomplete="off">
+							<input required type="text" class="form-control digit_mask" name="limitation_usage" placeholder="Limit Usage" @if(isset($result['limitation_usage']) && $result['limitation_usage'] != "") value="{{$result['limitation_usage']}}" @elseif(old('limitation_usage') != "") value="{{old('limitation_usage')}}" @endif autocomplete="off">
 						</div>
 					</div>
 					<div class="form-group" id="totalCoupon">
@@ -430,10 +440,13 @@
 						<span class="required" aria-required="true"> * </span>
 						<i class="fa fa-question-circle tooltips" data-original-title="Total kode kupon yang dibuat" data-container="body"></i>
 						<div class="input-group col-md-12">
-							<input required type="text" class="form-control digit_mask" name="total_coupon" placeholder="Total Coupon" @if(isset($result['total_coupon']) && $result['total_coupon'] != "") value="{{$result['total_coupon']}}" @elseif(old('total_coupon') != "") value="{{old('total_coupon')}}" @endif autocomplete="off">
+							<input required type="text" class="form-control digit_mask" name="total_coupon" placeholder="Total Coupon" value="{{$result['total_coupon']??old('total_coupon')}}" autocomplete="off">
 							<p id="alertTotalCoupon" style="display: none;" class="help-block">Generate Random Total Coupon sangat tidak memungkinkan!</p>
 						</div>
 					</div>
+					@if (isset($result['id_promo_campaign']))
+						<input type="hidden" name="id_promo_campaign" value="{{ $result['id_promo_campaign'] }}">
+					@endif
 				</div>
 			</div>
 		</div>

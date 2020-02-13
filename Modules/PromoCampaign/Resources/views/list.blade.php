@@ -147,7 +147,7 @@
                     [5, 10, 15, 20, "All"]
                 ],
                 pageLength: 10,
-                dom: "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'><'col-md-6 col-sm-12'>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>"
+                dom: "<'row' <'col-md-12'>><'row'<'col-md-6 col-sm-12'><'col-md-6 col-sm-12'>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>"
         });
     </script>
 @yield('child-script')
@@ -237,6 +237,7 @@
                   <th>Periode</th>
                   <th>Code Type</th>
                   <th>Promo Type</th>
+                  <th>Product Type</th>
                   <th>Status</th>
                   <th>Actions</th>
               </tr>
@@ -265,6 +266,7 @@
                             </td>
                             <td>{{$res['code_type']}}</td>
                             <td class="nowrap">{{ $res['promo_type'] }}</td>
+                            <td class="nowrap">{{ $res['product_type'] }}</td>
                             <td class="middle-center">
                                 @if ( empty($res['step_complete']) )
                                     <a href="{{url('promo-campaign/step2', $res['id_promo_campaign'])??'#'}}"><span class="sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #F4D03F;padding: 5px 12px;color: #fff;">Not Complete</span></a>
