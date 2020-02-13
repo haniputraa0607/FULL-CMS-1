@@ -473,7 +473,7 @@
                                             <div class="col-md-4 name">Discount</div>
                                             <div class="col-md-8 value">: 
                                                 @if ($result['promo_campaign_product_discount_rules']['discount_type'] == 'Percent')
-                                                    {{$result['promo_campaign_product_discount_rules']['discount_value']}} %
+                                                    {{$result['promo_campaign_product_discount_rules']['discount_value']}} % {{ !empty($result['promo_campaign_product_discount_rules']['max_percent_discount']) ? '(Max : IDR '.number_format($result['promo_campaign_product_discount_rules']['max_percent_discount']).') ' : '' }}
                                                 @elseif ($result['promo_campaign_product_discount_rules']['discount_type'] == 'Nominal')
                                                     {{ 'IDR '.number_format($result['promo_campaign_product_discount_rules']['discount_value']) }}
                                                 @else
@@ -494,7 +494,6 @@
                                                     <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_5">
                                                         <thead>
                                                             <tr>
-                                                                <th>Category</th>
                                                                 <th>Code</th>
                                                                 <th>Name</th>
                                                             </tr>
@@ -502,9 +501,14 @@
                                                         <tbody>
                                                             @foreach($result['promo_campaign_product_discount'] as $res)
                                                                 <tr>
-                                                                    <td>{{ $res['product']['category']['product_category_name']??'' }}</td>
-                                                                    <td>{{ $res['product']['product_code'] }}</td>
-                                                                    <td><a href="{{ url('product/detail/'.$res['product']['product_code']??'') }}">{{ $res['product']['product_name']??'' }}</a></td>
+                                                                    <td>{{ $res['product']['product_code']??$res['product_group']['product_group_code'] }}</td>
+                                                                    <td>
+                                                                    @if (!empty($res['product_group']))
+                                                                    	<a href="{{ url('product-variant/group/'.($res['product_group']['id_product_group']??'')) }}">{{ $res['product_group']['product_group_name']??'' }}</a>
+                                                                    @else
+                                                                    	<a href="{{ url('product/detail/'.($res['product']['product_code']??'')) }}">{{ $res['product']['product_name']??'' }}</a>	
+                                                                    @endif
+                                                                    </td>
                                                                 </tr>
                                                             @endforeach
                                                         </tbody>
@@ -517,7 +521,11 @@
                                             <div class="col-md-4 name">Product Requirement</div>
                                             <div class="col-md-8 value">: 
                                                 @if ( isset($result['promo_campaign_tier_discount_product']) )
-                                                <a href="{{ url('product/detail/'.$result['promo_campaign_tier_discount_product']['product']['product_code']??'') }}">{{ ($result['promo_campaign_tier_discount_product']['product']['product_code']??'').' - '.($result['promo_campaign_tier_discount_product']['product']['product_name']??'') }}</a>
+                                                	@if (!empty($result['promo_campaign_tier_discount_product']['product_group']))
+                                                    	<a href="{{ url('product-variant/group/'.$result['promo_campaign_tier_discount_product']['product_group']['id_product_group']??'') }}">{{ ($result['promo_campaign_tier_discount_product']['product_group']['product_group_code']??'').' - '.($result['promo_campaign_tier_discount_product']['product_group']['product_group_name']??'') }}</a>
+                                                    @else
+                                                		<a href="{{ url('product/detail/'.$result['promo_campaign_tier_discount_product']['product']['product_code']??'') }}">{{ ($result['promo_campaign_tier_discount_product']['product']['product_code']??'').' - '.($result['promo_campaign_tier_discount_product']['product']['product_name']??'') }}</a>
+                                                    @endif
                                                 @endif
                                             </div>
                                         </div>
@@ -534,7 +542,7 @@
                                                     <tr>
                                                         <td>{{ number_format($res['min_qty']) }}</td>
                                                         <td>{{ number_format($res['max_qty']) }}</td>
-                                                        <td>{{ ($result['promo_campaign_tier_discount_rules'][0]['discount_type'] == 'Percent') ? ( $res['discount_value'].' %' ) : ('IDR '.number_format($res['discount_value'])) }}</td>
+                                                        <td>{{ ($result['promo_campaign_tier_discount_rules'][0]['discount_type'] == 'Percent') ? ( $res['discount_value'].' % (Max : IDR '.number_format($res['max_percent_discount']).')' ) : ('IDR '.number_format($res['discount_value'])) }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -544,7 +552,11 @@
                                             <div class="col-md-4 name">Product Requirement</div>
                                             <div class="col-md-8 value">: 
                                                 @if ( isset($result['promo_campaign_buyxgety_product_requirement']) )
-                                                <a href="{{ url('product/detail/'.$result['promo_campaign_buyxgety_product_requirement']['product']['product_code']??'') }}">{{ ($result['promo_campaign_buyxgety_product_requirement']['product']['product_code']??'').' - '.$result['promo_campaign_buyxgety_product_requirement']['product']['product_name']??'' }}</a>
+                                                	@if (!empty($result['promo_campaign_buyxgety_product_requirement']['product_group']))
+                                                    	<a href="{{ url('product-variant/group/'.$result['promo_campaign_buyxgety_product_requirement']['product_group']['id_product_group']??'') }}">{{ ($result['promo_campaign_buyxgety_product_requirement']['product_group']['product_group_code']??'').' - '.($result['promo_campaign_buyxgety_product_requirement']['product_group']['product_group_name']??'') }}</a>
+                                                    @else
+                                                		<a href="{{ url('product/detail/'.$result['promo_campaign_buyxgety_product_requirement']['product']['product_code']??'') }}">{{ ($result['promo_campaign_buyxgety_product_requirement']['product']['product_code']??'').' - '.$result['promo_campaign_buyxgety_product_requirement']['product']['product_name']??'' }}</a>
+                                                    @endif
                                                 @endif
                                             </div>
                                         </div>
@@ -563,7 +575,8 @@
                                                     <tr>
                                                         <td>{{ $res['min_qty_requirement'] }}</td>
                                                         <td>{{ $res['max_qty_requirement'] }}</td>
-                                                        <td><a href="{{ url('product/detail/'.$res['product']['product_code']??'') }}">{{ $res['product']['product_code'].' - '.$res['product']['product_name'] }}</a></td>
+                                                        <td>
+                                                        	<a href="{{ url('product/detail/'.$res['product']['product_code']??'') }}">{{ $res['product']['product_code'].' - '.$res['product']['product_name'] }}</a>
                                                         <td>{{ $res['benefit_qty'] }}</td>
                                                         <td>
                                                         @if( ($res['discount_type']??false) == 'nominal' )
@@ -572,12 +585,12 @@
                                                         	@if( ($res['discount_value']??false) == 100 )
                                                         		Free
                                                         	@else
-                                                        		{{ ($res['discount_value']??false).'%' }}
+                                                        		{{ ($res['discount_value']??false).'% (Max : IDR '.number_format($res['max_percent_discount']).')' }}
                                                         	@endif
                                                         @endif
                                                         </td>
                                                         <td>
-                                                        {{ ( ($res['discount_percent']??'') == 100) ? 'Free' : ( ($res['discount_percent']??false) ? $res['discount_percent'].' %' : (($res['discount_nominal']??false) ? 'IDR '.number_format($res['discount_nominal']) : '' ) ) }}</td>
+                                                        {{ ( ($res['discount_percent']??'') == 100) ? 'Free' : ( ($res['discount_percent']??false) ? $res['discount_percent'].' % (Max : IDR '.number_format($res['max_percent_discount']).')' : (($res['discount_nominal']??false) ? 'IDR '.number_format($res['discount_nominal']) : '' ) ) }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>

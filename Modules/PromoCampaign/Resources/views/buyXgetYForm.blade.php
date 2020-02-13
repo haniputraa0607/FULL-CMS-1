@@ -289,9 +289,9 @@
 			if(!lastErrorReal){
 				lastErrorReal=errorNow;
 			}
-			if(listProduct){
+			if(listProductSingle){
 				var htmlProduct='<option value="0">Same Product</option>';
-				listProduct.forEach(function(i){
+				listProductSingle.forEach(function(i){
 					var addthis='';
 					if(it['benefit_id_product']&&it['benefit_id_product']==i['id_product']){
 						addthis='selected';

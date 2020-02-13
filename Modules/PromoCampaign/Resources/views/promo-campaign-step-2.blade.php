@@ -121,39 +121,60 @@
 	<script>
 	$(document).ready(function() {
 		listProduct=[];
-		productLoad = 0;
+		listProductSingle=[];
+		productLoad = 1;
+		product_type = '{!! $result['product_type'] !!}';
 
-		if (productLoad == 0) {
-			$.ajax({
-				type: "GET",
-				url: "getData",
-				data : {
-					get : 'Product'
-				},
-				dataType: "json",
-				success: function(data){
-					if (data.status == 'fail') {
-						$.ajax(this)
-						return
-					}
-					productLoad = 1;
-					listProduct=data;
-					$.each(data, function( key, value ) {
-						$('#multipleProduct').append("<option id='product"+value.id_product+"' value='"+value.id_product+"'>"+value.product+"</option>");
-						$('#multipleProduct2,#multipleProduct3').append("<option value='"+value.id_product+"'>"+value.product+"</option>");
-					});
-
-				},
-				complete: function(data){
-					if (data.responseJSON.status != 'fail') {
-						selectedProduct = JSON.parse('{!!json_encode($product)!!}')
-						$.each(selectedProduct, function( key, value ) {
-							$("#product"+value+"").attr('selected', true)
-						});
-					}
+		$.ajax({
+			type: "GET",
+			url: "getData",
+			data : {
+				get : 'Product',
+				type : 'Single'
+			},
+			dataType: "json",
+			success: function(data){
+				if (data.status == 'fail') {
+					$.ajax(this)
+					return
 				}
-			});
-		}
+				listProductSingle=data;
+			}
+		});
+
+		$.ajax({
+			type: "GET",
+			url: "getData",
+			data : {
+				get : 'Product',
+				type : product_type
+			},
+			dataType: "json",
+			success: function(data){
+				if (data.status == 'fail') {
+					$.ajax(this)
+					return
+				}
+				productLoad = 1;
+				listProduct=data;
+				$.each(data, function( key, value ) {
+					console.log(value);
+					$('#multipleProduct').append("<option id='product"+value.id_product+"' value='"+value.id_product+"'>"+value.product+"</option>");
+					$('#multipleProduct2,#multipleProduct3').append("<option value='"+value.id_product+"'>"+value.product+"</option>");
+				});
+
+			},
+			complete: function(data){
+				if (data.responseJSON.status != 'fail') {
+					selectedProduct = JSON.parse('{!!json_encode($product)!!}')
+					$.each(selectedProduct, function( key, value ) {
+						$("#product"+value+"").attr('selected', true)
+					});
+				}
+			}
+		});
+		// if (productLoad == 0) {
+		// }
 
 		outletLoad = 0;
 		$('input[name=filter_outlet]').change(function() {
@@ -196,7 +217,8 @@
 					type: "GET",
 					url: "getData",
 					data : {
-						get : 'Product'
+						get : 'Product',
+						type : product_type
 					},
 					dataType: "json",
 					success: function(data){
@@ -276,7 +298,8 @@
 					type: "GET",
 					url: "getData",
 					data : {
-						get : 'Product'
+						get : 'Product',
+						type : product_type
 					},
 					dataType: "json",
 					success: function(data){
@@ -336,7 +359,8 @@
 						type: "GET",
 						url: "getData",
 						data : {
-							get : 'Product'
+							get : 'Product',
+							type : product_type
 						},
 						dataType: "json",
 						success: function(data){
@@ -405,7 +429,8 @@
 					type: "GET",
 					url: "getData",
 					data : {
-						get : 'Product'
+						get : 'Product',
+						type : product_type
 					},
 					dataType: "json",
 					success: function(data){
@@ -580,6 +605,10 @@
 							<div class="col-md-8 value">: {{ $result['limitation_usage']??false != 0 ? number_format($result['limitation_usage']).' Times Usage' : 'Unlimited'}} </div>
 						</div>
 						<div class="row static-info">
+							<div class="col-md-4 name">Product Type</div>
+							<div class="col-md-8 value">: {{ $result['product_type']??'Single'}} </div>
+						</div>
+						<div class="row static-info">
 							<div class="col-md-4 name">Total Coupon</div>
 							<div class="col-md-8 value">: {{ isset($result['total_coupon']) ? number_format($result['total_coupon']) : '' }} Coupons</div>
 						</div>
@@ -642,7 +671,7 @@
 						</div>
 						<div id="specific-user" class="form-group" @if($result['user_type'] != 'Specific user') style="display: none;" @endif>
 							<label>Add User</label>
-							<textarea class="form-control" rows="3" name="specific_user" placeholder="081xxxxxxxxx, 082xxxxxxxxx, ..." style="resize: vertical;"></textarea>
+							<textarea class="form-control" rows="3" name="specific_user" placeholder="081xxxxxxxxx, 082xxxxxxxxx, ..." style="resize: vertical;">{{ $result['specific_user'] }}</textarea>
 							<p class="help-block">Comma ( , ) separated for multiple phone number</p>
 						</div>
 						<div class="form-group" style="height: 55px;">
@@ -682,6 +711,7 @@
 						</div>
 					</div>
 					<div class="portlet-body" id="tabContainer">
+						<input type="hidden" name="product_type" value="{{ $result['product_type'] }}">
 						<div class="form-group" style="height: 55px;display: inline;">
 							<div class="row">
 								<div class="col-md-3">
