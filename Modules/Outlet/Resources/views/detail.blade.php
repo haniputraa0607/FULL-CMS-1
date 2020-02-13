@@ -557,9 +557,9 @@
                 <li class="active" id="infoOutlet">
                     <a href="#info" data-toggle="tab" > Info </a>
                 </li>
-<!--                 <li id="pinOutlet">
+                 <li id="pinOutlet">
                     <a href="#pin" data-toggle="tab" > Update Pin </a>
-                </li> -->
+                </li>
                 <!-- @if(MyHelper::hasAccess([29], $grantedFeature))
                     <li>
                         <a href="#photo" data-toggle="tab"> Photo </a>
