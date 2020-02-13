@@ -194,24 +194,45 @@
 		            $('#step-offline').show();
 		        }
 		    });
-		    
+
             /* TYPE VOUCHER */
-            $('.voucherType').click(function() {
+            $('input[name=deals_voucher_type]').click(function() {
                 // tampil duluk
                 var nilai = $(this).val();
 
                 // alert(nilai);
 
                 if (nilai == "List Vouchers") {
+
+                	$('input[name=total_voucher_type]:checked').prop('checked', false);
+                	$('input[name=deals_total_voucher]').val('');
+
                     $('#listVoucher').show();
                     $('.listVoucher').prop('required', true);
                     $('.listVoucher').prop('disabled', false);
 
+                    $('#total-voucher-form').hide();
                     $('#generateVoucher').hide();
                     $('.generateVoucher').removeAttr('required');
                     $('.generateVoucher').prop('disabled', true);
                 }
                 else if (nilai == "Auto generated"){
+                    $('#total-voucher-form').show();
+                    
+                    $('#listVoucher').hide();
+                    $('.listVoucher').removeAttr('required');
+                    $('.listVoucher').prop('disabled', true);
+                }
+            });
+
+            /* TOTAL TYPE VOUCHER */
+            $('input[name=total_voucher_type]').click(function() {
+                // tampil duluk
+                var nilai = $(this).val();
+                // alert(nilai);
+
+                if (nilai == "Auto generated") {
+
                     $('#generateVoucher').show();
                     $('.generateVoucher').prop('required', true);
                     $('.generateVoucher').prop('disabled', false);
@@ -219,13 +240,16 @@
                     $('#listVoucher').hide();
                     $('.listVoucher').removeAttr('required');
                     $('.listVoucher').prop('disabled', true);
-                }else{
-                    $('#generateVoucher').hide();
-                    $('.generateVoucher').removeAttr('required');
-                    $('.generateVoucher').prop('disabled', true);
+                }
+                else if (nilai == "Unlimited"){
                     $('#listVoucher').hide();
                     $('.listVoucher').removeAttr('required');
                     $('.listVoucher').prop('disabled', true);
+
+                    $('#generateVoucher').hide();
+                    $('.generateVoucher').removeAttr('required');
+                    $('.generateVoucher').prop('disabled', true);
+                    $('input[name=deals_total_voucher]').val('');
                 }
             });
 
@@ -474,90 +498,69 @@
 
     @include('layouts.notifications')
 
-    <div class="row">
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <a class="dashboard-stat dashboard-stat-v2 blue">
-                <div class="visual">
-                    <i class="fa fa-comments"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        <span data-counter="counterup" data-value="{{ $deals[0]['deals_total_voucher'] }}">{{ $deals[0]['deals_total_voucher'] }}</span>
-                    </div>
-                    <div class="desc"> Total Voucher </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <a class="dashboard-stat dashboard-stat-v2 red">
-                <div class="visual">
-                    <i class="fa fa-bar-chart-o"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        <span data-counter="counterup" data-value="{{ $deals[0]['deals_total_claimed'] }}">{{ $deals[0]['deals_total_claimed'] }}</span>
-                    </div>
-                    <div class="desc"> Total Claimed </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <a class="dashboard-stat dashboard-stat-v2 green">
-                <div class="visual">
-                    <i class="fa fa-shopping-cart"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        <span data-counter="counterup" data-value="{{ $deals[0]['deals_total_redeemed'] }}">{{ $deals[0]['deals_total_redeemed'] }}</span>
-                    </div>
-                    <div class="desc"> Total Redeem </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <a class="dashboard-stat dashboard-stat-v2 purple">
-                <div class="visual">
-                    <i class="fa fa-globe"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        <span data-counter="counterup" data-value="{{ $deals[0]['deals_total_used'] }}">{{ $deals[0]['deals_total_used'] }}</span>
-                    </div>
-                    <div class="desc"> Total Used </div>
-                </div>
-            </a>
-        </div>
-    </div>
-
     <div class="portlet light bordered">
-        <div class="portlet-title tabbable-line">
+    	<div class="col-md-12">
+            <div class="mt-element-step">
+                <div class="row step-line">
+                    <div id="step-online" @if( empty($deals[0]['is_online']) ) style="display: none;" @endif>
+	                    <div class="col-md-4 mt-step-col first active">
+	                        <div class="mt-step-number bg-white">1</div>
+	                        <div class="mt-step-title uppercase font-grey-cascade">Info</div>
+	                        <div class="mt-step-content font-grey-cascade">Title, Image, Periode</div>
+	                    </div>
+	                    <div class="col-md-4 mt-step-col ">
+	                        <div class="mt-step-number bg-white">2</div>
+	                        <div class="mt-step-title uppercase font-grey-cascade">Rule</div>
+	                        <div class="mt-step-content font-grey-cascade">discount rule</div>
+	                    </div>
+	                    <div class="col-md-4 mt-step-col last">
+		                    <div class="mt-step-number bg-white">3</div>
+		                    <div class="mt-step-title uppercase font-grey-cascade">Content</div>
+		                    <div class="mt-step-content font-grey-cascade">Detail Content Deals</div>
+	                    </div>
+                    </div>
+                    <div id="step-offline" @if( !empty($deals[0]['is_online']) ) style="display: none;" @endif>
+                    	<div class="col-md-6 mt-step-col first active">
+	                        <div class="mt-step-number bg-white">1</div>
+	                        <div class="mt-step-title uppercase font-grey-cascade">Info</div>
+	                        <div class="mt-step-content font-grey-cascade">Title, Image, Periode</div>
+	                    </div>
+	                    <div class="col-md-6 mt-step-col last">
+		                    <div class="mt-step-number bg-white">2</div>
+		                    <div class="mt-step-title uppercase font-grey-cascade">Content</div>
+		                    <div class="mt-step-content font-grey-cascade">Detail Content Deals</div>
+	                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet-title">
             <div class="caption">
                 <span class="caption-subject font-blue bold uppercase">{{ $deals[0]['deals_title'] }}</span>
             </div>
-            <ul class="nav nav-tabs">
-
-                <li class="active" id="infoOutlet">
-                    <a href="#info" data-toggle="tab" > Info </a>
-                </li>
-                <li>
-                    <a href="#voucher" data-toggle="tab"> Voucher </a>
-                </li>
-                <li>
-                    <a href="#participate" data-toggle="tab"> Participate </a>
-                </li>
-            </ul>
         </div>
         <div class="portlet-body">
 
             <div class="tab-content">
                 <div class="tab-pane active" id="info">
-                    @include('deals::deals.info')
-                </div>
-                <div class="tab-pane" id="voucher">
-                    @include('deals::deals.voucher')
-                </div>
-                <div class="tab-pane" id="participate">
-                    @include('deals::deals.participate')
+                	<div class="portlet-body form">
+					    <form id="form" class="form-horizontal" role="form" action=" @if($deals_type == "Deals") {{ url('deals/update') }} @else {{ url('inject-voucher/update') }} @endif" method="post" enctype="multipart/form-data">
+					        @foreach ($deals as $key => $val)
+                    				@include('deals::deals.step1-form')
+					                <div class="form-actions">
+					                {{ csrf_field() }}
+					                <div class="row">
+					                    <div class="col-md-offset-3 col-md-9">
+					                        <button type="submit" class="btn green">Submit</button>
+					                        <!-- <button type="button" class="btn default">Cancel</button> -->
+					                    </div>
+					                </div>
+					            </div>
+					            <input type="hidden" name="id_deals" value="{{ $val['id_deals'] }}">
+					            <input type="hidden" name="deals_type" value="{{ $val['deals_type'] }}">
+					        @endforeach
+					    </form>
+					</div>
                 </div>
             </div>
         </div>
