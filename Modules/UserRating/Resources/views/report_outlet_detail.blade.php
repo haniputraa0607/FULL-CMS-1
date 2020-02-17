@@ -129,7 +129,7 @@
 			"enabled": false
 		},
 		"legend": {
-		    "useGraphSettings": true,
+		    "useGraphSettings": false,
 		    "position": "right"
 		},
 		"titles": [
@@ -205,6 +205,22 @@
 					</div>
 				</div>
 				<div class="col-md-2"><button class="btn green">Apply</button></div>
+			</div>
+			<div class="row">
+				<div class="col-md-offset-2 col-md-3">
+					<div class="form-group">
+						<div class="md-checkbox">
+							<input type="checkbox" id="checkbox1" name="notes_only" class="md-checkboxbtn checkbox-reload" @if($notes_only) checked @endif>
+							<label for="checkbox1">
+								<span></span>
+								<span class="check"></span>
+								<span class="box"></span> Show with notes only <i class="fa fa-question-circle tooltips" data-original-title="jika dicentang maka akan menampilkan yang mengisikan catatan" data-container="body"></i></label>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2 col-md-offset-2">
+				</div>
 			</div>
 		</form>		<div class="row" style="margin-bottom: 20px">
 			@php $col = '4' @endphp
@@ -328,17 +344,6 @@
 					<input type="text" id="dumpInput">
 					<input type="submit" id="dumpSubmit">
 				</form>
-			</div>
-			<div style="width: 136px;padding: 13px 13px 0 0" class="pull-right">
-				<div class="md-checkbox">
-					<input type="checkbox" id="checkbox1" name="notes_only" class="md-checkboxbtn checkbox-reload" @if($notes_only) checked @endif>
-					<label for="checkbox1">
-						<span></span>
-						<span class="check"></span>
-						<span class="box"></span> With notes </label>
-						<i class="fa fa-question-circle tooltips" data-original-title="jika dicentang maka akan menampilkan yang mengisikan catatan" data-container="body"></i>
-					</label>
-				</div>
 			</div>
 		</div>
 		<div class="tabbable-line tab-custom">

@@ -120,7 +120,7 @@
 				<div class="col-md-2 control-label">Search</div>
 				<div class="col-md-3">
 					<div class="form-group">
-						<input type="text" name="search" placeholder="Search" class="form-control" value="{{$search}}">
+						<input type="text" name="search" placeholder="Search Outlet" class="form-control" value="{{$search}}">
 					</div>
 				</div>
 			</div>
@@ -151,7 +151,7 @@
 						<td class="text-center">{{$outlet['rating3']}}</td>
 						<td class="text-center">{{$outlet['rating4']}}</td>
 						<td class="text-center">{{$outlet['rating5']}}</td>
-						<td><a class="btn green" href="{{url('user-rating/report/outlet/'.$outlet['outlet_code'])}}">Show Detail</a></td>
+						<td><a class="btn green" href="{{url('user-rating/report/outlet/'.$outlet['outlet_code'])}}">Detail</a></td>
 					</tr>
 					@endforeach
 					@else
