@@ -18,4 +18,13 @@ Route::prefix('user-rating')->middleware(['web', 'validate_session'])->group(fun
     Route::post('/', 'UserRatingController@setFilter');
     Route::get('setting', 'UserRatingController@setting');
     Route::post('setting', 'UserRatingController@settingUpdate');
+    Route::get('setting', 'UserRatingController@setting');
+    Route::post('setting', 'UserRatingController@settingUpdate');
+    Route::group(['prefix'=>'report'],function(){
+	    Route::get('/', 'UserRatingController@report');
+	    Route::post('/', 'UserRatingController@setReportFilter');
+	    Route::get('outlet', 'UserRatingController@reportOutlet');
+	    Route::get('outlet/{outlet_code}', 'UserRatingController@reportOutletDetail');
+	    Route::get('rating/{rating}', 'UserRatingController@reportRatingDetail');
+	});
 });
