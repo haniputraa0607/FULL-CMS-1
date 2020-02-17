@@ -187,9 +187,9 @@ $grantedFeature     = session('granted_features');
                                 	@if($value['deals_voucher_price_type'] == 'free')
                                 		{{ $value['deals_voucher_price_type'] }}
                                 	@elseif(!empty($value['deals_voucher_price_point']))
-                                		{{ $value['deals_voucher_price_point'] }}
+                                		{{ number_format($value['deals_voucher_price_point']).' Points' }}
                                 	@elseif(!empty($value['deals_voucher_price_cash']))
-                                		{{ $value['deals_voucher_price_cash'] }}
+                                		{{ 'IDR'.number_format($value['deals_voucher_price_cash']) }}
                                 	@endif
                                 </td>
                                 @endif
