@@ -41,19 +41,13 @@
 	#slider.total_summary #total_summary{
 		top: 0;
 	}
-	#slider.summary5 #summary5{
+	#slider.positive_summary #positive_summary{
 		top: 0;
 	}
-	#slider.summary4 #summary4{
+	#slider.neutral_summary #neutral_summary{
 		top: 0;
 	}
-	#slider.summary3 #summary3{
-		top: 0;
-	}
-	#slider.summary2 #summary2{
-		top: 0;
-	}
-	#slider.summary1 #summary1{
+	#slider.negative_summary #negative_summary{
 		top: 0;
 	}
 </style>
@@ -68,14 +62,12 @@
 <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
 <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
 <script>
-	function moveTo(id){
-		$('#slider').attr('class',id);
-	}
 	$(document).ready(function(){		
 		$("#start_date").datetimepicker({
 			format: "dd MM yyyy",
 			autoclose: true,
 		});
+		$(document).on('shown.bs.tab','a[data-toggle="tab"]', function (e) { console.log($(this).data('value')); });
 	});
 	$(document).ready(function(){		
 		$("#end_date").datetimepicker({
@@ -102,27 +94,27 @@
 		"dataProvider": [
 		{
 			"name":"5 Star",
-			"total":{{json_encode($reportData['rating_item']['5']['total']??0)}},
+			"total":{{$reportData['outlet_data']['rating5']}},
 			"color":"#32c5d2"
 		},
 		{
 			"name":"4 Star",
-			"total":{{json_encode($reportData['rating_item']['4']['total']??0)}},
+			"total":{{$reportData['outlet_data']['rating4']}},
 			"color":"#36D7B7"
 		},
 		{
 			"name":"3 Star",
-			"total":{{json_encode($reportData['rating_item']['3']['total']??0)}},
+			"total":{{$reportData['outlet_data']['rating3']}},
 			"color":"#F7CA18"
 		},
 		{
 			"name":"2 Star",
-			"total":{{json_encode($reportData['rating_item']['2']['total']??0)}},
+			"total":{{$reportData['outlet_data']['rating2']}},
 			"color":"#EF4836"
 		},
 		{
 			"name":"1 Star",
-			"total":{{json_encode($reportData['rating_item']['1']['total']??0)}},
+			"total":{{$reportData['outlet_data']['rating1']}},
 			"color":"#D91E18"
 		}
 		],
@@ -147,32 +139,6 @@
 		}
 		]
 	});
-	@for($i=5;$i>0;$i--)
-	var chart{{$i}} = AmCharts.makeChart("chartdiv{{$i}}", {
-		"type": "pie",
-		"theme": "light",
-		"dataProvider": {!!json_encode($reportData['outlet_data'][$i]??[])!!},
-		"valueField": "total",
-		"titleField": "name",
-		"colorField": "color",
-		"balloon": {
-			"fixedPosition": true
-		},
-		"export": {
-			"enabled": false
-		},
-		"legend": {
-		    "useGraphSettings": true,
-		    "position": "bottom"
-		},
-		"titles": [
-		{
-			"text": "[Top 10] Outlet with {{$i}} Star Rating",
-			"size": 15
-		}
-		]
-	});
-	@endfor
 </script>
 @endsection
 
@@ -198,15 +164,18 @@
 </div><br>
 
 @include('layouts.notifications')
-
+<div class="form-group">
+	<a href="{{url('user-rating/report/outlet')}}" class="btn blue"><i class="fa fa-chevron-left"></i> Show All Outlet</a>
+	<a href="{{url('user-rating/report')}}" class="btn blue"><i class="fa fa-circle-o"></i> Show Summary</a>
+</div>
 <div class="portlet light bordered">
 	<div class="portlet-title">
 		<div class="caption">
-			<span class="caption-subject font-dark sbold uppercase font-blue">Report Feedback</span>
+			<span class="caption-subject font-dark sbold uppercase font-blue">Report Feedback Outlet {{$reportData['outlet_data']['outlet_name']}}</span>
 		</div>
 	</div>
 	<div class="portlet-body">
-		<form action="{{url()->current()}}" class="form-horizontal" method="POST">
+		<form action="{{url('user-rating/report')}}" class="form-horizontal" method="POST">
 			@csrf
 			<div class="row">
 				<label class="col-md-2 control-label">Date Start</label>
@@ -237,9 +206,8 @@
 				</div>
 				<div class="col-md-2"><button class="btn green">Apply</button></div>
 			</div>
-		</form>
-		<div class="row" style="margin-bottom: 20px">
-			@php $col = $reportData['rating_item_count']==3?'3':'4' @endphp
+		</form>		<div class="row" style="margin-bottom: 20px">
+			@php $col = '4' @endphp
 			<div class="col-md-{{$col}}">
 				<div class="dashboard-stat blue">
 					<div class="visual">
@@ -247,13 +215,12 @@
 					</div>
 					<div class="details">
 						<div class="number">
-							<span data-counter="counterup" data-value="0">{{array_sum(array_column($reportData['rating_item'],'total'))}}</span> 
+							<span data-counter="counterup" data-value="0">{{array_sum([$reportData['outlet_data']['rating1'],$reportData['outlet_data']['rating2'],$reportData['outlet_data']['rating3'],$reportData['outlet_data']['rating4'],$reportData['outlet_data']['rating5']])}}</span> 
 						</div>
 						<div class="desc">
 							Total User Rating
 						</div>
 					</div>
-					<a class="more" data-target="total_summary">Show All Feedback<i class="m-icon-swapright m-icon-white"></i></a>
 				</div>
 			</div>
 			<div class="col-md-{{$col}}">
@@ -263,13 +230,12 @@
 					</div>
 					<div class="details">
 						<div class="number">
-							<span data-counter="counterup" data-value="0">{{$reportData['rating_item']['5']['total']??0}}</span> 
+							<span data-counter="counterup" data-value="0">{{$reportData['outlet_data']['rating5']??0}}</span> 
 						</div>
 						<div class="desc">
 							<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> 5
 						</div>
 					</div>
-					<a class="more" data-target="summary5">Show Detail<i class="m-icon-swapright m-icon-white"></i></a>
 				</div>
 			</div>
 			<div class="col-md-{{$col}}">
@@ -279,13 +245,12 @@
 					</div>
 					<div class="details">
 						<div class="number">
-							<span data-counter="counterup" data-value="0">{{$reportData['rating_item']['4']['total']??0}}</span> 
+							<span data-counter="counterup" data-value="0">{{$reportData['outlet_data']['rating4']??0}}</span> 
 						</div>
 						<div class="desc">
 							<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> 4
 						</div>
 					</div>
-					<a class="more" data-target="summary4">Show Detail<i class="m-icon-swapright m-icon-white"></i></a>
 				</div>
 			</div>
 		</div>
@@ -297,13 +262,12 @@
 					</div>
 					<div class="details">
 						<div class="number">
-							<span data-counter="counterup" data-value="0">{{$reportData['rating_item']['3']['total']??0}}</span> 
+							<span data-counter="counterup" data-value="0">{{$reportData['outlet_data']['rating3']??0}}</span> 
 						</div>
 						<div class="desc">
 							<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> 3
 						</div>
 					</div>
-					<a class="more" data-target="summary3">Show Detail<i class="m-icon-swapright m-icon-white"></i></a>
 				</div>
 			</div>
 			<div class="col-md-{{$col}}">
@@ -313,13 +277,12 @@
 					</div>
 					<div class="details">
 						<div class="number">
-							<span data-counter="counterup" data-value="0">{{$reportData['rating_item']['2']['total']??0}}</span> 
+							<span data-counter="counterup" data-value="0">{{$reportData['outlet_data']['rating2']??0}}</span> 
 						</div>
 						<div class="desc">
 							<i class="fa fa-star"></i> <i class="fa fa-star"></i> 2
 						</div>
 					</div>
-					<a class="more" data-target="summary2">Show Detail<i class="m-icon-swapright m-icon-white"></i></a>
 				</div>
 			</div>
 			<div class="col-md-{{$col}}">
@@ -329,13 +292,12 @@
 					</div>
 					<div class="details">
 						<div class="number">
-							<span data-counter="counterup" data-value="0">{{$reportData['rating_item']['1']['total']??0}}</span> 
+							<span data-counter="counterup" data-value="0">{{$reportData['outlet_data']['rating1']??0}}</span> 
 						</div>
 						<div class="desc">
 							<i class="fa fa-star"></i> 1
 						</div>
 					</div>
-					<a class="more" data-target="summary1">Show Detail<i class="m-icon-swapright m-icon-white"></i></a>
 				</div>
 			</div>
 		</div>
@@ -359,12 +321,9 @@
 				<div id="chartdiv5" style="height: 400px"></div>
 			</div>
 		</div>
-		<div class="form-group">
-			<a href="{{url('user-rating/report/outlet')}}" class="btn blue">Show All Outlet Data</a>
-		</div>
 		<div>
 			<div class="hidden">
-				<form action="{{url()->current()}}" method="POST">
+				<form action="{{url('user-rating/report')}}" method="POST">
 					@csrf
 					<input type="text" id="dumpInput">
 					<input type="submit" id="dumpSubmit">
@@ -414,8 +373,8 @@
 							</tr>
 						</thead>
 						<tbody>
-							@if($reportData['rating_item'][$i]['data']??false)
-							@foreach($reportData['rating_item'][$i]['data'] as $feedback)
+							@if($reportData['rating_item']['data'][$i]??false)
+							@foreach($reportData['rating_item']['data'][$i] as $feedback)
 							<tr>
 								<td>{{date('d M Y',strtotime($feedback['created_at']))}}</td>
 								<td><a href="{{url('transaction/detail'.'/'.$feedback['transaction']['id_transaction'].'/'.strtolower($feedback['transaction']['trasaction_type']))}}">{{$feedback['transaction']['transaction_receipt_number']}}</a></td>
@@ -444,6 +403,8 @@
 										<input type="hidden" name="rule[4][subject]" value="review_date">
 										<input type="hidden" name="rule[4][operator]" value="<=">
 										<input type="hidden" name="rule[4][parameter]" value="{{date('Y-m-d',strtotime($date_end))}}">
+										<input type="hidden" name="rule[5][subject]" value="outlet">
+										<input type="hidden" name="rule[5][operator]" value="{{$reportData['outlet_data']['id_outlet']}}">
 										<input type="hidden" name="operator" value="and">
 										<input type="hidden" name="redirect" value="user-rating">
 										<button class="btn btn-block"> Show all </button>
@@ -455,6 +416,7 @@
 				</div>
 				@endfor
 			</div>
+		</div>
 		</div>
 	</div>
 </div>

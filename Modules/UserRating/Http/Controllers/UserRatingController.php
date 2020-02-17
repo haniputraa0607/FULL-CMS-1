@@ -250,14 +250,9 @@ class UserRatingController extends Controller
         if(!$data['reportData']){
             return back()->withErrors(['Rating data not found']);
         }
-        $ratingOk = [];
-        foreach ($data['reportData']['rating_item'] as $value) {
-            $ratingOk[$value['rating_value']] = $value;
-        }
         $colorRand = ['#FF6600','#FCD202','#FF6600','#FCD202','#DADADA','#3598dc','#2C3E50','#1BBC9B','#94A0B2','#1BA39C','#e7505a','#D91E18'];
         $data['date_start'] = date('d F Y',strtotime($date_start));
         $data['date_end'] = date('d F Y',strtotime($date_end));
-        $data['reportData']['rating_item'] = $ratingOk;
         return view('userrating::report_outlet_detail',$data+$post);
     }
 }
