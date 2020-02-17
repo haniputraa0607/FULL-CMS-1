@@ -6,7 +6,7 @@ $configs = session('configs');
     <div class="input-icon right">
         <label class="col-md-3 control-label">
         Voucher Type
-        <span class="required" aria-required="true"> * </span>
+        <span class="required" aria-required="true"> * </span>  
         <i class="fa fa-question-circle tooltips" data-original-title="Tipe pembuatan voucher, di list secara manual, auto generate atau unlimited" data-container="body"></i>
         </label>
     </div>
@@ -15,7 +15,7 @@ $configs = session('configs');
             <div class="col-md-3">
                 <div class="md-radio-inline">
                     <div class="md-radio">
-                        <input type="radio" name="deals_voucher_type" id="radio1" value="Auto generated" class="voucherType" @if (old('deals_voucher_type') == "Auto generated") checked @endif>
+                        <input type="radio" name="deals_voucher_type" id="radio1" value="Auto generated" class="voucherType" @if (old('deals_voucher_type') == "Auto generated") checked @endif> 
                         <label for="radio1">
                             <span></span>
                             <span class="check"></span>
@@ -26,7 +26,7 @@ $configs = session('configs');
             <div class="col-md-3">
                 <div class="md-radio-inline">
                     <div class="md-radio">
-                        <input type="radio" name="deals_voucher_type" id="radio2" value="List Vouchers" class="voucherType" @if (old('deals_voucher_type') == "List Vouchers") checked @endif required>
+                        <input type="radio" name="deals_voucher_type" id="radio2" value="List Vouchers" class="voucherType" @if (old('deals_voucher_type') == "List Vouchers") checked @endif required> 
                         <label for="radio2">
                             <span></span>
                             <span class="check"></span>
@@ -37,7 +37,7 @@ $configs = session('configs');
             <div class="col-md-3">
                 <div class="md-radio-inline">
                     <div class="md-radio">
-                        <input type="radio" name="deals_voucher_type" id="radio3" value="Unlimited" class="voucherType" @if (old('deals_voucher_type') == "Unlimited") checked @endif required>
+                        <input type="radio" name="deals_voucher_type" id="radio3" value="Unlimited" class="voucherType" @if (old('deals_voucher_type') == "Unlimited") checked @endif required> 
                         <label for="radio3">
                             <span></span>
                             <span class="check"></span>
@@ -45,7 +45,7 @@ $configs = session('configs');
                     </div>
                 </div>
             </div>
-
+            
         </div>
     </div>
 </div>
@@ -54,8 +54,8 @@ $configs = session('configs');
     <label class="col-md-3 control-label"></label>
     <div class="col-md-9">
         <div class="col-md-3">
-            <label class="control-label">Input Voucher
-                <span class="required" aria-required="true"> * </span>
+            <label class="control-label">Input Voucher 
+                <span class="required" aria-required="true"> * </span> 
                 <br> <small> Separated by new line </small>
             </label>
         </div>
@@ -82,7 +82,7 @@ $configs = session('configs');
     <div class="input-icon right">
         <label class="col-md-3 control-label">
         Voucher Price
-        <span class="required" aria-required="true"> * </span>
+        <span class="required" aria-required="true"> * </span>  
         <i class="fa fa-question-circle tooltips" data-original-title="Tipe pembayaran voucher (gratis, menggunakan point, atau menggunakan uang)" data-container="body"></i>
         </label>
     </div>
@@ -172,7 +172,7 @@ $configs = session('configs');
     <div class="input-icon right">
         <label class="col-md-3 control-label">
         Voucher Expiry
-        <span class="required" aria-required="true"> * </span>
+        <span class="required" aria-required="true"> * </span>  
         <i class="fa fa-question-circle tooltips" data-original-title="Masa berlaku voucher, bisa diatur berdasarkan durasi deal atau tanggal expirednya." data-container="body"></i>
         </label>
     </div>
