@@ -64,6 +64,24 @@
                         </div>
                     </div>
                     
+                    <div class="form-group" id="product-type-form" @if( empty($deals[0]['is_online']) ) style="display: none;" @endif>
+                        <div class="input-icon right">
+                            <label class="col-md-3 control-label">
+                            Product Type
+                            <span class="required" aria-required="true"> * </span>
+                            <i class="fa fa-question-circle tooltips" data-original-title="Tipe produk yang akan dikenakan deal ini" data-container="body"></i>
+                            </label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-icon right">
+                                <select class="form-control" name="product_type">
+									<option value="single" @if(isset($val['product_type']) && $val['product_type'] == "single") selected @endif required> Single </option>
+									<option value="group" @if(isset($val['product_type']) && $val['product_type'] == "group") selected @endif> Group </option>
+		                        </select>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">

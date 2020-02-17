@@ -51,6 +51,10 @@ class DealsController extends Controller
 	        }
         }
 
+        if (empty($post['is_online'])) {
+	        $post['product_type'] = null;
+        }
+
         unset($post['deals_promo_id_promoid']);
         unset($post['deals_promo_id_nominal']);
 
@@ -88,7 +92,6 @@ class DealsController extends Controller
         if (isset($post['deals_voucher_start']) && !empty($post['deals_voucher_start'])) {
             $post['deals_voucher_start'] = date('Y-m-d H:i:s', strtotime($post['deals_voucher_start']));
         }
-
         $save = MyHelper::post('deals/create', $post);
 
         if (isset($save['status']) && $save['status'] == "success") {
@@ -298,6 +301,7 @@ class DealsController extends Controller
     /* CREATE DEALS */
     function create(Create $request) {
         $post = $request->except('_token');
+
         $configs = session('configs');
         if (empty($post)) {
             $identifier = $this->identifier();
@@ -564,7 +568,7 @@ class DealsController extends Controller
 	        
 	        // DEALS
 	        $deals = MyHelper::post('deals/be/detail', $post);
-	// return $deals;
+
 	        if (isset($deals['status']) && $deals['status'] == 'success') {
 
 	            $data['result'] = $deals['result'];

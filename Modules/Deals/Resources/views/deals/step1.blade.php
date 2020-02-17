@@ -187,10 +187,10 @@
 
 		    $('#is_online').change(function() {
 		        if(this.checked) {
-		            $('#step-online').show();
+		            $('#step-online, #product-type-form').show();
 		            $('#step-offline').hide();
 		        }else{
-		            $('#step-online').hide();
+		            $('#step-online, #product-type-form').hide();
 		            $('#step-offline').show();
 		        }
 		    });
