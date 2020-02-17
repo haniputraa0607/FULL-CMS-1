@@ -58,32 +58,34 @@ $configs = session('configs');
 				'<option value="province_name">Province</option>'+
 				// '<option value="city_postal_code">Postal Code</option>'+
 				'<option value="gender">Gender</option>'+
-				// '<option value="provider">Provider</option>'+
-				// '<option value="age">Age</option>'+
+				'<option value="provider">Provider</option>'+
+				'<option value="age">Age</option>'+
 				'<option value="birthday_date">Birthday Date</option>'+
 				'<option value="birthday_month">Birthday Month</option>'+
 				'<option value="birthday_year">Birthday Year</option>'+
 				'<option value="birthday_today">Birthday Today</option>'+
-				// '<option value="phone_verified">Phone Verified</option>'+
+				'<option value="phone_verified">Phone Verified</option>'+
 				// '<option value="email_verified">Email Verified</option>'+
 				// '<option value="email_unsubscribed">Email Unsubscribed</option>'+
 				'<option value="level">Level</option>'+
-				{{--'@if(MyHelper::hasAccess([18], $configs))'+--}}
-				{{--'<option value="points">Points</option>'+--}}
-				{{--'<option value="balance">Balance</option>'+--}}
-				{{--'@endif'+--}}
-				{{--'<option value="device">Device</option>'+--}}
-				{{--'<option value="is_suspended">Suspend Status</option>'+--}}
-				{{--'<option value="register_date">Register Date</option>'+--}}
-				{{--'<option value="register_today">Register Today</option>'+--}}
-				{{--'</optgroup>'+--}}
+				'@if(MyHelper::hasAccess([18], $configs))'+
+				'<option value="points">Points</option>'+
+				'@endif'+
+				'@if(MyHelper::hasAccess([19], $configs))'+
+				'<option value="balance">{{ENV('POINT_NAME', 'Points')}}</option>'+
+				'@endif'+
+				'<option value="device">Device</option>'+
+				'<option value="is_suspended">Suspend Status</option>'+
+				'<option value="register_date">Register Date</option>'+
+				'<option value="register_today">Register Today</option>'+
+				'</optgroup>'+
 				'<optgroup label="Transaction">'+
 				'<option value="trx_type">Transaction Type</option>'+
 				'<option value="trx_outlet">Transaction Outlet</option>'+
 				'<option value="trx_outlet_not">Transaction Outlet Not</option>'+
 				'<option value="trx_product">Transaction Product</option>'+
 				'<option value="trx_product_not">Transaction Product Not</option>'+
-				//		'<option value="trx_product_count">Transaction Product Count</option>'+
+				'<option value="trx_product_count">Transaction Product Count</option>'+
 				// 		'<option value="trx_product_tag">Transaction Product Tag</option>'+
 				// 		'<option value="trx_product_tag_count">Transaction Product Tag Count</option>'+
 				'<option value="trx_date">Transaction Date</option>'+
@@ -248,32 +250,34 @@ $configs = session('configs');
 				'<option value="province_name">Province</option>'+
 				// '<option value="city_postal_code">Postal Code</option>'+
 				'<option value="gender">Gender</option>'+
-				// '<option value="provider">Provider</option>'+
-				// '<option value="age">Age</option>'+
+				'<option value="provider">Provider</option>'+
+				'<option value="age">Age</option>'+
 				'<option value="birthday_date">Birthday Date</option>'+
 				'<option value="birthday_month">Birthday Month</option>'+
 				'<option value="birthday_year">Birthday Year</option>'+
 				'<option value="birthday_today">Birthday Today</option>'+
-				// '<option value="phone_verified">Phone Verified</option>'+
+				'<option value="phone_verified">Phone Verified</option>'+
 				// '<option value="email_verified">Email Verified</option>'+
 				// '<option value="email_unsubscribed">Email Unsubscribed</option>'+
 				'<option value="level">Level</option>'+
-				{{--'@if(MyHelper::hasAccess([18], $configs))'+--}}
-				{{--'<option value="points">Points</option>'+--}}
-				{{--'<option value="balance">Balance</option>'+--}}
-				{{--'@endif'+--}}
-				{{--'<option value="device">Device</option>'+--}}
-				{{--'<option value="is_suspended">Suspend Status</option>'+--}}
-				{{--'<option value="register_date">Register Date</option>'+--}}
-				{{--'<option value="register_today">Register Today</option>'+--}}
-				{{--'</optgroup>'+--}}
+				'@if(MyHelper::hasAccess([18], $configs))'+
+				'<option value="points">Points</option>'+
+				'@endif'+
+				'@if(MyHelper::hasAccess([19], $configs))'+
+				'<option value="balance">{{ENV('POINT_NAME', 'Points')}}</option>'+
+				'@endif'+
+				'<option value="device">Device</option>'+
+				'<option value="is_suspended">Suspend Status</option>'+
+				'<option value="register_date">Register Date</option>'+
+				'<option value="register_today">Register Today</option>'+
+				'</optgroup>'+
 				'<optgroup label="Transaction">'+
 				'<option value="trx_type">Transaction Type</option>'+
 				'<option value="trx_outlet">Transaction Outlet</option>'+
 				'<option value="trx_outlet_not">Transaction Outlet Not</option>'+
 				'<option value="trx_product">Transaction Product</option>'+
 				'<option value="trx_product_not">Transaction Product Not</option>'+
-				//		'<option value="trx_product_count">Transaction Product Count</option>'+
+				'<option value="trx_product_count">Transaction Product Count</option>'+
 				// 		'<option value="trx_product_tag">Transaction Product Tag</option>'+
 				// 		'<option value="trx_product_tag_count">Transaction Product Tag Count</option>'+
 				'<option value="trx_date">Transaction Date</option>'+
@@ -1069,27 +1073,29 @@ $configs = session('configs');
 														<option value="province_name">Province</option>
 {{--														<option value="city_postal_code">Postal Code</option>--}}
 														<option value="gender">Gender</option>
-{{--														<option value="provider">Provider</option>--}}
-{{--														<option value="age">Age</option>--}}
+														<option value="provider">Provider</option>
+														<option value="age">Age</option>
 														<option value="birthday_date">Birthday Date</option>
 														<option value="birthday_month">Birthday Month</option>
 														<option value="birthday_year">Birthday Year</option>
 														<option value="birthday_today">Birthday Today</option>
-{{--														<option value="phone_verified">Phone Verified</option>--}}
+														<option value="phone_verified">Phone Verified</option>
 {{--														<option value="email_verified">Email Verified</option>--}}
 {{--														<option value="email_unsubscribed">Email Unsubscribed</option>--}}
 														<option value="level">Level</option>
-{{--														@if(MyHelper::hasAccess([20], $configs))--}}
-{{--															<option value="membership">Membership</option>--}}
-{{--														@endif--}}
-{{--														@if(MyHelper::hasAccess([18], $configs))--}}
-{{--															<option value="points">Points</option>--}}
-{{--															<option value="balance">Balance</option>--}}
-{{--														@endif--}}
-{{--														<option value="device">Device</option>--}}
-{{--														<option value="is_suspended">Suspend Status</option>--}}
-{{--														<option value="register_date">Register Date</option>--}}
-{{--														<option value="register_today">Register Today</option>--}}
+														@if(MyHelper::hasAccess([20], $configs))
+															<option value="membership">Membership</option>
+														@endif
+														@if(MyHelper::hasAccess([18], $configs))
+															<option value="points">Points</option>
+														@endif
+														@if(MyHelper::hasAccess([19], $configs))
+															<option value="balance">{{ENV('POINT_NAME', 'Points')}}</option>
+														@endif
+														<option value="device">Device</option>
+														<option value="is_suspended">Suspend Status</option>
+														<option value="register_date">Register Date</option>
+														<option value="register_today">Register Today</option>
 													</optgroup>
 													<optgroup label="Transaction">
 														<option value="trx_type">Transaction Type</option>
@@ -1097,7 +1103,7 @@ $configs = session('configs');
 														<option value="trx_outlet_not">Transaction Outlet Not</option>
 														<option value="trx_product">Transaction Product</option>
 														<option value="trx_product_not">Transaction Product Not</option>
-														<!--<option value="trx_product_count">Transaction Product Count</option>-->
+														<option value="trx_product_count">Transaction Product Count</option>
 														<!--<option value="trx_product_tag">Transaction Product Tag</option>-->
 														<!--<option value="trx_product_tag_count">Transaction Product Tag Count</option>-->
 														<option value="trx_date">Transaction Date</option>
@@ -1296,23 +1302,23 @@ $configs = session('configs');
 																	<option value="province_name" @if($row['subject'] == 'province_name') selected @endif>Province</option>
 {{--																	<option value="city_postal_code" @if($row['subject'] == 'city_postal_code') selected @endif>Postal Code</option>--}}
 																	<option value="gender" @if($row['subject'] == 'gender') selected @endif>Gender</option>
-{{--																	<option value="provider" @if($row['subject'] == 'provider') selected @endif>Provider</option>--}}
-{{--																	<option value="age" @if($row['subject'] == 'age') selected @endif>Age</option>--}}
+																	<option value="provider" @if($row['subject'] == 'provider') selected @endif>Provider</option>
+																	<option value="age" @if($row['subject'] == 'age') selected @endif>Age</option>
 																	<option value="birthday_date" @if($row['subject'] == 'birthday_date') selected @endif>Birthday Date</option>
 																	<option value="birthday_month" @if($row['subject'] == 'birthday_month') selected @endif>Birthday Month</option>
 																	<option value="birthday_year" @if($row['subject'] == 'birthday_year') selected @endif>Birthday Year</option>
 																	<option value="birthday_today" @if($row['subject'] == 'birthday_today') selected @endif>Birthday Today</option>
-{{--																	<option value="phone_verified" @if($row['subject'] == 'phone_verified') selected @endif>Phone Verified</option>--}}
+																	<option value="phone_verified" @if($row['subject'] == 'phone_verified') selected @endif>Phone Verified</option>
 {{--																	<option value="email_verified" @if($row['subject'] == 'email_verified') selected @endif>Email Verified</option>--}}
 {{--																	<option value="email_unsubscribed" @if($row['subject'] == 'email_unsubscribed') selected @endif>Email Unsubscribed</option>--}}
 																	<option value="level" @if($row['subject'] == 'level') selected @endif>Level</option>
-{{--																	<option value="membership" @if($row['subject'] == 'membership') selected @endif>Membership</option>--}}
-{{--																	<option value="points" @if($row['subject'] == 'points') selected @endif>Points</option>--}}
-{{--																	<option value="balance" @if($row['subject'] == 'balance') selected @endif>Balance</option>--}}
-{{--																	<option value="device" @if($row['subject'] == 'device') selected @endif>Device</option>--}}
-{{--																	<option value="is_suspended" @if($row['subject'] == 'is_suspended') selected @endif>Suspend Status</option>--}}
-{{--																	<option value="register_date" @if($row['subject'] == 'register_date') selected @endif>Register Date</option>--}}
-{{--																	<option value="register_today" @if($row['subject'] == 'register_today') selected @endif>Register Today</option>--}}
+																	<option value="membership" @if($row['subject'] == 'membership') selected @endif>Membership</option>
+																	<option value="points" @if($row['subject'] == 'points') selected @endif>Points</option>
+																	<option value="balance" @if($row['subject'] == 'balance') selected @endif>{{ENV('POINT_NAME', 'Points')}}</option>
+																	<option value="device" @if($row['subject'] == 'device') selected @endif>Device</option>
+																	<option value="is_suspended" @if($row['subject'] == 'is_suspended') selected @endif>Suspend Status</option>
+																	<option value="register_date" @if($row['subject'] == 'register_date') selected @endif>Register Date</option>
+																	<option value="register_today" @if($row['subject'] == 'register_today') selected @endif>Register Today</option>
 																</optgroup>
 																<optgroup label="Transaction">
 																	<option value="trx_type" @if($row['subject'] == 'trx_type') selected @endif>Transaction Type</option>
@@ -1459,7 +1465,7 @@ $configs = session('configs');
 														$operator .=  '<option value="Midtrans" '.($row['parameter'] == "Midtrans" ? 'selected' : '').'>Midtrans</option>';
 														$operator .=  '<option value="Manual" '.($row['parameter'] == "Manual" ? 'selected' : '').'>Manual</option>';
 														$operator .=  '<option value="Offline" '.($row['parameter'] == "Offline" ? 'selected' : '').'>Offline</option>';
-														$operator .=  '<option value="Balance" '.($row['parameter'] == "Balance" ? 'selected' : '').'>Balance</option>';
+														$operator .=  '<option value="Balance" '.($row['parameter'] == "Balance" ? 'selected' : '').'>'.ENV('POINT_NAME', 'Points').'</option>';
 														$parameter .= '<input type="hidden" placeholder="Parameter" class="form-control" name="conditions['.$q.']['.$indexnya.'][parameter]"/>';
 													}elseif($row['subject'] == 'trx_payment_status'){
 														$operator .=  '<option value="Pending" '.($row['parameter'] == "Pending" ? 'selected' : '').'>Pending</option>';
