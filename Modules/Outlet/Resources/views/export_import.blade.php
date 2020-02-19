@@ -211,6 +211,7 @@ $configs    		= session('configs');
                                                                     <span class="check"></span>
                                                                     <span class="box"></span> All </label>
                                                             </div>
+                                                            @if(MyHelper::hasAccess([97], $configs))
                                                             <div class="md-radio">
                                                                 <input type="radio" id="radio_single" name="outlet_type" class="md-radiobtn" value="single" required @if(old('outlet_type')=='single') checked @endif>
                                                                 <label for="radio_single">
@@ -225,6 +226,7 @@ $configs    		= session('configs');
                                                                     <span class="check"></span>
                                                                     <span class="box"></span> Combo </label>
                                                             </div>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
