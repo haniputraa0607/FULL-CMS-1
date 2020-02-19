@@ -190,12 +190,16 @@ $configs    		= session('configs');
                                 </div>
                                 <div class="portlet-body form">
                                     <div class="m-heading-1 border-green m-bordered">
-                                        <p>Anda bisa melakukan export data outlet. Export data dibagi menjadi 3 tipe :</p><br>
+                                        @if(MyHelper::hasAccess([97], $configs))
+                                        <p>You can export data outlets. Export data is divided into 3 types: </p><br>
                                         <ul>
-                                            <li>All : export semua data outlet dalam 1 sheet.</li>
-                                            <li>Single : export outlet berdasarkan brand yang dipilih. Tiap brand akan dituliskan dalam sheet yang berbeda.</li>
-                                            <li>Combo : export outlet berdasarkan brand yang dipilih. Tiap brand yang dipilih akan dituliskan dalam sheet yang berbeda. </li>
+                                            <li>All : export all data outlet in 1 sheet.</li>
+                                            <li>Single : export outlets based on the selected brand. Each brand will be written in a different sheet.</li>
+                                            <li>Combo : export outlets based on the selected brand. Each brand selected will be written in a different sheet. </li>
                                         </ul>
+                                        @else
+                                            You can export all data outlet in 1 sheet.
+                                        @endif
                                     </div>
                                     @if(MyHelper::hasAccess([24,25], $grantedFeature))
                                         @if(MyHelper::hasAccess([24,25], $grantedFeature))
@@ -271,9 +275,9 @@ $configs    		= session('configs');
                                 </div>
                                 <div class="portlet-body form">
                                     <div class="m-heading-1 border-green m-bordered">
-                                        <p>Anda bisa menambahkan dan mengubah data outlet dengan menggunakan hasil  export diatas dengan tipe export <b style="color: red">All</b>.
+                                        <p>You can add and change data outlets by using the export results above with the export type <b style="color: red">All</b>.
                                         </p>
-                                        <p style="color: red">Untuk kota silahkan menggunakan list kota yang ada dibawah ini, jika memasukkan kota yang tidak ada pada list maka data outlet tersebut akan gagal disimpan.</p>
+                                        <p style="color: red">For cities, please use the city list below, if you enter a city that is not in the list, the data outlet will failed to save.</p>
                                     </div>
                                     @if(MyHelper::hasAccess([2], $configs))
                                         @if(MyHelper::hasAccess([32], $grantedFeature))
@@ -337,8 +341,8 @@ $configs    		= session('configs');
                                 </div>
                                 <div class="portlet-body form">
                                     <div class="m-heading-1 border-green m-bordered">
-                                        <p>Anda bisa mengubah data brand outlet dengan contoh format excel dibawah ini. Data yang dibutuhkan untuk import brand adalah brand name dan outlet code.</p><br>
-                                        Contoh data : <br><br>
+                                        <p>You can change the brand outlet data with the example excel format below. Data needed for import brands are brand name and outlet code.</p><br>
+                                        Example data : <br><br>
                                         <table class="table table-striped table-bordered table-hover dt-responsive" width="30%">
                                             <thead>
                                             <tr>
