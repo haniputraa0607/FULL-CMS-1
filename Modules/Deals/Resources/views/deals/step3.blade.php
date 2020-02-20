@@ -1,36 +1,69 @@
 @extends('layouts.main')
+@include('deals::deals.step3-form')
 
 @section('page-style')
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/datemultiselect/jquery-ui.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ env('S3_URL_VIEW') }}{{('assets/datemultiselect/jquery-ui.multidatespicker.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css')}}" rel="stylesheet" type="text/css" />
-    <!-- <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/clockface/css/clockface.css')}}" rel="stylesheet" type="text/css" /> -->
-    <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
+
+    <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-summernote/summernote.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
+
+    <style type="text/css">
+        .content-title {
+            padding-bottom: 15px;
+        }
+        .content-detail {
+            padding-bottom: 10px;
+            padding-left: 40px;
+        }
+        .p-l-40px {
+            padding-left: 40px;
+        }
+        .p-l-30px {
+            padding-left: 30px;
+        }
+        a[aria-expanded=false] .fa-chevron-down {
+            display: none;
+        }
+        a[aria-expanded=true] .fa-chevron-right {
+            display: none;
+        }
+        .bottom-border {
+            border-bottom: 1px solid #c2cad8;
+        }
+        .btn-grey {
+            color: #337ab7;
+            background-color: #eee;
+            border-color: #ccc;
+        }
+        .text-decoration-none {
+            text-decoration: none!important;
+        }
+    </style>
 @endsection
 
 @section('page-script')
-    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript"></script>
-    <!-- <script src="{{ env('S3_URL_VIEW') }}{{('assets/datemultiselect/jquery-ui.min.js') }}" type="text/javascript"></script> -->
-    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
-    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.js') }}" type="text/javascript"></script>
+    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/moment.min.js') }}" type="text/javascript"></script>
+    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-summernote/summernote.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-select2.min.js') }}" type="text/javascript"></script>
-    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/moment.min.js') }}" type="text/javascript"></script>
-    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
-    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}" type="text/javascript"></script>
-    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
+    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript"></script>
+    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js')}}" type="text/javascript"></script>
+    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js')}}"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')}}"></script>
-    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js') }}" type="text/javascript"></script>
+    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.js') }}" type="text/javascript"></script>
+    <script src="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/jquery-repeater/jquery.repeater.js') }}" type="text/javascript"></script>
+    <script src="{{ env('S3_URL_VIEW') }}{{ ('assets/pages/scripts/form-repeater.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('js/prices.js')}}"></script>
+    <script src="{{ env('S3_URL_VIEW') }}{{('js/deals.js') }}" type="text/javascript"></script>
 
 <!--     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/clockface/js/clockface.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
@@ -56,64 +89,6 @@
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script>
 
-    <script type="text/javascript">
-        $('#sample_1').dataTable({
-                language: {
-                    aria: {
-                        sortAscending: ": activate to sort column ascending",
-                        sortDescending: ": activate to sort column descending"
-                    },
-                    emptyTable: "No data available in table",
-                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                    infoEmpty: "No entries found",
-                    infoFiltered: "(filtered1 from _MAX_ total entries)",
-                    lengthMenu: "_MENU_ entries",
-                    search: "Search:",
-                    zeroRecords: "No matching records found"
-                },
-                info:false,
-                buttons: [],
-                responsive: {
-                    details: {
-                        type: "column",
-                        target: "tr"
-                    }
-                },
-                order: [2, "asc"],
-                lengthMenu: [
-                    [5, 10, 15, 20, -1],
-                    [5, 10, 15, 20, "All"]
-                ],
-                pageLength: 10,
-                "searching": false,
-                "paging": false,
-                dom: "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>"
-        });
-
-        $('#sample_1').on('click', '.delete-disc', function() {
-            let token  = "{{ csrf_token() }}";
-            let column = $(this).parents('tr');
-            let id     = $(this).data('id');
-
-            $.ajax({
-                type : "POST",
-                url : "{{ url('deals/voucher/delete') }}",
-                data : "_token="+token+"&id_deals_voucher="+id,
-                success : function(result) {
-                    if (result == "success") {
-                        $('#sample_1').DataTable().row(column).remove().draw();
-                        toastr.info("Voucher has been deleted.");
-                    }
-                    else {
-                        toastr.warning("Something went wrong. Failed to delete voucher.");
-                    }
-                },
-                error : function(result) {
-                    toastr.warning("Something went wrong. Failed to delete voucher.");
-                }
-            });
-        });
-    </script>
     <script type="text/javascript">
         $('#sample_2').dataTable({
                 language: {
@@ -194,24 +169,45 @@
 		            $('#step-offline').show();
 		        }
 		    });
-		    
+
             /* TYPE VOUCHER */
-            $('.voucherType').click(function() {
+            $('input[name=deals_voucher_type]').click(function() {
                 // tampil duluk
                 var nilai = $(this).val();
 
                 // alert(nilai);
 
                 if (nilai == "List Vouchers") {
+
+                	$('input[name=total_voucher_type]:checked').prop('checked', false);
+                	$('input[name=deals_total_voucher]').val('');
+
                     $('#listVoucher').show();
                     $('.listVoucher').prop('required', true);
                     $('.listVoucher').prop('disabled', false);
 
+                    $('#total-voucher-form').hide();
                     $('#generateVoucher').hide();
                     $('.generateVoucher').removeAttr('required');
                     $('.generateVoucher').prop('disabled', true);
                 }
                 else if (nilai == "Auto generated"){
+                    $('#total-voucher-form').show();
+                    
+                    $('#listVoucher').hide();
+                    $('.listVoucher').removeAttr('required');
+                    $('.listVoucher').prop('disabled', true);
+                }
+            });
+
+            /* TOTAL TYPE VOUCHER */
+            $('input[name=total_voucher_type]').click(function() {
+                // tampil duluk
+                var nilai = $(this).val();
+                // alert(nilai);
+
+                if (nilai == "Auto generated") {
+
                     $('#generateVoucher').show();
                     $('.generateVoucher').prop('required', true);
                     $('.generateVoucher').prop('disabled', false);
@@ -219,13 +215,16 @@
                     $('#listVoucher').hide();
                     $('.listVoucher').removeAttr('required');
                     $('.listVoucher').prop('disabled', true);
-                }else{
-                    $('#generateVoucher').hide();
-                    $('.generateVoucher').removeAttr('required');
-                    $('.generateVoucher').prop('disabled', true);
+                }
+                else if (nilai == "Unlimited"){
                     $('#listVoucher').hide();
                     $('.listVoucher').removeAttr('required');
                     $('.listVoucher').prop('disabled', true);
+
+                    $('#generateVoucher').hide();
+                    $('.generateVoucher').removeAttr('required');
+                    $('.generateVoucher').prop('disabled', true);
+                    $('input[name=deals_total_voucher]').val('');
                 }
             });
 
@@ -384,7 +383,7 @@
                 ko.onload     = function(){
                     if (this.naturalHeight === 500 && this.naturalWidth === 500) {
                     } else {
-                        mentah.attr('src', "{{ $deals['url_deals_image']??'https://www.placehold.it/500x500/EFEFEF/AAAAAA&text=no+image' }}")
+                        mentah.attr('src', "{{ $deals[0]['url_deals_image']??'https://www.placehold.it/500x500/EFEFEF/AAAAAA&text=no+image' }}")
                         $('#file').val("");
                         toastr.warning("Please check dimension of your photo.");
                     }
@@ -448,7 +447,48 @@
             });
             $('select[name="id_brand"]').change();
         });
+		window.onload = function() {
+                $("body").on('click', ".removeRepeater", function() {
+                    var mbok = $(this).parent().parent().parent();
+                    mbok.remove();
+                });
+            }
+            $('.collapse').collapse({
+              toggle: true
+            })
+            $('.sortable').sortable({
+                items: '> div:not(.unsortable)',
+                handle: ".sortable-handle",
+                connectWith: ".sortable",
+                axis: 'y',
+            });
+            $('.sortable-detail-1').sortable({
+                handle: '.sortable-detail-handle-1',
+                connectWith: '.sortable-detail-1',
+                axis: 'y'
+            });
+            $('.sortable-detail-2').sortable({
+                handle: '.sortable-detail-handle-2',
+                connectWith: '.sortable-detail-2',
+                axis: 'y'
+            });
     </script>
+
+@if( isset($deals['deals_content']) )
+    @foreach($deals['deals_content'] as $key => $val)
+        @if($key > 1)
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.sortable-detail-<?php echo $key+1 ?>').sortable({
+                handle: '.sortable-detail-handle-<?php echo $key+1 ?>',
+                connectWith: '.sortable-detail-<?php echo $key+1 ?>',
+                axis: 'y'
+            });
+        });
+    </script>
+        @endif
+    @endforeach
+@endif
 @endsection
 
 @section('content')
@@ -474,103 +514,71 @@
 
     @include('layouts.notifications')
 
-    <div class="row">
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <a class="dashboard-stat dashboard-stat-v2 blue">
-                <div class="visual">
-                    <i class="fa fa-comments"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        <span data-counter="counterup" data-value="{{ $deals['deals_total_voucher'] }}">{{ $deals['deals_total_voucher'] }}</span>
-                    </div>
-                    <div class="desc"> Total Voucher </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <a class="dashboard-stat dashboard-stat-v2 red">
-                <div class="visual">
-                    <i class="fa fa-bar-chart-o"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        <span data-counter="counterup" data-value="{{ $deals['deals_total_claimed'] }}">{{ $deals['deals_total_claimed'] }}</span>
-                    </div>
-                    <div class="desc"> Total Claimed </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <a class="dashboard-stat dashboard-stat-v2 green">
-                <div class="visual">
-                    <i class="fa fa-shopping-cart"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        <span data-counter="counterup" data-value="{{ $deals['deals_total_redeemed'] }}">{{ $deals['deals_total_redeemed'] }}</span>
-                    </div>
-                    <div class="desc"> Total Redeem </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <a class="dashboard-stat dashboard-stat-v2 purple">
-                <div class="visual">
-                    <i class="fa fa-globe"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        <span data-counter="counterup" data-value="{{ $deals['deals_total_used'] }}">{{ $deals['deals_total_used'] }}</span>
-                    </div>
-                    <div class="desc"> Total Used </div>
-                </div>
-            </a>
-        </div>
-    </div>
-
     <div class="portlet light bordered">
-        <div class="portlet-title tabbable-line">
+    	<div class="col-md-12">
+            <div class="mt-element-step">
+                <div class="row step-line">
+                    <div id="step-online" @if( empty($deals['is_online']) ) style="display: none;" @endif>
+	                    <div class="col-md-4 mt-step-col first">
+	                        <div class="mt-step-number bg-white">1</div>
+	                        <div class="mt-step-title uppercase font-grey-cascade">Info</div>
+	                        <div class="mt-step-content font-grey-cascade">Title, Image, Periode</div>
+	                    </div>
+	                    <div class="col-md-4 mt-step-col ">
+	                        <div class="mt-step-number bg-white">2</div>
+	                        <div class="mt-step-title uppercase font-grey-cascade">Rule</div>
+	                        <div class="mt-step-content font-grey-cascade">discount rule</div>
+	                    </div>
+	                    <div class="col-md-4 mt-step-col last active">
+		                    <div class="mt-step-number bg-white">3</div>
+		                    <div class="mt-step-title uppercase font-grey-cascade">Content</div>
+		                    <div class="mt-step-content font-grey-cascade">Detail Content Deals</div>
+	                    </div>
+                    </div>
+                    <div id="step-offline" @if( !empty($deals['is_online']) ) style="display: none;" @endif>
+                    	<div class="col-md-6 mt-step-col first">
+	                        <div class="mt-step-number bg-white">1</div>
+	                        <div class="mt-step-title uppercase font-grey-cascade">Info</div>
+	                        <div class="mt-step-content font-grey-cascade">Title, Image, Periode</div>
+	                    </div>
+	                    <div class="col-md-6 mt-step-col last active">
+		                    <div class="mt-step-number bg-white">2</div>
+		                    <div class="mt-step-title uppercase font-grey-cascade">Content</div>
+		                    <div class="mt-step-content font-grey-cascade">Detail Content Deals</div>
+	                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet-title">
             <div class="caption">
                 <span class="caption-subject font-blue bold uppercase">{{ $deals['deals_title'] }}</span>
             </div>
-            <ul class="nav nav-tabs">
-
-                <li class="active" id="infoOutlet">
-                    <a href="#info" data-toggle="tab" > Info </a>
-                </li>
-                <li>
-                    <a href="#voucher" data-toggle="tab"> Voucher </a>
-                </li>
-                <li>
-                    <a href="#participate" data-toggle="tab"> Participate </a>
-                </li>
-            </ul>
         </div>
         <div class="portlet-body">
 
             <div class="tab-content">
                 <div class="tab-pane active" id="info">
-                	<form id="form" class="form-horizontal" role="form" action=" @if($deals_type == "Deals") {{ url('deals/update') }} @else {{ url('inject-voucher/update') }} @endif" method="post" enctype="multipart/form-data">
-        				@include('deals::deals.step1-form')
-		                <div class="form-actions">
-		                {{ csrf_field() }}
-		                <div class="row">
-		                    <div class="col-md-offset-3 col-md-9">
-		                        <button type="submit" class="btn green">Submit</button>
-		                        <!-- <button type="button" class="btn default">Cancel</button> -->
-		                    </div>
-		                </div>
-		            </div>
-		            <input type="hidden" name="id_deals" value="{{ $deals['id_deals'] }}">
-		            <input type="hidden" name="deals_type" value="{{ $deals['deals_type'] }}">
-			    </form>
-                </div>
-                <div class="tab-pane" id="voucher">
-                    @include('deals::deals.voucher')
-                </div>
-                <div class="tab-pane" id="participate">
-                    @include('deals::deals.participate')
+                	<div class="portlet-body form">
+					    <form id="form" class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+					    		<div class="form-body">
+                    
+				                    @yield('step3')
+
+				                </div>
+				                <div class="form-actions">
+				                {{ csrf_field() }}
+				                <div class="row">
+				                    <div class="col-md-offset-3 col-md-9">
+				                        <button type="submit" class="btn green">Submit</button>
+				                        <!-- <button type="button" class="btn default">Cancel</button> -->
+				                    </div>
+				                </div>
+				            </div>
+				            <input type="hidden" name="id_deals" value="{{ $deals['id_deals'] }}">
+				            <input type="hidden" name="deals_type" value="{{ $deals['deals_type'] }}">
+					    </form>
+					</div>
                 </div>
             </div>
         </div>
