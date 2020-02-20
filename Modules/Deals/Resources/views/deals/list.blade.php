@@ -154,8 +154,8 @@ $grantedFeature     = session('granted_features');
                         <th> Title </th>
                         @if(MyHelper::hasAccess([97], $configs))
                         <th> Brand </th>
-                        <th> Price </th>
                         @endif
+                        <th> Price </th>
                         @if($deals_type != "Hidden" && $deals_type !='WelcomeVoucher')
                             <th> Date Publish </th>
                         @endif
@@ -183,6 +183,7 @@ $grantedFeature     = session('granted_features');
                                 <td>{{ $value['deals_title'] }}</td>
                                 @if(MyHelper::hasAccess([97], $configs))
                                 <td>{{ $value['brand']['name_brand']??'Not Set' }}</td>
+                                @endif
                                 <td>
                                 	@if($value['deals_voucher_price_type'] == 'free')
                                 		{{ $value['deals_voucher_price_type'] }}
@@ -192,7 +193,6 @@ $grantedFeature     = session('granted_features');
                                 		{{ 'IDR'.number_format($value['deals_voucher_price_cash']) }}
                                 	@endif
                                 </td>
-                                @endif
                                 @if($deals_type !='WelcomeVoucher')
                                 @if($deals_type != "Hidden")
                                 <td>

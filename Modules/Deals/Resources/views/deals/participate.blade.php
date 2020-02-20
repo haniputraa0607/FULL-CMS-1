@@ -1,4 +1,4 @@
-@if ($deals[0]['deals_type'] == "Hidden")
+@if ($deals['deals_type'] == "Hidden")
     <div class="portlet light bordered">
         <div class="portlet-title">
             <div class="caption">
@@ -66,7 +66,7 @@
                 <div class="form-actions">
                     {{ csrf_field() }}
                     <div class="col-md-offset-3 col-md-9">
-                        <input type="hidden" name="id_deals" value="{{ $deals[0]['id_deals'] }}">
+                        <input type="hidden" name="id_deals" value="{{ $deals['id_deals'] }}">
                         <button type="submit" class="btn yellow">Submit</button>
                     </div>
                 </div>

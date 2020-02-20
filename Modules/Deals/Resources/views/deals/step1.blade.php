@@ -408,7 +408,7 @@
                 ko.onload     = function(){
                     if (this.naturalHeight === 500 && this.naturalWidth === 500) {
                     } else {
-                        mentah.attr('src', "{{ $deals[0]['url_deals_image']??'https://www.placehold.it/500x500/EFEFEF/AAAAAA&text=no+image' }}")
+                        mentah.attr('src', "{{ $deals['url_deals_image']??'https://www.placehold.it/500x500/EFEFEF/AAAAAA&text=no+image' }}")
                         $('#file').val("");
                         toastr.warning("Please check dimension of your photo.");
                     }
@@ -502,7 +502,7 @@
     	<div class="col-md-12">
             <div class="mt-element-step">
                 <div class="row step-line">
-                    <div id="step-online" @if( empty($deals[0]['is_online']) ) style="display: none;" @endif>
+                    <div id="step-online" @if( empty($deals['is_online']) ) style="display: none;" @endif>
 	                    <div class="col-md-4 mt-step-col first active">
 	                        <div class="mt-step-number bg-white">1</div>
 	                        <div class="mt-step-title uppercase font-grey-cascade">Info</div>
@@ -519,7 +519,7 @@
 		                    <div class="mt-step-content font-grey-cascade">Detail Content Deals</div>
 	                    </div>
                     </div>
-                    <div id="step-offline" @if( !empty($deals[0]['is_online']) ) style="display: none;" @endif>
+                    <div id="step-offline" @if( !empty($deals['is_online']) ) style="display: none;" @endif>
                     	<div class="col-md-6 mt-step-col first active">
 	                        <div class="mt-step-number bg-white">1</div>
 	                        <div class="mt-step-title uppercase font-grey-cascade">Info</div>
@@ -536,7 +536,7 @@
         </div>
         <div class="portlet-title">
             <div class="caption">
-                <span class="caption-subject font-blue bold uppercase">{{ $deals[0]['deals_title'] }}</span>
+                <span class="caption-subject font-blue bold uppercase">{{ $deals['deals_title'] }}</span>
             </div>
         </div>
         <div class="portlet-body">
@@ -545,20 +545,18 @@
                 <div class="tab-pane active" id="info">
                 	<div class="portlet-body form">
 					    <form id="form" class="form-horizontal" role="form" action=" @if($deals_type == "Deals") {{ url('deals/update') }} @else {{ url('inject-voucher/update') }} @endif" method="post" enctype="multipart/form-data">
-					        @foreach ($deals as $key => $val)
-                    				@include('deals::deals.step1-form')
-					                <div class="form-actions">
-					                {{ csrf_field() }}
-					                <div class="row">
-					                    <div class="col-md-offset-3 col-md-9">
-					                        <button type="submit" class="btn green">Submit</button>
-					                        <!-- <button type="button" class="btn default">Cancel</button> -->
-					                    </div>
-					                </div>
-					            </div>
-					            <input type="hidden" name="id_deals" value="{{ $val['id_deals'] }}">
-					            <input type="hidden" name="deals_type" value="{{ $val['deals_type'] }}">
-					        @endforeach
+                				@include('deals::deals.step1-form')
+				                <div class="form-actions">
+				                {{ csrf_field() }}
+				                <div class="row">
+				                    <div class="col-md-offset-3 col-md-9">
+				                        <button type="submit" class="btn green">Submit</button>
+				                        <!-- <button type="button" class="btn default">Cancel</button> -->
+				                    </div>
+				                </div>
+				            </div>
+				            <input type="hidden" name="id_deals" value="{{ $deals['id_deals'] }}">
+				            <input type="hidden" name="deals_type" value="{{ $deals['deals_type'] }}">
 					    </form>
 					</div>
                 </div>
