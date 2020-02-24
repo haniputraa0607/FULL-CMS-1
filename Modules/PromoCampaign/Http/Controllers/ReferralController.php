@@ -10,63 +10,78 @@ use \App\Lib\MyHelper;
 
 class ReferralController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Response
-     */
-    public function index()
-    {
-        return view('promocampaign::index');
+    public function getReportFilter($type){
+        return session('filter_report_'.$type,[]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
-    {
-        return view('promocampaign::create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        return view('promocampaign::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        return view('promocampaign::edit');
-    }
-
     /**
      * Update the specified resource in storage.
      * @param Request $request
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function report(Request $request){
+        $data = [
+            'title'             => 'Referral',
+            'sub_title'         => 'Referral Report',
+            'menu_active'       => 'referral',
+            'submenu_active'    => 'referral-report'
+        ];
+        $filter = $this->getReportFilter('trx');
+        $data['date_start'] = date('d F Y',strtotime($filter['date_start']??date('Y-m-01 H:i:s')));
+        $data['date_end'] = date('d F Y',strtotime($filter['date_end']??date('Y-m-d H:i:s')));
+        return view('promocampaign::referral.report',$data);
+    }
+    public function setReportFilter(Request $request){
+        $post = $request->except('_token');
+        $new_sess = [];
+        if($request->post('date_start')){
+            $new_sess['date_start'] = str_replace('-','',$request->post('date_start',date('01 M Y')));
+        }
+        if($request->post('date_end')){
+            $new_sess['date_end'] = str_replace('-','',$request->post('date_end',date('d M Y')));
+        }
+        session(['filter_report_'.$post['type']=>$new_sess]);
+        if($request->ajax){
+            return ['status'=>'success'];
+        }
+        return $request->redirect_url?redirect($request->redirect_url):back();
+    }
+    public function reportAjax(Request $request,$key){
+        $page = $request->page?:1;
+        $filter = $this->getReportFilter(explode('-',$key)[0]);
+        $filter['page'] = $page;
+        $filter = array_merge($filter,$request->except('_token'));
+        $raw_data = MyHelper::post('referral/report/'.$key,$filter)['result']??[];
+        $data['data'] = $raw_data['data'];
+        $data['from'] = $raw_data['from']??0;
+        $data['last_page'] = !($raw_data['next_page_url']??false);
+        return $data;
+    }
+
+    public function reportUser(Request $request,$phone){
+        $data = [
+            'title'             => 'Referral',
+            'sub_title'         => 'Referral Report',
+            'menu_active'       => 'referral',
+            'submenu_active'    => 'referral-report'
+        ];
+        $page = $request->page?:1;
+        $filter = $this->getReportFilter('user');
+        $data['date_start'] = date('d F Y',strtotime($filter['date_start']??date('Y-m-01 H:i:s')));
+        $data['date_end'] = date('d F Y',strtotime($filter['date_end']??date('Y-m-d H:i:s')));
+        if($request->ajax){
+            $raw_data = MyHelper::post('referral/report/user',['phone'=>$phone,'page'=>$page,'ajax'=>1]+$data)['result']??[];
+            $datax['data'] = array_map(function($var){
+                $var['created_at'] = date('d F Y H:i',strtotime($var['created_at']));
+                return $var;
+            },$raw_data['data']??[]);
+            $datax['from'] = $raw_data['from']??0;
+            $datax['last_page'] = !($raw_data['next_page_url']??false);
+            return $datax;
+        }
+        // return MyHelper::post('referral/report/user-total',['phone'=>$phone,'page'=>$page]);
+        $data['report'] = MyHelper::post('referral/report/user-total',['phone'=>$phone,'page'=>$page])['result']??[];
+        return view('promocampaign::referral.report_user',$data);
     }
 
     public function setting(Request $request) {
