@@ -53,6 +53,30 @@
 			height: 16px;
 		}
 	}
+
+	.table-infinite th[data-order]{
+		cursor: pointer;
+	}
+
+	.table-infinite th[data-order] span{
+		display: none;
+	}
+
+	.table-infinite th[data-order] span.sort-inactive{
+		display: inline;
+	}
+
+	.table-infinite th[data-order].active span.sort-inactive{
+		display: none;
+	}
+
+	.table-infinite th[data-order].active.asc span.sort-asc{
+		display: inline;
+	}
+
+	.table-infinite th[data-order].active.desc span.sort-desc{
+		display: inline;
+	}
 	 /* INFINITE SCROLL END */
 </style>
 @endsection
@@ -142,6 +166,38 @@
 		    }
 		})
 		$('.table-infinite').trigger('scroll');
+		$('.table-infinite').on('click','th',function(){
+			if($(this).data('order')){
+				var postdata = {
+					order_by : $(this).data('order'),
+					order_sorting : $(this).data('order_sorting')?'asc':'desc',
+					'_token' : "{{csrf_token()}}",
+					type: $(this).parents('table').data('template'),
+					ajax:true
+				};
+				$(this).parents('table').find('th').removeClass('active');
+				$(this).parents('table').find('th').removeClass('asc');
+				$(this).parents('table').find('th').removeClass('desc');
+				$(this).addClass('active');
+				$(this).addClass($(this).data('order_sorting')?'asc':'desc');
+				$(this).data('order_sorting',!$(this).data('order_sorting'));
+				$.post({
+					url: "{{url('referral/report')}}",
+					data: postdata,
+					success:response => {
+						if(response.status == 'success'){
+							ISReset($(this).parents('table'));
+						}else{
+							alert("Failed apply filter");
+						}
+					},
+					error: function(err){
+						alert("Failed apply filter");
+					}
+				});				
+			}
+		});
+		$('.table-infinite th[data-order]').prepend('<span class="sort-inactive"><i class="fa fa-sort text-muted"></i></span><span class="sort-asc"><i class="fa fa-sort-alpha-asc"></i></span><span class="sort-desc"><i class="fa fa-sort-alpha-desc"></i></span> ');
 	});
 	// INFINITE SCROLL END	
 </script>

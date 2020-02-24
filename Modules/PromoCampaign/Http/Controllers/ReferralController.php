@@ -40,6 +40,12 @@ class ReferralController extends Controller
         if($request->post('date_end')){
             $new_sess['date_end'] = str_replace('-','',$request->post('date_end',date('d M Y')));
         }
+        if($request->post('order_by')){
+            $new_sess['order_by'] = str_replace('-','',$request->post('order_by',date('d M Y')));
+        }
+        if($request->post('order_sorting')){
+            $new_sess['order_sorting'] = str_replace('-','',$request->post('order_sorting',date('d M Y')));
+        }
         session(['filter_report_'.$post['type']=>$new_sess]);
         if($request->ajax){
             return ['status'=>'success'];
@@ -51,9 +57,13 @@ class ReferralController extends Controller
         $filter = $this->getReportFilter(explode('-',$key)[0]);
         $filter['page'] = $page;
         $filter = array_merge($filter,$request->except('_token'));
+        // return MyHelper::post('referral/report/'.$key,$filter);
         $raw_data = MyHelper::post('referral/report/'.$key,$filter)['result']??[];
         $data['data'] = $raw_data['data'];
+        $data['total'] = $raw_data['total']??0;
         $data['from'] = $raw_data['from']??0;
+        $data['order_by'] = $raw_data['order_by']??0;
+        $data['order_sorting'] = $raw_data['order_sorting']??0;
         $data['last_page'] = !($raw_data['next_page_url']??false);
         return $data;
     }

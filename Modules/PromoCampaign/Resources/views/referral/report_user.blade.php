@@ -72,61 +72,70 @@
 			groupSeparator: ".",
 			rightAlign: false
 		});
+		table.parents('.is-container').find('.total-record').text(response.total?response.total:0).val(response.total?response.total:0);
+		$('.is-container .total-record').inputmask('numeric',{
+			removeMaskOnSubmit: true,
+			min:0,
+			autoGroup: true,
+			radixPoint: ",",
+			groupSeparator: ".",
+			rightAlign: false
+		});
 	}
 	template = {
 		user: function(item){
 			return `
-				<tr class="page${item.page}">
-					<td>${item.increment}</td>
-					<td>${new Date(item.created_at).toLocaleString('id-ID',{day:"2-digit",month:"short",year:"numeric",timeStyle:"medium",hour:"2-digit",minute:"2-digit"})}</td>
-					<td><a href="/user/detail/${item.id_user}">${item.user.name} (${item.user.phone})</a></td>
-					<td><a href="transaction/detail/${item.transaction.id_transaction}/${item.transaction.trasaction_type}">${item.transaction.transaction_receipt_number}</a></td>
-					<td><span class="price">${item.transaction.transaction_grandtotal}</span></td>
-					<td><span class="price">${item.referrer_bonus?item.referrer_bonus:0}</span></td>
-				</tr>
+			<tr class="page${item.page}">
+			<td>${item.increment}</td>
+			<td>${new Date(item.created_at).toLocaleString('id-ID',{day:"2-digit",month:"short",year:"numeric",timeStyle:"medium",hour:"2-digit",minute:"2-digit"})}</td>
+			<td><a href="/user/detail/${item.id_user}">${item.user.name} (${item.user.phone})</a></td>
+			<td><a href="transaction/detail/${item.transaction.id_transaction}/${item.transaction.trasaction_type}">${item.transaction.transaction_receipt_number}</a></td>
+			<td><span class="price">${item.transaction.transaction_grandtotal}</span></td>
+			<td><span class="price">${item.referrer_bonus?item.referrer_bonus:0}</span></td>
+			</tr>
 			`;
 		}
 	};
-    var chart_user = AmCharts.makeChart("chart-user", {
-      "type": "serial",
-      "theme": "none",
-      "marginRight": 70,
-      "dataProvider": [
-		   ],
-      "valueAxes": [{
-        "axisAlpha": 0,
-        "position": "left",
-        "title": "Number of Referred User"
-      }],
-      "startDuration": 1,
-      "graphs": [{
-        "balloonText": "<b>[[category]]: [[value]]</b>",
-        "fillColorsField": "color",
-        "fillAlphas": 0.9,
-        "lineAlpha": 0.2,
-        "type": "column",
-        "valueField": "total"
-      }],
-      "chartCursor": {
-        "categoryBalloonEnabled": false,
-        "cursorAlpha": 0,
-        "zoomable": false
-      },
-      "categoryField": "trx_date",
-      "categoryAxis": {
-        "gridPosition": "start",
-        "labelRotation": 45
-      },
-      "export": {
-        "enabled": false
-      },
-	  "titles": [
-	  {
-	  	"text": "Referral Transaction Chart",
-		"size": 15
-	  }]
-    });
-    var color = ["#e1e5ec","#2f353b","#3598dc","#578ebe","#2C3E50","#22313F","#67809F","#4B77BE","#4c87b9","#5e738b","#5C9BD1","#94A0B2","#32c5d2","#1BBC9B","#1BA39C","#36D7B7","#44b6ae","#26C281","#3faba4","#4DB3A2","#2ab4c0","#29b4b6","#E5E5E5","#e9edef","#fafafa","#555555","#95A5A6","#BFBFBF","#ACB5C3","#bfcad1","#525e64","#e7505a","#E08283","#E26A6A","#e35b5a","#D91E18","#EF4836","#d05454","#f36a5a","#e43a45","#c49f47","#E87E04","#f2784b","#f3c200","#F7CA18","#F4D03F","#c8d046","#c5bf66","#c5b96b","#8E44AD","#8775a7","#BF55EC","#8E44AD","#9B59B6","#9A12B3","#8775a7","#796799","#8877a9"];
+	var chart_user = AmCharts.makeChart("chart-user", {
+		"type": "serial",
+		"theme": "none",
+		"marginRight": 70,
+		"dataProvider": [
+		],
+		"valueAxes": [{
+			"axisAlpha": 0,
+			"position": "left",
+			"title": "Number of Referred User"
+		}],
+		"startDuration": 1,
+		"graphs": [{
+			"balloonText": "<b>[[category]]: [[value]]</b>",
+			"fillColorsField": "color",
+			"fillAlphas": 0.9,
+			"lineAlpha": 0.2,
+			"type": "column",
+			"valueField": "total"
+		}],
+		"chartCursor": {
+			"categoryBalloonEnabled": false,
+			"cursorAlpha": 0,
+			"zoomable": false
+		},
+		"categoryField": "trx_date",
+		"categoryAxis": {
+			"gridPosition": "start",
+			"labelRotation": 45
+		},
+		"export": {
+			"enabled": false
+		},
+		"titles": [
+		{
+			"text": "Referral Transaction Chart",
+			"size": 15
+		}]
+	});
+	var color = ["#e1e5ec","#2f353b","#3598dc","#578ebe","#2C3E50","#22313F","#67809F","#4B77BE","#4c87b9","#5e738b","#5C9BD1","#94A0B2","#32c5d2","#1BBC9B","#1BA39C","#36D7B7","#44b6ae","#26C281","#3faba4","#4DB3A2","#2ab4c0","#29b4b6","#E5E5E5","#e9edef","#fafafa","#555555","#95A5A6","#BFBFBF","#ACB5C3","#bfcad1","#525e64","#e7505a","#E08283","#E26A6A","#e35b5a","#D91E18","#EF4836","#d05454","#f36a5a","#e43a45","#c49f47","#E87E04","#f2784b","#f3c200","#F7CA18","#F4D03F","#c8d046","#c5bf66","#c5b96b","#8E44AD","#8775a7","#BF55EC","#8E44AD","#9B59B6","#9A12B3","#8775a7","#796799","#8877a9"];
 	$(document).ready(function(){
 		$('.price').inputmask('numeric',{
 			removeMaskOnSubmit: true,
@@ -288,21 +297,24 @@
 		<div class="container-fluid">
 			<div id="chart-user" style="height: 400px"></div>
 		</div>
-		<div class="table-infinite">
-			<table class="table table-hover" data-template="user" data-page="0" data-is-loading="0" data-is-last="0" data-url="{{ url('referral/report/user?phone='.$report['phone']) }}" data-callback="priceCell" id="table-user">
-				<thead>
-					<tr class="header-table">
-						<th style="width: 1%">No</th>
-						<th>Date</th>
-						<th>Referred User</th>
-						<th>Transaction Receipt Number</th>
-						<th>Grand Total</th>
-						<th>Earned Cashback</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
+		<div class="table-responsive is-container">
+			<div class="table-infinite">
+				<table class="table table-hover" data-template="user" data-page="0" data-is-loading="0" data-is-last="0" data-url="{{ url('referral/report/user?phone='.$report['phone']) }}" data-callback="priceCell" id="table-user">
+					<thead>
+						<tr class="header-table">
+							<th style="width: 1%">No</th>
+							<th data-order="promo_campaign_referral_transactions.created_at">Date</th>
+							<th data-order="id_user">Referred User</th>
+							<th>Transaction Receipt Number</th>
+							<th data-order="referred_bonus">Grand Total</th>
+							<th data-order="referrer_bonus">Earned Cashback</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div><span class="text-muted">Total record: </span><span class="total-record"></span></div>
 		</div>
 	</div>
 </div>
