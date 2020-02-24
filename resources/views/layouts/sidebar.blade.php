@@ -1032,7 +1032,7 @@
 				@endif
 			@endif
 
-			@if(MyHelper::hasAccess([93], $configs))
+			@if(MyHelper::hasAccess([95], $configs))
 				@if(MyHelper::hasAccess([228], $grantedFeature))
 				<li class="nav-item {{($menu_active == 'referral') ? 'active open' : ''}}">
 					<a href="javascript:;" class="nav-link nav-toggle">
