@@ -1,4 +1,5 @@
 @section('is-style')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
 
 	 /* INFINITE SCROLL START */
@@ -115,8 +116,15 @@
 		if(!(table.data('is-last') || table.data('is-loading'))){
 			table.find('tbody').append(`<tr class="loading-row"><td colspan="${table.find('thead tr').children().length}" class="text-center"><div class="lds-facebook"><div></div><div></div><div></div></div></td></tr>`);
 			table.data('is-loading',1);
-			$.get({
-				url: table.data("url")+(table.data("url").includes("?")?"&":"?")+"ajax=1&page="+(table.data('page')+1),
+			$.post({
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+				},
+				url: table.data("url"),
+				data: {
+					ajax:1,
+					page: table.data('page')+1
+				},
 				success: function(response){
 					table.find('.loading-row').remove();
 					var from = response.from;

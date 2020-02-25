@@ -42,7 +42,10 @@
 		if($all){
 			ISReset($('#tableTrx'));
 		}
-		$.get({
+		$.post({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+			},
 			url: "{{url('referral/report/trx-summary')}}",
 			success: function(response){
 				var xcolor = color;
@@ -57,7 +60,10 @@
 				chart_trx.validateData();
 			}
 		});
-		$.get({
+		$.post({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+			},
 			url: "{{url('referral/report/code-summary')}}",
 			success: function(response){
 				var xcolor = color;
