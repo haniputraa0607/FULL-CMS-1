@@ -136,7 +136,7 @@ class MyHelper
         'Authorization'   => $bearer,
         'Accept'          => 'application/json',
         'Content-Type'    => 'application/json',
-        'ip-address-view' => $_SERVER['HTTP_X_FORWARDED_FOR']?$_SERVER['HTTP_X_FORWARDED_FOR']:$_SERVER['REMOTE_ADDR'],
+        'ip-address-view' => isset($_SERVER['HTTP_X_FORWARDED_FOR'])?$_SERVER['HTTP_X_FORWARDED_FOR']:$_SERVER['REMOTE_ADDR'],
         'user-agent-view' => $_SERVER['HTTP_USER_AGENT'],
       ]
     );
