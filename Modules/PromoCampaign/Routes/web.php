@@ -37,6 +37,6 @@ Route::group(['middleware' => ['web', 'validate_session', 'config_control:92'], 
     Route::post('setting', 'ReferralController@settingUpdate');
     Route::get('report', 'ReferralController@report');
     Route::post('report', 'ReferralController@setReportFilter');
-    Route::get('report/{key}', 'ReferralController@reportAjax');
+    Route::post('report/{key}', 'ReferralController@reportAjax');
     Route::get('report/user/{phone}', 'ReferralController@reportUser');
 });

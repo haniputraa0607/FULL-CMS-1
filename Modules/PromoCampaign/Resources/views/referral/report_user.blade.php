@@ -42,8 +42,15 @@
 		if($all){
 			ISReset($('#table-user'));
 		}
-		$.get({
-			url: "{!!url('referral/report/user-summary?ajax=1&phone='.$report['phone'])!!}",
+		$.post({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+			},
+			url: "{!!url('referral/report/user-summary')!!}",
+			data: {
+				ajax:1,
+				phone: "{{$report['phone']}}"
+			},
 			success: function(response){
 				var xcolor = color;
 				new_chart = response.data.map(function(vrb){
