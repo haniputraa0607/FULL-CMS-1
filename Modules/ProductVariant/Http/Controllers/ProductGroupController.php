@@ -22,8 +22,20 @@ class ProductGroupController extends Controller
             'submenu_active' => 'product-group-list',
         ];
         $page = $request->page?:1;
-        $data['product_groups'] = MyHelper::get('product-variant/group')['result']??[];
+        $data['product_groups'] = [];
         return view('productvariant::groups.list',$data);
+    }
+
+    public function indexAjax(Request $request) {
+        $page = $request->page?:1;
+        $raw_data = MyHelper::get('product-variant/group?page='.$page)['result']??[];
+        $data['data'] = $raw_data['data'];
+        $data['total'] = $raw_data['total']??0;
+        $data['from'] = $raw_data['from']??0;
+        $data['order_by'] = $raw_data['order_by']??0;
+        $data['order_sorting'] = $raw_data['order_sorting']??0;
+        $data['last_page'] = !($raw_data['next_page_url']??false);
+        return $data;
     }
 
     /**
