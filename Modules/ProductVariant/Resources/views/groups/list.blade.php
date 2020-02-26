@@ -86,7 +86,7 @@ $configs            = session('configs');
 <div class="portlet light bordered">
     <div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject sbold uppercase font-blue">List Product By Category</span>
+            <span class="caption-subject sbold uppercase font-blue">List Product Group</span>
         </div>
     </div>
     <div class="portlet-body">
