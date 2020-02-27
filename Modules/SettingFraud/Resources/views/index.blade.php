@@ -3,7 +3,7 @@ use App\Lib\MyHelper;
 $grantedFeature     = session('granted_features');
 $configs    		= session('configs');
 ?>
-@extends('layouts.main')
+@extends('layouts.main-closed')
 
 @section('page-style')
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
@@ -554,11 +554,11 @@ $configs    		= session('configs');
             //For transaction in week
             divMain('transaction_in_week','{{$result[1]['fraud_settings_status']}}')
 
-            @if (isset($result[0]['auto_suspend_status']))
+            @if (isset($result[1]['auto_suspend_status']))
                 checkboxAction('checkbox_auto_suspend-transaction_in_week')
             @endif
 
-            @if (isset($result[0]['forward_admin_status']))
+            @if (isset($result[1]['forward_admin_status']))
                 checkboxAction('checkbox_forward_admin-transaction_in_week')
             @endif
 
@@ -575,6 +575,101 @@ $configs    		= session('configs');
                 visibleDiv('whatsapp', "{{$result[1]['whatsapp_toogle']}}",'transaction_in_week')
             @endif
 
+            //For transaction point
+            divMain('transaction_point','{{$result[4]['fraud_settings_status']}}')
+
+            @if (isset($result[4]['auto_suspend_status']))
+            checkboxAction('checkbox_auto_suspend-transaction_point')
+            @endif
+
+            @if (isset($result[4]['forward_admin_status']))
+            checkboxAction('checkbox_forward_admin-transaction_point')
+            @endif
+
+            @if (isset($result[4]['email_toogle']))
+            visibleDiv('email', "{{$result[4]['email_toogle']}}",'transaction_point')
+            $('#email_toogle_transaction_point').val("{{$result[4]['email_toogle']}}")
+            @endif
+
+            @if (isset($result[4]['sms_toogle']))
+            visibleDiv('sms', "{{$result[4]['sms_toogle']}}",'transaction_point')
+            @endif
+
+            @if (isset($result[4]['whatsapp_toogle']))
+            visibleDiv('whatsapp', "{{$result[4]['whatsapp_toogle']}}",'transaction_point')
+            @endif
+
+            //For transaction between
+            divMain('transaction_in_between','{{$result[3]['fraud_settings_status']}}')
+
+            @if (isset($result[3]['auto_suspend_status']))
+            checkboxAction('checkbox_auto_suspend-transaction_in_between')
+            @endif
+
+            @if (isset($result[3]['forward_admin_status']))
+            checkboxAction('checkbox_forward_admin-transaction_in_between')
+            @endif
+
+            @if (isset($result[3]['email_toogle']))
+            visibleDiv('email', "{{$result[3]['email_toogle']}}",'transaction_in_between')
+            $('#email_toogle_transaction_in_between').val("{{$result[3]['email_toogle']}}")
+            @endif
+
+            @if (isset($result[3]['sms_toogle']))
+            visibleDiv('sms', "{{$result[3]['sms_toogle']}}",'transaction_in_between')
+            @endif
+
+            @if (isset($result[3]['whatsapp_toogle']))
+            visibleDiv('whatsapp', "{{$result[3]['whatsapp_toogle']}}",'transaction_in_between')
+            @endif
+
+            //For check promo code
+            divMain('check_promo_code','{{$result[5]['fraud_settings_status']}}')
+
+            @if (isset($result[5]['auto_suspend_status']))
+            checkboxAction('checkbox_auto_suspend-check_promo_code')
+            @endif
+
+            @if (isset($result[5]['forward_admin_status']))
+            checkboxAction('checkbox_forward_admin-check_promo_code')
+            @endif
+
+            @if (isset($result[5]['email_toogle']))
+            visibleDiv('email', "{{$result[5]['email_toogle']}}",'check_promo_code')
+            $('#email_toogle_transaction_in_between').val("{{$result[5]['email_toogle']}}")
+            @endif
+
+            @if (isset($result[5]['sms_toogle']))
+            visibleDiv('sms', "{{$result[5]['sms_toogle']}}",'check_promo_code')
+            @endif
+
+            @if (isset($result[5]['whatsapp_toogle']))
+            visibleDiv('whatsapp', "{{$result[5]['whatsapp_toogle']}}",'check_promo_code')
+            @endif
+
+            //For check referral user
+            divMain('check_referral_user','{{$result[7]['fraud_settings_status']}}')
+
+            @if (isset($result[7]['auto_suspend_status']))
+            checkboxAction('checkbox_auto_suspend-check_referral_user')
+            @endif
+
+            @if (isset($result[7]['forward_admin_status']))
+            checkboxAction('checkbox_forward_admin-check_referral_user')
+            @endif
+
+            @if (isset($result[7]['email_toogle']))
+            visibleDiv('email', "{{$result[7]['email_toogle']}}",'check_referral_user')
+            $('#email_toogle_transaction_in_between').val("{{$result[7]['email_toogle']}}")
+            @endif
+
+            @if (isset($result[7]['sms_toogle']))
+            visibleDiv('sms', "{{$result[7]['sms_toogle']}}",'check_referral_user')
+            @endif
+
+            @if (isset($result[7]['whatsapp_toogle']))
+            visibleDiv('whatsapp', "{{$result[7]['whatsapp_toogle']}}",'check_referral_user')
+            @endif
         });
 
         function divMain(element_id,status){
@@ -590,221 +685,84 @@ $configs    		= session('configs');
         }
 
         function addEmailContent(param,type){
-            if(type === 'device_id'){
-                var textvalue = $('#email_content_device_id').val();
+            var id = type;
+            var textvalue = $('#email_content_'+id).val();
 
-                var textvaluebaru = textvalue+" "+param;
-                $('#email_content_device_id').val(textvaluebaru);
-                $('#email_content_device_id').summernote('editor.saveRange');
-                $('#email_content_device_id').summernote('editor.restoreRange');
-                $('#email_content_device_id').summernote('editor.focus');
-                $('#email_content_device_id').summernote('editor.insertText', param);
-            }else if(type === 'transaction_in_day'){
-                var textvalue = $('#email_content_transaction_in_day').val();
-
-                var textvaluebaru = textvalue+" "+param;
-                $('#email_content_transaction_in_day').val(textvaluebaru);
-                $('#email_content_transaction_in_day').summernote('editor.saveRange');
-                $('#email_content_transaction_in_day').summernote('editor.restoreRange');
-                $('#email_content_transaction_in_day').summernote('editor.focus');
-                $('#email_content_transaction_in_day').summernote('editor.insertText', param);
-            }else if(type === 'transaction_in_week'){
-                var textvalue = $('#email_content_transaction_in_week').val();
-
-                var textvaluebaru = textvalue+" "+param;
-                $('#email_content_transaction_in_week').val(textvaluebaru);
-                $('#email_content_transaction_in_week').summernote('editor.saveRange');
-                $('#email_content_transaction_in_week').summernote('editor.restoreRange');
-                $('#email_content_transaction_in_week').summernote('editor.focus');
-                $('#email_content_transaction_in_week').summernote('editor.insertText', param);
-            }
-
+            var textvaluebaru = textvalue+" "+param;
+            $('#email_content_'+id).val(textvaluebaru);
+            $('#email_content_'+id).summernote('editor.saveRange');
+            $('#email_content_'+id).summernote('editor.restoreRange');
+            $('#email_content_'+id).summernote('editor.focus');
+            $('#email_content_'+id).summernote('editor.insertText', param);
         }
 
         function addEmailSubject(param, type){
-            if(type === 'device_id'){
-                var textvalue = $('#email_subject_device_id').val();
-                var textvaluebaru = textvalue+" "+param;
-                $('#email_subject_device_id').val(textvaluebaru);
-            }else if(type === 'transaction_in_day'){
-                var textvalue = $('#email_subject_transaction_in_day').val();
-                var textvaluebaru = textvalue+" "+param;
-                $('#email_subject_transaction_in_day').val(textvaluebaru);
-            }else if(type === 'transaction_in_week'){
-                var textvalue = $('#email_subject_transaction_in_week').val();
-                var textvaluebaru = textvalue+" "+param;
-                $('#email_subject_transaction_in_week').val(textvaluebaru);
-            }
+            var id = type;
+            var textvalue = $('#email_subject_'+id).val();
+            var textvaluebaru = textvalue+" "+param;
+            $('#email_subject_'+id).val(textvaluebaru);
         }
 
         function addSmsContent(param, type){
-            if(type === 'device_id'){
-                var textvalue = $('#sms_content_device_id').val();
-                var textvaluebaru = textvalue+" "+param;
-                $('#sms_content_device_id').val(textvaluebaru);
-            }else if(type === 'transaction_in_day'){
-                var textvalue = $('#sms_content_transaction_in_day').val();
-                var textvaluebaru = textvalue+" "+param;
-                $('#sms_content_transaction_in_day').val(textvaluebaru);
-            }else if(type === 'transaction_in_week'){
-                var textvalue = $('#sms_content_transaction_in_week').val();
-                var textvaluebaru = textvalue+" "+param;
-                $('#sms_content_transaction_in_week').val(textvaluebaru);
-            }
+            var id = type;
+            var textvalue = $('#sms_content_'+id).val();
+            var textvaluebaru = textvalue+" "+param;
+            $('#sms_content_'+id).val(textvaluebaru);
         }
 
         function addWhatsappContent(para, type){
-            if(type === 'device_id'){
-                var textvalue = $('#whatsapp_content_device_id').val();
-                var textvaluebaru = textvalue+" "+param;
-                $('#whatsapp_content_device_id').val(textvaluebaru);
-            }else if(type === 'transaction_in_day'){
-                var textvalue = $('#whatsapp_content_transaction_in_day').val();
-                var textvaluebaru = textvalue+" "+param;
-                $('#whatsapp_content_transaction_in_day').val(textvaluebaru);
-            }else if(type === 'transaction_in_week'){
-                var textvalue = $('#whatsapp_content_transaction_in_week').val();
-                var textvaluebaru = textvalue+" "+param;
-                $('#whatsapp_content_transaction_in_week').val(textvaluebaru);
-            }
+            var id = type;
+            var textvalue = $('#whatsapp_content_'+id).val();
+            var textvaluebaru = textvalue+" "+param;
+            $('#whatsapp_content_'+id).val(textvaluebaru);
         }
 
         function visibleDiv(apa,nilai,type){
-            if(type === 'device_id'){
-                if(apa == 'email'){
-                    @if(MyHelper::hasAccess([38], $configs))
-                    if(nilai=='1'){
-                        document.getElementById('div_email_recipient_device_id').style.display = 'block';
-                        document.getElementById('div_email_subject_device_id').style.display = 'block';
-                        document.getElementById('div_email_content_device_id').style.display = 'block';
-                        $('.field_email_device_id').prop('required', true);
-                    } else {
-                        document.getElementById('div_email_recipient_device_id').style.display = 'none';
-                        document.getElementById('div_email_subject_device_id').style.display = 'none';
-                        document.getElementById('div_email_content_device_id').style.display = 'none';
-                        $('.field_email_device_id').prop('required', false);
-                    }
-                    @endif
-                }
-                if(apa == 'sms'){
-                    @if(MyHelper::hasAccess([39], $configs))
-                    if(nilai=='1'){
-                        document.getElementById('div_sms_content_device_id').style.display = 'block';
-                        document.getElementById('div_sms_recipient_device_id').style.display = 'block';
-                        $('.field_sms_devie_id').prop('required', true);
-                    } else {
-                        document.getElementById('div_sms_content_device_id').style.display = 'none';
-                        document.getElementById('div_sms_recipient_device_id').style.display = 'none';
-                        $('.field_sms_devie_id').prop('required', false);
-                    }
-                    @endif
-                }
+            var id = type;
 
-                if(apa == 'whatsapp'){
-                    @if(MyHelper::hasAccess([74], $configs))
-                            @if($api_key_whatsapp)
-                    if(nilai=='1'){
-                        document.getElementById('div_whatsapp_content_devie_id').style.display = 'block';
-                        document.getElementById('div_whatsapp_recipient_device_id').style.display = 'block';
-                        $('.field_whatsapp_device_id').prop('required', true);
-                    } else {
-                        document.getElementById('div_whatsapp_content_devie_id').style.display = 'none';
-                        document.getElementById('div_whatsapp_recipient_device_id').style.display = 'none';
-                        $('.field_whatsapp_device_id').prop('required', false);
-                    }
-                    @endif
-                    @endif
+            if(apa == 'email'){
+                @if(MyHelper::hasAccess([38], $configs))
+                if(nilai=='1'){
+                    document.getElementById('div_email_recipient_'+id).style.display = 'block';
+                    document.getElementById('div_email_subject_'+id).style.display = 'block';
+                    document.getElementById('div_email_content_'+id).style.display = 'block';
+                    $('.field_email_'+id).prop('required', true);
+                } else {
+                    document.getElementById('div_email_recipient_'+id).style.display = 'none';
+                    document.getElementById('div_email_subject_'+id).style.display = 'none';
+                    document.getElementById('div_email_content_'+id).style.display = 'none';
+                    $('.field_email_'+id).prop('required', false);
                 }
-            }else if(type === 'transaction_in_day'){
-                if(apa == 'email'){
-                    @if(MyHelper::hasAccess([38], $configs))
-                    if(nilai=='1'){
-                        document.getElementById('div_email_recipient_transaction_in_day').style.display = 'block';
-                        document.getElementById('div_email_subject_transaction_in_day').style.display = 'block';
-                        document.getElementById('div_email_content_transaction_in_day').style.display = 'block';
-                        $('.field_email_transaction_in_day').prop('required', true);
-                    } else {
-                        document.getElementById('div_email_recipient_transaction_in_day').style.display = 'none';
-                        document.getElementById('div_email_subject_transaction_in_day').style.display = 'none';
-                        document.getElementById('div_email_content_transaction_in_day').style.display = 'none';
-                        $('.field_email_transaction_in_day').prop('required', false);
-                    }
-                    @endif
+                @endif
+            }
+            if(apa == 'sms'){
+                @if(MyHelper::hasAccess([39], $configs))
+                if(nilai=='1'){
+                    document.getElementById('div_sms_content_'+id).style.display = 'block';
+                    document.getElementById('div_sms_recipient_'+id).style.display = 'block';
+                    $('.field_sms_'+id).prop('required', true);
+                } else {
+                    document.getElementById('div_sms_content_'+id).style.display = 'none';
+                    document.getElementById('div_sms_recipient_'+id).style.display = 'none';
+                    $('.field_sms_'+id).prop('required', false);
                 }
-                if(apa == 'sms'){
-                    @if(MyHelper::hasAccess([39], $configs))
-                    if(nilai=='1'){
-                        document.getElementById('div_sms_content_transaction_in_day').style.display = 'block';
-                        document.getElementById('div_sms_recipient_transaction_in_day').style.display = 'block';
-                        $('.field_sms_transaction_in_day').prop('required', true);
-                    } else {
-                        document.getElementById('div_sms_content_transaction_in_day').style.display = 'none';
-                        document.getElementById('div_sms_recipient_transaction_in_day').style.display = 'none';
-                        $('.field_sms_transaction_in_day').prop('required', false);
-                    }
-                    @endif
-                }
+                @endif
+            }
 
-                if(apa == 'whatsapp'){
-                    @if(MyHelper::hasAccess([74], $configs))
+            if(apa == 'whatsapp'){
+                @if(MyHelper::hasAccess([74], $configs))
                         @if($api_key_whatsapp)
-                        if(nilai=='1'){
-                            document.getElementById('div_whatsapp_content_transaction_in_day').style.display = 'block';
-                            document.getElementById('div_whatsapp_recipient_transaction_in_day').style.display = 'block';
-                            $('.field_whatsapp_transaction_in_day').prop('required', true);
-                        } else {
-                            document.getElementById('div_whatsapp_content_transaction_in_day').style.display = 'none';
-                            document.getElementById('div_whatsapp_recipient_transaction_in_day').style.display = 'none';
-                            $('.field_whatsapp_transaction_in_day').prop('required', false);
-                        }
-                        @endif
-                    @endif
+                if(nilai=='1'){
+                    document.getElementById('div_whatsapp_content_'+id).style.display = 'block';
+                    document.getElementById('div_whatsapp_recipient_'+id).style.display = 'block';
+                    $('.field_whatsapp_'+id).prop('required', true);
+                } else {
+                    document.getElementById('div_whatsapp_content_'+id).style.display = 'none';
+                    document.getElementById('div_whatsapp_recipient_'+id).style.display = 'none';
+                    $('.field_whatsapp_'+id).prop('required', false);
                 }
-            }else if(type === 'transaction_in_week'){
-                if(apa == 'email'){
-                    @if(MyHelper::hasAccess([38], $configs))
-                    if(nilai=='1'){
-                        document.getElementById('div_email_recipient_transaction_in_week').style.display = 'block';
-                        document.getElementById('div_email_subject_transaction_in_week').style.display = 'block';
-                        document.getElementById('div_email_content_transaction_in_week').style.display = 'block';
-                        $('.field_email_transaction_in_week').prop('required', true);
-                    } else {
-                        document.getElementById('div_email_recipient_transaction_in_week').style.display = 'none';
-                        document.getElementById('div_email_subject_transaction_in_week').style.display = 'none';
-                        document.getElementById('div_email_content_transaction_in_week').style.display = 'none';
-                        $('.field_email_transaction_in_week').prop('required', false);
-                    }
-                    @endif
-                }
-                if(apa == 'sms'){
-                    @if(MyHelper::hasAccess([39], $configs))
-                    if(nilai=='1'){
-                        document.getElementById('div_sms_content_transaction_in_week').style.display = 'block';
-                        document.getElementById('div_sms_recipient_transaction_in_week').style.display = 'block';
-                        $('.field_sms_transaction_in_week').prop('required', true);
-                    } else {
-                        document.getElementById('div_sms_content_transaction_in_week').style.display = 'none';
-                        document.getElementById('div_sms_recipient_transaction_in_week').style.display = 'none';
-                        $('.field_sms_transaction_in_week').prop('required', false);
-                    }
-                    @endif
-                }
-
-                if(apa == 'whatsapp'){
-                    @if(MyHelper::hasAccess([74], $configs))
-                        @if($api_key_whatsapp)
-                        if(nilai=='1'){
-                            document.getElementById('div_whatsapp_content_transaction_in_week').style.display = 'block';
-                            document.getElementById('div_whatsapp_recipient_transaction_in_week').style.display = 'block';
-                            $('.field_whatsapp_transaction_in_week').prop('required', true);
-                        } else {
-                            document.getElementById('div_whatsapp_content_transaction_in_week').style.display = 'none';
-                            document.getElementById('div_whatsapp_recipient_transaction_in_week').style.display = 'none';
-                            $('.field_whatsapp_transaction_in_week').prop('required', false);
-                        }
-                        @endif
-                    @endif
-                }
+                @endif
+                @endif
             }
         }
 
@@ -814,18 +772,22 @@ $configs    		= session('configs');
             var split = id.split("-");
 
             if($('#' + id).is(":checked")){
-                document.getElementById(div_id).style.display = 'block';
+                if(document.getElementById(div_id)) {
+                    document.getElementById(div_id).style.display = 'block';
+                }
                 if(id.indexOf('forward_admin') < 0){
                     $('.field_'+split[1]).prop('required', true);
                 }
             }else{
-                document.getElementById(div_id).style.display = 'none';
-                if(id.indexOf('forward_admin') >= 0){
-                    $('.field_email_'+split[1]).prop('required', false);
-                    $('.field_sms_'+split[1]).prop('required', false);
-                    $('.field_whatsapp_'+split[1]).prop('required', false);
-                }else{
-                    $('.field_'+split[1]).prop('required', false);
+                if(document.getElementById(div_id)){
+                    document.getElementById(div_id).style.display = 'none';
+                    if (id.indexOf('forward_admin') >= 0) {
+                        $('.field_email_' + split[1]).prop('required', false);
+                        $('.field_sms_' + split[1]).prop('required', false);
+                        $('.field_whatsapp_' + split[1]).prop('required', false);
+                    } else {
+                        $('.field_' + split[1]).prop('required', false);
+                    }
                 }
             }
         }
@@ -837,19 +799,23 @@ $configs    		= session('configs');
             var split = id.split("-");
 
             if($('#' + this.id).is(":checked")){
-                document.getElementById(div_id).style.display = 'block';
+                if(document.getElementById(div_id)){
+                    document.getElementById(div_id).style.display = 'block';
+                }
 
                 if(id.indexOf('forward_admin') < 0){
                     $('.field_'+split[1]).prop('required', true);
                 }
             }else{
-                document.getElementById(div_id).style.display = 'none';
-                if(id.indexOf('forward_admin') >= 0){
-                    $('.field_email_'+split[1]).prop('required', false);
-                    $('.field_sms_'+split[1]).prop('required', false);
-                    $('.field_whatsapp_'+split[1]).prop('required', false);
-                }else{
-                    $('.field_'+split[1]).prop('required', false);
+                if(document.getElementById(div_id)){
+                    document.getElementById(div_id).style.display = 'none';
+                    if(id.indexOf('forward_admin') >= 0){
+                        $('.field_email_'+split[1]).prop('required', false);
+                        $('.field_sms_'+split[1]).prop('required', false);
+                        $('.field_whatsapp_'+split[1]).prop('required', false);
+                    }else{
+                        $('.field_'+split[1]).prop('required', false);
+                    }
                 }
             }
         });
@@ -873,7 +839,6 @@ $configs    		= session('configs');
                 success : function(result) {
                     if (result.status == "success") {
                         toastr.info("Fraud status has been updated.");
-                        console.log(state);
                         if(state == 'Active'){
                             document.getElementById('div_main_'+split[2]).style.display = 'block';
                         }else{
@@ -921,969 +886,72 @@ $configs    		= session('configs');
 
     @include('layouts.notifications')
 
-    <div class="portlet box green">
-        <div class="portlet-title">
-            <div class="caption">
-                <i class="fa fa-gear"></i>{{$sub_title}}</div>
-            <div class="tools">
-                <a href="javascript:;" class="collapse"> </a>
+    <div class="portlet light bordered">
+        <div class="tab-pane">
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="ver-inline-menu tabbable margin-bottom-10">
+                        <li class=" @if(!isset($tipe)) active @endif">
+                            <a data-toggle="tab" href="#fraud_device"><i class="fa fa-cog"></i> Device </a>
+                        </li>
+                        <li class=" @if(isset($tipe) && $tipe == 'fraud_transaction_point') active @endif">
+                            <a data-toggle="tab" href="#fraud_transaction_point"><i class="fa fa-cog"></i> Transaction Point </a>
+                        </li>
+                        <li class=" @if(isset($tipe) && $tipe == 'fraud_transaction_in_day') active @endif">
+                            <a data-toggle="tab" href="#fraud_transaction_in_day"><i class="fa fa-cog"></i> Transaction in day </a>
+                        </li>
+                        <li class=" @if(isset($tipe) && $tipe == 'fraud_transaction_in_week') active @endif">
+                            <a data-toggle="tab" href="#fraud_transaction_in_week"><i class="fa fa-cog"></i> Transaction in week </a>
+                        </li>
+                        <li class=" @if(isset($tipe) && $tipe == 'fraud_transaction_in_between') active @endif">
+                            <a data-toggle="tab" href="#fraud_transaction_in_between"><i class="fa fa-cog"></i> Transaction in between </a>
+                        </li>
+                        <li class=" @if(isset($tipe) && $tipe == 'fraud_check_promo_code') active @endif">
+                            <a data-toggle="tab" href="#fraud_check_promo_code"><i class="fa fa-cog"></i> Check Promo Code </a>
+                        </li>
+                        <li class=" @if(isset($tipe) && $tipe == 'fraud_check_referral_user') active @endif">
+                            <a data-toggle="tab" href="#fraud_check_referral_user"><i class="fa fa-cog"></i> Check Referral User </a>
+                        </li>
+                        <li class=" @if(isset($tipe) && $tipe == 'fraud_referral') active @endif">
+                            <a data-toggle="tab" href="#fraud_referral"><i class="fa fa-cog"></i> Check Referral </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-9">
+                    <div class="tab-content">
+                        <div class="tab-pane @if(!isset($tipe)) active @endif" id="fraud_device">
+                            @include('settingfraud::form_fraud_device')
+                        </div>
+                        <div class="tab-pane @if(isset($tipe) && $tipe == 'fraud_transaction_point') active @endif" id="fraud_transaction_point">
+                            @include('settingfraud::form_fraud_transaction_point')
+                        </div>
+                        <div class="tab-pane @if(isset($tipe) && $tipe == 'fraud_transaction_in_day') active @endif" id="fraud_transaction_in_day">
+                            @include('settingfraud::form_fraud_transaction_day')
+                        </div>
+
+                        <div class="tab-pane @if(isset($tipe) && $tipe == 'fraud_transaction_in_week') active @endif" id="fraud_transaction_in_week">
+                            @include('settingfraud::form_fraud_transaction_week')
+                        </div>
+
+                        <div class="tab-pane @if(isset($tipe) && $tipe == 'fraud_transaction_in_between') active @endif" id="fraud_transaction_in_between">
+                            @include('settingfraud::form_fraud_transaction_in_between')
+                        </div>
+
+                        <div class="tab-pane @if(isset($tipe) && $tipe == 'fraud_check_promo_code') active @endif" id="fraud_check_promo_code">
+                            @include('settingfraud::form_fraud_check_promo_code')
+                        </div>
+
+                        <div class="tab-pane @if(isset($tipe) && $tipe == 'fraud_check_referral_user') active @endif" id="fraud_check_referral_user">
+                            @include('settingfraud::form_fraud_check_referral_user')
+                        </div>
+
+                        <div class="tab-pane @if(isset($tipe) && $tipe == 'fraud_referral') active @endif" id="fraud_referral">
+                            @include('settingfraud::form_fraud_referral')
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="portlet-body">
-            <p>The Fraud Detection setting has 3 types:</p>
-            <ul>
-                <li>Device : set a maximum of accounts that can be used in 1 device ID. If the user has been exposed to fraud, it will automatically not be able go in to application.</li>
-                <li>Transaction in day : set the maximum number of transactions allowed in 1 day for all users</li>
-                <li>Transaction in week : set the maximum number of transactions allowed in 1 week for all users</li>
-            </ul>
-            <p>You can provide actions for each type, actions are divided into 2 :</p>
-            <ul>
-                <li>Auto Suspend : if the user violates the rules, the account will be automatically suspended</li>
-                <li>Forward Admin : if the user commits a violation in accordance with existing rules, system will send a notification to the admin</li>
-            </ul>
         </div>
     </div>
-    <div class="portlet-body">
-        <div class="tabbable-line tabbable-full-width">
-            <ul class="nav nav-tabs">
-                <li class=" @if(!isset($tipe)) active @endif">
-                    <a href="#fraud_device" data-toggle="tab"> Device</a>
-                </li>
-                <li class=" @if(isset($tipe) && $tipe == 'fraud_transaction_in_day') active @endif">
-                    <a href="#fraud_transaction_in_day" data-toggle="tab"> Transaction in day </a>
-                </li>
-                <li class=" @if(isset($tipe) && $tipe == 'fraud_transaction_in_week') active @endif">
-                    <a href="#fraud_transaction_in_week" data-toggle="tab"> Transaction in week </a>
-                </li>
-            </ul>
-        </div>
-        <div class="tab-content" style="margin-top:20px">
-            <div class="tab-pane @if(!isset($tipe)) active @endif" id="fraud_device">
-                <form role="form" class="form-horizontal" action="{{url()->current()}}" method="POST" enctype="multipart/form-data" id="form">
-                    <br>
-                    <div class="form-group">
-                        <div class="col-md-4" style="margin-left: 2.5%;margin-top: 7px;">
-                            <button type="button" class="btn btn-lg btn-toggle switch @if($result[2]['fraud_settings_status'] == 'Active')active @endif" id="switch-change-device_id" data-id="{{ $result[2]['id_fraud_setting'] }}" data-toggle="button" aria-pressed="<?=($result[2]['fraud_settings_status'] == 'Active' ? 'true' : 'false')?>" autocomplete="off">
-                                <div class="handle"></div>
-                            </button>
-                        </div>
-                    </div>
-                    <div id="div_main_device_id">
-                        <div class="portlet light bordered" id="trigger">
-                            <div class="portlet-title">
-                                <div class="caption">
-                                    <span class="caption-subject font-dark sbold uppercase font-yellow">Parameter</span>
-                                </div>
-                            </div>
-                            <div class="portlet-body form">
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Fraud Detection Parameter <i class="fa fa-question-circle tooltips" data-original-title="fraud terjadi ketika device ID digunakan melebihi jumlah maximum account yang sudah ditentukan" data-container="body"></i></label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" name="parameter_detail" value="{{$result[2]['parameter']}}" disabled>
-                                    </div>
-                                </div>
-
-                                <div class="form-group" id="type-detail" >
-                                    <label class="col-md-4 control-label" ></label>
-                                    <div class="col-md-5">
-                                        <div class="input-group">
-									<span class="input-group-addon">
-										maximum
-									</span>
-                                            <input type="number" class="form-control price" min="1" name="parameter_detail" value="{{$result[2]['parameter_detail']}}">
-                                            <span class="input-group-addon">
-										Account
-									</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="portlet light bordered">
-                            <div class="portlet-title">
-                                <div class="caption">
-                                    <span class="caption-subject font-dark sbold uppercase font-yellow">Action</span>
-                                </div>
-                            </div>
-                            <div class="portlet-body">
-                                <div class="icheck-list">
-                                    <label>
-                                        <input type="checkbox" class="icheck checkbox" name="auto_suspend_status" id="checkbox_auto_suspend-device_id" data-checkbox="icheckbox_square-blue" @if(isset($result[2]['auto_suspend_status']) && $result[2]['auto_suspend_status'] == "1") checked @endif> Auto Suspend
-                                    </label>
-                                    <div class="portlet light bordered" id="div_auto_suspend-device_id" style="margin-bottom: 2%;display: none;">
-                                        <div class="portlet-title tabbable-line">
-                                            <div class="caption font-green">
-                                                <i class="icon-settings font-green"></i>
-                                                <span class="caption-subject bold uppercase"> Auto Suspend </span>
-                                            </div>
-                                        </div>
-                                        <div class="portlet-body">
-                                            <div class="form-body">
-                                                <div class="input-group">
-                                                    <div class="icheck-inline">
-                                                        <label>
-                                                            <input type="radio" name="auto_suspend_value" class="icheck" data-radio="iradio_square-red" @if(isset($result[2]['auto_suspend_value']) && $result[2]['auto_suspend_value'] == "last_login") checked @endif value="last_login"> Last account login
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" name="auto_suspend_value" class="icheck" data-radio="iradio_square-red" @if(isset($result[2]['auto_suspend_value']) && $result[2]['auto_suspend_value'] == "all_account") checked @endif value="all_account"> All account
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <label>
-                                        <input type="checkbox" class="icheck checkbox" name="forward_admin_status" id="checkbox_forward_admin-device_id" data-checkbox="icheckbox_square-blue" @if(isset($result[2]['forward_admin_status']) && $result[2]['forward_admin_status'] == "1") checked @endif> Forward Admin
-                                    </label>
-                                    <div class="portlet light bordered" id="div_forward_admin-device_id" style="margin-bottom: 2%;display: none;">
-                                        <div class="portlet-title tabbable-line">
-                                            <div class="caption font-green">
-                                                <i class="icon-settings font-green"></i>
-                                                <span class="caption-subject bold uppercase"> Forward Admin </span>
-                                            </div>
-                                        </div>
-                                        <div class="portlet-body form">
-                                            <div class="form-body">
-                                                @if(MyHelper::hasAccess([38], $configs))
-                                                    <h4>Email</h4>
-                                                    <div class="form-group">
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-3 control-label">
-                                                                Status
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="pilih enabled untuk mengaktifkan email sebagai media pengiriman laporan fraud detection" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <select name="email_toogle" id="email_toogle_device_id" class="form-control select2" onChange="visibleDiv('email',this.value, 'device_id')">
-                                                                <option value="0" @if(old('email_toogle') == '0') selected @else @if(isset($result[2]['email_toogle']) && $result[2]['email_toogle'] == "0") selected @endif @endif>Disabled</option>
-                                                                <option value="1" @if(old('email_toogle') == '1') selected @else @if(isset($result[2]['email_toogle']) && $result[2]['email_toogle'] == "1") selected @endif @endif>Enabled</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group" id="div_email_recipient_device_id" style="display:none">
-                                                        <div class="input-icon right">
-                                                            <label for="multiple" class="control-label col-md-3">
-                                                                Email Recipient
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan alamat email admin yang akan menerima laporan fraud detection, jika lebih dari 1 pisahkan dengan tanda koma (,)" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <textarea name="email_recipient" id="email_recipient" class="form-control field_email_device_id" placeholder="Email address recipient">@if(isset($result[2]['email_recipient'])){{ $result[2]['email_recipient'] }}@endif</textarea>
-                                                            <p class="help-block">Comma ( , ) separated for multiple emails</p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group" id="div_email_subject_device_id" style="display:none">
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-3 control-label">
-                                                                Subject
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan subjek email, tambahkan text replacer bila perlu" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <input type="text" placeholder="Email Subject" class="form-control field_email_device_id" name="email_subject" id="email_subject_device_id" @if(!empty(old('email_subject'))) value="{{old('email_subject')}}" @else @if(isset($result[2]['email_subject']) && $result[2]['email_subject'] != '') value="{{$result[2]['email_subject']}}" @endif @endif>
-                                                            <br>
-                                                            You can use this variables to display user personalized information:
-                                                            <br><br>
-                                                            <div class="row">
-                                                                @foreach($textreplaces_device as $key=>$row)
-                                                                    <div class="col-md-3" style="margin-bottom:5px;">
-                                                                        <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addEmailSubject('{{ $row['keyword'] }}','device_id');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group" id="div_email_content_device_id" style="display:none">
-                                                        <div class="input-icon right">
-                                                            <label for="multiple" class="control-label col-md-3">
-                                                                Content
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten email, tambahkan text replacer bila perlu" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <textarea name="email_content" id="email_content_device_id" class="form-control summernote">@if(!empty(old('email_content'))) <?php echo old('email_content'); ?> @else @if(isset($result[2]['email_content']) && $result[2]['email_content'] != '') <?php echo $result[2]['email_content'];?> @endif @endif</textarea>
-                                                            You can use this variables to display user personalized information:
-                                                            <br><br>
-                                                            <div class="row" >
-                                                                @foreach($textreplaces_device as $key=>$row)
-                                                                    <div class="col-md-3" style="margin-bottom:5px;">
-                                                                        <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addEmailContent('{{ $row['keyword'] }}','device_id');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                @endif
-                                                @if(MyHelper::hasAccess([39], $configs))
-                                                    <h4>SMS</h4>
-                                                    <div class="form-group" >
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-3 control-label">
-                                                                Status
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="pilih enabled untuk mengaktifkan sms sebagai media pengiriman auto crm ini" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <select name="sms_toogle" id="sms_toogle" class="form-control select2" onChange="visibleDiv('sms',this.value, 'device_id')">
-                                                                <option value="0" @if(old('sms_toogle') == '0') selected @else @if(isset($result[2]['sms_toogle']) && $result[2]['sms_toogle'] == "0") selected @endif @endif>Disabled</option>
-                                                                <option value="1" @if(old('sms_toogle') == '1') selected @else @if(isset($result[2]['sms_toogle']) && $result[2]['sms_toogle'] == "1") selected @endif @endif>Enabled</option>
-                                                            </select>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group" id="div_sms_recipient_device_id" style="display:none">
-                                                        <div class="input-icon right">
-                                                            <label for="multiple" class="control-label col-md-3">
-                                                                SMS Recipient
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan no handphone admin yang akan menerima laporan fraud detection, jika lebih dari 1 pisahkan dengan tanda koma (,)" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <textarea name="sms_recipient" id="sms_recipient" class="form-control field_sms_devie_id" placeholder="Phone number recipient">@if(isset($result[2]['sms_recipient'])){{ $result[2]['sms_recipient'] }}@endif</textarea>
-                                                            <p class="help-block">Comma ( , ) separated for multiple phone number</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group" id="div_sms_content_device_id" style="display:none">
-                                                        <div class="input-icon right">
-                                                            <label for="multiple" class="control-label col-md-3">
-                                                                SMS Content
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="isi pesan sms, tambahkan text replacer bila perlu" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <textarea name="sms_content" id="sms_content_device_id" class="form-control field_sms_devie_id" placeholder="SMS Content">@if(!empty(old('sms_content'))) {{old('sms_content')}} @else @if(isset($result[2]['sms_content']) && $result[2]['sms_content'] != '') {{$result[2]['sms_content']}} @endif @endif</textarea>
-                                                            <br>
-                                                            You can use this variables to display user personalized information:
-                                                            <br><br>
-                                                            <div class="row">
-                                                                @foreach($textreplaces_device as $key=>$row)
-                                                                    <div class="col-md-3" style="margin-bottom:5px;">
-                                                                        <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addSmsContent('{{ $row['keyword'] }}','device_id');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                @endif
-
-                                                @if(MyHelper::hasAccess([74], $configs))
-                                                    @if(!$api_key_whatsapp)
-                                                        <div class="alert alert-warning deteksi-trigger">
-                                                            <p> To use WhatsApp channel you have to set the api key in <a href="{{url('setting/whatsapp')}}">WhatsApp Setting</a>. </p>
-                                                        </div>
-                                                    @endif
-                                                    <h4>WhatsApp</h4>
-                                                    <div class="form-group">
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-3 control-label">
-                                                                Status
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="pilih enabled untuk mengaktifkan whatsApp sebagai media pengiriman auto crm ini" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <select name="whatsapp_toogle" id="whatsapp_toogle" class="form-control select2 field_whatsapp_device_id" onChange="visibleDiv('whatsapp',this.value, 'device_id')" @if(!$api_key_whatsapp) disabled @endif>
-                                                                <option value="0" @if(old('whatsapp_toogle') == '0') selected @else @if(isset($result[2]['whatsapp_toogle']) && $result[2]['whatsapp_toogle'] == "0") selected @endif @endif>Disabled</option>
-                                                                <option value="1" @if($api_key_whatsapp) @if(old('whatsapp_toogle') == '1') selected @else @if(isset($result[2]['whatsapp_toogle']) && $result[2]['whatsapp_toogle'] == "1") selected @endif @endif @endif>Enabled</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    @if($api_key_whatsapp)
-                                                        <div class="form-group" id="div_whatsapp_recipient_device_id" style="display:none">
-                                                            <div class="input-icon right">
-                                                                <label for="multiple" class="control-label col-md-3">
-                                                                    WhatsApp Recipient
-                                                                    <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan no WhatsApp admin yang akan menerima laporan fraud detection, jika lebih dari 1 pisahkan dengan tanda koma (,)" data-container="body"></i>
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-md-9">
-                                                                <textarea name="whatsapp_recipient" id="whatsapp_recipient" class="form-control field_whatsapp_device_id" placeholder="WhatsApp number recipient">@if(isset($result[2]['whatsapp_recipient'])){{ $result[2]['whatsapp_recipient'] }}@endif</textarea>
-                                                                <p class="help-block">Comma ( , ) separated for multiple whatsApp number</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group" id="div_whatsapp_content_devie_id" style="display:none">
-                                                            <div class="input-icon right">
-                                                                <label for="multiple" class="control-label col-md-3">
-                                                                    WhatsApp Content
-                                                                    <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten whatsapp, tambahkan text replacer bila perlu" data-container="body"></i>
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-md-9">
-                                                                <textarea id="whatsapp_content_device_id" name="whatsapp_content" rows="3" style="white-space: normal" class="form-control whatsapp-content" placeholder="WhatsApp Content">{{$result[2]['whatsapp_content']}}</textarea>
-                                                                <br>
-                                                                You can use this variables to display user personalized information:
-                                                                <br><br>
-                                                                <div class="row">
-                                                                    @foreach($textreplaces_device as $key=>$row)
-                                                                        <div class="col-md-3" style="margin-bottom:5px;">
-                                                                            <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal; height:40px" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addWhatsappContent('{{ $row['keyword'] }}','device_id');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-                                                                        </div>
-                                                                    @endforeach
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                @endif
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            {{ csrf_field() }}
-                            <input type="hidden" value="{{$result[2]['id_fraud_setting']}}" name="id_fraud_setting">
-                            <input type="hidden" value="fraud_device_id" name="type">
-                            <div class="row" style="text-align: center">
-                                <button type="submit" class="btn blue" id="checkBtn">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div class="tab-pane @if(isset($tipe) && $tipe == 'fraud_transaction_in_day') active @endif" id="fraud_transaction_in_day">
-                <form role="form" class="form-horizontal" action="{{url()->current()}}" method="POST" enctype="multipart/form-data" id="form">
-                    <br>
-                    <div class="form-group">
-                        <div class="col-md-4" style="margin-left: 2.5%;margin-top: 7px;">
-                            <button type="button" class="btn btn-lg btn-toggle switch @if($result[0]['fraud_settings_status'] == 'Active')active @endif" id="switch-change-transaction_in_day" data-id="{{ $result[0]['id_fraud_setting'] }}" data-toggle="button" aria-pressed="<?=($result[0]['fraud_settings_status'] == 'Active' ? 'true' : 'false')?>" autocomplete="off">
-                                <div class="handle"></div>
-                            </button>
-                        </div>
-                    </div>
-                    <div id="div_main_transaction_in_day">
-                        <div class="portlet light bordered" id="trigger">
-                            <div class="portlet-title">
-                                <div class="caption">
-                                    <span class="caption-subject font-dark sbold uppercase font-yellow">Parameter</span>
-                                </div>
-                            </div>
-                            <div class="portlet-body form">
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label" >Fraud Detection Parameter <i class="fa fa-question-circle tooltips" data-original-title="fraud terjadi ketika transaction dalam 1 hari melewati jumlah maximum yang sudah di tentukan" data-container="body"></i></label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" name="parameter_detail" value="{{$result[0]['parameter']}}" disabled>
-                                    </div>
-                                </div>
-
-                                <div class="form-group" id="type-detail" @if(strpos($result[0]['parameter'], 'transaction') === false) style="display:none" @endif>
-                                    <label class="col-md-4 control-label" ></label>
-                                    <div class="col-md-5">
-                                        <div class="input-group">
-									<span class="input-group-addon">
-										maximum
-									</span>
-                                            <input type="number" class="form-control price" min="1" name="parameter_detail" value="{{$result[0]['parameter_detail']}}">
-                                            <span class="input-group-addon">
-										Transactions / @if(strpos($result[0]['parameter'], 'week') !== false) Week @elseif(strpos($result[0]['parameter'], 'day') !== false) Day @endif
-									</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="portlet light bordered">
-                            <div class="portlet-title">
-                                <div class="caption">
-                                    <span class="caption-subject font-dark sbold uppercase font-yellow">Action</span>
-                                </div>
-                            </div>
-                            <div class="portlet-body">
-                                <div class="icheck-list">
-                                    <label>
-                                        <input type="checkbox" class="icheck checkbox"  name="auto_suspend_status" id="checkbox_auto_suspend-transaction_in_day" data-checkbox="icheckbox_square-blue" @if(isset($result[0][ 'auto_suspend_status']) && $result[0][ 'auto_suspend_status']=="1" ) checked @endif> Auto Suspend
-                                    </label>
-                                    <div class="portlet light bordered" id="div_auto_suspend-transaction_in_day" style="margin-bottom: 2%;display: none;">
-                                        <div class="portlet-title tabbable-line">
-                                            <div class="caption font-green">
-                                                <i class="icon-settings font-green"></i>
-                                                <span class="caption-subject bold uppercase"> Auto Suspend </span>
-                                            </div>
-                                        </div>
-                                        <div class="portlet-body">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group" >
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-6 control-label">
-                                                                Number of violations
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="maksimum jumlah pelanggaran" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="input-group">
-                                                                <span class="input-group-addon">
-                                                                    maximum
-                                                                </span>
-                                                                <input type="number" class="form-control field_transaction_in_week price" min="1" name="auto_suspend_value" value="{{$result[0]['auto_suspend_value']}}">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group" >
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-4 control-label">
-                                                                Time Period
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="jangka waktu perhitungan pelanggaran" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-8">
-                                                            <div class="input-group">
-                                                                <input type="number" class="form-control field_transaction_in_week price" min="1" name="auto_suspend_time_period" value="{{$result[0]['auto_suspend_time_period']}}">
-                                                                <span class="input-group-addon">
-                                                        days
-                                                    </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <label>
-                                        <input type="checkbox" class="icheck checkbox"  name="forward_admin_status" id="checkbox_forward_admin-transaction_in_day" data-checkbox="icheckbox_square-blue" @if(isset($result[0][ 'forward_admin_status']) && $result[0][ 'forward_admin_status']=="1" ) checked @endif> Forward Admin
-                                    </label>
-                                    <div class="portlet light bordered" id="div_forward_admin-transaction_in_day" style="margin-bottom: 2%;display: none;">
-                                        <div class="portlet-title tabbable-line">
-                                            <div class="caption font-green">
-                                                <i class="icon-settings font-green"></i>
-                                                <span class="caption-subject bold uppercase"> Forward Admin </span>
-                                            </div>
-                                        </div>
-                                        <div class="portlet-body form">
-                                            <div class="form-body">
-                                                @if(MyHelper::hasAccess([38], $configs))
-                                                    <h4>Email</h4>
-                                                    <div class="form-group">
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-3 control-label">
-                                                                Status
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="pilih enabled untuk mengaktifkan email sebagai media pengiriman laporan fraud detection" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <select name="email_toogle" id="email_toogle_transaction_in_day" class="form-control select2" onChange="visibleDiv('email',this.value,'transaction_in_day')">
-                                                                <option value="0" @if(old('email_toogle') == '0') selected @else @if(isset($result[0]['email_toogle']) && $result[0]['email_toogle'] == "0") selected @endif @endif>Disabled</option>
-                                                                <option value="1" @if(old('email_toogle') == '1') selected @else @if(isset($result[0]['email_toogle']) && $result[0]['email_toogle'] == "1") selected @endif @endif>Enabled</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group" id="div_email_recipient_transaction_in_day" style="display:none">
-                                                        <div class="input-icon right">
-                                                            <label for="multiple" class="control-label col-md-3">
-                                                                Email Recipient
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan alamat email admin yang akan menerima laporan fraud detection, jika lebih dari 1 pisahkan dengan tanda koma (,)" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <textarea name="email_recipient" id="email_recipient" class="form-control field_email_transaction_in_day" placeholder="Email address recipient">@if(isset($result[0]['email_recipient'])){{ $result[0]['email_recipient'] }}@endif</textarea>
-                                                            <p class="help-block">Comma ( , ) separated for multiple emails</p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group" id="div_email_subject_transaction_in_day" style="display:none">
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-3 control-label">
-                                                                Subject
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan subjek email, tambahkan text replacer bila perlu" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <input type="text" placeholder="Email Subject" class="form-control field_email_transaction_in_day" name="email_subject" id="email_subject_transaction_in_day" @if(!empty(old('email_subject'))) value="{{old('email_subject')}}" @else @if(isset($result[0]['email_subject']) && $result[0]['email_subject'] != '') value="{{$result[0]['email_subject']}}" @endif @endif>
-                                                            <br>
-                                                            You can use this variables to display user personalized information:
-                                                            <br><br>
-                                                            <div class="row">
-                                                                @foreach($textreplaces_day as $key=>$row)
-                                                                    <div class="col-md-3" style="margin-bottom:5px;">
-                                                                        <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addEmailSubject('{{ $row['keyword'] }}','transaction_in_day');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group" id="div_email_content_transaction_in_day" style="display:none">
-                                                        <div class="input-icon right">
-                                                            <label for="multiple" class="control-label col-md-3">
-                                                                Content
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten email, tambahkan text replacer bila perlu" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <textarea name="email_content" id="email_content_transaction_in_day" class="form-control summernote">@if(!empty(old('email_content'))) <?php echo old('email_content'); ?> @else @if(isset($result[0]['email_content']) && $result[0]['email_content'] != '') <?php echo $result[0]['email_content'];?> @endif @endif</textarea>
-                                                            You can use this variables to display user personalized information:
-                                                            <br><br>
-                                                            <div class="row" >
-                                                                @foreach($textreplaces_day as $key=>$row)
-                                                                    <div class="col-md-3" style="margin-bottom:5px;">
-                                                                        <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addEmailContent('{{ $row['keyword'] }}','transaction_in_day');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                @endif
-                                                @if(MyHelper::hasAccess([39], $configs))
-                                                    <h4>SMS</h4>
-                                                    <div class="form-group" >
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-3 control-label">
-                                                                Status
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="pilih enabled untuk mengaktifkan sms sebagai media pengiriman auto crm ini" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <select name="sms_toogle" id="sms_toogle" class="form-control select2" onChange="visibleDiv('sms',this.value,'transaction_in_day')">
-                                                                <option value="0" @if(old('sms_toogle') == '0') selected @else @if(isset($result[0]['sms_toogle']) && $result[0]['sms_toogle'] == "0") selected @endif @endif>Disabled</option>
-                                                                <option value="1" @if(old('sms_toogle') == '1') selected @else @if(isset($result[0]['sms_toogle']) && $result[0]['sms_toogle'] == "1") selected @endif @endif>Enabled</option>
-                                                            </select>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group" id="div_sms_recipient_transaction_in_day" style="display:none">
-                                                        <div class="input-icon right">
-                                                            <label for="multiple" class="control-label col-md-3">
-                                                                SMS Recipient
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan no handphone admin yang akan menerima laporan fraud detection, jika lebih dari 1 pisahkan dengan tanda koma (,)" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <textarea name="sms_recipient" id="sms_recipient" class="form-control field_sms_transaction_in_day" placeholder="Phone number recipient">@if(isset($result[0]['sms_recipient'])){{ $result[0]['sms_recipient'] }}@endif</textarea>
-                                                            <p class="help-block">Comma ( , ) separated for multiple phone number</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group" id="div_sms_content_transaction_in_day" style="display:none">
-                                                        <div class="input-icon right">
-                                                            <label for="multiple" class="control-label col-md-3">
-                                                                SMS Content
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="isi pesan sms, tambahkan text replacer bila perlu" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <textarea name="sms_content" id="sms_content_transaction_in_day" class="form-control field_sms_transaction_in_day" placeholder="SMS Content">@if(!empty(old('sms_content'))) {{old('sms_content')}} @else @if(isset($result[0]['sms_content']) && $result[0]['sms_content'] != '') {{$result[0]['sms_content']}} @endif @endif</textarea>
-                                                            <br>
-                                                            You can use this variables to display user personalized information:
-                                                            <br><br>
-                                                            <div class="row">
-                                                                @foreach($textreplaces_day as $key=>$row)
-                                                                    <div class="col-md-3" style="margin-bottom:5px;">
-                                                                        <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addSmsContent('{{ $row['keyword'] }}','transaction_in_day');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                @endif
-
-                                                @if(MyHelper::hasAccess([74], $configs))
-                                                    @if(!$api_key_whatsapp)
-                                                        <div class="alert alert-warning deteksi-trigger">
-                                                            <p> To use WhatsApp channel you have to set the api key in <a href="{{url('setting/whatsapp')}}">WhatsApp Setting</a>. </p>
-                                                        </div>
-                                                    @endif
-                                                    <h4>WhatsApp</h4>
-                                                    <div class="form-group">
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-3 control-label">
-                                                                Status
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="pilih enabled untuk mengaktifkan whatsApp sebagai media pengiriman auto crm ini" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <select name="whatsapp_toogle" id="whatsapp_toogle" class="form-control select2 field_whatsapp_transaction_in_day" onChange="visibleDiv('whatsapp',this.value,'transaction_in_day')" @if(!$api_key_whatsapp) disabled @endif>
-                                                                <option value="0" @if(old('whatsapp_toogle') == '0') selected @else @if(isset($result[0]['whatsapp_toogle']) && $result[0]['whatsapp_toogle'] == "0") selected @endif @endif>Disabled</option>
-                                                                <option value="1" @if($api_key_whatsapp) @if(old('whatsapp_toogle') == '1') selected @else @if(isset($result[0]['whatsapp_toogle']) && $result[0]['whatsapp_toogle'] == "1") selected @endif @endif @endif>Enabled</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    @if($api_key_whatsapp)
-                                                        <div class="form-group" id="div_whatsapp_recipient_transaction_in_day" style="display:none">
-                                                            <div class="input-icon right">
-                                                                <label for="multiple" class="control-label col-md-3">
-                                                                    WhatsApp Recipient
-                                                                    <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan no WhatsApp admin yang akan menerima laporan fraud detection, jika lebih dari 1 pisahkan dengan tanda koma (,)" data-container="body"></i>
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-md-9">
-                                                                <textarea name="whatsapp_recipient" id="whatsapp_recipient" class="form-control field_whatsapp_transaction_in_day" placeholder="WhatsApp number recipient">@if(isset($result[0]['whatsapp_recipient'])){{ $result[0]['whatsapp_recipient'] }}@endif</textarea>
-                                                                <p class="help-block">Comma ( , ) separated for multiple whatsApp number</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group" id="div_whatsapp_content_transaction_in_day" style="display:none">
-                                                            <div class="input-icon right">
-                                                                <label for="multiple" class="control-label col-md-3">
-                                                                    WhatsApp Content
-                                                                    <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten whatsapp, tambahkan text replacer bila perlu" data-container="body"></i>
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-md-9">
-                                                                <textarea id="whatsapp_content_transaction_in_day" name="whatsapp_content" rows="3" style="white-space: normal" class="form-control whatsapp-content" placeholder="WhatsApp Content">{{$result[0]['whatsapp_content']}}</textarea>
-                                                                <br>
-                                                                You can use this variables to display user personalized information:
-                                                                <br><br>
-                                                                <div class="row">
-                                                                    @foreach($textreplaces_day as $key=>$row)
-                                                                        <div class="col-md-3" style="margin-bottom:5px;">
-                                                                            <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal; height:40px" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addWhatsappContent('{{ $row['keyword'] }}','transaction_in_day');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-                                                                        </div>
-                                                                    @endforeach
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                @endif
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            {{ csrf_field() }}
-                            <input type="hidden" value="{{$result[0]['id_fraud_setting']}}" name="id_fraud_setting">
-                            <input type="hidden" value="fraud_transaction_in_day" name="type">
-                            <div class="row" style="text-align: center">
-                                <button type="submit" class="btn blue" id="checkBtn">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div class="tab-pane @if(isset($tipe) && $tipe == 'fraud_transaction_in_week') active @endif" id="fraud_transaction_in_week">
-                <form role="form" class="form-horizontal" action="{{url()->current()}}" method="POST" enctype="multipart/form-data" id="form">
-                    <br>
-                    <div class="form-group">
-                        <div class="col-md-4" style="margin-left: 2.5%;margin-top: 7px;">
-                            <button type="button" class="btn btn-lg btn-toggle switch @if($result[1]['fraud_settings_status'] == 'Active')active @endif" id="switch-change-transaction_in_week" data-id="{{ $result[1]['id_fraud_setting'] }}" data-toggle="button" aria-pressed="<?=($result[1]['fraud_settings_status'] == 'Active' ? 'true' : 'false')?>" autocomplete="off">
-                                <div class="handle"></div>
-                            </button>
-                        </div>
-                    </div>
-                    <div id="div_main_transaction_in_week">
-                        <div class="portlet light bordered" id="trigger">
-                            <div class="portlet-title">
-                                <div class="caption">
-                                    <span class="caption-subject font-dark sbold uppercase font-yellow">Parameter</span>
-                                </div>
-                            </div>
-                            <div class="portlet-body form">
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label" >Fraud Detection Parameter <i class="fa fa-question-circle tooltips" data-original-title="Fraud terjadi ketika transaction dalam 1 minggu melewati jumlah maximum yang sudah di tentukan. Perhitungan 1 minggu adalah hari Senin - Minggu." data-container="body"></i></label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control field_transaction_in_day" name="parameter_detail" value="{{$result[1]['parameter']}}" disabled>
-                                    </div>
-                                </div>
-
-                                <div class="form-group" id="type-detail" @if(strpos($result[1]['parameter'], 'transaction') === false) style="display:none" @endif>
-                                    <label class="col-md-4 control-label" ></label>
-                                    <div class="col-md-5">
-                                        <div class="input-group">
-									<span class="input-group-addon">
-										maximum
-									</span>
-                                            <input type="number" class="form-control field_transaction_in_day" min="1" name="parameter_detail" value="{{$result[1]['parameter_detail']}}">
-                                            <span class="input-group-addon">
-										Transactions / @if(strpos($result[1]['parameter'], 'week') !== false) Week @elseif(strpos($result[1]['parameter'], 'day') !== false) Day @endif
-									</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="portlet light bordered">
-                            <div class="portlet-title">
-                                <div class="caption">
-                                    <span class="caption-subject font-dark sbold uppercase font-yellow">Action</span>
-                                </div>
-                            </div>
-
-                            <div class="portlet-body">
-                                <div class="icheck-list">
-                                    <label>
-                                        <input type="checkbox" class="icheck checkbox" name="auto_suspend_status" id="checkbox_auto_suspend-transaction_in_week" data-checkbox="icheckbox_square-blue" @if(isset($result[1][ 'auto_suspend_status']) && $result[1][ 'auto_suspend_status']=="1" ) checked @endif> Auto Suspend
-                                    </label>
-                                    <div class="portlet light bordered" id="div_auto_suspend-transaction_in_week" style="margin-bottom: 2%;display: none;">
-                                        <div class="portlet-title tabbable-line">
-                                            <div class="caption font-green">
-                                                <i class="icon-settings font-green"></i>
-                                                <span class="caption-subject bold uppercase"> Auto Suspend </span>
-                                            </div>
-                                        </div>
-                                        <div class="portlet-body">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group" >
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-6 control-label">
-                                                                Number of violations
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="maksimum jumlah pelanggaran" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="input-group">
-                                                                <span class="input-group-addon">
-                                                                    maximum
-                                                                </span>
-                                                                <input type="number" class="form-control field_transaction_in_week price" min="1" name="auto_suspend_value" value="{{$result[1]['auto_suspend_value']}}">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group" >
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-4 control-label">
-                                                                Time Period
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="jangka waktu perhitungan pelanggaran" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-8">
-                                                            <div class="input-group">
-                                                                <input type="number" class="form-control field_transaction_in_week price" min="1" name="auto_suspend_time_period" value="{{$result[1]['auto_suspend_time_period']}}">
-                                                                <span class="input-group-addon">
-                                                        days
-                                                    </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <label>
-                                        <input type="checkbox" class="icheck checkbox" name="forward_admin_status" id="checkbox_forward_admin-transaction_in_week" data-checkbox="icheckbox_square-blue" @if(isset($result[1][ 'forward_admin_status']) && $result[1][ 'forward_admin_status']=="1" ) checked @endif> Forward Admin
-                                    </label>
-                                    <div class="portlet light bordered" id="div_forward_admin-transaction_in_week" style="margin-bottom: 2%;display: none;">
-                                        <div class="portlet-title tabbable-line">
-                                            <div class="caption font-green">
-                                                <i class="icon-settings font-green"></i>
-                                                <span class="caption-subject bold uppercase"> Forward Admin </span>
-                                            </div>
-                                        </div>
-                                        <div class="portlet-body form">
-                                            <div class="form-body">
-                                                @if(MyHelper::hasAccess([38], $configs))
-                                                    <h4>Email</h4>
-                                                    <div class="form-group">
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-3 control-label">
-                                                                Status
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="pilih enabled untuk mengaktifkan email sebagai media pengiriman laporan fraud detection" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <select name="email_toogle" id="email_toogle_transaction_in_week" class="form-control select2" onChange="visibleDiv('email',this.value,'transaction_in_week')">
-                                                                <option value="0" @if(old('email_toogle') == '0') selected @else @if(isset($result[1]['email_toogle']) && $result[1]['email_toogle'] == "0") selected @endif @endif>Disabled</option>
-                                                                <option value="1" @if(old('email_toogle') == '1') selected @else @if(isset($result[1]['email_toogle']) && $result[1]['email_toogle'] == "1") selected @endif @endif>Enabled</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group" id="div_email_recipient_transaction_in_week" style="display:none">
-                                                        <div class="input-icon right">
-                                                            <label for="multiple" class="control-label col-md-3">
-                                                                Email Recipient
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan alamat email admin yang akan menerima laporan fraud detection, jika lebih dari 1 pisahkan dengan tanda koma (,)" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <textarea name="email_recipient" id="email_recipient" class="form-control field_email_transaction_in_week" placeholder="Email address recipient">@if(isset($result[1]['email_recipient'])){{ $result[1]['email_recipient'] }}@endif</textarea>
-                                                            <p class="help-block">Comma ( , ) separated for multiple emails</p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group" id="div_email_subject_transaction_in_week" style="display:none">
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-3 control-label">
-                                                                Subject
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan subjek email, tambahkan text replacer bila perlu" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <input type="text" placeholder="Email Subject" class="form-control field_email_transaction_in_week" name="email_subject" id="email_subject_transaction_in_week" @if(!empty(old('email_subject'))) value="{{old('email_subject')}}" @else @if(isset($result[1]['email_subject']) && $result[1]['email_subject'] != '') value="{{$result[1]['email_subject']}}" @endif @endif>
-                                                            <br>
-                                                            You can use this variables to display user personalized information:
-                                                            <br><br>
-                                                            <div class="row">
-                                                                @foreach($textreplaces_week as $key=>$row)
-                                                                    <div class="col-md-3" style="margin-bottom:5px;">
-                                                                        <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addEmailSubject('{{ $row['keyword'] }}','transaction_in_week');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group" id="div_email_content_transaction_in_week" style="display:none">
-                                                        <div class="input-icon right">
-                                                            <label for="multiple" class="control-label col-md-3">
-                                                                Content
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten email, tambahkan text replacer bila perlu" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <textarea name="email_content" id="email_content_transaction_in_week" class="form-control summernote">@if(!empty(old('email_content'))) <?php echo old('email_content'); ?> @else @if(isset($result[1]['email_content']) && $result[1]['email_content'] != '') <?php echo $result[1]['email_content'];?> @endif @endif</textarea>
-                                                            You can use this variables to display user personalized information:
-                                                            <br><br>
-                                                            <div class="row" >
-                                                                @foreach($textreplaces_week as $key=>$row)
-                                                                    <div class="col-md-3" style="margin-bottom:5px;">
-                                                                        <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addEmailContent('{{ $row['keyword'] }}','transaction_in_week');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                @endif
-                                                @if(MyHelper::hasAccess([39], $configs))
-                                                    <h4>SMS</h4>
-                                                    <div class="form-group" >
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-3 control-label">
-                                                                Status
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="pilih enabled untuk mengaktifkan sms sebagai media pengiriman auto crm ini" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <select name="sms_toogle" id="sms_toogle" class="form-control select2" onChange="visibleDiv('sms',this.value,'transaction_in_week')">
-                                                                <option value="0" @if(old('sms_toogle') == '0') selected @else @if(isset($result[1]['sms_toogle']) && $result[1]['sms_toogle'] == "0") selected @endif @endif>Disabled</option>
-                                                                <option value="1" @if(old('sms_toogle') == '1') selected @else @if(isset($result[1]['sms_toogle']) && $result[1]['sms_toogle'] == "1") selected @endif @endif>Enabled</option>
-                                                            </select>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group" id="div_sms_recipient_transaction_in_week" style="display:none">
-                                                        <div class="input-icon right">
-                                                            <label for="multiple" class="control-label col-md-3">
-                                                                SMS Recipient
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan no handphone admin yang akan menerima laporan fraud detection, jika lebih dari 1 pisahkan dengan tanda koma (,)" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <textarea name="sms_recipient" id="sms_recipient" class="form-control field_sms_transaction_in_week" placeholder="Phone number recipient">@if(isset($result[1]['sms_recipient'])){{ $result[1]['sms_recipient'] }}@endif</textarea>
-                                                            <p class="help-block">Comma ( , ) separated for multiple phone number</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group" id="div_sms_content_transaction_in_week" style="display:none">
-                                                        <div class="input-icon right">
-                                                            <label for="multiple" class="control-label col-md-3">
-                                                                SMS Content
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="isi pesan sms, tambahkan text replacer bila perlu" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <textarea name="sms_content" id="sms_content_transaction_in_week" class="form-control field_sms_transaction_in_week" placeholder="SMS Content">@if(!empty(old('sms_content'))) {{old('sms_content')}} @else @if(isset($result[1]['sms_content']) && $result[1]['sms_content'] != '') {{$result[1]['sms_content']}} @endif @endif</textarea>
-                                                            <br>
-                                                            You can use this variables to display user personalized information:
-                                                            <br><br>
-                                                            <div class="row">
-                                                                @foreach($textreplaces_week as $key=>$row)
-                                                                    <div class="col-md-3" style="margin-bottom:5px;">
-                                                                        <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addSmsContent('{{ $row['keyword'] }}','transaction_in_week');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                @endif
-
-                                                @if(MyHelper::hasAccess([74], $configs))
-                                                    @if(!$api_key_whatsapp)
-                                                        <div class="alert alert-warning deteksi-trigger">
-                                                            <p> To use WhatsApp channel you have to set the api key in <a href="{{url('setting/whatsapp')}}">WhatsApp Setting</a>. </p>
-                                                        </div>
-                                                    @endif
-                                                    <h4>WhatsApp</h4>
-                                                    <div class="form-group">
-                                                        <div class="input-icon right">
-                                                            <label class="col-md-3 control-label">
-                                                                Status
-                                                                <i class="fa fa-question-circle tooltips" data-original-title="pilih enabled untuk mengaktifkan whatsApp sebagai media pengiriman auto crm ini" data-container="body"></i>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <select name="whatsapp_toogle" id="whatsapp_toogle" class="form-control select2 field_whatsapp_transaction_in_week" onChange="visibleDiv('whatsapp',this.value,'transaction_in_week')" @if(!$api_key_whatsapp) disabled @endif>
-                                                                <option value="0" @if(old('whatsapp_toogle') == '0') selected @else @if(isset($result[1]['whatsapp_toogle']) && $result[1]['whatsapp_toogle'] == "0") selected @endif @endif>Disabled</option>
-                                                                <option value="1" @if($api_key_whatsapp) @if(old('whatsapp_toogle') == '1') selected @else @if(isset($result[1]['whatsapp_toogle']) && $result[1]['whatsapp_toogle'] == "1") selected @endif @endif @endif>Enabled</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    @if($api_key_whatsapp)
-                                                        <div class="form-group" id="div_whatsapp_recipient_transaction_in_week" style="display:none">
-                                                            <div class="input-icon right">
-                                                                <label for="multiple" class="control-label col-md-3">
-                                                                    WhatsApp Recipient
-                                                                    <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan no WhatsApp admin yang akan menerima laporan fraud detection, jika lebih dari 1 pisahkan dengan tanda koma (,)" data-container="body"></i>
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-md-9">
-                                                                <textarea name="whatsapp_recipient" id="whatsapp_recipient" class="form-control field_whatsapp_transaction_in_week" placeholder="WhatsApp number recipient">@if(isset($result[1]['whatsapp_recipient'])){{ $result[1]['whatsapp_recipient'] }}@endif</textarea>
-                                                                <p class="help-block">Comma ( , ) separated for multiple whatsApp number</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group" id="div_whatsapp_content_transaction_in_week" style="display:none">
-                                                            <div class="input-icon right">
-                                                                <label for="multiple" class="control-label col-md-3">
-                                                                    WhatsApp Content
-                                                                    <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten whatsapp, tambahkan text replacer bila perlu" data-container="body"></i>
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-md-9">
-                                                                <textarea id="whatsapp_content_transaction_in_week" name="whatsapp_content" rows="3" style="white-space: normal" class="form-control whatsapp-content" placeholder="WhatsApp Content">{{$result[1]['whatsapp_content']}}</textarea>
-                                                                <br>
-                                                                You can use this variables to display user personalized information:
-                                                                <br><br>
-                                                                <div class="row">
-                                                                    @foreach($textreplaces_week as $key=>$row)
-                                                                        <div class="col-md-3" style="margin-bottom:5px;">
-                                                                            <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal; height:40px" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addWhatsappContent('{{ $row['keyword'] }}','transaction_in_week');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-                                                                        </div>
-                                                                    @endforeach
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                @endif
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-actions">
-                            {{ csrf_field() }}
-                            <input type="hidden" value="{{$result[1]['id_fraud_setting']}}" name="id_fraud_setting">
-                            <input type="hidden" value="fraud_transaction_in_week" name="type">
-                            <div class="row" style="text-align: center">
-                                <button type="submit" class="btn blue" id="checkBtn">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-    </div>
-
 
 @endsection
