@@ -140,9 +140,11 @@
 					if(response.last_page){
 						table.find('tbody').append(`<tr class="loading-row"><td colspan="${table.find('thead tr').children().length}" class="text-center text-muted">${(table.data('page')+1 == 1 && response.data.length == 0)?'No Data Found':'End'}</td></tr>`);
 						table.data('is-last',1);
+					}else{
+						table.data('is-loading',0);
+						table.data('page',(table.data('page')+1));
+						table.parents('.table-infinite').trigger('scroll');
 					}
-					table.data('is-loading',0);
-					table.data('page',(table.data('page')+1));
 				},
 				error: function(event){
 					table.find('.loading-row').remove();
@@ -161,7 +163,7 @@
 		$('.table-infinite').trigger('scroll');
 	}
 	$(document).ready(function(){
-		$('.table-infinite').on('scroll', function(){
+		$('.table-infinite').on('scroll resize', function(){
 			var s = $(this).scrollTop();
 			var table = $(this).find('table');
 			var d = table.height();
