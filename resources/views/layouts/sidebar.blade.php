@@ -1025,7 +1025,7 @@
 				@endif
 			@endif
 
-			@if(MyHelper::hasAccess([229], $grantedFeature))
+			@if(MyHelper::hasAccess([234], $grantedFeature))
 			<li class="nav-item {{($menu_active == 'warning-image') ? 'active open' : ''}}">
 				<a href="{{url('promo-setting/warning-image')}}" class="nav-link nav-toggle">
 					<i class="fa fa-picture-o"></i>
