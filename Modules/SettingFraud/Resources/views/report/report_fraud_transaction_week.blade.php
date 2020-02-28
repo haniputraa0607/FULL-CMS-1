@@ -76,11 +76,11 @@
         <div class="portlet-title">
             <div class="caption">Filter</div>
             <div class="tools">
-                <a href="javascript:;" class="expand"> </a>
+                <a href="javascript:;" class="@if(Session::has('filter-fraud-log-trx-week'))  expand @else collapse @endif"> </a>
             </div>
         </div>
-        <div class="portlet-body" style="display: none">
-            <form role="form" class="form-horizontal" action="{{url()->current()}}" method="POST">
+        <div class="portlet-body" @if(Session::has('filter-fraud-log-trx-week')) style="display: none;" @endif>
+            <form role="form" class="form-horizontal" action="{{url()->current()}}?filter=1" method="POST">
                 {{ csrf_field() }}
                 @include('filter-report-log-fraud')
             </form>
@@ -90,20 +90,34 @@
     @if(Session::has('filter-fraud-log-trx-week'))
         <?php
         $search_param = Session::get('filter-fraud-log-trx-week');
+        $start = $search_param['date_start'];
+        $end = $search_param['date_end'];
         $search_param = array_filter($search_param['conditions']);
         ?>
         <div class="alert alert-block alert-success fade in">
             <button type="button" class="close" data-dismiss="alert"></button>
             <h4 class="alert-heading">Displaying search result with parameter(s):</h4>
             @if(isset($search_param))
-                @foreach($search_param as $row)
-                    <?php $row = $row[0];?>
+                Start : {{date('d-m-Y', strtotime($start))}}<br>
+                End : {{date('d-m-Y', strtotime($end))}}
+                @foreach($search_param[0] as $row)
+                    @if(isset($row['subject']))
                     <p>{{ucwords(str_replace("_"," ",$row['subject']))}}
-                        @if($row['subject'] != 'all_user')@if($row['parameter'] != "") {{str_replace("-"," - ",$row['operator'])}} {{str_replace("-"," - ",$row['parameter'])}}
-                        @else : {{str_replace("-"," - ",$row['operator'])}}
-                        @endif
+                        @if($row['subject'] != 'all_user')
+                            @if($row['subject'] == 'outlet')
+                                <?php $name = null; ?>
+                                @foreach($outlets as $outlet)
+                                    @if($outlet['id_outlet'] == $row['operator'])
+                                        <?php $name = $outlet['outlet_name']; ?>
+                                    @endif
+                                @endforeach
+                                {{$name}}
+                            @elseif($row['parameter'] != "") {{str_replace("-"," - ",$row['operator'])}} {{str_replace("-"," - ",$row['parameter'])}}
+                            @else : {{str_replace("-"," - ",$row['operator'])}}
+                            @endif
                         @endif
                     </p>
+                    @endif
                 @endforeach
             @endif
             <br>
@@ -127,6 +141,7 @@
                 <th width="5%"> User Name </th>
                 <th width="5%"> User Phone </th>
                 <th width="5%"> Date </th>
+                <th width="8%"> Time </th>
                 <th width="5%"> Count Transaction </th>
                 <th width="30%"> Fraud Settings </th>
             </tr>
@@ -141,6 +156,7 @@
                         <td>{{$value['name']}}</td>
                         <td>{{$value['phone']}}</td>
                         <td>{{date("d F Y", strtotime($value['created_at']))}}</td>
+                        <td>{{date("H:i", strtotime($value['created_at']))}}</td>
                         <td>{{$value['count_transaction_week']}}</td>
                         <td>
                             <div class="form-group row">
@@ -158,7 +174,7 @@
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-md-6">Auto Suspend Time Period</label>
-                                    <div class="col-md-6"><input class="form-control" disabled value="{{$value['fraud_setting_auto_suspend_time_period']}} (hari)"></div>
+                                    <div class="col-md-6"><input class="form-control" disabled value="{{$value['fraud_setting_auto_suspend_time_period']}} (day)"></div>
                                 </div>
                             @endif
                             <div class="form-group row">

@@ -46,7 +46,7 @@
             html += '<input type="hidden" name="_token" value="{{csrf_token()}}">';
 
             html += '<div class="alert alert-danger">';
-            html += 'Apakah Anda yakin untuk <strong>'+status_msg+' '+name+' ('+phone+')</strong> ? Jika iya, silahkan masukkan pin dan tekan tombol <strong>'+status_msg+'</strong>.</p>';
+            html += 'Apakah Anda yakin untuk <strong>'+status_msg+' '+name+' ('+phone+')</strong> ? Jika iya, silahkan masukkan pin dan tekan tombol <strong>Save</strong>.</p>';
             html += '</div>';
             html += '<input type="hidden" name="is_suspended" value="'+status_input+'">';
             html += '<div class="form-group row">';
@@ -93,11 +93,11 @@
         <div class="portlet-title">
             <div class="caption">Filter</div>
             <div class="tools">
-                <a href="javascript:;" class="expand"> </a>
+                <a href="javascript:;" class="@if(Session::has('filter-user-fraud'))  expand @else collapse @endif"> </a>
             </div>
         </div>
-        <div class="portlet-body" style="display: none">
-            <form role="form" class="form-horizontal" action="{{url()->current()}}" method="POST">
+        <div class="portlet-body" @if(Session::has('filter-user-fraud')) style="display: none;" @endif>
+            <form role="form" class="form-horizontal" action="{{url()->current()}}?filter=1" method="POST">
                 {{ csrf_field() }}
                 @include('filter-report-log-fraud')
             </form>
@@ -107,20 +107,25 @@
     @if(Session::has('filter-user-fraud'))
         <?php
         $search_param = Session::get('filter-user-fraud');
-        $search_param = array_filter($search_param);
+        $start = $search_param['date_start'];
+        $end = $search_param['date_end'];
+        $search_param = array_filter($search_param['conditions']);
         ?>
         <div class="alert alert-block alert-success fade in">
             <button type="button" class="close" data-dismiss="alert"></button>
             <h4 class="alert-heading">Displaying search result with parameter(s):</h4>
             @if(isset($search_param))
-                @foreach($search_param as $row)
-                    <?php $row = $row[0];?>
-                    <p>{{ucwords(str_replace("_"," ",$row['subject']))}}
-                        @if($row['subject'] != 'all_user')@if($row['parameter'] != "") {{str_replace("-"," - ",$row['operator'])}} {{str_replace("-"," - ",$row['parameter'])}}
-                        @else : {{str_replace("-"," - ",$row['operator'])}}
-                        @endif
-                        @endif
-                    </p>
+                Start : {{date('d-m-Y', strtotime($start))}}<br>
+                End : {{date('d-m-Y', strtotime($end))}}
+                @foreach($search_param[0] as $row)
+                    @if(isset($row['subject']))
+                        <p>{{ucwords(str_replace("_"," ",$row['subject']))}}
+                            @if($row['subject'] != 'all_user')@if($row['parameter'] != "") {{str_replace("-"," - ",$row['operator'])}} {{str_replace("-"," - ",$row['parameter'])}}
+                            @else : {{str_replace("-"," - ",$row['operator'])}}
+                            @endif
+                            @endif
+                        </p>
+                    @endif
                 @endforeach
             @endif
             <br>
@@ -146,6 +151,7 @@
                         <th scope="col"> Phone </th>
                         <th scope="col"> Email </th>
                         <th scope="col"> Suspend Date </th>
+                        <th scope="col"> Suspend Time </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -169,7 +175,8 @@
                                         <td> {!!str_replace(" ","&nbsp;", $data['name'])!!} </td>
                                         <td> {{$data['phone']}} </td>
                                         <td> {{$data['email']}} </td>
-                                        <td> @if($data['suspended_date'] != NULL){{date('d F Y H:i', strtotime($data['suspended_date']))}} @endif</td>
+                                        <td> @if($data['suspended_date'] != NULL){{date('d F Y', strtotime($data['suspended_date']))}} @endif</td>
+                                        <td> @if($data['suspended_date'] != NULL){{date('H:i', strtotime($data['suspended_date']))}} @endif</td>
                                     </tr>
                             @endforeach
                         @endif

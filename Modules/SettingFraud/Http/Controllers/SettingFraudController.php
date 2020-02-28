@@ -53,6 +53,13 @@ class SettingFraudController extends Controller
             $data['result'] = null;
         }
 
+        $config = MyHelper::get('setting-fraud/config');
+        if(isset($config['status']) && $config['status'] == 'success'){
+            $data['config'] = $config['result']['is_active'];
+        }else{
+            $data['config'] = null;
+        }
+
         $getApiKey = MyHelper::get('setting/whatsapp');
         if(isset($getApiKey['status']) && $getApiKey['status'] == 'success' && $getApiKey['result']['value']){
             $data['api_key_whatsapp'] = $getApiKey['result']['value'];
@@ -60,9 +67,9 @@ class SettingFraudController extends Controller
             $data['api_key_whatsapp'] = null;
         }
 
-        $test = MyHelper::get('autocrm/textreplace');
-        if($test['status'] == 'success'){
-            $data['textreplaces'] = $test['result'];
+        $textReplace = MyHelper::get('autocrm/textreplace');
+        if(isset($textReplace['status']) && $textReplace['status'] == 'success'){
+            $data['textreplaces'] = $textReplace['result'];
         }
 
         $data['textreplaces'][] = [
@@ -132,6 +139,13 @@ class SettingFraudController extends Controller
             'reference' => 'user list realted this device ID'
         ];
 
+        $data['textreplaces_point'] = $data['textreplaces'];
+        $data['textreplaces_point'][] = [
+            'keyword' => '%point%',
+            'reference' => 'user point'
+        ];
+
+        $data['textreplaces_between'] = $data['textreplaces'];
         return view('settingfraud::index', $data);
     }
 
@@ -245,33 +259,159 @@ class SettingFraudController extends Controller
         return view('settingfraud::detail', $data);
     }
 
-    public function fraudReport(Request $request, $type){
+    //======================== Start Fraud list Report ========================//
+    function fraudReportDevice(Request $request){
         $post = $request->except('_token');
         $exportStatus = 0;
         if(isset($post['export-excel'])){
             $exportStatus = 1;
         }
-        if($post && !isset($post['conditions'])){
-            if($type == 'device'){
-                $post = Session::get('filter-fraud-log-device');
-            }elseif($type == 'transaction-day'){
-                $post = Session::get('filter-fraud-log-trx-day');
-            }elseif($type == 'transaction-week'){
-                $post = Session::get('filter-fraud-log-trx-week');
+
+        if(Session::has('filter-fraud-log-device') && !isset($post['filter'])){
+            $post = Session::get('filter-fraud-log-device');
+        }else{
+            Session::forget('filter-fraud-log-device');
+        }
+        $type_view = 'device';
+        $data = [
+            'title'          => 'Report',
+            'sub_title'      => 'Report Fraud Device',
+            'menu_active'    => 'fraud-detection',
+            'submenu_active' => 'report-fraud-device',
+        ];
+        $data['outlets'] = [];
+
+        $post['export'] = $exportStatus;
+        $url = 'fraud/list/log/device';
+        $list = MyHelper::post($url, $post);
+
+        if(isset($list['status']) && $list['status'] == 'success'){
+            //process export
+            if($exportStatus == 1){
+                $arr['All Type'] = [];
+                foreach ($list['result'] as $value){
+                    foreach ($value['users_fraud'] as $dtUser){
+                        $dt = [
+                            'Nama customer' => $dtUser['name'],
+                            'No HP' => $dtUser['phone'],
+                            'Email' => $dtUser['email'],
+                            'Device ID' => $value['device_id'],
+                            'Device Type' => $value['device_type'],
+                            'Tanggal login' => date('d F Y', strtotime($dtUser['last_login'])),
+                            'Waktu login' => date('H:i', strtotime($dtUser['last_login'])),
+                            'Tanggal Fraud' => date('d F Y', strtotime($dtUser['log_date'])),
+                            'Waktu Fraud' => date('H:i', strtotime($dtUser['log_date']))
+                        ];
+                        $arr['All Type'][] = $dt;
+                    }
+                }
+
+                $data = new MultisheetExport($arr);
+                return Excel::download($data,'Fraud_device_'.date('Ymdhis').'.xls');
             }
-            $post['export'] = $exportStatus;
+            $data['result'] = $list['result'];
+        }else{
+            $data['result'] = [];
+        }
+        $data['type'] = 'device';
+        $data['conditions'] = [];
+
+        if($post){
+            if(isset($post['conditions'])){
+                $data['conditions'] = $post['conditions'];
+            }
+
+            if(isset($post['date_start']) && isset($post['date_end'])){
+                $data['date_start'] = $post['date_start'];
+                $data['date_end'] = $post['date_end'];
+                Session::put('filter-fraud-log-device',$data);
+            }
         }
 
-        if($type == 'device'){
-            $type_view = 'device';
-            $data = [
-                'title'          => 'Report',
-                'sub_title'      => 'Report Fraud Device',
-                'menu_active'    => 'fraud-detection',
-                'submenu_active' => 'report-fraud-device',
-            ];
-            $data['outlets'] = [];
-        }elseif($type == 'transaction-day'){
+        return view('settingfraud::report.report_fraud_device', $data);
+    }
+
+    function fraudReportTrxPoint(Request $request){
+        $post = $request->except('_token');
+        $exportStatus = 0;
+        if(isset($post['export-excel'])){
+            $exportStatus = 1;
+        }
+
+        if(Session::has('filter-fraud-log-trx-point') && !isset($post['filter'])){
+            $post = Session::get('filter-fraud-log-trx-point');
+        }else{
+            Session::forget('filter-fraud-log-trx-point');
+        }
+        $type_view = 'transaction_point';
+        $data = [
+            'title'          => 'Report',
+            'sub_title'      => 'Report Fraud Transaction Point',
+            'menu_active'    => 'fraud-detection',
+            'submenu_active' => 'report-fraud-transaction-point',
+        ];
+        $getOutlet = MyHelper::get('outlet/be/list');
+        if($getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
+
+        $post['export'] = $exportStatus;
+        $url = 'fraud/list/log/transaction-point';
+        $list = MyHelper::post($url, $post);
+
+        if(isset($list['status']) && $list['status'] == 'success'){
+            //process export
+            if($exportStatus == 1){
+                $arr['All Type'] = [];
+                foreach ($list['result'] as $value){
+                    $dt = [
+                        'Nama customer' => $value['name'],
+                        'No HP' => $value['phone'],
+                        'Email' => $value['email'],
+                        'Tanggal Fraud' => date('d F Y', strtotime($value['created_at'])),
+                        'Waktu Fraud' => date('H:i', strtotime($value['created_at'])),
+                        'At Outlet' => $value['at_outlet']['outlet_name'],
+                        'Most Outlet' => $value['most_outlet']['outlet_name']
+                    ];
+                    $arr['All Type'][] = $dt;
+                }
+
+                $data = new MultisheetExport($arr);
+                return Excel::download($data,'Fraud_transaction_point_'.date('Ymdhis').'.xls');
+            }
+            $data['result'] = $list['result'];
+        }else{
+            $data['result'] = [];
+        }
+        $data['type'] = 'transaction-point';
+        $data['conditions'] = [];
+
+        if($post){
+            if(isset($post['conditions'])){
+                $data['conditions'] = $post['conditions'];
+            }
+
+            if(isset($post['date_start']) && isset($post['date_end'])){
+                $data['date_start'] = $post['date_start'];
+                $data['date_end'] = $post['date_end'];
+                Session::put('filter-fraud-log-trx-point',$data);
+            }
+        }
+        return view('settingfraud::report.report_fraud_transaction_point', $data);
+    }
+
+    function fraudReportTrx(Request $request, $type){
+        $post = $request->except('_token');
+        $exportStatus = 0;
+        if(isset($post['export-excel'])){
+            $exportStatus = 1;
+        }
+
+        if($type == 'transaction-day'){
+            if(Session::has('filter-fraud-log-trx-day') && !isset($post['filter'])){
+                $post = Session::get('filter-fraud-log-trx-day');
+            }else{
+                Session::forget('filter-fraud-log-trx-day');
+            }
+
             $type_view = 'transaction_day';
             $data = [
                 'title'          => 'Report',
@@ -279,9 +419,12 @@ class SettingFraudController extends Controller
                 'menu_active'    => 'fraud-detection',
                 'submenu_active' => 'report-fraud-transaction-day',
             ];
-            $getOutlet = MyHelper::get('outlet/be/list');
-            if($getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
         }elseif($type == 'transaction-week'){
+            if(Session::has('filter-fraud-log-trx-week') && !isset($post['filter'])){
+                $post = Session::get('filter-fraud-log-trx-week');
+            }else{
+                Session::forget('filter-fraud-log-trx-week');
+            }
             $type_view = 'transaction_week';
             $data = [
                 'title'          => 'Report',
@@ -289,48 +432,46 @@ class SettingFraudController extends Controller
                 'menu_active'    => 'fraud-detection',
                 'submenu_active' => 'report-fraud-transaction-week',
             ];
-            $getOutlet = MyHelper::get('outlet/be/list');
-            if($getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
+        }elseif($type == 'transaction-between'){
+            if(Session::has('filter-fraud-log-trx-between') && !isset($post['filter'])){
+                $post = Session::get('filter-fraud-log-trx-between');
+            }else{
+                Session::forget('filter-fraud-log-trx-between');
+            }
+            $type_view = 'transaction_between';
+            $data = [
+                'title'          => 'Report',
+                'sub_title'      => 'Report Fraud Transaction in Between',
+                'menu_active'    => 'fraud-detection',
+                'submenu_active' => 'report-fraud-transaction-between',
+            ];
         }
 
-        $url = 'setting-fraud/list/log/'.$type;
+        $getOutlet = MyHelper::get('outlet/be/list');
+        if($getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
+
+        $post['export'] = $exportStatus;
+        $url = 'fraud/list/log/'.$type;
         $list = MyHelper::post($url, $post);
 
         if(isset($list['status']) && $list['status'] == 'success'){
+            //process export
             if($exportStatus == 1){
                 $arr['All Type'] = [];
-                if($type == 'device'){
-                    foreach ($list['result'] as $value){
-                        foreach ($value['all_usersdevice'] as $dtUser){
-                            $dt = [
-                                'Nama customer' => $dtUser['name'],
-                                'No HP' => $dtUser['phone'],
-                                'Email' => $dtUser['email'],
-                                'Device ID' => $value['device_id'],
-                                'Device Type' => $value['device_type'],
-                                'Tanggal login' => date('d F Y H:i', strtotime($dtUser['last_login']))
-                            ];
-                            $arr['All Type'][] = $dt;
-                        }
-                    }
-                }elseif($type == 'transaction-day' || $type == 'transaction-week'){
-                    foreach ($list['result'] as $value){
-                        if($type == 'transaction-day'){
-                            $count = $value['count_transaction_day'];
-                        }else{
-                            $count = $value['count_transaction_week'];
-                        }
-                        $dt = [
-                            'Nama customer' => $value['name'],
-                            'No HP' => $value['phone'],
-                            'Email' => $value['email'],
-                            'Tanggal transaksi' => date('d F Y', strtotime($value['transaction_date'])),
-                            'Jam transaksi' => date('H:i', strtotime($value['transaction_date'])),
-                            'Lokasi transaksi' => $value['outlet_name'],
-                            'Nominal transaksi' => $value['transaction_grandtotal']
-                        ];
-                        $arr['All Type'][] = $dt;
-                    }
+                foreach ($list['result'] as $value) {
+                    $dt = [
+                        'Nama customer' => $value['name'],
+                        'No HP' => $value['phone'],
+                        'Email' => $value['email'],
+                        'Tanggal Fraud' => date('d F Y', strtotime($value['log_date'])),
+                        'Waktu Fraud' => date('H:i', strtotime($value['log_date'])),
+                        'Tanggal transaksi' => date('d F Y', strtotime($value['transaction_date'])),
+                        'Jam transaksi' => date('H:i', strtotime($value['transaction_date'])),
+                        'Lokasi transaksi' => $value['outlet_name'],
+                        'Point' => $value['transaction_cashback_earned'],
+                        'Nominal transaksi' => number_format($value['transaction_grandtotal'], 2),
+                    ];
+                    $arr['All Type'][] = $dt;
                 }
 
                 $data = new MultisheetExport($arr);
@@ -343,21 +484,230 @@ class SettingFraudController extends Controller
         $data['type'] = $type;
         $data['conditions'] = [];
 
-        if($post && !isset($post['export'])){
-            $data['conditions'] = $post['conditions'];
-            $data['date_start'] = $post['date_start'];
-            $data['date_end'] = $post['date_end'];
-            if($type == 'device'){
-                Session::put('filter-fraud-log-device',$data);
-            }elseif($type == 'transaction-day'){
-                Session::put('filter-fraud-log-trx-day',$data);
-            }elseif($type == 'transaction-week'){
-                Session::put('filter-fraud-log-trx-week',$data);
+        if($post){
+            if(isset($post['conditions'])){
+                $data['conditions'] = $post['conditions'];
+            }
+
+            if(isset($post['date_start']) && isset($post['date_end'])){
+                $data['date_start'] = $post['date_start'];
+                $data['date_end'] = $post['date_end'];
+                if($type == 'transaction-day'){
+                    Session::put('filter-fraud-log-trx-day',$data);
+                }elseif($type == 'transaction-week'){
+                    Session::put('filter-fraud-log-trx-week',$data);
+                }elseif($type == 'transaction-between'){
+                    Session::put('filter-fraud-log-trx-between',$data);
+                }
             }
         }
 
         return view('settingfraud::report.report_fraud_'.$type_view, $data);
     }
+
+    function fraudReportReferral(Request $request){
+        $post = $request->except('_token');
+        $exportStatus = 0;
+        if(isset($post['export-excel'])){
+            $exportStatus = 1;
+        }
+
+        if(Session::has('filter-fraud-log-referral') && !isset($post['filter'])){
+            $post = Session::get('filter-fraud-log-referral');
+        }else{
+            Session::forget('filter-fraud-log-referral');
+        }
+        $type_view = 'transaction_point';
+        $data = [
+            'title'          => 'Report',
+            'sub_title'      => 'Report Fraud Referral',
+            'menu_active'    => 'fraud-detection',
+            'submenu_active' => 'report-fraud-referral',
+        ];
+        $getOutlet = MyHelper::get('outlet/be/list');
+        if($getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
+
+        $post['export'] = $exportStatus;
+        $url = 'fraud/list/log/referral';
+        $list = MyHelper::post($url, $post);
+
+        if(isset($list['status']) && $list['status'] == 'success'){
+            //process export
+            if($exportStatus == 1){
+                $arr['All Type'] = [];
+                foreach ($list['result'] as $value){
+                    $dt = [
+                        'Nama customer' => $value['name'],
+                        'No HP' => $value['phone'],
+                        'Email' => $value['email'],
+                        'Receipt Number' => $value['transaction_receipt_number'],
+                        'Outlet' => $value['outlet_name'],
+                        'Tanggal Transaksi' => date('d F Y', strtotime($value['referral_code_use_date'])),
+                        'Waktu Transaksi' => date('H:i', strtotime($value['referral_code_use_date'])),
+                        'Referral code' => $value['referral_code']
+                    ];
+                    $arr['All Type'][] = $dt;
+                }
+
+                $data = new MultisheetExport($arr);
+                return Excel::download($data,'Fraud_referral_user_'.date('Ymdhis').'.xls');
+            }
+            $data['result'] = $list['result'];
+        }else{
+            $data['result'] = [];
+        }
+        $data['type'] = 'referral-user';
+        $data['conditions'] = [];
+
+        if($post){
+            if(isset($post['conditions'])){
+                $data['conditions'] = $post['conditions'];
+            }
+
+            if(isset($post['date_start']) && isset($post['date_end'])){
+                $data['date_start'] = $post['date_start'];
+                $data['date_end'] = $post['date_end'];
+                Session::put('filter-fraud-log-referral-user',$data);
+            }
+        }
+        return view('settingfraud::report.report_fraud_referral', $data);
+    }
+
+    function fraudReportReferralUser(Request $request){
+        $post = $request->except('_token');
+        $exportStatus = 0;
+        if(isset($post['export-excel'])){
+            $exportStatus = 1;
+        }
+
+        if(Session::has('filter-fraud-log-referral-user') && !isset($post['filter'])){
+            $post = Session::get('filter-fraud-log-referral-user');
+        }else{
+            Session::forget('filter-fraud-log-referral-user');
+        }
+        $type_view = 'transaction_point';
+        $data = [
+            'title'          => 'Report',
+            'sub_title'      => 'Report Fraud Referral User',
+            'menu_active'    => 'fraud-detection',
+            'submenu_active' => 'report-fraud-referral-user',
+        ];
+        $getOutlet = MyHelper::get('outlet/be/list');
+        if($getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
+
+        $post['export'] = $exportStatus;
+        $url = 'fraud/list/log/referral-user';
+        $list = MyHelper::post($url, $post);
+
+        if(isset($list['status']) && $list['status'] == 'success'){
+            //process export
+            if($exportStatus == 1){
+                $arr['All Type'] = [];
+                foreach ($list['result'] as $value){
+                    $dt = [
+                        'Nama customer' => $value['name'],
+                        'No HP' => $value['phone'],
+                        'Email' => $value['email'],
+                        'Receipt Number' => $value['transaction_receipt_number'],
+                        'Outlet' => $value['outlet_name'],
+                        'Tanggal Transaksi' => date('d F Y', strtotime($value['referral_code_use_date'])),
+                        'Waktu Transaksi' => date('H:i', strtotime($value['referral_code_use_date'])),
+                        'Referral code' => $value['referral_code']
+                    ];
+                    $arr['All Type'][] = $dt;
+                }
+
+                $data = new MultisheetExport($arr);
+                return Excel::download($data,'Fraud_referral_user_'.date('Ymdhis').'.xls');
+            }
+            $data['result'] = $list['result'];
+        }else{
+            $data['result'] = [];
+        }
+        $data['type'] = 'referral-user';
+        $data['conditions'] = [];
+
+        if($post){
+            if(isset($post['conditions'])){
+                $data['conditions'] = $post['conditions'];
+            }
+
+            if(isset($post['date_start']) && isset($post['date_end'])){
+                $data['date_start'] = $post['date_start'];
+                $data['date_end'] = $post['date_end'];
+                Session::put('filter-fraud-log-referral-user',$data);
+            }
+        }
+        return view('settingfraud::report.report_fraud_referral_user', $data);
+    }
+
+    function fraudReportPromoCode(Request $request){
+        $post = $request->except('_token');
+        $exportStatus = 0;
+        if(isset($post['export-excel'])){
+            $exportStatus = 1;
+        }
+
+        if(Session::has('filter-fraud-log-promo-code') && !isset($post['filter'])){
+            $post = Session::get('filter-fraud-log-promo-code');
+        }else{
+            Session::forget('filter-fraud-log-promo-code');
+        }
+
+        $data = [
+            'title'          => 'Report',
+            'sub_title'      => 'Report Fraud Promo Code',
+            'menu_active'    => 'fraud-detection',
+            'submenu_active' => 'report-fraud-promo-code',
+        ];
+        $getOutlet = MyHelper::get('outlet/be/list');
+        if($getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
+
+        $post['export'] = $exportStatus;
+        $url = 'fraud/list/log/promo-code';
+        $list = MyHelper::post($url, $post);
+
+        if(isset($list['status']) && $list['status'] == 'success'){
+            //process export
+            if($exportStatus == 1){
+                $arr['All Type'] = [];
+                foreach ($list['result'] as $value){
+                    $dt = [
+                        'Nama customer' => $value['name'],
+                        'No HP' => $value['phone'],
+                        'Email' => $value['email'],
+                        'Tanggal Fraud' => date('d F Y', strtotime($value['created_at'])),
+                        'Waktu Fraud' => date('H:i', strtotime($value['created_at'])),
+                        'At Outlet' => $value['at_outlet']['outlet_name'],
+                        'Most Outlet' => $value['most_outlet']['outlet_name']
+                    ];
+                    $arr['All Type'][] = $dt;
+                }
+
+                $data = new MultisheetExport($arr);
+                return Excel::download($data,'Fraud_promo_code_'.date('Ymdhis').'.xls');
+            }
+            $data['result'] = $list['result'];
+        }else{
+            $data['result'] = [];
+        }
+        $data['type'] = 'promo-code';
+        $data['conditions'] = [];
+
+        if($post){
+            if(isset($post['conditions'])){
+                $data['conditions'] = $post['conditions'];
+            }
+
+            if(isset($post['date_start']) && isset($post['date_end'])){
+                $data['date_start'] = $post['date_start'];
+                $data['date_end'] = $post['date_end'];
+                Session::put('filter-fraud-log-promo-code',$data);
+            }
+        }
+        return view('settingfraud::report.report_fraud_promo_code', $data);
+    }
+    //======================== End Fraud list Report ========================//
 
     public function fraudReportDeviceDetail(Request $request, $device_id){
         $data = [
@@ -368,7 +718,7 @@ class SettingFraudController extends Controller
             'device_id'      => $device_id
         ];
 
-        $detail = MyHelper::post('setting-fraud/detail/log/device', ['device_id' => $device_id]);
+        $detail = MyHelper::post('fraud/detail/log/device', ['device_id' => $device_id]);
         if(isset($detail['status']) && $detail['status'] == 'success'){
             $data['result'] = [
                 'detail_user' => $detail['result']['detail_user'],
@@ -392,7 +742,7 @@ class SettingFraudController extends Controller
             'submenu_active' => 'report-fraud-device',
         ];
 
-        $detail = MyHelper::post('setting-fraud/detail/log/transaction-day', ['id_fraud_detection_log_transaction_day' => $id]);
+        $detail = MyHelper::post('fraud/detail/log/transaction-day', ['id_fraud_detection_log_transaction_day' => $id]);
         if(isset($detail['status']) && $detail['status'] == 'success'){
             $data['result'] = $detail['result'];
         }else{
@@ -410,7 +760,7 @@ class SettingFraudController extends Controller
             'submenu_active' => 'report-fraud-device',
         ];
 
-        $detail = MyHelper::post('setting-fraud/detail/log/transaction-week', ['id_fraud_detection_log_transaction_week' => $id]);
+        $detail = MyHelper::post('fraud/detail/log/transaction-week', ['id_fraud_detection_log_transaction_week' => $id]);
 
         if(isset($detail['status']) && $detail['status'] == 'success'){
             $data['result'] = $detail['result'];
@@ -419,6 +769,50 @@ class SettingFraudController extends Controller
         }
         $data['id_fraud_log'] = $id;
         return view('settingfraud::report.report_fraud_transaction_week_detail', $data);
+    }
+
+    public function fraudReportTransactionBetweenDetail(Request $request, $id_user, $date){
+
+        $data = [
+            'title'          => 'Report',
+            'sub_title'      => 'Detail',
+            'menu_active'    => 'fraud-detection',
+            'submenu_active' => 'report-fraud-device',
+        ];
+
+        $detail = MyHelper::post('fraud/detail/log/transaction-between', ['id_user' => $id_user, 'date_fraud' => $date]);
+
+        if(isset($detail['status']) && $detail['status'] == 'success'){
+            $data['result'] = $detail['result'];
+        }else{
+            $data['result'] = [];
+        }
+
+        return view('settingfraud::report.report_fraud_transaction_between_detail', $data);
+    }
+
+    public function fraudReportPromoCodeDetail(Request $request, $id){
+        $data = [
+            'title'          => 'Report',
+            'sub_title'      => 'Detail',
+            'menu_active'    => 'fraud-detection',
+            'submenu_active' => 'report-fraud-promo-code'
+        ];
+
+        $detail = MyHelper::post('fraud/detail/log/promo-code', ['id_fraud_detection_log_check_promo_code' => $id]);
+        if(isset($detail['status']) && $detail['status'] == 'success'){
+            $data['result'] = [
+                'list_promo_code' => $detail['result']['list_promo_code'],
+                'detail_fraud' => $detail['result']['detail_fraud']
+            ];
+        }else{
+            $data['result'] = [
+                'list_promo_code' => [],
+                'detail_fraud' => []
+            ];
+        }
+
+        return view('settingfraud::report.report_fraud_promo_code_detail', $data);
     }
 
     public function updateSuspend(Request $request, $type, $phone){
@@ -450,7 +844,7 @@ class SettingFraudController extends Controller
     public function updateStatusLog(Request $request, $type){
         $post = $request->except('_token');
         $post['type'] = $type;
-        $update = MyHelper::post('setting-fraud/detail/log/update', $post);
+        $update = MyHelper::post('fraud/detail/log/update', $post);
 
         if (isset($update['status']) && $update['status'] == "success") {
             return ['status' => 'success', 'messages' => 'Success update status'];
@@ -461,8 +855,13 @@ class SettingFraudController extends Controller
         }
     }
 
-    public function suspendUser(Request $request){
+    public function logFraudUser(Request $request){
         $post = $request->except('_token');
+        if(Session::has('filter-user-fraud') && !isset($post['filter'])){
+            $post = Session::get('filter-user-fraud');
+        }else{
+            Session::forget('filter-user-fraud');
+        }
         $take = 20;
 
         $data = [
@@ -474,7 +873,6 @@ class SettingFraudController extends Controller
 
         $post['skip'] = 0;
         if(isset($post['page'])){
-            $post['conditions'] = Session::get('filter-user-fraud');
             $page = $post['page'];
             $post['take'] = $take;
             if($post['page'] > 1 ){
@@ -495,12 +893,12 @@ class SettingFraudController extends Controller
 
         if(isset($post['conditions'])){
             $data['conditions'] = $post['conditions'];
-            Session::put('filter-user-fraud',$post['conditions']);
         }
 
         if(isset($post['date_start']) && isset($post['date_end'])){
             $data['date_start'] = $post['date_start'];
             $data['date_end'] = $post['date_end'];
+            Session::put('filter-user-fraud',$data);
         }
 
         $getUser = MyHelper::post('fraud/list/user', $post);
@@ -514,7 +912,6 @@ class SettingFraudController extends Controller
             $data['content'] = null;
             $data['total'] = null;
         }
-
         return view('settingfraud::suspend-user', $data);
     }
 
@@ -545,7 +942,7 @@ class SettingFraudController extends Controller
 
     public function updateStatusDeviceLogin(Request $request){
         $post = $request->except('_token');
-        $update = MyHelper::post('setting-fraud/device-login/update-status', $post);
+        $update = MyHelper::post('fraud/device-login/update-status', $post);
 
         if (isset($update['status']) && $update['status'] == "success") {
             return ['status' => 'success', 'messages' => 'Success update status'];

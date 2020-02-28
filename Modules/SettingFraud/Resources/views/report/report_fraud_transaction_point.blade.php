@@ -16,32 +16,6 @@
 @section('page-script')
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-select2.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-date-time-pickers.min.js') }}" type="text/javascript"></script>
-    <script type="text/javascript">
-        function updateStatusLog(id_fraud_detection_log_transaction_day,status) {
-            var status_msg = '';
-            var token  = "{{ csrf_token() }}";
-
-            if(confirm('Are you sure you want to delete this log?')) {
-                $.ajax({
-                    type : "POST",
-                    url : "{{ url('fraud-detection/update/log/transaction-day') }}",
-                    data : "_token="+token+"&id_fraud_detection_log_transaction_day="+id_fraud_detection_log_transaction_day+"&status="+status,
-                    success : function(result) {
-                        if (result.status == "success") {
-                            toastr.info(result.messages);
-                            location.reload();
-                        }
-                        else {
-                            toastr.warning(result.messages);
-                        }
-                    },
-                    error: function (jqXHR, exception) {
-                        toastr.warning('Failed update status');
-                    }
-                });
-            }
-        }
-    </script>
 @endsection
 
 @section('content')
@@ -75,10 +49,10 @@
         <div class="portlet-title">
             <div class="caption">Filter</div>
             <div class="tools">
-                <a href="javascript:;" class="@if(Session::has('filter-fraud-log-trx-day'))  expand @else collapse @endif"> </a>
+                <a href="javascript:;" class="@if(Session::has('filter-fraud-log-trx-point'))  expand @else collapse @endif"> </a>
             </div>
         </div>
-        <div class="portlet-body" @if(Session::has('filter-fraud-log-trx-day')) style="display: none;" @endif>
+        <div class="portlet-body" @if(Session::has('filter-fraud-log-trx-point')) style="display: none;" @endif>
             <form role="form" class="form-horizontal" action="{{url()->current()}}?filter=1" method="POST">
                 {{ csrf_field() }}
                 @include('filter-report-log-fraud')
@@ -86,9 +60,9 @@
         </div>
     </div>
 
-    @if(Session::has('filter-fraud-log-trx-day'))
+    @if(Session::has('filter-fraud-log-trx-point'))
         <?php
-        $search_param = Session::get('filter-fraud-log-trx-day');
+        $search_param = Session::get('filter-fraud-log-trx-point');
         $start = $search_param['date_start'];
         $end = $search_param['date_end'];
         $search_param = array_filter($search_param['conditions']);
@@ -121,14 +95,14 @@
             @endif
             <br>
             <p>
-                <a href="{{ url('fraud-detection/filter/reset') }}/filter-fraud-log-trx-day" class="btn yellow">Reset</a>
+                <a href="{{ url('fraud-detection/filter/reset') }}/filter-fraud-log-trx-point" class="btn yellow">Reset</a>
             </p>
         </div>
     @endif
 
     @if(!empty($result))
     <div style="text-align: right">
-        <a class="btn blue" href="{{url('fraud-detection/report/transaction-day')}}?export-excel=1"><i class="fa fa-download"></i> Export to Excel</a>
+        <a class="btn blue" href="{{url('fraud-detection/report/transaction-point')}}?export-excel=1"><i class="fa fa-download"></i> Export to Excel</a>
     </div>
     @endif
 
@@ -136,27 +110,27 @@
         <table class="table table-striped table-bordered table-hover">
             <thead>
             <tr>
-                <th width="5%"> Actions </th>
+                <th width="5%"> Balance </th>
                 <th width="5%"> User Name </th>
                 <th width="5%"> User Phone </th>
                 <th width="5%"> Date </th>
                 <th width="8%"> Time </th>
-                <th width="5%"> Count Transaction </th>
-                <th width="30%"> Fraud Settings </th>
+                <th width="5%"> At Outlet </th>
+                <th width="5%"> Most Outlet </th>
+                <th width="40%"> Fraud Settings </th>
             </tr>
             </thead>
             <tbody>
             @if(!empty($result))
                 @foreach($result as $value)
                     <tr>
-                        <td><a href="{{ url('fraud-detection/report/detail/transaction-day') }}/{{ $value['id_fraud_detection_log_transaction_day'] }}" target="_blank" class="btn btn-block blue btn-xs"><i class="fa fa-edit"></i> Detail</a>
-{{--                            <a onclick="updateStatusLog('{{$value['id_fraud_detection_log_transaction_day']}}','Inactive')" class="btn btn-block red btn-xs "><i class="icon-close"></i> Delete Log</a>--}}
-                        </td>
+                        <td>{{$value['current_balance']}}</td>
                         <td>{{$value['name']}}</td>
                         <td>{{$value['phone']}}</td>
                         <td>{{date("d F Y", strtotime($value['created_at']))}}</td>
                         <td>{{date("H:i", strtotime($value['created_at']))}}</td>
-                        <td>{{$value['count_transaction_day']}}</td>
+                        <td>{{$value['at_outlet']['outlet_name']}}</td>
+                        <td>{{$value['most_outlet']['outlet_name']}}</td>
                         <td>
                             <div class="form-group row">
                                 <label class="col-md-6">Detection Parameter</label>
