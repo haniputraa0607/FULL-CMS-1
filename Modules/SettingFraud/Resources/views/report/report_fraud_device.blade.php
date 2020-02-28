@@ -68,11 +68,11 @@
         <div class="portlet-title">
             <div class="caption">Filter</div>
             <div class="tools">
-                <a href="javascript:;" class="expand"> </a>
+                <a href="javascript:;" class="@if(Session::has('filter-fraud-log-device'))  expand @else collapse @endif"> </a>
             </div>
         </div>
-        <div class="portlet-body" style="display: none">
-            <form role="form" class="form-horizontal" action="{{url()->current()}}" method="POST">
+        <div class="portlet-body" @if(Session::has('filter-fraud-log-device')) style="display: none;" @endif>
+            <form role="form" class="form-horizontal" action="{{url()->current()}}?filter=1" method="POST">
                 {{ csrf_field() }}
                 @include('filter-report-log-fraud')
             </form>
@@ -82,20 +82,25 @@
     @if(Session::has('filter-fraud-log-device'))
         <?php
         $search_param = Session::get('filter-fraud-log-device');
+        $start = $search_param['date_start'];
+        $end = $search_param['date_end'];
         $search_param = array_filter($search_param['conditions']);
         ?>
         <div class="alert alert-block alert-success fade in">
             <button type="button" class="close" data-dismiss="alert"></button>
             <h4 class="alert-heading">Displaying search result with parameter(s):</h4>
             @if(isset($search_param))
-                @foreach($search_param as $row)
-                    <?php $row = $row[0];?>
-                    <p>{{ucwords(str_replace("_"," ",$row['subject']))}}
-                        @if($row['subject'] != 'all_user')@if($row['parameter'] != "") {{str_replace("-"," - ",$row['operator'])}} {{str_replace("-"," - ",$row['parameter'])}}
-                        @else : {{str_replace("-"," - ",$row['operator'])}}
-                        @endif
-                        @endif
-                    </p>
+                Start : {{date('d-m-Y', strtotime($start))}}<br>
+                End : {{date('d-m-Y', strtotime($end))}}
+                @foreach($search_param[0] as $row)
+                    @if(isset($row['subject']))
+                        <p>{{ucwords(str_replace("_"," ",$row['subject']))}}
+                            @if($row['subject'] != 'all_user')@if($row['parameter'] != "") {{str_replace("-"," - ",$row['operator'])}} {{str_replace("-"," - ",$row['parameter'])}}
+                            @else : {{str_replace("-"," - ",$row['operator'])}}
+                            @endif
+                            @endif
+                        </p>
+                    @endif
                 @endforeach
             @endif
             <br>
@@ -118,7 +123,6 @@
                     <th scope="col" width="10%"> Actions </th>
                     <th scope="col" width="25%"> Device Id </th>
                     <th scope="col" width="20%"> Device Type </th>
-                    <th scope="col" width="15%"> Date </th>
                     <th scope="col" width="30%"> User Fraud </th>
                     <th scope="col" width="30%"> List of user related devices </th>
                 </tr>
@@ -132,40 +136,39 @@
                             </td>
                             <td>{{$value['device_id']}}</td>
                             <td>{{$value['device_type']}}</td>
-                            <td>{{date('d F Y H:i', strtotime($value['created_at']))}}</td>
                             <td>
-                                <ul>
-                                    <?php
-                                    $html = '';
-                                    foreach ($value['users_fraud'] as $dt){
-                                        if($dt['is_suspended'] == 1){
-                                            $status = '<span class="font-red">Suspend</span>';
-                                        }else{
-                                            $status = '<span class="font-green">Unsuspend</span>';
-                                        }
-                                        $html .= '<li>'.$dt['name'].' ('.$dt['phone'].') - '.$status.'</li>';
+                                <?php
+                                $html = '<table class="table table-bordered">';
+                                $html .= '<tr><th>Date</th><th>Time</th><th>Name</th><th>Phone</th><th>Status</th></tr>';
+                                foreach ($value['users_fraud'] as $dt){
+                                    if($dt['is_suspended'] == 1){
+                                        $status = '<span class="font-red">Suspend</span>';
+                                    }else{
+                                        $status = '<span class="font-green">Unsuspend</span>';
                                     }
+                                    $html .= '<tr><td>'.date('d F Y', strtotime($dt['log_date'])).'</td><td>'.date('H:i', strtotime($dt['log_date'])).'</td><td>'.$dt['name'].'</td><td>'.$dt['phone'].'</td><td>'.$status.'</td></tr>';
+                                }
+                                $html .= '</table>';
 
-                                    echo $html;
-                                    ?>
-                                </ul>
+                                echo $html;
+                                ?>
                             </td>
                             <td>
-                                <ul>
                                 <?php
-                                    $html = '';
-                                    foreach ($value['users_no_fraud'] as $dt){
-                                        if($dt['is_suspended'] == 1){
-                                            $status = '<span class="font-red">Suspend</span>';
-                                        }else{
-                                            $status = '<span class="font-green">Unsuspend</span>';
-                                        }
-                                        $html .= '<li>'.$dt['name'].' ('.$dt['phone'].') -'.$status.'</li>';
+                                $html = '<table class="table table-bordered">';
+                                $html .= '<tr><th>Name</th><th>Phone</th><th>Status</th></tr>';
+                                foreach ($value['users_no_fraud'] as $dt){
+                                    if($dt['is_suspended'] == 1){
+                                        $status = '<span class="font-red">Suspend</span>';
+                                    }else{
+                                        $status = '<span class="font-green">Unsuspend</span>';
                                     }
+                                    $html .= '<tr><td>'.$dt['name'].'</td><td>'.$dt['phone'].'</td><td>'.$status.'</td></tr>';
+                                }
+                                $html .= '</table>';
 
-                                    echo $html;
+                                echo $html;
                                 ?>
-                                </ul>
                             </td>
                         </tr>
                     @endforeach

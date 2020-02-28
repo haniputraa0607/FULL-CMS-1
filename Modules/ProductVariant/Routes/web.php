@@ -14,6 +14,7 @@
 Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'product-variant'],function() {
 	Route::group(['prefix'=>'group'],function(){
 	    Route::get('/', ['middleware' => 'feature_control:217', 'uses' => 'ProductGroupController@index']);
+	    Route::post('/', ['middleware' => 'feature_control:217', 'uses' => 'ProductGroupController@indexAjax']);
 	    Route::get('/create', ['middleware' => 'feature_control:219', 'uses' => 'ProductGroupController@create']);
 	    Route::post('/create', ['middleware' => 'feature_control:219', 'uses' => 'ProductGroupController@store']);
 	    Route::post('/delete', ['middleware' => 'feature_control:219', 'uses' => 'ProductGroupController@destroy']);
