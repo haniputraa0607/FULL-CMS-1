@@ -1,5 +1,6 @@
-@extends('layouts.main')
-
+@extends('layouts.main-closed')
+@include('deals::deals.detail-info')
+@include('deals::deals.detail-info-content')
 @section('page-style')
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/datemultiselect/jquery-ui.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/datemultiselect/jquery-ui.multidatespicker.css') }}" rel="stylesheet" type="text/css" />
@@ -15,6 +16,51 @@
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-summernote/summernote.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{ env('S3_URL_VIEW') }}{{ ('assets/pages/css/profile-2.min.css') }}" rel="stylesheet" type="text/css" /> 
+    <style type="text/css">
+		.d-none {
+			display: none;
+		}
+		.width-60-percent {
+			width: 60%;
+		}
+		.width-100-percent {
+			width: 100%;
+		}
+		.width-voucher-img {
+			max-width: 200px;
+			width: 100%;
+		}
+		.v-align-top {
+			vertical-align: top;
+		}
+		.p-t-10px {
+			padding-top: 10px;
+		}
+		.page-container-bg-solid .page-content {
+			background: #fff!important;
+		}
+		.text-decoration-none {
+			text-decoration: none!important;
+		}
+		.p-l-0{
+			padding-left: 0px;
+		}
+		.p-r-0{
+			padding-right: 0px;
+		}
+		.p-l-r-0{
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+		.font-custom-dark-grey {
+			color: #95A5A6!important;
+		}
+		.font-custom-green {
+			color: #26C281!important;
+		}
+	</style>
+@yield('detail-style')	
 @endsection
 
 @section('page-script')
@@ -31,6 +77,7 @@
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')}}"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('js/prices.js')}}"></script>
+    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/scripts/jquery.inputmask.min.js') }}" type="text/javascript"></script>
 
 <!--     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/clockface/js/clockface.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
@@ -145,6 +192,43 @@
                 "searching": false,
                 "paging": false,
                 dom: "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>"
+        });
+        $('#participate_tables').dataTable({
+            language: {
+                aria: {
+                    sortAscending: ": activate to sort column ascending",
+                    sortDescending: ": activate to sort column descending"
+                },
+                emptyTable: "No data available in table",
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                infoEmpty: "No entries found",
+                infoFiltered: "(filtered1 from _MAX_ total entries)",
+                lengthMenu: "_MENU_ entries",
+                search: "Search:",
+                zeroRecords: "No matching records found"
+            },
+            buttons: [{
+                extend: "print",
+                className: "btn dark btn-outline"
+            }, {
+                extend: "pdf",
+                className: "btn green btn-outline"
+            }, {
+                extend: "csv",
+                className: "btn purple btn-outline "
+            }],
+            deferRender: !0,
+            scroller: !0,
+            deferRender: !0,
+            scrollX: !0,
+            scrollCollapse: !0,
+            stateSave: !0,
+            lengthMenu: [
+                [10, 15, 20, -1],
+                [10, 15, 20, "All"]
+            ],
+            pageLength: 10,
+            dom: "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>"
         });
     </script>
 
@@ -449,6 +533,9 @@
             $('select[name="id_brand"]').change();
         });
     </script>
+	@yield('child-script')
+	@yield('child-script2')
+	@yield('detail-script')
 @endsection
 
 @section('content')
@@ -482,7 +569,7 @@
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="{{ $deals['deals_total_voucher'] }}">{{ $deals['deals_total_voucher'] }}</span>
+                        <span data-counter="counterup" data-value="{{ $deals['deals_total_voucher'] }}">{{ !empty($deals['deals_total_voucher']) ? number_format(($deals['deals_total_voucher']??0)-($deals['deals_total_claimed']??0)) : (isset($deals['deals_total_voucher']) ? 'unlimited' : '') }}</span>
                     </div>
                     <div class="desc"> Total Voucher </div>
                 </div>
@@ -551,20 +638,56 @@
 
             <div class="tab-content">
                 <div class="tab-pane active" id="info">
-                	<form id="form" class="form-horizontal" role="form" action=" @if($deals_type == "Deals") {{ url('deals/update') }} @else {{ url('inject-voucher/update') }} @endif" method="post" enctype="multipart/form-data">
-        				@include('deals::deals.step1-form')
-		                <div class="form-actions">
-		                {{ csrf_field() }}
-		                <div class="row">
-		                    <div class="col-md-offset-3 col-md-9">
-		                        <button type="submit" class="btn green">Submit</button>
-		                        <!-- <button type="button" class="btn default">Cancel</button> -->
-		                    </div>
-		                </div>
-		            </div>
-		            <input type="hidden" name="id_deals" value="{{ $deals['id_deals'] }}">
-		            <input type="hidden" name="deals_type" value="{{ $deals['deals_type'] }}">
-			    </form>
+                	@if ($deals['step_complete'] != 1)
+                    <a data-toggle="modal" href="#small" class="btn btn-primary" style="float: right; ">Mark as Complete</a>
+                    @endif
+                	<ul class="nav nav-tabs" id="tab-header">
+                        <li class="active" id="infoOutlet">
+                            <a href="#basic" data-toggle="tab" > Basic Info </a>
+                        </li>
+                        <li>
+                            <a href="#content" data-toggle="tab"> Content Info </a>
+                        </li>
+                        <li>
+                            <a href="#outlet" data-toggle="tab"> Outlet Info </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="basic">
+                			@yield('detail-info')
+                        </div>
+                        <div class="tab-pane " id="content">
+                			@yield('detail-info-content')
+                        </div>
+                        <div class="tab-pane" id="outlet">
+                            <!-- BEGIN: Comments -->
+                            <div class="mt-comments">
+                                <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_2">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Name</th>
+                                            <th>Address</th>
+                                            <th>Phone</th>
+                                            <th>Email</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($deals['outlets'] as $res)
+                                            <tr>
+                                                <td>{{ $res['outlet_code'] }}</td>
+                                                <td>{{ $res['outlet_name'] }}</td>
+                                                <td>{{ $res['outlet_address'] }}</td>
+                                                <td>{{ $res['outlet_phone'] }}</td>
+                                                <td>{{ $res['outlet_email'] }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- END: Comments -->
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane" id="voucher">
                     @include('deals::deals.voucher')
@@ -575,6 +698,27 @@
             </div>
         </div>
     </div>
-
+    @if ($deals['step_complete'] != 1)
+    <div class="modal fade bs-modal-sm" id="small" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Mark as complete?</h4>
+                </div>
+                <form action="{{url('deals/update-complete')}}" method="post">
+                	@csrf
+                	<input type="hidden" name="id_deals" value="{{$deals['id_deals']}}">
+	                <div class="modal-footer">
+	                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button>
+	                    <button type="submit" class="btn green">Confirm</button>
+	                </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    @endif
 
 @endsection

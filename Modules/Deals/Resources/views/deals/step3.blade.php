@@ -518,7 +518,7 @@
     	<div class="col-md-12">
             <div class="mt-element-step">
                 <div class="row step-line">
-                    <div id="step-online" @if( empty($deals['is_online']) ) style="display: none;" @endif>
+                    <div id="step-online">
 	                    <div class="col-md-4 mt-step-col first">
 	                        <div class="mt-step-number bg-white">1</div>
 	                        <div class="mt-step-title uppercase font-grey-cascade">Info</div>
@@ -531,18 +531,6 @@
 	                    </div>
 	                    <div class="col-md-4 mt-step-col last active">
 		                    <div class="mt-step-number bg-white">3</div>
-		                    <div class="mt-step-title uppercase font-grey-cascade">Content</div>
-		                    <div class="mt-step-content font-grey-cascade">Detail Content Deals</div>
-	                    </div>
-                    </div>
-                    <div id="step-offline" @if( !empty($deals['is_online']) ) style="display: none;" @endif>
-                    	<div class="col-md-6 mt-step-col first">
-	                        <div class="mt-step-number bg-white">1</div>
-	                        <div class="mt-step-title uppercase font-grey-cascade">Info</div>
-	                        <div class="mt-step-content font-grey-cascade">Title, Image, Periode</div>
-	                    </div>
-	                    <div class="col-md-6 mt-step-col last active">
-		                    <div class="mt-step-number bg-white">2</div>
 		                    <div class="mt-step-title uppercase font-grey-cascade">Content</div>
 		                    <div class="mt-step-content font-grey-cascade">Detail Content Deals</div>
 	                    </div>
@@ -567,13 +555,20 @@
 
 				                </div>
 				                <div class="form-actions">
+				                @if( $deals['deals_total_claimed'] == 0 )
 				                {{ csrf_field() }}
 				                <div class="row">
-				                    <div class="col-md-offset-3 col-md-9">
+				                    <div class="col-md-offset-5 col-md-7">
 				                        <button type="submit" class="btn green">Submit</button>
-				                        <!-- <button type="button" class="btn default">Cancel</button> -->
 				                    </div>
 				                </div>
+								@else
+								<div class="row">
+				                    <div class="col-md-offset-5 col-md-7">
+										<a href="{{ ($deals['id_deals'] ?? false) ? url('deals/detail/'.$deals['id_deals']) : '' }}" class="btn green">Detail</a>
+				                    </div>
+				                </div>
+								@endif
 				            </div>
 				            <input type="hidden" name="id_deals" value="{{ $deals['id_deals'] }}">
 				            <input type="hidden" name="deals_type" value="{{ $deals['deals_type'] }}">

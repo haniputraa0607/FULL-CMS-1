@@ -84,64 +84,75 @@ $grantedFeature     = session('granted_features');
             });
             token = '<?php echo csrf_token();?>';
 
-            $('#is_offline').change(function() {
-		        if(this.checked) {
-		            $('#promo-type-form').show().find('input').prop('required', true).prop('checked', false);
-		        }else{
-		            $('#promo-type-form').hide().find('input').prop('required', false).prop('checked', false);
-
-                    $('.dealsPromoTypeValuePrice').val('');
-                    $('.dealsPromoTypeValuePrice').hide();
-                    $('.dealsPromoTypeValuePrice').removeAttr('required', true);
-                    $('.dealsPromoTypeValuePromo').val('');
-                    $('.dealsPromoTypeValuePromo').hide();
-                    $('.dealsPromoTypeValuePromo').removeAttr('required', true);
-
-		        	$('.dealsPromoTypeShow').hide();
-		        }
-		    });
+            $('#is_online, #is_offline').on('change', function(){
+            	var is_online = $('#is_online').is(":checked");
+            	var is_offline = $('#is_offline').is(":checked");
+            	if (is_online || is_offline) {$('.online_offline').prop('required', false);}
+            	if (!is_offline && !is_online) {$('.online_offline').prop('required', true);}
+            });
 
 		    $('#is_online').change(function() {
 		        if(this.checked) {
-		            $('#step-online, #product-type-form').show();
-		            $('#product-type-form').prop('disabled',false);
-		            $('#step-offline').hide();
+		            $('#product-type-form').show();
 		        }else{
-		            $('#step-online, #product-type-form').hide();
-		            $('#product-type-form').prop('disabled',true);
-		            $('#step-offline').show();
+		            $('#product-type-form').hide();
 		        }
 		    });
 
-            /* TYPE VOUCHER */
-            $('.voucherType').click(function() {
+            $('input[name=deals_voucher_type]').click(function() {
                 // tampil duluk
                 var nilai = $(this).val();
 
                 // alert(nilai);
 
                 if (nilai == "List Vouchers") {
+
+                	$('input[name=total_voucher_type]:checked').prop('checked', false);
+                	$('input[name=deals_total_voucher]').val('');
+
                     $('#listVoucher').show();
                     $('.listVoucher').prop('required', true);
+                    $('.listVoucher').prop('disabled', false);
 
+                    $('#total-voucher-form').hide();
                     $('#generateVoucher').hide();
                     $('.generateVoucher').removeAttr('required');
+                    $('.generateVoucher').prop('disabled', true);
                 }
-                else if(nilai == "Unlimited") {
-                    $('.generateVoucher').val('');
-                    $('.listVoucher').val('');
-                    $('.listVoucher').removeAttr('required');
-
+                else if (nilai == "Auto generated"){
+                    $('#total-voucher-form').show();
+                    
                     $('#listVoucher').hide();
-                    $('#generateVoucher').hide();
-                    $('.generateVoucher').removeAttr('required');
+                    $('.listVoucher').removeAttr('required');
+                    $('.listVoucher').prop('disabled', true);
                 }
-                else {
+            });
+
+            /* TOTAL TYPE VOUCHER */
+            $('input[name=total_voucher_type]').click(function() {
+                // tampil duluk
+                var nilai = $(this).val();
+                // alert(nilai);
+
+                if (nilai == "Auto generated") {
+
                     $('#generateVoucher').show();
                     $('.generateVoucher').prop('required', true);
+                    $('.generateVoucher').prop('disabled', false);
 
                     $('#listVoucher').hide();
                     $('.listVoucher').removeAttr('required');
+                    $('.listVoucher').prop('disabled', true);
+                }
+                else if (nilai == "Unlimited"){
+                    $('#listVoucher').hide();
+                    $('.listVoucher').removeAttr('required');
+                    $('.listVoucher').prop('disabled', true);
+
+                    $('#generateVoucher').hide();
+                    $('.generateVoucher').removeAttr('required');
+                    $('.generateVoucher').prop('disabled', true);
+                    $('input[name=deals_total_voucher]').val('');
                 }
             });
 
@@ -150,7 +161,7 @@ $grantedFeature     = session('granted_features');
                 var nilai = $(this).val();
 
                 if (nilai != "free") {
-                    $('#prices').show();
+                    $('#prices, .price-label').show();
 
                     $('.payment').hide();
 
@@ -397,7 +408,7 @@ $grantedFeature     = session('granted_features');
     	<div class="col-md-12">
             <div class="mt-element-step">
                 <div class="row step-line">
-                    <div id="step-online" style="display: none">
+                    <div id="step-online" >
 	                    <div class="col-md-4 mt-step-col first active">
 	                        <div class="mt-step-number bg-white">1</div>
 	                        <div class="mt-step-title uppercase font-grey-cascade">Info</div>
@@ -410,18 +421,6 @@ $grantedFeature     = session('granted_features');
 	                    </div>
 	                    <div class="col-md-4 mt-step-col last">
 		                    <div class="mt-step-number bg-white">3</div>
-		                    <div class="mt-step-title uppercase font-grey-cascade">Content</div>
-		                    <div class="mt-step-content font-grey-cascade">Detail Content Deals</div>
-	                    </div>
-                    </div>
-                    <div id="step-offline">
-                    	<div class="col-md-6 mt-step-col first active">
-	                        <div class="mt-step-number bg-white">1</div>
-	                        <div class="mt-step-title uppercase font-grey-cascade">Info</div>
-	                        <div class="mt-step-content font-grey-cascade">Title, Image, Periode</div>
-	                    </div>
-	                    <div class="col-md-6 mt-step-col last">
-		                    <div class="mt-step-number bg-white">2</div>
 		                    <div class="mt-step-title uppercase font-grey-cascade">Content</div>
 		                    <div class="mt-step-content font-grey-cascade">Detail Content Deals</div>
 	                    </div>
@@ -488,11 +487,11 @@ $grantedFeature     = session('granted_features');
                         <div class="col-md-9">
                         	<div class="mt-checkbox-inline">
                                 <label class="mt-checkbox mt-checkbox-outline" style="margin-bottom: 0px">
-                                    <input type="checkbox" id="is_online" name="is_online" value="1" @if (old('is_online') == "1") checked @endif> Online
+                                    <input type="checkbox" id="is_online" class="online_offline" name="is_online" value="1" @if (old('is_online') == "1") checked @endif required> Online
                                     <span></span>
                                 </label>
                                 <label class="mt-checkbox mt-checkbox-outline" style="margin-bottom: 0px">
-                                    <input type="checkbox" id="is_offline" name="is_offline" value="1" @if (old('is_offline') == "1") checked @endif> Offline
+                                    <input type="checkbox" id="is_offline" class="online_offline" name="is_offline" value="1" @if (old('is_offline') == "1") checked @endif required> Offline
                                     <span></span>
                                 </label>
                             </div>
@@ -566,52 +565,6 @@ $grantedFeature     = session('granted_features');
                             <div class="input-icon right">
                                 <input type="text" class="form-control" name="deals_second_title" value="{{ old('deals_second_title') }}" placeholder="Second Title" maxlength="20">
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group" id="promo-type-form" style="display: none">
-                        <div class="input-icon right">
-                            <label class="col-md-3 control-label">
-                            Promo Type
-                            <span class="required" aria-required="true"> * </span>
-                            <i class="fa fa-question-circle tooltips" data-original-title="Tipe promosi berdasarkan Promo ID atau nominal promo" data-container="body"></i>
-                            </label>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="input-icon right">
-                                <div class="col-md-3">
-                                    <div class="md-radio-inline">
-                                        <div class="md-radio">
-                                            <input type="radio" id="radio14" name="deals_promo_id_type" class="md-radiobtn dealsPromoType" value="promoid" @if (old('deals_promo_id_type') == "promoid") checked @endif>
-                                            <label for="radio14">
-                                                <span></span>
-                                                <span class="check"></span>
-                                                <span class="box"></span> Promo ID </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="md-radio-inline">
-                                        <div class="md-radio">
-                                            <input type="radio" id="radio16" name="deals_promo_id_type" class="md-radiobtn dealsPromoType" value="nominal" @if (old('deals_promo_id_type') == "nominal") checked @endif>
-                                            <label for="radio16">
-                                                <span></span>
-                                                <span class="check"></span>
-                                                <span class="box"></span> Nominal </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="form-group dealsPromoTypeShow" @if (!old('deals_promo_id_type')) style="display: none;" @endif>
-                        <label class="col-md-3 control-label"> </label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control dealsPromoTypeValuePromo" name="deals_promo_id_promoid" value="{{ old('deals_promo_id_promoid') }}" placeholder="Input Promo ID"  @if (old('deals_promo_id_type') == "promoid") style="display: block;" @else style="display: none;" @endif>
-
-                            <input type="text" class="form-control dealsPromoTypeValuePrice price" name="deals_promo_id_nominal" value="{{ old('deals_promo_id_nominal') }}" placeholder="Input nominal" @if (old('deals_promo_id_type') == "nominal") style="display: block;" @else style="display: none;" @endif>
                         </div>
                     </div>
 

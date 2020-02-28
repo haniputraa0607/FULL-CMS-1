@@ -4,7 +4,7 @@
  ?>
             @if ($deals['deals_type'] != "Point")
                 <div class="form-body">
-                	@if(MyHelper::hasAccess([97], $configs) && MyHelper::hasAccess([98], $configs))
+                	@if(MyHelper::hasAccess([99], $configs) && MyHelper::hasAccess([100], $configs))
                 	<div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -16,21 +16,21 @@
                         <div class="col-md-9">
                         	<div class="mt-checkbox-inline">
                                 <label class="mt-checkbox mt-checkbox-outline" style="margin-bottom: 0px">
-                                    <input type="checkbox" id="is_online" name="is_online" value="1" 
+                                    <input class="online_offline" type="checkbox" id="is_online" name="is_online" value="1" 
                                     @if ( old('is_online') == "1" )
                                         checked 
                                     @elseif ( !empty($deals['is_online']) ) 
                                         checked 
-                                    @endif> Online
+                                    @endif {{ empty($deals['is_online']) && empty($deals['is_offline']) ? 'required' : '' }}> Online
                                     <span></span>
                                 </label>
                                 <label class="mt-checkbox mt-checkbox-outline" style="margin-bottom: 0px">
-                                    <input type="checkbox" id="is_offline" name="is_offline" value="1" 
+                                    <input class="online_offline" type="checkbox" id="is_offline" name="is_offline" value="1" 
                                     @if ( old('is_offline') == "1" )
                                         checked 
                                     @elseif ( !empty($deals['is_offline']) ) 
                                         checked 
-                                    @endif> Offline
+                                    @endif {{ empty($deals['is_online']) && empty($deals['is_offline']) ? 'required' : '' }}> Offline
                                     <span></span>
                                 </label>
                             </div>
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     
-                    <div class="form-group" id="product-type-form" @if( empty($deals[0]['is_online']) ) style="display: none;" @endif>
+                    <div class="form-group" id="product-type-form" @if( empty($deals['is_online']) ) style="display: none;" @endif>
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
                             Product Type
@@ -104,45 +104,6 @@
                         </div>
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="deals_second_title" value="{{ $deals['deals_second_title'] }}" placeholder="Second Title" maxlength="20">
-                        </div>
-                    </div>
-
-                    @if(MyHelper::hasAccess([97], $configs))
-                    <div class="form-group" id="promo-type-form" @if( ($deals['is_offline']??false) != 1 ) style="display: none;" @endif>
-                        <div class="input-icon right">
-                            <label class="col-md-3 control-label">
-                            Promo Type
-                            <span class="required" aria-required="true"> * </span>
-                            <i class="fa fa-question-circle tooltips" data-original-title="Tipe promosi berdasarkan Promo ID atau nominal promo" data-container="body"></i>
-                            </label>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="md-radio-inline">
-                                <div class="md-radio">
-                                    <input type="radio" id="radio14" name="deals_promo_id_type" class="md-radiobtn dealsPromoType" value="promoid" required @if ($deals['deals_promo_id_type'] == "promoid") checked @endif>
-                                    <label for="radio14">
-                                        <span></span>
-                                        <span class="check"></span>
-                                        <span class="box"></span> Promo ID </label>
-                                </div>
-                                <div class="md-radio">
-                                    <input type="radio" id="radio16" name="deals_promo_id_type" class="md-radiobtn dealsPromoType" value="nominal" required @if ($deals['deals_promo_id_type'] == "nominal") checked @endif>
-                                    <label for="radio16">
-                                        <span></span>
-                                        <span class="check"></span>
-                                        <span class="box"></span> Nominal </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
-
-                    <div class="form-group dealsPromoTypeShow" @if( ($deals['is_offline']??false) != 1 ) style="display: none;" @endif>
-                        <label class="col-md-3 control-label"> </label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control dealsPromoTypeValuePromo" name="deals_promo_id_promoid" value="{{ $deals['deals_promo_id'] }}" placeholder="Input Promo ID" @if ($deals['deals_promo_id_type'] == "nominal") style="display: none;" @endif>
-
-                            <input type="text" class="form-control dealsPromoTypeValuePrice price" name="deals_promo_id_nominal" value="{{ $deals['deals_promo_id'] }}" placeholder="Input nominal" @if ($deals['deals_promo_id_type'] == "promoid") style="display: none;" @endif>
                         </div>
                     </div>
 

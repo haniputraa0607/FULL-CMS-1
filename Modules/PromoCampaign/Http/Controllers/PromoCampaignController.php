@@ -337,7 +337,10 @@ class PromoCampaignController extends Controller
         }else{
 
             $post['id_promo_campaign'] = $id_promo_campaign;
-            
+            if(isset($post['promo_warning_image'])){
+	            $post['promo_warning_image'] = MyHelper::encodeImage($post['promo_warning_image']);
+	        }
+
             $action = MyHelper::post('promo-campaign/step2', $post);
 
             if (isset($action['status']) && $action['status'] == 'success') {
