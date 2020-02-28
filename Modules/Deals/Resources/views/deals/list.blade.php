@@ -12,6 +12,12 @@ $grantedFeature     = session('granted_features');
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+    	.middle-center {
+            vertical-align: middle!important;
+            text-align: center;
+        }
+    </style>
 @endsection
 
 @section('page-script')
@@ -162,12 +168,21 @@ $grantedFeature     = session('granted_features');
                         @if($deals_type !='WelcomeVoucher')
                             <th> Date Start </th>
                         @endif
+                        <th> Status </th>
                         <th> Action </th>
                     </tr>
                 </thead>
                 <tbody>
+                	@php $now = date("Y-m-d H:i:s"); @endphp
                     @if (!empty($deals))
                         @foreach($deals as $key => $value)
+	                        @php
+	                            if( isset($value['deals_start']) )
+	                            {
+	                                $date_start = $value['deals_start'];
+	                                $date_end = $value['deals_end'];
+	                            }
+	                        @endphp
                             <tr>
                                 <td>{{ $key+1 }}</td>
                                 <td>
@@ -219,6 +234,17 @@ $grantedFeature     = session('granted_features');
                                     @endif
                                 </td>
                                 @endif
+                                <td class="middle-center">
+	                                @if ( empty($value['step_complete']) )
+	                                    <a href="{{url('deals/step2', $value['id_deals'])??'#'}}"><span class="sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #F4D03F;padding: 5px 12px;color: #fff;">Not Complete</span></a>
+	                                @elseif($date_end < $now)
+	                                    <span class="sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #ACB5C3;padding: 5px 12px;color: #fff;">Ended</span>
+	                                @elseif($date_start <= $now)
+	                                    <span class="sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #26C281;padding: 5px 12px;color: #fff;">Started</span>
+	                                @elseif($date_start > $now)
+	                                    <span class="sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #E7505A;padding: 5px 12px;color: #fff;">Not Started</span>
+	                                @endif
+	                            </td>
                                 <td style="width: 80px;">
                                     @if($deals_type == "Deals" && MyHelper::hasAccess([76], $grantedFeature) && $value['deals_total_claimed'] == 0)
                                         <a data-toggle="confirmation" data-popout="true" class="btn btn-sm red delete" data-id="{{ $value['id_deals'] }}"><i class="fa fa-trash-o"></i></a>
@@ -230,7 +256,7 @@ $grantedFeature     = session('granted_features');
                                         <a data-toggle="confirmation" data-popout="true" class="btn btn-sm red delete" data-id="{{ $value['id_deals'] }}"><i class="fa fa-trash-o"></i></a>
                                     @endif
                                     @if ($deals_type == "Deals" && MyHelper::hasAccess([73], $grantedFeature))
-                                    <a href="{{ url('deals/step1') }}/{{ $value['id_deals'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
+                                    <a href="{{ url('deals/detail') }}/{{ $value['id_deals'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
                                     @elseif ($deals_type == "Point" && MyHelper::hasAccess([73], $grantedFeature))
                                     <a href="{{ url('deals-point/detail') }}/{{ $value['id_deals'] }}/{{ $value['deals_promo_id'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
                                     @elseif ($deals_type == "WelcomeVoucher" && MyHelper::hasAccess([180], $grantedFeature))

@@ -85,34 +85,58 @@
             </div>
         </div>
         <div class="portlet-body form">
-            <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_2">
-                <thead>
-                    <tr>
-                        <th> User </th>
-                        <th> Voucher Code </th>
-                        <th> Claimed At </th>
-                        <th> Outlet Redeem </th>
-                        <th> Redeem At </th>
-                        <th> Expired At </th>
-                        <th> Payment </th>
-                    </tr>
-                </thead>
-                <tbody>
-                @if (!empty($user))
-                @foreach($user as $value)
-                    <tr>
-                        <td> {{ $value['user']['name'] }} - {{ $value['user']['phone'] }} </td>
-                        <td> {{ $value['voucher_code'] }} </td>
-                        <td> @if (empty($value['claimed_at'])) -  @else {{ date('d M Y', strtotime($value['claimed_at'])) }} @endif</td>
-                        <td> @if(empty($value['outlet'])) - @else {{ $value['outlet']['outlet_code'] }} - {{ $value['outlet']['outlet_name'] }} @endif </td>
-                        <td> @if (empty($value['redeemed_at'])) -  @else {{ date('d M Y', strtotime($value['redeemed_at'])) }} @endif</td>
-                        <td> @if (empty($value['voucher_expired_at'])) -  @else {{ date('d M Y', strtotime($value['voucher_expired_at'])) }} @endif</td>
-                        <td> {{ ucwords($value['paid_status']) }} </td>                    
-                    </tr>
-                @endforeach
-                </tbody>
-                @endif
-            </table>
+        	<div class="table-scrollable">
+				<table class="table table-striped table-bordered table-hover">
+            {{-- <table class="table table-striped table-bordered table-hover order-column" id="participate_tables"> --}}
+	                <thead>
+	                    <tr>
+	                        <th> User </th>
+	                        <th> Status </th>
+	                        <th> Voucher Code </th>
+	                        <th> Claimed At </th>
+	                        <th> Used At </th>
+	                        <th> Receipt Number </th>
+	                        <th> Outlet Redeem </th>
+	                        <th> Redeem At </th>
+	                        <th> Expired At </th>
+	                        <th> Payment </th>
+	                        <th> Grand Total </th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                @if (!empty($user))
+	                @foreach($user as $value)
+	                    <tr>
+	                        <td nowrap> {{ $value['user']['name'] }} - {{ $value['user']['phone'] }} </td>
+	                        <td nowrap>
+	                        	@if (!empty($value['used_at']))
+		                        	{{ 'Used' }}
+		                        @elseif ( !empty($value['voucher_expired_at']) && $value['voucher_expired_at'] < date("Y-m-d H:i:s"))
+		                        	{{ 'Expired' }}
+		                        @elseif ( !empty($value['redeemed_at']))
+		                        	{{ 'Redeemed' }}
+		                        @else
+		                        	{{ 'Claimed' }}
+		                        @endif 
+		                    </td>
+	                        <td nowrap> {{ $value['voucher_code'] }} </td>
+	                        <td nowrap> @if (empty($value['claimed_at'])) -  @else {{ date('d M Y', strtotime($value['claimed_at'])) }} @endif</td>
+	                        <td nowrap> @if (empty($value['used_at'])) -  @else {{ date('d M Y', strtotime($value['used_at'])) }} @endif</td>
+	                        @php
+	                        	$trx_url = url('transaction/detail/'.$value['deal_voucher']['transaction_voucher']['transaction']['id_transaction'].'/'.strtolower($value['deal_voucher']['transaction_voucher']['transaction']['trasaction_type']));
+	                        @endphp
+	                        <td nowrap> @if (empty($value['deal_voucher']['transaction_voucher']['transaction']['transaction_receipt_number'])) -  @else <a target="_blank" href="{{ $trx_url }}">{{ $value['deal_voucher']['transaction_voucher']['transaction']['transaction_receipt_number'] }}</a> @endif</td>
+	                        <td nowrap> @if(empty($value['outlet'])) - @else {{ $value['outlet']['outlet_code'] }} - {{ $value['outlet']['outlet_name'] }} @endif </td>
+	                        <td nowrap> @if (empty($value['redeemed_at'])) -  @else {{ date('d M Y', strtotime($value['redeemed_at'])) }} @endif</td>
+	                        <td nowrap> @if (empty($value['voucher_expired_at'])) -  @else {{ date('d M Y', strtotime($value['voucher_expired_at'])) }} @endif</td>
+	                        <td nowrap> {{ ucwords($value['paid_status']) }} </td>
+	                        <td nowrap> @if (empty($value['deal_voucher']['transaction_voucher']['transaction']['transaction_grandtotal'])) -  @else {{ 'IDR '.number_format($value['deal_voucher']['transaction_voucher']['transaction']['transaction_grandtotal']) }} @endif</td>
+	                    </tr>
+	                @endforeach
+	                </tbody>
+	                @endif
+	            </table>
+        	</div>
             @if ($userPaginator)
             {{ $userPaginator->fragment('participate')->links() }}
           @endif

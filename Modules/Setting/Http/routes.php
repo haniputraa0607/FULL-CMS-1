@@ -95,3 +95,8 @@ Route::group(['prefix' => 'setting', 'namespace' => 'Modules\Setting\Http\Contro
     Route::any('webview/{key}', 'SettingController@aboutWebview');
     Route::any('faq/webview', 'SettingController@faqWebview');
 });
+
+/* Promo Setting */
+Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'promo-setting', 'namespace' => 'Modules\Setting\Http\Controllers'], function () {
+    Route::any('warning-image', ['middleware' => 'feature_control:229', 'uses' => 'PromoSettingController@warningImage']);
+});

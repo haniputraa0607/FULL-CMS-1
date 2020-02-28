@@ -168,30 +168,18 @@
         $(document).ready(function() {
             token = '<?php echo csrf_token();?>';
 
-            $('#is_offline').change(function() {
-		        if(this.checked) {
-		            $('#promo-type-form').show().find('input').prop('required', true).prop('checked', false);
-		        }else{
-		            $('#promo-type-form').hide().find('input').prop('required', false).prop('checked', false);
-
-                    $('.dealsPromoTypeValuePrice').val('');
-                    $('.dealsPromoTypeValuePrice').hide();
-                    $('.dealsPromoTypeValuePrice').removeAttr('required', true);
-                    $('.dealsPromoTypeValuePromo').val('');
-                    $('.dealsPromoTypeValuePromo').hide();
-                    $('.dealsPromoTypeValuePromo').removeAttr('required', true);
-
-		        	$('.dealsPromoTypeShow').hide();
-		        }
-		    });
+            $('#is_online, #is_offline').on('change', function(){
+            	var is_online = $('#is_online').is(":checked");
+            	var is_offline = $('#is_offline').is(":checked");
+            	if (is_online || is_offline) {$('.online_offline').prop('required', false);}
+            	if (!is_offline && !is_online) {$('.online_offline').prop('required', true);}
+            });
 
 		    $('#is_online').change(function() {
 		        if(this.checked) {
-		            $('#step-online, #product-type-form').show();
-		            $('#step-offline').hide();
+		            $('#product-type-form').show();
 		        }else{
-		            $('#step-online, #product-type-form').hide();
-		            $('#step-offline').show();
+		            $('#product-type-form').hide();
 		        }
 		    });
 
@@ -502,7 +490,7 @@
     	<div class="col-md-12">
             <div class="mt-element-step">
                 <div class="row step-line">
-                    <div id="step-online" @if( empty($deals['is_online']) ) style="display: none;" @endif>
+                    <div id="step-online">
 	                    <div class="col-md-4 mt-step-col first active">
 	                        <div class="mt-step-number bg-white">1</div>
 	                        <div class="mt-step-title uppercase font-grey-cascade">Info</div>
@@ -515,18 +503,6 @@
 	                    </div>
 	                    <div class="col-md-4 mt-step-col last">
 		                    <div class="mt-step-number bg-white">3</div>
-		                    <div class="mt-step-title uppercase font-grey-cascade">Content</div>
-		                    <div class="mt-step-content font-grey-cascade">Detail Content Deals</div>
-	                    </div>
-                    </div>
-                    <div id="step-offline" @if( !empty($deals['is_online']) ) style="display: none;" @endif>
-                    	<div class="col-md-6 mt-step-col first active">
-	                        <div class="mt-step-number bg-white">1</div>
-	                        <div class="mt-step-title uppercase font-grey-cascade">Info</div>
-	                        <div class="mt-step-content font-grey-cascade">Title, Image, Periode</div>
-	                    </div>
-	                    <div class="col-md-6 mt-step-col last">
-		                    <div class="mt-step-number bg-white">2</div>
 		                    <div class="mt-step-title uppercase font-grey-cascade">Content</div>
 		                    <div class="mt-step-content font-grey-cascade">Detail Content Deals</div>
 	                    </div>
@@ -547,6 +523,7 @@
 					    <form id="form" class="form-horizontal" role="form" action=" @if($deals_type == "Deals") {{ url('deals/update') }} @else {{ url('inject-voucher/update') }} @endif" method="post" enctype="multipart/form-data">
                 				@include('deals::deals.step1-form')
 				                <div class="form-actions">
+				                @if($deals['deals_total_claimed'] == 0)
 				                {{ csrf_field() }}
 				                <div class="row">
 				                    <div class="col-md-offset-3 col-md-9">
@@ -554,8 +531,16 @@
 				                        <!-- <button type="button" class="btn default">Cancel</button> -->
 				                    </div>
 				                </div>
+				                @else
+				                <div class="row">
+				                    <div class="col-md-offset-3 col-md-9">
+				                    	<a href="{{ ($deals['slug'] ?? false) ? url('deals/detail/'.$deals['slug']) : '' }}" class="btn green">Detail</a>
+				                    </div>
+				                </div>
+				                @endif
 				            </div>
 				            <input type="hidden" name="id_deals" value="{{ $deals['id_deals'] }}">
+				            <input type="hidden" name="slug" value="{{ $deals['slug'] }}">
 				            <input type="hidden" name="deals_type" value="{{ $deals['deals_type'] }}">
 					    </form>
 					</div>

@@ -433,6 +433,17 @@
                                             @endif
                                         </div>
                                     </div>
+                                    <div class="row static-info">
+					                    <div class="col-md-4 name">Warning Image</div>
+					                    <div class="col-md-8 value">: {{ empty($result['promo_campaign_warning_image']) ? 'Use Global' : '' }}</div>
+					                </div>
+					                @if (!empty($result['promo_campaign_warning_image']))
+						                <div class="row static-info text-center">
+						                    <div class="col-md-12 name">
+						                    	<img src="{{ env('AWS_URL').$result['promo_campaign_warning_image'] }}" style="width: 100px">
+						                    </div>
+						                </div>
+					                @endif
                                 @if( strtotime($datenow) < strtotime($result['date_start']) || empty($result['step_complete']))
                                 <div class="row static-info">
                                     <div class="col-md-11 value">
