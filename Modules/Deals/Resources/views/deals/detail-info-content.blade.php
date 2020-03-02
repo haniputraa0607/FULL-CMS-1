@@ -7,7 +7,7 @@
 		@if( $deals['deals_total_claimed'] == 0 )
 	    <div class="row static-info">
 	        <div class="col-md-11 value">
-	            <a class="btn blue" href="{{ url('/')}}/deals/step3/{{$deals['id_deals']}}">Edit Content</a>
+	            <a class="btn blue" href="{{ url('/'.$rpage)}}/step3/{{$deals['id_deals']}}">Edit Content</a>
 	        </div>
 	    </div>
 	    @endif

@@ -238,9 +238,7 @@
 					discount_value = 100;
 					discount_nominal_value = ''
 					discount_percent_value = '';
-					max_percent_discount = ''
-
-console.log(it['discount_type']);
+					max_percent_discount = '';
 				}
 
 			}
@@ -290,7 +288,15 @@ console.log(it['discount_type']);
 				lastErrorReal=errorNow;
 			}
 			if(listProductSingle){
-				var htmlProduct='<option value="0">Same Product</option>';
+				if(product_type == 'single'){
+					var htmlProduct='<option value="0">Same Product</option>';
+				}else{
+					if (it['benefit_id_product']) {
+						var htmlProduct='<option value="" disabled>Same Product</option>';
+					}else{
+						var htmlProduct='<option value="" disabled selected>Same Product</option>';
+					}
+				}
 				listProductSingle.forEach(function(i){
 					var addthis='';
 					if(it['benefit_id_product']&&it['benefit_id_product']==i['id_product']){

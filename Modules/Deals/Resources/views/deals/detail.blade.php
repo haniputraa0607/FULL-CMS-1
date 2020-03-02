@@ -1,3 +1,10 @@
+@php
+	if($deals_type == 'WelcomeVoucher'){
+        $rpage = 'welcome-voucher';
+    }else{
+        $rpage = $deals_type=='Deals'?'deals':'inject-voucher';
+    }
+@endphp
 @extends('layouts.main-closed')
 @include('deals::deals.detail-info')
 @include('deals::deals.detail-info-content')
@@ -709,6 +716,7 @@
                 <form action="{{url('deals/update-complete')}}" method="post">
                 	@csrf
                 	<input type="hidden" name="id_deals" value="{{$deals['id_deals']}}">
+                	<input type="hidden" name="deals_type" value="{{$deals['deals_type']}}">
 	                <div class="modal-footer">
 	                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button>
 	                    <button type="submit" class="btn green">Confirm</button>

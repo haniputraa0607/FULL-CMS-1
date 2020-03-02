@@ -1,4 +1,4 @@
-@if ($deals['deals_type'] == "Hidden")
+@if ($deals['deals_type'] == "Hidden" && $deals['step_complete'] == 1)
     <div class="portlet light bordered">
         <div class="portlet-title">
             <div class="caption">

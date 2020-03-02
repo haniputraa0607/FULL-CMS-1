@@ -142,6 +142,7 @@
 					return
 				}
 				listProductSingle=data;
+				reOrder2();
 			}
 		});
 
@@ -528,6 +529,7 @@
     {{-- PROMO TYPE FORM --}}
 	<form role="form" action="" method="POST" enctype="multipart/form-data">
 	<input type="hidden" name="product_type" value="{{ $result['product_type']??'single' }}">
+	<input type="hidden" name="deals_type" value="{{ $result['deals_type']??$deals_type??'' }}">
 	<div class="portlet light bordered" id="promotype-form">
 		<div class="col-md-12">
             <div class="mt-element-step">
@@ -642,7 +644,7 @@
 	                    <div class="col-md-3">
 	                    	<div class="input-group col-md-12" id="offline-input">
 	                    		<div class="input-group-addon" id="promoid-inputgroup" @if ($result['deals_promo_id_type'] == "promoid") style="display: none;" @endif>IDR</div>
-		                        <input type="text" class="form-control digit_mask" name="deals_promo_id_promoid" value="{{ $result['deals_promo_id']??'' }}" placeholder="Input Promo ID" @if ($result['deals_promo_id_type'] == "nominal") style="display: none;" @endif style="text-align: center!important;">
+		                        <input type="text" class="form-control" name="deals_promo_id_promoid" value="{{ $result['deals_promo_id']??'' }}" placeholder="Input Promo ID" @if ($result['deals_promo_id_type'] == "nominal") style="display: none;" @endif style="text-align: center!important;">
 
 		                        <input type="text" class="form-control digit_mask" name="deals_promo_id_nominal" value="{{ $result['deals_promo_id']??'' }}" placeholder="Input nominal" @if ($result['deals_promo_id_type'] == "promoid") style="display: none;" @endif style="text-align: center!important;">
 	                    	</div>
