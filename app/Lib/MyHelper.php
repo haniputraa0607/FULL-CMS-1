@@ -35,7 +35,7 @@ class MyHelper
     $date = date('Y-m-d', strtotime($date));
     return $date;
   }
-  
+
   public static function convertDate2($date){
     $date = explode('-', $date);
     $date = $date[2].'-'.$date[1].'-'.$date[0];
@@ -93,11 +93,11 @@ class MyHelper
       }
     }
   }
-  
+
   public static function postLoginClient(){
     $api = env('APP_API_URL');
     $client = new Client;
- 
+
     try {
       $response = $client->request('POST',$api.'oauth/token', [
           'form_params' => [
@@ -136,18 +136,18 @@ class MyHelper
         'Authorization'   => $bearer,
         'Accept'          => 'application/json',
         'Content-Type'    => 'application/json',
-        'ip-address-view' => \Request::ip(),
+        'ip-address-view' => isset($_SERVER['HTTP_X_FORWARDED_FOR'])?$_SERVER['HTTP_X_FORWARDED_FOR']:$_SERVER['REMOTE_ADDR'],
         'user-agent-view' => $_SERVER['HTTP_USER_AGENT'],
       ]
     );
- 
+
     try {
       $response =  $client->request('GET',$api.'api/'.$url, $content);
       return json_decode($response->getBody(), true);
     }
     catch (\GuzzleHttp\Exception\RequestException $e) {
       try{
-        
+
         if($e->getResponse()){
           $response = $e->getResponse()->getBody()->getContents();
           $error = json_decode($response, true);
@@ -183,14 +183,14 @@ class MyHelper
         'user-agent-view' => $_SERVER['HTTP_USER_AGENT'],
       ]
     );
- 
+
     try {
       $response =  $client->request('GET',$api.'api/'.$url, $content);
       return json_decode($response->getBody(), true);
     }
     catch (\GuzzleHttp\Exception\RequestException $e) {
       try{
-        
+
         if($e->getResponse()){
           $response = $e->getResponse()->getBody()->getContents();
           $error = json_decode($response, true);
@@ -214,7 +214,7 @@ class MyHelper
   public static function post($url,$post){
     $api = env('APP_API_URL');
     $client = new Client;
-    
+
     $ses = session('access_token');
 
     $content = array(
@@ -228,7 +228,7 @@ class MyHelper
       ],
       'json' => (array) $post
     );
-   
+
     try {
       $response = $client->post($api.'api/'.$url,$content);
       if(!is_array(json_decode($response->getBody(), true)));
@@ -249,9 +249,9 @@ class MyHelper
     }
   }
 
-  public static function postFile($url, $name_field, $path,$postData=null){ 
-    $api = env('APP_API_URL'); 
-    $client = new Client(); 
+  public static function postFile($url, $name_field, $path,$postData=null){
+    $api = env('APP_API_URL');
+    $client = new Client();
 
     $ses = session('access_token');
 	if($path){
@@ -259,27 +259,27 @@ class MyHelper
     }else{
       $content='';
     }
-    $content = array( 
-      'headers' => [ 
-        'Authorization' => $ses, 
-        // 'Accept'        => 'application/json', 
-        // 'Content-Type'  => 'application/json' 
-      ], 
-      'multipart' => [ 
-          [ 
-              'name'     => $name_field, 
-              'contents' => $content, 
-              // 'filename' => $name 
-          ] 
-      ] 
-    ); 
+    $content = array(
+      'headers' => [
+        'Authorization' => $ses,
+        // 'Accept'        => 'application/json',
+        // 'Content-Type'  => 'application/json'
+      ],
+      'multipart' => [
+          [
+              'name'     => $name_field,
+              'contents' => $content,
+              // 'filename' => $name
+          ]
+      ]
+    );
 
 	if(is_array($postData)){
       $postData=array_map(function($val,$key){
         return array('name'=>$key,'contents'=>json_encode($val));
       }, $postData,array_keys($postData));
       array_push($content['multipart'],...$postData);
-    }															 
+    }
     try {
       $response = $client->post($api.'api/'.$url,$content);
       if(!is_array(json_decode($response->getBody(), true)));
@@ -370,21 +370,21 @@ class MyHelper
         }
     }
   }
-  
+
   public static function postFileBearer($url, $name_field, $path, $filename, $bearer){
     $api = env('APP_API_URL');
     $client = new Client;
 
     $content = array(
-      'headers' => [ 
-        'Authorization' => $bearer, 
+      'headers' => [
+        'Authorization' => $bearer,
       ],
-      'multipart' => [ 
-          [ 
+      'multipart' => [
+          [
               'name'     => $name_field,
               'contents' => fopen($path, 'r'),
               'filename' => $filename
-          ] 
+          ]
       ]
     );
 
@@ -457,7 +457,7 @@ class MyHelper
     return $data;
   }
 
-  public static function  safe_b64decode($string) 
+  public static function  safe_b64decode($string)
   {
     $data = str_replace(array('-','_'),array('+','/'),$string);
     $mod4 = strlen($data) % 4;
@@ -477,14 +477,14 @@ class MyHelper
     $skey = $depan . "9gjru84jb86c9l" . $belakang;
     return $skey;
   }
-  
+
   public static function  parsekey($value) {
     $depan = substr($value, 0, 1);
     $belakang = substr($value, -1, 1);
     $skey = $depan . "9gjru84jb86c9l" . $belakang;
     return $skey;
   }
-  
+
   public static function  createrandom($digit) {
     $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     srand((double)microtime()*1000000);
@@ -502,7 +502,7 @@ class MyHelper
 
     return $pin;
   }
-  
+
   public static function throwError($e){
       $error = $e->getFile().' line '.$e->getLine();
       $error = explode('\\', $error);
@@ -518,48 +518,48 @@ class MyHelper
     $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
     $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
     $crypttext = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $skey, $text, MCRYPT_MODE_ECB, $iv);
-    return trim($depan . MyHelper::safe_b64encode($crypttext) . $belakang); 
+    return trim($depan . MyHelper::safe_b64encode($crypttext) . $belakang);
   }
-  
+
   public static function  encryptkhususpassword($value, $skey) {
     if(!$value){return false;}
     $text = serialize($value);
     $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
     $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
     $crypttext = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $skey, $text, MCRYPT_MODE_ECB, $iv);
-    return trim(MyHelper::safe_b64encode($crypttext)); 
+    return trim(MyHelper::safe_b64encode($crypttext));
   }
-  
+
   public static function  decryptkhusus($value) {
     if(!$value){return false;}
     $skey = MyHelper::parsekey($value);
     $jumlah = strlen($value);
     $value = substr($value, 1, $jumlah-2);
-    $crypttext = MyHelper::safe_b64decode($value); 
+    $crypttext = MyHelper::safe_b64decode($value);
     $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
     $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
     $decrypttext = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $skey, $crypttext, MCRYPT_MODE_ECB, $iv);
     return unserialize(trim($decrypttext));
   }
-  
-  public static function  decryptkhususpassword($value, $skey) 
+
+  public static function  decryptkhususpassword($value, $skey)
   {
     if(!$value){return false;}
-    $crypttext = MyHelper::safe_b64decode($value); 
+    $crypttext = MyHelper::safe_b64decode($value);
     $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
     $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
     $decrypttext = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $skey, $crypttext, MCRYPT_MODE_ECB, $iv);
     return unserialize(trim($decrypttext));
   }
-  
-  public static function  createRandomPIN($digit, $mode = null) 
+
+  public static function  createRandomPIN($digit, $mode = null)
   {
     if($mode != null)
     {
       if($mode == "angka")
       {
         $chars = "1234567890";
-      } 
+      }
       elseif($mode == "huruf")
       {
         $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -571,7 +571,7 @@ class MyHelper
     } else {
       $chars = "346789ABCDEFGHJKMNPQRSTUVWXY";
     }
-    
+
     srand((double)microtime()*1000000);
     $i = 0;
     $pin = '';
@@ -623,7 +623,7 @@ class MyHelper
         case 'Birthday':
           return date('d-M-Y', strtotime($user['birthday']));
           break;
-        
+
         default:
           return "";
           break;
@@ -680,7 +680,7 @@ class MyHelper
     // dikembalikan ke format array sewaktu return
     return unserialize(trim($decrypttext));
   }
-  
+
   /**
    * Create slug for resource based on id and created_at parameter
    * @param  String $id         id of resource

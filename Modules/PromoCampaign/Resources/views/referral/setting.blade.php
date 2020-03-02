@@ -116,6 +116,15 @@ date_default_timezone_set('Asia/Jakarta');
     });
     $('.form-toggler').change();
     $('#active_checkbox').trigger('switchChange.bootstrapSwitch');
+    $(document).ready(function(){
+        $('.appender').on('click','.appender-btn',function(){
+            var value=$(this).data('value');
+            var target=$(this).parents('.appender').data('target');
+            var newValue=$(target).val()+" "+value;
+            $(target).val(newValue);
+            $(target).focus();
+        });
+    });
 </script>
 @endsection
 
@@ -207,6 +216,26 @@ date_default_timezone_set('Asia/Jakarta');
                                         Rp
                                     </div>
                                     <input type="text" class="form-control price" name="referred_min_value" value="{{old('referred_min_value',$setting['referred_min_value'])}}" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-4 control-label">Referral Messages
+                            <span class="required" aria-required="true"> *
+                            </span>
+                            <i class="fa fa-question-circle tooltips" data-original-title="Teks default yang akan digunakan saat pengguna membagikan kode referral" data-container="body"></i>
+                        </label>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <input type="text" value="{{old('referral_messages',$setting['referral_messages'])}}" class="form-control" name="referral_messages" id="referral_messages" required><br>
+                                <div class="row appender" data-target="#referral_messages">
+                                    <div class="col-md-3" style="margin-bottom:5px;">
+                                        <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%value%' with bonus value" data-value="%value%">%value%</span>
+                                    </div>
+                                    <div class="col-md-3" style="margin-bottom:5px;">
+                                        <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%code%' with promo code" data-value="%code%">%code%</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

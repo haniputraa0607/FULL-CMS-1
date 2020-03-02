@@ -156,6 +156,15 @@
         },function(){
             $('#img_preview').attr('src','{{env('S3_URL_VIEW')}}img/setting/product_group_preview.png');
         });
+        $('#variant-selector :input').on('change',function(){
+            var val = $('#variant-selector :input:checked').val();
+            if(val == 'single'){
+                $('.single-only').show();
+            } else {
+                $('.single-only').hide();
+            }
+        });
+        $('#variant-selector :input').change();
     });
 </script>
 @endsection
@@ -193,9 +202,11 @@
             <li class="active" id="infoOutlet">
                 <a href="#info" data-toggle="tab"> Info </a>
             </li>
+            @if(!$is_general)
             <li>
                 <a href="#variants" data-toggle="tab"> Variants </a>
             </li>
+            @endif
         </ul>
     </div>
     <div class="portlet-body form">

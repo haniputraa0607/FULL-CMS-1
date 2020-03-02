@@ -102,6 +102,15 @@
                 ['5','5'],
             ]
         },
+        notes_only:{
+            display:'Suggestiion',
+            operator:[],
+            opsi:[
+                ['1',"With Suggestiion Only"],
+                ['0',"Show All"],
+                ['-1',"Without Suggestiion Only"]
+            ]
+        },
         outlet:{
             display:'Outlet',
             operator:[],

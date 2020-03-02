@@ -48,7 +48,7 @@
             html += '<input type="hidden" name="_token" value="{{csrf_token()}}">';
 
             html += '<div class="alert alert-danger">';
-            html += 'Apakah Anda yakin untuk <strong>'+status_msg+' '+name+' ('+phone+')</strong> ? Jika iya, silahkan masukkan pin dan tekan tombol <strong>'+status_msg+'</strong>.</p>';
+            html += 'Apakah Anda yakin untuk <strong>'+status_msg+' '+name+' ('+phone+')</strong> ? Jika iya, silahkan masukkan pin dan tekan tombol <strong>Save</strong>.</p>';
             html += '</div>';
             html += '<input type="hidden" name="id_fraud_log" value="'+id_fraud_log+'">';
             html += '<input type="hidden" name="is_suspended" value="'+status_input+'">';
@@ -141,7 +141,7 @@
             </div>
                 <div class="form-group row">
                     <label class="col-md-4">Auto Suspend Time Period</label>
-                    <div class="col-md-4"><input class="form-control" disabled value="{{$result['detail_log']['fraud_setting_auto_suspend_time_period']}} (hari)"></div>
+                    <div class="col-md-4"><input class="form-control" disabled value="{{$result['detail_log']['fraud_setting_auto_suspend_time_period']}} (day)"></div>
                 </div>
         @endif
         <div class="form-group row">
@@ -167,6 +167,9 @@
                             <th scope="col"> User Phone </th>
                             <th scope="col"> Outlet </th>
                             <th scope="col"> Transaction Date </th>
+                            <th scope="col"> Transaction Time </th>
+                            <th scope="col"> Point </th>
+                            <th scope="col"> Grand Total </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -187,8 +190,8 @@
 
                                         ?></td>
                                     <td>
-                                        @if($val['trasaction_type'] == 'offline')
-                                            <a href="{{ url('transaction/detail/') }}/{{ $val['id_transaction'] }}/offline">{{$val['transaction_receipt_number']}}</a>
+                                        @if(strtolower($val['trasaction_type']) == 'offline')
+                                            <a target="_blank" href="{{ url('transaction/detail/') }}/{{ $val['id_transaction'] }}/offline">{{$val['transaction_receipt_number']}}</a>
                                         @else
                                             <a target="_blank" href="{{ url('transaction/detail/') }}/{{ $val['id_transaction'] }}/pickup order">{{$val['transaction_receipt_number']}}</a>
                                         @endif
@@ -196,7 +199,10 @@
                                     <td>{{$result['detail_user']['name']}}</td>
                                     <td>{{$result['detail_user']['phone']}}</td>
                                     <td>{{$val['outlet']['outlet_name']}}</td>
-                                    <td>{{date("d F Y H:i", strtotime($val['transaction_date']))}}</td>
+                                    <td>{{date("d F Y", strtotime($val['transaction_date']))}}</td>
+                                    <td>{{date("H:i", strtotime($val['transaction_date']))}}</td>
+                                    <td>{{$val['transaction_cashback_earned']}}</td>
+                                    <td>{{ number_format($val['transaction_grandtotal'], 2) }}</td>
                                 </tr>
                             @endforeach
                         @else

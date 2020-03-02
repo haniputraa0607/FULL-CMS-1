@@ -42,7 +42,7 @@
             html += '<input type="hidden" name="id_user" value="'+id_user+'">';
 
             html += '<div class="alert alert-danger">';
-            html += 'Apakah Anda yakin untuk <strong>'+status_msg+' '+name+' ('+phone+')</strong> ? Jika iya, silahkan masukkan pin dan tekan tombol <strong>'+status_msg+'</strong>.</p>';
+            html += 'Apakah Anda yakin untuk <strong>'+status_msg+' '+name+' ('+phone+')</strong> ? Jika iya, silahkan masukkan pin dan tekan tombol <strong>Save</strong>.</p>';
             html += '</div>';
             html += '<input type="hidden" name="device_id" value="'+device_id+'">';
             html += '<input type="hidden" name="is_suspended" value="'+status_input+'">';
@@ -164,7 +164,8 @@
                         <th width="5%" style="text-align: center;"> Suspend </th>
                         <th width="15%" style="text-align: center;"> Name </th>
                         <th width="10%" style="text-align: center;"> Phone </th>
-                        <th width="15%" style="text-align: center;"> Last Login </th>
+                        <th width="15%" style="text-align: center;"> Last Login Date</th>
+                        <th width="15%" style="text-align: center;"> Last Login Time</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -189,7 +190,10 @@
                                     {{$val['phone']}}
                                 </td>
                                 <td>
-                                    {{date("d F Y H:i", strtotime($val['last_login']))}}
+                                    {{date("d F Y", strtotime($val['last_login']))}}
+                                </td>
+                                <td>
+                                    {{date("H:i", strtotime($val['last_login']))}}
                                 </td>
                             </tr>
                         @endforeach
@@ -214,6 +218,7 @@
                     <thead>
                     <tr>
                         <th width="20%"> Date Fraud </th>
+                        <th width="20%"> Time Fraud </th>
                         <th width="15%"> Name </th>
                         <th width="10%"> Phone </th>
                         <th width="40%"> Fraud Settings </th>
@@ -224,7 +229,10 @@
                         @foreach($result['detail_fraud'] as $val)
                             <tr>
                                 <td>
-                                    {{date("d F Y H:i", strtotime($val['created_at']))}}
+                                    {{date("d F Y", strtotime($val['created_at']))}}
+                                </td>
+                                <td>
+                                    {{date("H:i", strtotime($val['created_at']))}}
                                 </td>
                                 <td>
                                     {{$val['name']}}
