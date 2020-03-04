@@ -1,6 +1,7 @@
 <?php
     use App\Lib\MyHelper;
     $grantedFeature     = session('granted_features');
+    $configs            = session('configs');
 
  ?>
 <form class="form-horizontal" id="formWithPrice" role="form" action="{{ url()->current() }}" method="post" enctype="multipart/form-data">
@@ -8,25 +9,48 @@
     <div class="form-body">
         <div class="form-group">
             <label for="multiple" class="control-label col-md-3">Category <span class="required" aria-required="true"> * </span>
-                <i class="fa fa-question-circle tooltips" data-original-title="Pilih Kategori Produk" data-container="body"></i>
+                <i class="fa fa-question-circle tooltips" data-original-title="{{MyHelper::hasAccess([94],$configs)?'Kategori produk hanya dapat diubah melalui halaman produk group':'Pilih Kategori Produk'}}" data-container="body"></i>
             </label>
             <div class="col-md-8">
                 <div class="input-icon right">
-                    <select id="multiple" class="form-control select2-multiple" name="id_product_category" data-placeholder="select category" required>
-                    <optgroup label="Category List">
-                        <option value="0">Uncategorize</option>
-                        @if (!empty($parent))
-                            @foreach($parent as $suw)
-                                <option value="{{ $suw['id_product_category'] }}" @if (($syu['category'][0]['id_product_category']??false) == $suw['id_product_category']) selected @endif>{{ $suw['product_category_name'] }}</option>
-                                @if (!empty($suw['child']))
-                                    @foreach ($suw['child'] as $child)
-                                        <option value="{{ $child['id_product_category'] }}" @if (($syu['category'][0]['id_product_category']??false) == $child['id_product_category']) selected @endif data-ampas="{{ $child['product_category_name'] }}">&nbsp;&nbsp;&nbsp;{{ $child['product_category_name'] }}</option>
+                    @if(MyHelper::hasAccess([94],$configs))
+                    <div class="input-group">
+                        <select id="multiple" class="form-control select2-multiple" name="id_product_category" data-placeholder="select category" required disabled>
+                            <optgroup label="Category List">
+                                <option value="0">Uncategorize</option>
+                                @if (!empty($parent))
+                                    @foreach($parent as $suw)
+                                        <option value="{{ $suw['id_product_category'] }}" @if (($syu['category'][0]['id_product_category']??false) == $suw['id_product_category']) selected @endif>{{ $suw['product_category_name'] }}</option>
+                                        @if (!empty($suw['child']))
+                                            @foreach ($suw['child'] as $child)
+                                                <option value="{{ $child['id_product_category'] }}" @if (($syu['category'][0]['id_product_category']??false) == $child['id_product_category']) selected @endif data-ampas="{{ $child['product_category_name'] }}">&nbsp;&nbsp;&nbsp;{{ $child['product_category_name'] }}</option>
+                                            @endforeach
+                                        @endif
                                     @endforeach
                                 @endif
-                            @endforeach
-                        @endif
-                    </optgroup>
-                </select>
+                            </optgroup>
+                        </select>
+                        <div class="input-group-btn">
+                            <a class="btn green" href="{{url('product-variant/group/'.$syu['id_product_group'])}}" target="_blank">Change</a>
+                        </div>
+                    </div>
+                    @else
+                    <select id="multiple" class="form-control select2-multiple" name="id_product_category" data-placeholder="select category" required>
+                        <optgroup label="Category List">
+                            <option value="0">Uncategorize</option>
+                            @if (!empty($parent))
+                                @foreach($parent as $suw)
+                                    <option value="{{ $suw['id_product_category'] }}" @if (($syu['category'][0]['id_product_category']??false) == $suw['id_product_category']) selected @endif>{{ $suw['product_category_name'] }}</option>
+                                    @if (!empty($suw['child']))
+                                        @foreach ($suw['child'] as $child)
+                                            <option value="{{ $child['id_product_category'] }}" @if (($syu['category'][0]['id_product_category']??false) == $child['id_product_category']) selected @endif data-ampas="{{ $child['product_category_name'] }}">&nbsp;&nbsp;&nbsp;{{ $child['product_category_name'] }}</option>
+                                        @endforeach
+                                    @endif
+                                @endforeach
+                            @endif
+                        </optgroup>
+                    </select>
+                    @endif
                 </div>
             </div>
         </div>
