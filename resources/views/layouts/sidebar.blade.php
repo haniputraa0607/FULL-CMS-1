@@ -452,6 +452,7 @@
 						</a>
 					</li>
 					@endif
+					@if(!MyHelper::hasAccess([94], $grantedFeature))
 					@if(MyHelper::hasAccess([48], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-category') ? 'active open' : ''}}">
 						<a href="{{url('product/category/assign')}}" class="nav-link ">
@@ -466,6 +467,7 @@
 						</a>
 					</li>
 					@endif
+					@endif
 					<li class="nav-item {{($submenu_active == 'product-photo-default') ? 'active open' : ''}}">
 						<a href="{{url('product/photo/default')}}" class="nav-link ">
 							<span class="title">Product Photo Default</span>
@@ -475,7 +477,7 @@
 			</li>
 			@endif
 
-			@if(MyHelper::hasAccess([1], $configs)&&MyHelper::hasAccess([1], $grantedFeature))
+			@if(MyHelper::hasAccess([94], $configs)&&MyHelper::hasAccess([212,214,215,217,219,220], $grantedFeature))
 			<li class="nav-item {{($menu_active == 'product-variant') ? 'active' : ''}}">
 				<a href="javascript:;" class="nav-link nav-toggle">
 					<i class="fa fa-object-group"></i>
@@ -483,35 +485,35 @@
 					<span class="arrow {{($menu_active == 'product-variant') ? 'open' : ''}}"></span>
 				</a>
 				<ul class="sub-menu">
-					@if(MyHelper::hasAccess([1], $grantedFeature))
+					@if(MyHelper::hasAccess([219], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-group-new') ? 'active open' : ''}}">
 						<a href="{{url('product-variant/group/create')}}" class="nav-link ">
 							<span class="title">New Product Group</span>
 						</a>
 					</li>
 					@endif
-					@if(MyHelper::hasAccess([1], $grantedFeature))
+					@if(MyHelper::hasAccess([217], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-group-list') ? 'active open' : ''}}">
 						<a href="{{url('product-variant/group')}}" class="nav-link ">
 							<span class="title">Product Group List</span>
 						</a>
 					</li>
 					@endif
-					@if(MyHelper::hasAccess([1], $grantedFeature))
+					@if(MyHelper::hasAccess([220], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-group-reorder') ? 'active open' : ''}}">
 						<a href="{{url('product-variant/group/reorder')}}" class="nav-link ">
 							<span class="title">Manage Position</span>
 						</a>
 					</li>
 					@endif
-					@if(MyHelper::hasAccess([1], $grantedFeature))
+					@if(MyHelper::hasAccess([214], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-variant-new') ? 'active open' : ''}}">
 						<a href="{{url('product-variant/create')}}" class="nav-link ">
 							<span class="title">New Product Variant</span>
 						</a>
 					</li>
 					@endif
-					@if(MyHelper::hasAccess([1], $grantedFeature))
+					@if(MyHelper::hasAccess([212,215], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-variant-list') ? 'active open' : ''}}">
 						<a href="{{url('product-variant')}}" class="nav-link ">
 							<span class="title">Update Variant List</span>

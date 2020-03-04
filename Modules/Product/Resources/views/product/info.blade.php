@@ -31,7 +31,7 @@
                             </optgroup>
                         </select>
                         <div class="input-group-btn">
-                            <a class="btn green" href="{{url('product-variant/group/'.$syu['id_product_group'])}}" target="_blank">Change</a>
+                            <a class="btn green" href="{{url('product-variant/group/'.$syu['id_product_group'])}}" target="_blank" @if(!$syu['id_product_group']) disabled @endif>Change</a>
                         </div>
                     </div>
                     @else
