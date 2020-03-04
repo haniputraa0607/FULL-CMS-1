@@ -160,6 +160,55 @@ class ProductGroupController extends Controller
         }
         return redirect('product-variant/group/'.$id.'#variants')->withErrors($update['messages']??['Something went wrong']);
     }
+    /**
+     * View reorder product group
+     * @param  Request $request [description]
+     * @return            [description]
+     */
+    public function reorder(Request $request) {
+        $data = [
+            'title'          => 'Complex Menu',
+            'sub_title'      => 'Manage Product Group Position',
+            'menu_active'    => 'product-variant',
+            'submenu_active' => 'product-group-reorder',
+        ];
+
+        $catParent = MyHelper::get('product/category/be/list');
+
+        if (isset($catParent['status']) && $catParent['status'] == "success") {
+            $data['category'] = $catParent['result'];
+        }
+        else {
+            $data['category'] = [];
+        }
+
+        $product = MyHelper::get('product-variant/group');
+
+        if (isset($product['status']) && $product['status'] == "success") {
+            $data['product'] = $product['result'];
+        }
+        else {
+            $data['product'] = [];
+        }
+        // dd($data);
+
+        return view('productvariant::groups.manage-position', $data);
+    }
+
+    // ajax sort product
+    public function reorderAjax(Request $request)
+    {
+        $post = $request->except('_token');
+        if (!isset($post['id_product_group'])) {
+            return [
+                'status' => 'fail',
+                'messages' => ['Product id is required']
+            ];
+        }
+        $result = MyHelper::post('product-variant/group/reorder', $post);
+
+        return $result;
+    }
 
     /**
      * Remove the specified resource from storage.

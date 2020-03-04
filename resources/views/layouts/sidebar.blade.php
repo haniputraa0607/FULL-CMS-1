@@ -498,6 +498,13 @@
 					</li>
 					@endif
 					@if(MyHelper::hasAccess([1], $grantedFeature))
+					<li class="nav-item {{($submenu_active == 'product-group-reorder') ? 'active open' : ''}}">
+						<a href="{{url('product-variant/group/reorder')}}" class="nav-link ">
+							<span class="title">Manage Position</span>
+						</a>
+					</li>
+					@endif
+					@if(MyHelper::hasAccess([1], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-variant-new') ? 'active open' : ''}}">
 						<a href="{{url('product-variant/create')}}" class="nav-link ">
 							<span class="title">New Product Variant</span>
@@ -507,7 +514,7 @@
 					@if(MyHelper::hasAccess([1], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-variant-list') ? 'active open' : ''}}">
 						<a href="{{url('product-variant')}}" class="nav-link ">
-							<span class="title">Product Variant List</span>
+							<span class="title">Update Variant List</span>
 						</a>
 					</li>
 					@endif

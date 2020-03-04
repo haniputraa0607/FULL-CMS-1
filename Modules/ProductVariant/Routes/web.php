@@ -18,6 +18,8 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'product-
 	    Route::get('/create', ['middleware' => 'feature_control:219', 'uses' => 'ProductGroupController@create']);
 	    Route::post('/create', ['middleware' => 'feature_control:219', 'uses' => 'ProductGroupController@store']);
 	    Route::post('/delete', ['middleware' => 'feature_control:219', 'uses' => 'ProductGroupController@destroy']);
+	    Route::get('/reorder', ['middleware' => 'feature_control:220', 'uses' => 'ProductGroupController@reorder']);
+	    Route::post('/reorder', ['middleware' => 'feature_control:220', 'uses' => 'ProductGroupController@reorderAjax']);
 	    Route::get('/{id}', ['middleware' => 'feature_control:218', 'uses' => 'ProductGroupController@edit']);
 	    Route::post('/{id}', ['middleware' => 'feature_control:220', 'uses' => 'ProductGroupController@update']);
 	    Route::post('/{id}/assign', ['middleware' => 'feature_control:220', 'uses' => 'ProductGroupController@assign']);
