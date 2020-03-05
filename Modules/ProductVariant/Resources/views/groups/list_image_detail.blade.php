@@ -47,7 +47,7 @@ $configs            = session('configs');
                     <td>${item.product_group_code}</td>
                     <td>${item.product_category?item.product_category.product_category_name:'Uncategorized'}</td>
                     <td>${item.product_group_name}</td>
-                    <td><img style="width: 70px;" id="${item.product_group_code}" src="${item.product_group_photo}"></td>
+                    <td><img style="width: 70px;" id="${item.product_group_code}" src="${item.product_group_image_detail}"></td>
                 </tr>
                 `;
             }
@@ -62,7 +62,7 @@ $( document ).ready(function() {
         parallelUploads: 1,
         init: function () {
             this.on("thumbnail", function(file) {
-                if (file.width == 200 || file.height == 200) {
+                if (file.width == 720 || file.height == 360) {
                     file.acceptDimensions();
                 }
                 else {
@@ -81,7 +81,7 @@ $( document ).ready(function() {
         {
             if (response.status == 'success') {
                 filename = file.name.split('.')
-                $("#"+filename[0]).replaceWith('<td id="'+filename[0]+'"><img style="width: 75px;" src="'+response.result.product_group_photo+'" alt=""></td>');
+                $("#"+filename[0]).replaceWith('<td id="'+filename[0]+'"><img style="width: 75px;" src="'+response.result.product_group_image_detail+'" alt=""></td>');
                 toastr.success("Photo has been updated.")
             } else {
                 toastr.warning("Make sure name file same as Product Code.")
@@ -127,12 +127,12 @@ $( document ).ready(function() {
                 <h4>Dropzone Product Image</h4>
                 <p> Untuk melakukan perubahan image pada product, anda hanya perlu melakukan drop image yang ingin di ganti atau di tambahkan </p>
                 <p>
-                    <span class="label label-warning">NOTE:</span> &nbsp; Pastikan nama file sesuai dengan product code. Jika product code PR-001, maka nama file gambar PR-001.jpg dan pastikan ukuran gambar 200px X 200px. </p>
+                    <span class="label label-warning">NOTE:</span> &nbsp; Pastikan nama file sesuai dengan product code. Jika product code PR-001, maka nama file gambar PR-001.jpg dan pastikan ukuran gambar 720px X 360px. </p>
             </div>
             <form action="{{ url()->current() }}" method="POST" class="dropzone dropzone-file-area dz-clickable" id="my-dropzone" style="width: 600px; margin-top: 50px;">
                 {{ csrf_field() }}
                 <h3 class="sbold">Drop files here or click to upload</h3>
-                <p> Image Pixel 200 X 200. </p>
+                <p> Image Pixel 720 X 360. </p>
             <div class="dz-default dz-message"><span></span></div></form>
         </div>
     </div>
@@ -153,7 +153,7 @@ $( document ).ready(function() {
                             <th>Code</th>
                             <th>Category</th>
                             <th>Name</th>
-                            <th>Image</th>
+                            <th>Image Detail</th>
                         </tr>
                     </thead>
                     <tbody>
