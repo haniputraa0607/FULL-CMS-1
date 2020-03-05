@@ -87,8 +87,8 @@ class SettingController extends Controller
         } elseif($key == 'tos') {
             $sub = 'about-tos';
             $active = 'tos';
-            $subTitle = 'Ketentuan Layanan';
-            $label = 'Ketentuan Layanan';
+            $subTitle = 'Term Of Services';
+            $label = 'Term Of Services';
         } elseif($key == 'tax') {
             $sub = 'about-tax';
             $active = 'tax';

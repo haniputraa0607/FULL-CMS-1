@@ -1701,7 +1701,7 @@
 			<li class="nav-item {{($menu_active == 'tos') ? 'active' : ''}}">
 				<a href="{{url('setting/tos')}}" class="nav-link nav-toggle">
 					<i class="icon-note"></i>
-					<span class="title">Ketentuan Layanan</span>
+					<span class="title">Term Of Services</span>
 				</a>
 			</li>
 			@endif
