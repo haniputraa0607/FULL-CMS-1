@@ -498,6 +498,13 @@
 					</li>
 					@endif
 					@if(MyHelper::hasAccess([1], $grantedFeature))
+					<li class="nav-item {{($submenu_active == 'image-product-group-list') ? 'active open' : ''}}">
+						<a href="{{url('product-variant/group/image')}}" class="nav-link ">
+							<span class="title">Image Product Group List</span>
+						</a>
+					</li>
+					@endif
+					@if(MyHelper::hasAccess([1], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-variant-new') ? 'active open' : ''}}">
 						<a href="{{url('product-variant/create')}}" class="nav-link ">
 							<span class="title">New Product Variant</span>
