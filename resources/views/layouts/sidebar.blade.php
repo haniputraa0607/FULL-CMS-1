@@ -1635,6 +1635,14 @@
 			</a>
 		</li>
 		@endif
+		@if(MyHelper::hasAccess([235], $grantedFeature))
+			<li class="nav-item {{($menu_active == 'maintenance-mode') ? 'active' : ''}}">
+				<a href="{{url('setting/maintenance-mode')}}" class="nav-link">
+					<i class="icon-wrench"></i>
+					<span class="title">Maintenance Mode</span>
+				</a>
+			</li>
+		@endif
 
 		@if(MyHelper::hasAccess([85,86,87,88,89,90,91,94], $grantedFeature))
 			<li class="heading" style="height: 50px;padding: 25px 15px 10px;">

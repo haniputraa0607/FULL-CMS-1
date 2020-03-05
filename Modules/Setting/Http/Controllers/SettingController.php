@@ -1218,4 +1218,38 @@ class SettingController extends Controller
             return redirect('setting/phone')->withErrors([$updateSetting['message']]);
         }
     }
+
+    function maintenanceMode(Request $request){
+        $post = $request->except('_token');
+        $data = [
+            'title'   		=> 'Maintenance Mode Setting',
+            'menu_active'    => 'maintenance-mode',
+            'submenu_active' => 'maintenance-mode'
+        ];
+        if($post){
+            if(isset($post['image']) && $post['image'] !== null){
+                $post['image']= MyHelper::encodeImage($post['image']);
+            }
+
+            $updateMaintenanceMode = MyHelper::post('setting/maintenance-mode/update', $post);
+            if(($updateMaintenanceMode['status']??'')=='success'){
+                return redirect('setting/maintenance-mode')->with('success',['Success update maintenance']);
+            }else{
+                return redirect('setting/maintenance-mode')->withErrors([$updateMaintenanceMode['message']]);
+            }
+        }else{
+            $maintenanceMode = MyHelper::get('setting/maintenance-mode');
+            if(isset($maintenanceMode['status']) &&  $maintenanceMode['status']=='success'){
+                $data['status'] = $maintenanceMode['result']['status'];
+                $data['message'] = $maintenanceMode['result']['message'];
+                $data['image'] = $maintenanceMode['result']['image'];
+            }else{
+                $data['status'] = 0;
+                $data['message'] = '';
+                $data['image'] = '';
+            }
+        }
+
+        return view('setting::maintenance-mode', $data);
+    }
 }
