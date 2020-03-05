@@ -26,6 +26,18 @@ class ProductGroupController extends Controller
         return view('productvariant::groups.list',$data);
     }
 
+    public function indexImage(Request $request) {
+        $data = [
+            'title'          => 'Complex Menu',
+            'sub_title'      => 'List Product Group Image',
+            'menu_active'    => 'product-variant',
+            'submenu_active' => 'image-product-group-list',
+        ];
+        $page = $request->page?:1;
+        $data['product_groups'] = [];
+        return view('productvariant::groups.list_image',$data);
+    }
+
     public function indexAjax(Request $request) {
         $page = $request->page?:1;
         $raw_data = MyHelper::get('product-variant/group?page='.$page)['result']??[];
