@@ -104,7 +104,7 @@ class MyHelper
               'grant_type'    => 'client_credentials',
               'client_id'     => env('CLIENT_CREDENTIAL_ID'),
               'client_secret' => env('CLIENT_CREDENTIAL_SECRET'),
-              'scope'      		=> '*'
+              'scope'      		=> 'be'
           ],
       ]);
 
