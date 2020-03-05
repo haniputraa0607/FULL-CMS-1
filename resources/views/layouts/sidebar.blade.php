@@ -1047,6 +1047,14 @@
 				</a>
 			</li>
 			@endif
+			@if(MyHelper::hasAccess([236], $grantedFeature))
+			<li class="nav-item {{($menu_active == 'promo-cashback-setting') ? 'active open' : ''}}">
+				<a href="{{url('promo-setting/cashback')}}" class="nav-link nav-toggle">
+					<i class="fa fa-money"></i>
+					<span class="title">Promo Cashback Setting</span>
+				</a>
+			</li>
+			@endif
 
 			@if(MyHelper::hasAccess([95], $configs))
 				@if(MyHelper::hasAccess([228], $grantedFeature))
