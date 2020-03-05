@@ -48,11 +48,40 @@ class ProductGroupController extends Controller
         } elseif ($request->file('file')) {
             $name = explode('.',$request->file('file')->getClientOriginalName())[0];
             $post = MyHelper::encodeImage($request->file('file'));
-            $save = MyHelper::post('product-variant/group/photoAjax', ['name' => $name, 'photo' => $post]);
+            $save = MyHelper::post('product-variant/group/photoAjax', ['name' => $name, 'photo' => $post, 'detail' => 0]);
             return $save;
         }
         $data['product_groups'] = [];
         return view('productvariant::groups.list_image',$data);
+    }
+    
+    public function indexImageDetail(Request $request) {
+        
+        $data = [
+            'title'          => 'Complex Menu',
+            'sub_title'      => 'List Product Group Image',
+            'menu_active'    => 'product-variant',
+            'submenu_active' => 'image-detail-product-group-list',
+        ];
+        $page = $request->page?:1;
+        if ($request->page) {
+            $page = $request->page?:1;
+            $raw_data = MyHelper::get('product-variant/group?page='.$page)['result']??[];
+            $data['data'] = $raw_data['data'];
+            $data['total'] = $raw_data['total']??0;
+            $data['from'] = $raw_data['from']??0;
+            $data['order_by'] = $raw_data['order_by']??0;
+            $data['order_sorting'] = $raw_data['order_sorting']??0;
+            $data['last_page'] = !($raw_data['next_page_url']??false);
+            return $data;
+        } elseif ($request->file('file')) {
+            $name = explode('.',$request->file('file')->getClientOriginalName())[0];
+            $post = MyHelper::encodeImage($request->file('file'));
+            $save = MyHelper::post('product-variant/group/photoAjax', ['name' => $name, 'photo' => $post, 'detail' => 1]);
+            return $save;
+        }
+        $data['product_groups'] = [];
+        return view('productvariant::groups.list_image_detail',$data);
     }
 
     public function indexAjax(Request $request) {
