@@ -12,6 +12,7 @@ $configs            = session('configs');
 <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/dropzone/dropzone.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/dropzone/basic.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
 @yield('is-style')
 <style>
     .btn{
@@ -23,6 +24,7 @@ $configs            = session('configs');
 @section('page-script')
 <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/scripts/datatable.js') }}" type="text/javascript"></script>
 <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
+<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.js') }}" type="text/javascript"></script>
 <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script>
 <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
 <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/dropzone/dropzone.min.js') }}" type="text/javascript"></script>
@@ -45,7 +47,7 @@ $configs            = session('configs');
                     <td>${item.product_group_code}</td>
                     <td>${item.product_category?item.product_category.product_category_name:'Uncategorized'}</td>
                     <td>${item.product_group_name}</td>
-                    <td><img style="width: 70px;" src="${item.product_group_photo}"></td>
+                    <td><img style="width: 70px;" id="${item.product_group_code}" src="${item.product_group_photo}"></td>
                 </tr>
                 `;
             }
@@ -79,7 +81,7 @@ $( document ).ready(function() {
         {
             if (response.status == 'success') {
                 filename = file.name.split('.')
-                $("#"+filename[0]).replaceWith('<td id="'+filename[0]+'"><img style="width: 75px;" src="'+response.result.url_product_photo+'" alt=""></td>');
+                $("#"+filename[0]).replaceWith('<td id="'+filename[0]+'"><img style="width: 75px;" src="'+response.result.product_group_photo+'" alt=""></td>');
                 toastr.success("Photo has been updated.")
             } else {
                 toastr.warning("Make sure name file same as Product Code.")
