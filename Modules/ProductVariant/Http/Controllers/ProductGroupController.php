@@ -29,10 +29,11 @@ class ProductGroupController extends Controller
     public function indexImage(Request $request) {
         
         $data = [
-            'title'          => 'Complex Menu',
-            'sub_title'      => 'List Product Group Image',
-            'menu_active'    => 'product-variant',
-            'submenu_active' => 'image-product-group-list',
+            'title'             => 'Complex Menu',
+            'sub_title'         => 'List Product Group Image',
+            'menu_active'       => 'product-variant',
+            'submenu_active'    => 'image-product-group',
+            'child_active'      => 'image-product-group-list',
         ];
         $page = $request->page?:1;
         if ($request->page) {
@@ -58,10 +59,11 @@ class ProductGroupController extends Controller
     public function indexImageDetail(Request $request) {
         
         $data = [
-            'title'          => 'Complex Menu',
-            'sub_title'      => 'List Product Group Image',
-            'menu_active'    => 'product-variant',
-            'submenu_active' => 'image-detail-product-group-list',
+            'title'             => 'Complex Menu',
+            'sub_title'         => 'List Product Group Image',
+            'menu_active'       => 'product-variant',
+            'submenu_active'    => 'image-product-group',
+            'child_active'      => 'image-detail-product-group-list',
         ];
         $page = $request->page?:1;
         if ($request->page) {

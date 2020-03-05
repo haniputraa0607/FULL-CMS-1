@@ -498,17 +498,23 @@
 					</li>
 					@endif
 					@if(MyHelper::hasAccess([1], $grantedFeature))
-					<li class="nav-item {{($submenu_active == 'image-product-group-list') ? 'active open' : ''}}">
-						<a href="{{url('product-variant/group/image')}}" class="nav-link ">
-							<span class="title">Image Product Group List</span>
+					<li class="nav-item {{($submenu_active == 'image-product-group') ? 'active open' : ''}}">
+						<a href="javascript:;" class="nav-link nav-toggle">
+							<span class="title">Image Product Group</span>
+							<span class="arrow"></span>
 						</a>
-					</li>
-					@endif
-					@if(MyHelper::hasAccess([1], $grantedFeature))
-					<li class="nav-item {{($submenu_active == 'image-detail-product-group-list') ? 'active open' : ''}}">
-						<a href="{{url('product-variant/group/image/detail')}}" class="nav-link ">
-							<span class="title">Image Detail Product Group List</span>
-						</a>
+						<ul class="sub-menu">
+							<li class="nav-item {{(isset($child_active) && $child_active == 'image-product-group-list') ? 'active open' : ''}}">
+								<a href="{{url('product-variant/group/image')}}" class="nav-link ">
+									<span class="title">Image Product Group List</span>
+								</a>
+							</li>
+							<li class="nav-item {{(isset($child_active) && $child_active == 'image-detail-product-group-list') ? 'active open' : ''}}">
+								<a href="{{url('product-variant/group/image/detail')}}" class="nav-link ">
+									<span class="title">Image Detail Product Group List</span>
+								</a>
+							</li>
+						</ul>
 					</li>
 					@endif
 					@if(MyHelper::hasAccess([1], $grantedFeature))
