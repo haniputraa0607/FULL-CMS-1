@@ -99,5 +99,6 @@ Route::group(['prefix' => 'setting', 'namespace' => 'Modules\Setting\Http\Contro
 
 /* Promo Setting */
 Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'promo-setting', 'namespace' => 'Modules\Setting\Http\Controllers'], function () {
-    Route::any('warning-image', ['middleware' => 'feature_control:229', 'uses' => 'PromoSettingController@warningImage']);
+    Route::any('warning-image', ['middleware' => 'feature_control:234', 'uses' => 'PromoSettingController@warningImage']);
+    Route::any('cashback', ['middleware' => 'feature_control:236', 'uses' => 'PromoSettingController@promoCashback']);
 });
