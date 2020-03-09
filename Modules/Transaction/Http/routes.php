@@ -38,6 +38,11 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'transact
     Route::get('/admin/{receipt}/{phone}', 'TransactionController@adminOutlet');
     Route::get('/admin/{type}/{status}/{receipt}/{id}', 'TransactionController@adminOutletConfirm');
 
+    /*[POS] Transaction online failed*/
+    Route::get('online-pos', 'TransactionController@transactionFailed');
+    Route::any('online-pos/ajax', 'TransactionController@getlistTransactionFailed');
+    Route::any('online-pos/resend', 'TransactionController@resendTransactionFailed');
+    Route::any('online-pos/autoresponse', 'TransactionController@autoresponseTransactionFailed');
 });
 
 Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'transaction', 'namespace' => 'Modules\Transaction\Http\Controllers'], function()

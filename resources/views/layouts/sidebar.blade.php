@@ -686,6 +686,28 @@
 			</li>
 			@endif
 
+			@if(MyHelper::hasAccess([237], $grantedFeature))
+				<li class="nav-item {{($menu_active == 'transaction-online-pos') ? 'active open' : ''}}">
+					<a href="javascript:;" class="nav-link nav-toggle">
+						<i class="fa fa-close"></i>
+						<span class="title">[POS] Transaction</span>
+						<span class="arrow {{($menu_active == 'transaction-online-pos') ? 'open' : ''}}"></span>
+					</a>
+					<ul class="sub-menu">
+						<li class="nav-item {{($submenu_active == 'transaction-online-pos-list') ? 'active open' : ''}}">
+							<a href="{{url('transaction/online-pos')}}" class="nav-link ">
+								<span class="title">Transaction Online Failed</span>
+							</a>
+						</li>
+						<li class="nav-item {{($submenu_active == 'transaction-autoresponse-online-pos') ? 'active open' : ''}}">
+							<a href="{{url('transaction/online-pos/autoresponse')}}" class="nav-link ">
+								<span class="title">[Response] Transaction Online Failed</span>
+							</a>
+						</li>
+					</ul>
+				</li>
+			@endif
+
 			@if(MyHelper::hasAccess([18], $configs))
 				@if(MyHelper::hasAccess([71], $grantedFeature))
 				<li class="nav-item {{($menu_active == 'point') ? 'active' : ''}}">
