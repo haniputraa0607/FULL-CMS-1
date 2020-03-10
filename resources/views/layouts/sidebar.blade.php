@@ -507,9 +507,8 @@
 						</a>
 					</li>
 					@endif
-					@if(MyHelper::hasAccess([214], $grantedFeature))
 
-					@if(MyHelper::hasAccess([1], $grantedFeature))
+					@if(MyHelper::hasAccess([215], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'image-product-group') ? 'active open' : ''}}">
 						<a href="javascript:;" class="nav-link nav-toggle">
 							<span class="title">Image Product Group</span>
@@ -529,7 +528,7 @@
 						</ul>
 					</li>
 					@endif
-					@if(MyHelper::hasAccess([1], $grantedFeature))
+					@if(MyHelper::hasAccess([214], $grantedFeature))
 
 					<li class="nav-item {{($submenu_active == 'product-variant-new') ? 'active open' : ''}}">
 						<a href="{{url('product-variant/create')}}" class="nav-link ">
