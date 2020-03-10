@@ -7,7 +7,7 @@
                             <label class="col-md-4 text-right control-label">Code</label>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="product_group_code" value="{{$product_group['product_group_name']}}" required>
+                                    <input type="text" class="form-control" name="product_group_code" value="{{$product_group['product_group_code']}}" required>
                                 </div>
                             </div>
                         </div>
