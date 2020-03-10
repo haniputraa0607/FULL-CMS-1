@@ -499,6 +499,7 @@
 						</a>
 					</li>
 					@endif
+
 					@if(MyHelper::hasAccess([220], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-group-reorder') ? 'active open' : ''}}">
 						<a href="{{url('product-variant/group/reorder')}}" class="nav-link ">
@@ -507,6 +508,29 @@
 					</li>
 					@endif
 					@if(MyHelper::hasAccess([214], $grantedFeature))
+
+					@if(MyHelper::hasAccess([1], $grantedFeature))
+					<li class="nav-item {{($submenu_active == 'image-product-group') ? 'active open' : ''}}">
+						<a href="javascript:;" class="nav-link nav-toggle">
+							<span class="title">Image Product Group</span>
+							<span class="arrow"></span>
+						</a>
+						<ul class="sub-menu">
+							<li class="nav-item {{(isset($child_active) && $child_active == 'image-product-group-list') ? 'active open' : ''}}">
+								<a href="{{url('product-variant/group/image')}}" class="nav-link ">
+									<span class="title">Image Product Group List</span>
+								</a>
+							</li>
+							<li class="nav-item {{(isset($child_active) && $child_active == 'image-detail-product-group-list') ? 'active open' : ''}}">
+								<a href="{{url('product-variant/group/image/detail')}}" class="nav-link ">
+									<span class="title">Image Detail Product Group List</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+					@endif
+					@if(MyHelper::hasAccess([1], $grantedFeature))
+
 					<li class="nav-item {{($submenu_active == 'product-variant-new') ? 'active open' : ''}}">
 						<a href="{{url('product-variant/create')}}" class="nav-link ">
 							<span class="title">New Product Variant</span>
@@ -673,6 +697,28 @@
 					</li> -->
 				</ul>
 			</li>
+			@endif
+
+			@if(MyHelper::hasAccess([237], $grantedFeature))
+				<li class="nav-item {{($menu_active == 'transaction-online-pos') ? 'active open' : ''}}">
+					<a href="javascript:;" class="nav-link nav-toggle">
+						<i class="fa fa-close"></i>
+						<span class="title">[POS] Transaction</span>
+						<span class="arrow {{($menu_active == 'transaction-online-pos') ? 'open' : ''}}"></span>
+					</a>
+					<ul class="sub-menu">
+						<li class="nav-item {{($submenu_active == 'transaction-online-pos-list') ? 'active open' : ''}}">
+							<a href="{{url('transaction/online-pos')}}" class="nav-link ">
+								<span class="title">Transaction Online Failed</span>
+							</a>
+						</li>
+						<li class="nav-item {{($submenu_active == 'transaction-autoresponse-online-pos') ? 'active open' : ''}}">
+							<a href="{{url('transaction/online-pos/autoresponse')}}" class="nav-link ">
+								<span class="title">[Response] Transaction Online Failed</span>
+							</a>
+						</li>
+					</ul>
+				</li>
 			@endif
 
 			@if(MyHelper::hasAccess([18], $configs))
@@ -1046,6 +1092,14 @@
 				<a href="{{url('promo-setting/warning-image')}}" class="nav-link nav-toggle">
 					<i class="fa fa-picture-o"></i>
 					<span class="title">Warning Image</span>
+				</a>
+			</li>
+			@endif
+			@if(MyHelper::hasAccess([236], $grantedFeature))
+			<li class="nav-item {{($menu_active == 'promo-cashback-setting') ? 'active open' : ''}}">
+				<a href="{{url('promo-setting/cashback')}}" class="nav-link nav-toggle">
+					<i class="fa fa-money"></i>
+					<span class="title">Promo Cashback Setting</span>
 				</a>
 			</li>
 			@endif
@@ -1644,6 +1698,14 @@
 			</a>
 		</li>
 		@endif
+		@if(MyHelper::hasAccess([235], $grantedFeature))
+			<li class="nav-item {{($menu_active == 'maintenance-mode') ? 'active' : ''}}">
+				<a href="{{url('setting/maintenance-mode')}}" class="nav-link">
+					<i class="icon-wrench"></i>
+					<span class="title">Maintenance Mode</span>
+				</a>
+			</li>
+		@endif
 
 		@if(MyHelper::hasAccess([85,86,87,88,89,90,91,94], $grantedFeature))
 			<li class="heading" style="height: 50px;padding: 25px 15px 10px;">
@@ -1695,7 +1757,7 @@
 			<li class="nav-item {{($menu_active == 'tos') ? 'active' : ''}}">
 				<a href="{{url('setting/tos')}}" class="nav-link nav-toggle">
 					<i class="icon-note"></i>
-					<span class="title">Ketentuan Layanan</span>
+					<span class="title">Term Of Services</span>
 				</a>
 			</li>
 			@endif

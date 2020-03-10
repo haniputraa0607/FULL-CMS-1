@@ -16,6 +16,8 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'product-
 	    Route::get('/', ['middleware' => 'feature_control:217', 'uses' => 'ProductGroupController@index']);
 	    Route::post('/', ['middleware' => 'feature_control:217', 'uses' => 'ProductGroupController@indexAjax']);
 	    Route::get('/create', ['middleware' => 'feature_control:219', 'uses' => 'ProductGroupController@create']);
+      Route::any('/image', ['middleware' => 'feature_control:217', 'uses' => 'ProductGroupController@indexImage']);
+      Route::any('/image/detail', ['middleware' => 'feature_control:217', 'uses' => 'ProductGroupController@indexImageDetail']);
 	    Route::post('/create', ['middleware' => 'feature_control:219', 'uses' => 'ProductGroupController@store']);
 	    Route::post('/delete', ['middleware' => 'feature_control:219', 'uses' => 'ProductGroupController@destroy']);
 	    Route::get('/reorder', ['middleware' => 'feature_control:220', 'uses' => 'ProductGroupController@reorder']);

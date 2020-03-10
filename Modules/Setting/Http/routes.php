@@ -40,9 +40,10 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'setting'
 
     /*Setting Phone*/
     Route::get('phone', ['middleware' => 'feature_control:211', 'uses' => 'SettingController@phoneNumberSetting']);
-
     Route::post('phone/update', ['middleware' => 'feature_control:211', 'uses' =>'SettingController@updatePhoneNumberSetting']);
 
+    /*maintenance mode*/
+    Route::any('maintenance-mode', 'SettingController@maintenanceMode');
 
     Route::any('home', 'SettingController@homeSetting');
 	Route::any('date', 'SettingController@dateSetting');
@@ -98,5 +99,6 @@ Route::group(['prefix' => 'setting', 'namespace' => 'Modules\Setting\Http\Contro
 
 /* Promo Setting */
 Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'promo-setting', 'namespace' => 'Modules\Setting\Http\Controllers'], function () {
-    Route::any('warning-image', ['middleware' => 'feature_control:229', 'uses' => 'PromoSettingController@warningImage']);
+    Route::any('warning-image', ['middleware' => 'feature_control:234', 'uses' => 'PromoSettingController@warningImage']);
+    Route::any('cashback', ['middleware' => 'feature_control:236', 'uses' => 'PromoSettingController@promoCashback']);
 });

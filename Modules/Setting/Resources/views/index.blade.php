@@ -110,7 +110,7 @@
                     	<input type="hidden" name="key" value="{{ $key }}">
                         <label class="control-label col-md-{{$colLabel}}">
                             {{ $label }}
-                            <i class="fa fa-question-circle tooltips" data-original-title="@if($label == 'Ketentuan Layanan') ketentuan layanan penggunaan aplikasi dari perusahaan @elseif($label == 'About') dapat diisi dengan profil perusahaan @elseif($label == 'Contact Us') dapat diisi dengan contact perusahaan @elseif($label == 'QR Code expires in') batas waktu qrcode valid @elseif($label == 'Time') waktu minimum yang dibutuhkan untuk menyiapkan pesanan @elseif($span == 'times') notifikasi gagal login akan dikirimkan ke user setelah berapa kali user gagal login @endif" data-container="body"></i>
+                            <i class="fa fa-question-circle tooltips" data-original-title="@if($label == 'Term Of Services') Term Of Services penggunaan aplikasi dari perusahaan @elseif($label == 'About') dapat diisi dengan profil perusahaan @elseif($label == 'Contact Us') dapat diisi dengan contact perusahaan @elseif($label == 'QR Code expires in') batas waktu qrcode valid @elseif($label == 'Time') waktu minimum yang dibutuhkan untuk menyiapkan pesanan @elseif($span == 'times') notifikasi gagal login akan dikirimkan ke user setelah berapa kali user gagal login @endif" data-container="body"></i>
                         </label>
                         <div class="col-md-{{$colInput}}">
                             @if($key == 'value_text')
