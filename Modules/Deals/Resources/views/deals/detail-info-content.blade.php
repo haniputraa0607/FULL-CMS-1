@@ -4,10 +4,10 @@
 @endphp
 <div class="row">
 	<div class="col-md-12">
-		@if( $deals['deals_total_claimed'] == 0 )
+		@if( $deals_type == 'Promotion' || $deals['deals_total_claimed'] == 0 )
 	    <div class="row static-info">
 	        <div class="col-md-11 value">
-	            <a class="btn blue" href="{{ url('/'.$rpage)}}/step3/{{$deals['id_deals']}}">Edit Content</a>
+	            <a class="btn blue" href="{{ url('/'.$rpage)}}/step3/{{$deals['id_deals']??$deals['id_deals_promotion_template']}}">Edit Content</a>
 	        </div>
 	    </div>
 	    @endif
@@ -28,9 +28,9 @@
 	        </div>
 			@php 
 				$i = 1; 
-				$count_content = count($deals['deals_content']); 
+				$count_content = count($deals['deals_content']??$deals['deals_promotion_content']); 
 			@endphp
-			@foreach ($deals['deals_content'] as $content)
+			@foreach (($deals['deals_content']??$deals['deals_promotion_content']) as $content)
 				@if ($i == 1 || $i%3 == 1)
 					<div class="row">
 				@endif
@@ -45,7 +45,7 @@
 					        @endif
 					        </div>
 				            <div class="portlet-body">
-				            	@foreach ($content['deals_content_details'] as $content_detail)
+				            	@foreach (($content['deals_content_details']??$content['deals_promotion_content_details']) as $content_detail)
 					                <div class="row static-info">
 					                    <div class="col-md-2 name">{{$content_detail['order']}}</div>
 					                    <div class="col-md-10 value">{{$content_detail['content']}}</div>

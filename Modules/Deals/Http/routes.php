@@ -82,3 +82,24 @@ Route::group(['middleware' => ['web', 'validate_session', 'config_control:26'], 
     Route::any('setting', 'DealsController@welcomeVoucherSetting');
     Route::any('update/status', 'DealsController@welcomeVoucherUpdateStatus');
 });
+
+/* Promotion Deals */
+Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'promotion', 'namespace' => 'Modules\Promotion\Http\Controllers'], function () {
+	Route::group(['prefix' => 'deals'], function()
+	{
+		Route::get('/', 'PromotionController@listDeals');
+	});
+});
+
+Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'promotion', 'namespace' => 'Modules\Deals\Http\Controllers'], function () {
+	Route::group(['prefix' => 'deals'], function()
+	{
+		Route::any('/create', 'DealsController@create');
+		Route::any('step1/{id}', ['middleware' => 'feature_control:74', 'uses' => 'DealsController@step1']);
+	    Route::any('step2/{id}', ['middleware' => 'feature_control:74', 'uses' => 'DealsController@step2']);
+	    Route::any('step3/{id}', ['middleware' => 'feature_control:74', 'uses' => 'DealsController@step3']);
+	    Route::post('update-complete', ['middleware' => 'feature_control:75', 'uses' => 'DealsController@updateComplete']);
+	    // Route::any('detail/{id}/{promo}', ['middleware' => 'feature_control:73', 'uses' => 'DealsController@detail']);
+	    Route::any('detail/{id}', ['middleware' => 'feature_control:73', 'uses' => 'DealsController@detail']);
+	});
+});

@@ -69,7 +69,7 @@
                                     <option></option>
                                 @if (!empty($brands))
                                     @foreach($brands as $brand)
-                                        <option value="{{ $brand['id_brand'] }}" @if (old('id_brand',$deals['id_brand'])) @if($brand['id_brand'] == old('id_brand',$deals['id_brand'])) selected @endif @endif>{{ $brand['name_brand'] }}</option>
+                                        <option value="{{ $brand['id_brand'] }}" @if ( old('id_brand',($deals['id_brand']??false)) ) @if($brand['id_brand'] == old( 'id_brand',($deals['id_brand']??false) )) selected @endif @endif>{{ $brand['name_brand'] }}</option>
                                     @endforeach
                                 @endif
                                 </select>
@@ -118,12 +118,12 @@
                             </label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="deals_second_title" value="{{ old('deals_second_title')??$deals['deals_second_title'] }}" placeholder="Second Title" maxlength="20">    
+                            <input type="text" class="form-control" name="deals_second_title" value="{{ old('deals_second_title')??$deals['deals_second_title']??'' }}" placeholder="Second Title" maxlength="20" autocomplete="off">    
                         </div>
                     </div>
                     @endif
 
-                    @if ($deals_type != "WelcomeVoucher")
+                    @if ( $deals_type == "Deals" )
                     <div class="form-group">
                         <label class="col-md-3 control-label"> Deals Periode <span class="required" aria-required="true"> * </span> </label>
                         <div class="col-md-4">
@@ -377,8 +377,8 @@
                     </div>
 
                     <div class="form-group" id="total-voucher-form" 
-                    @if( old('deals_voucher_type') == 'Auto generated' )
-                    @elseif( old('deals_voucher_type') != 'Auto generated' || empty($deals['deals_voucher_type']) || ($deals['deals_voucher_type'] != 'Auto generated' && $deals['deals_voucher_type'] != 'Unlimited') )
+                    @if( old('deals_voucher_type') == 'Auto generated' || old('deals_voucher_type') == 'Unlimited' || ($deals['deals_voucher_type']??false) == 'Unlimited' || ($deals['deals_voucher_type']??false) == 'Auto generated' )
+                    @elseif( old('deals_voucher_type') != 'Auto generated' || empty($deals['deals_voucher_type']) || ($deals['deals_voucher_type'] != 'Auto generated') )
                     	style="display: none;" 
                     @endif>
                         <div class="input-icon right">

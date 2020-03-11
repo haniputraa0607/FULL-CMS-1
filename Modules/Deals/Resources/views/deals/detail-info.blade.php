@@ -40,6 +40,7 @@
                                 {{$deals['created_by_user']['level']??''}}
                             </span>
                         </li>
+                        @if($deals_type == 'Deals')
                         <li>
                             <span class="sale-info"> Deals Price
                                 <i class="fa fa-img-up"></i>
@@ -54,6 +55,7 @@
                             	@endif
                             </span>
                         </li>
+                        @endif
                         <li>
                             <span class="sale-info"> Deals Type
                                 <i class="fa fa-img-up"></i>
@@ -74,6 +76,7 @@
                 </div>
             </div>
             <div class="portlet-body">
+            @if($deals_type != 'WelcomeVoucher' && $deals_type != 'Promotion')
                 @if(isset($deals['deals_start']))
                 <div class="row static-info">
                     <div class="col-md-4 name">Start</div>
@@ -96,6 +99,7 @@
                 </div>
                 @endif
                 @endif
+            @endif
                 <div class="row static-info">
                     <div class="col-md-4 name">Created</div>
                     <div class="col-md-8 value">: {{date("d M Y", strtotime($deals['created_at']))}}&nbsp;{{date("H:i", strtotime($deals['created_at']))}}</div>
@@ -139,7 +143,7 @@
                 	</div>
                 </div>
                 
-            @if( ($deals['deals_total_claimed']) == 0 )
+            @if( $deals_type == 'Promotion' || $deals['deals_total_claimed'] == 0 )
             <div class="row static-info text-center">
                 <div class="col-md-11 value">
                     <a class="btn blue" href="{{ url('/'.$rpage)}}/step1/{{$deals['id_deals']}}">Edit Detail</a>
@@ -178,7 +182,7 @@
 	                    </div>
 	                </div>
 
-	                @if( $deals['deals_total_claimed'] == 0 )
+	                @if( $deals_type == 'Promotion' || $deals['deals_total_claimed'] == 0 )
 	                <div class="row static-info">
 	                    <div class="col-md-11 value">
 	                        <a class="btn blue" href="{{ url('/'.$rpage)}}/step2/{{$deals['id_deals']}}">Edit Rule</a>
@@ -189,7 +193,7 @@
 	            <span class="sale-num font-red sbold">
 	                No Deals Rules
 	            </span>
-	            @if( $deals['deals_total_claimed'] == 0 )
+	            @if( $deals_type == 'Promotion' || $deals['deals_total_claimed'] == 0 )
 	            <div class="row static-info">
 	                <div class="col-md-11 value">
 	                    <a class="btn blue" href="{{ url('/'.$rpage)}}/step2/{{$deals['id_deals']}}">Create Rule</a>
@@ -205,7 +209,14 @@
             <div class="portlet-title"> 
             <span class="caption font-blue sbold uppercase">Voucher Online Rules : {{ $deals['promo_type']??'' }}</span>
             </div>
-            @if ( !empty($deals['deals_product_discount_rules']) || !empty($deals['deals_tier_discount_rules']) || !empty($deals['deals_buyxgety_rules']) )
+            @if ( 
+            		!empty($deals['deals_product_discount_rules']) || 
+            		!empty($deals['deals_tier_discount_rules']) || 
+            		!empty($deals['deals_buyxgety_rules']) ||
+            		!empty($deals['deals_promotion_product_discount_rules']) || 
+            		!empty($deals['deals_promotion_tier_discount_rules']) || 
+            		!empty($deals['deals_promotion_buyxgety_rules']) 
+            	)
                 @if (isset($deals['deals_product_discount_rules']) && $deals['deals_product_discount_rules'] != null)
                     <div class="row static-info">
                         <div class="col-md-4 name">Product Requirement</div>
@@ -368,7 +379,7 @@
                                         </div>
                                         @endif
                                     @endif
-                                    @if( $deals['deals_total_claimed'] == 0 )
+                                    @if( $deals_type == 'Promotion' || $deals['deals_total_claimed'] == 0 )
                                     <div class="row static-info">
                                         <div class="col-md-11 value">
                                             <a class="btn blue" href="{{ url('/'.$rpage)}}/step2/{{$deals['id_deals']}}">Edit Rule</a>

@@ -164,7 +164,7 @@
             });
             $('select[name="id_outlet[]"]').html(html);
             $('select[name="id_outlet[]"]').val(selected);
-            if(convertAll&&$('select[name="id_outlet[]"]').val().length==list.length){
+            if( convertAll && $('select[name="id_outlet[]"]').val() != null && $('select[name="id_outlet[]"]').val().length==list.length){
                 $('select[name="id_outlet[]"]').val(['all']);
             }
             oldOutlet=list;
@@ -540,7 +540,7 @@
         </div>
         <div class="portlet-title">
             <div class="caption">
-                <span class="caption-subject font-blue bold uppercase">{{ $deals['deals_title']??'New '.($title??'Deals') }}</span>
+                <span class="caption-subject font-blue bold uppercase">{{ $deals['deals_title']??'New '.( ($title??'Deals') == 'Promotion' ? 'Deals Promotion' : ($title??'Deals') ) }}</span>
             </div>
         </div>
         <div class="portlet-body">
@@ -570,6 +570,7 @@
 				            <input type="hidden" name="id_deals" value="{{ $deals['id_deals']??'' }}">
 				            <input type="hidden" name="slug" value="{{ $deals['slug']??'' }}">
 				            <input type="hidden" name="deals_type" value="{{ $deals['deals_type']??$deals_type??'' }}">
+				            <input type="hidden" name="template" value="{{ $deals['template']??0 }}">
 					    </form>
 					</div>
                 </div>

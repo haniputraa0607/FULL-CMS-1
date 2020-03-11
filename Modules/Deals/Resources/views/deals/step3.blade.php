@@ -555,7 +555,7 @@
 
 				                </div>
 				                <div class="form-actions">
-				                @if( $deals['deals_total_claimed'] == 0 )
+				                @if( $deals_type == 'Promotion' || $deals['deals_total_claimed'] == 0 )
 				                {{ csrf_field() }}
 				                <div class="row">
 				                    <div class="col-md-offset-5 col-md-7">
@@ -570,8 +570,8 @@
 				                </div>
 								@endif
 				            </div>
-				            <input type="hidden" name="id_deals" value="{{ $deals['id_deals'] }}">
-				            <input type="hidden" name="deals_type" value="{{ $deals['deals_type'] }}">
+				            <input type="hidden" name="id_deals" value="{{ $deals['id_deals']??$deals['id_deals_promotion_template'] }}">
+				            <input type="hidden" name="deals_type" value="{{ $deals['deals_type']??$deals_type }}">
 					    </form>
 					</div>
                 </div>

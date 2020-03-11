@@ -4,7 +4,19 @@
 	<div id="selectProduct2" class="form-group" style="width: 100%!important">
 			<label for="multipleProduct2" class="control-label">Product Utama<span class="required" aria-required="true"> * </span>
 			<i class="fa fa-question-circle tooltips" data-original-title="Pilih produk X yang akan menjadi syarat untuk mendapatkan promo </br></br>X : Produk utama </br>Y : Produk benefit" data-container="body" data-html="true"></i></label>
-			<select id="multipleProduct3" name="product" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" data-value="{{ ($result['deals_buyxgety_product_requirement']??false) ? json_encode( ([$result['deals_buyxgety_product_requirement']['id_product']] ?? ([$result['deals_buyxgety_product_requirement'][0]['id_product']]??'') ) ) :''}}" style="width: 100%!important">
+			<select id="multipleProduct3" name="product" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" data-value="{{
+				( $result['deals_buyxgety_product_requirement'] ?? $result['deals_promotion_buyxgety_product_requirement'] ?? false )
+			 	? 
+			 	json_encode(
+		 		([
+	 				$result['deals_buyxgety_product_requirement']['id_product'] ?? 
+	 				$result['deals_promotion_buyxgety_product_requirement']['id_product'] ??
+	 				$result['deals_buyxgety_product_requirement'][0]['id_product'] ??
+	 				$result['deals_promotion_buyxgety_product_requirement'][0]['id_product'] ?? ''
+		 		])
+		 		) 
+			 	:''
+				 }}" style="width: 100%!important">
 			</select>
 		</div>
 	</div>
@@ -124,8 +136,8 @@
 			</div>\
 		</div>\
 	</div>';
-	@if(isset($result['deals_buyxgety_rules']))
-		database2={!!json_encode($result['deals_buyxgety_rules'])!!};
+	@if( isset($result['deals_buyxgety_rules']) || isset($result['deals_promotion_buyxgety_rules']) )
+		database2={!!json_encode($result['deals_buyxgety_rules']??$result['deals_promotion_buyxgety_rules'])!!};
 	@else
 		database2=[];
 	@endif

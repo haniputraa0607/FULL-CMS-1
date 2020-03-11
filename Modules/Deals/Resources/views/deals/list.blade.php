@@ -87,6 +87,7 @@ $grantedFeature     = session('granted_features');
                         target: "tr"
                     }
                 },
+                ordering: false,
                 order: [0, "asc"],
                 lengthMenu: [
                     [5, 10, 15, 20, -1],
@@ -154,8 +155,6 @@ $grantedFeature     = session('granted_features');
             <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_1">
                 <thead>
                     <tr>
-
-                        <th> No</th>
                         <th> Type </th>
                         <th> Title </th>
                         @if(MyHelper::hasAccess([97], $configs))
@@ -184,14 +183,13 @@ $grantedFeature     = session('granted_features');
 	                            }
 	                        @endphp
                             <tr>
-                                <td>{{ $key+1 }}</td>
-                                <td>
+                                <td nowrap>
                                 	<ul>
                                 		@if (!empty($value['is_online']))
-                                			<li>{{'Online'}}</li>
+                                			<li>{{'Online : '.$value['promo_type'] }}</li>
                                 		@endif
                                 		@if (!empty($value['is_offline']))
-                                			<li>{{'Offline'}}</li>
+                                			<li>{{'Offline : '.($value['deals_promo_id_type'] == 'promoid' ? 'Promo Id' : 'Nominal' ).' ('.$value['deals_promo_id'].')' }}</li>
                                 		@endif
                                 	</ul>
                             	</td>
@@ -237,9 +235,9 @@ $grantedFeature     = session('granted_features');
                                 <td class="middle-center">
 	                                @if ( empty($value['step_complete']) )
 	                                    <a href="{{url('deals/step2', $value['id_deals'])??'#'}}"><span class="sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #F4D03F;padding: 5px 12px;color: #fff;">Not Complete</span></a>
-	                                @elseif($date_end < $now)
+	                                @elseif( !empty($date_end) && $date_end < $now )
 	                                    <span class="sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #ACB5C3;padding: 5px 12px;color: #fff;">Ended</span>
-	                                @elseif($date_start <= $now)
+	                                @elseif( empty($date_start) || $date_start <= $now )
 	                                    <span class="sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #26C281;padding: 5px 12px;color: #fff;">Started</span>
 	                                @elseif($date_start > $now)
 	                                    <span class="sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #E7505A;padding: 5px 12px;color: #fff;">Not Started</span>
@@ -258,12 +256,12 @@ $grantedFeature     = session('granted_features');
                                     @if ($deals_type == "Deals" && MyHelper::hasAccess([73], $grantedFeature))
                                     <a href="{{ url('deals/detail') }}/{{ $value['id_deals'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
                                     @elseif ($deals_type == "Point" && MyHelper::hasAccess([73], $grantedFeature))
-                                    <a href="{{ url('deals-point/detail') }}/{{ $value['id_deals'] }}/{{ $value['deals_promo_id'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
+                                    <a href="{{ url('deals-point/detail') }}/{{ $value['id_deals'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
                                     @elseif ($deals_type == "WelcomeVoucher" && MyHelper::hasAccess([180], $grantedFeature))
-                                        <a href="{{ url('welcome-voucher/detail') }}/{{ $value['id_deals'] }}/{{ $value['deals_promo_id'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
+                                        <a href="{{ url('welcome-voucher/detail') }}/{{ $value['id_deals'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
                                     @else
                                         @if(MyHelper::hasAccess([78], $grantedFeature))
-                                            <a href="{{ url('inject-voucher/detail') }}/{{ $value['id_deals'] }}/{{ $value['deals_promo_id'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
+                                            <a href="{{ url('inject-voucher/detail') }}/{{ $value['id_deals'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
                                         @endif
                                     @endif
                                 </td>
