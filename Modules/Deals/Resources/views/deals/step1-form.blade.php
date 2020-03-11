@@ -2,7 +2,7 @@
 	use App\Lib\MyHelper;
     $configs    		= session('configs');
  ?>
-            @if ($deals['deals_type'] != "Point")
+            @if (empty($deals['deals_type']) || $deals['deals_type'] != "Point")
                 <div class="form-body">
                 	@if(MyHelper::hasAccess([99], $configs) && MyHelper::hasAccess([100], $configs))
                 	<div class="form-group">
@@ -21,7 +21,13 @@
                                         checked 
                                     @elseif ( !empty($deals['is_online']) ) 
                                         checked 
-                                    @endif {{ empty($deals['is_online']) && empty($deals['is_offline']) ? 'required' : '' }}> Online
+                                    @endif 
+
+                                    @if (old('is_online') == 1 || old('is_offline') == 1)
+                                    @elseif(empty($deals['is_online']) && empty($deals['is_offline']))
+                                    	required
+                                    @else
+                                    @endif> Online
                                     <span></span>
                                 </label>
                                 <label class="mt-checkbox mt-checkbox-outline" style="margin-bottom: 0px">
@@ -30,18 +36,25 @@
                                         checked 
                                     @elseif ( !empty($deals['is_offline']) ) 
                                         checked 
-                                    @endif {{ empty($deals['is_online']) && empty($deals['is_offline']) ? 'required' : '' }}> Offline
+                                    @endif 
+
+                                    @if (old('is_online') == 1 || old('is_offline') == 1)
+                                    @elseif(empty($deals['is_online']) && empty($deals['is_offline']))
+                                    	required
+                                    @else
+                                    @endif> Offline
                                     <span></span>
                                 </label>
                             </div>
                         </div>
                     </div>
-                    @elseif(MyHelper::hasAccess([97], $configs))
+                    @elseif(MyHelper::hasAccess([99], $configs))
                     <input type="hidden" name="is_offline" value="1">
-                    @elseif(MyHelper::hasAccess([98], $configs))
+                    @elseif(MyHelper::hasAccess([100], $configs))
                     <input type="hidden" name="is_online" value="1">
                     @endif
                     
+                    @if(MyHelper::hasAccess([97], $configs))
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -56,14 +69,15 @@
                                     <option></option>
                                 @if (!empty($brands))
                                     @foreach($brands as $brand)
-                                        <option value="{{ $brand['id_brand'] }}" @if (old('id_brand',$deals['id_brand'])) @if($brand['id_brand'] == old('id_brand',$deals['id_brand'])) selected @endif @endif>{{ $brand['name_brand'] }}</option>
+                                        <option value="{{ $brand['id_brand'] }}" @if ( old('id_brand',($deals['id_brand']??false)) ) @if($brand['id_brand'] == old( 'id_brand',($deals['id_brand']??false) )) selected @endif @endif>{{ $brand['name_brand'] }}</option>
                                     @endforeach
                                 @endif
                                 </select>
                             </div>
                         </div>
                     </div>
-                    
+                    @endif
+
                     <div class="form-group" id="product-type-form" @if( empty($deals['is_online']) ) style="display: none;" @endif>
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -91,10 +105,11 @@
                             </label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="deals_title" value="{{ $deals['deals_title'] }}" placeholder="Title" required maxlength="20">
+                            <input type="text" class="form-control" name="deals_title" value="{{ old('deals_title')??$deals['deals_title']??'' }}" placeholder="Title" required maxlength="45" autocomplete="off">
                         </div>
                     </div>
 
+                    @if(MyHelper::hasAccess([101], $configs))
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -103,16 +118,18 @@
                             </label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="deals_second_title" value="{{ $deals['deals_second_title'] }}" placeholder="Second Title" maxlength="20">
+                            <input type="text" class="form-control" name="deals_second_title" value="{{ old('deals_second_title')??$deals['deals_second_title']??'' }}" placeholder="Second Title" maxlength="20" autocomplete="off">    
                         </div>
                     </div>
+                    @endif
 
+                    @if ( $deals_type == "Deals" )
                     <div class="form-group">
                         <label class="col-md-3 control-label"> Deals Periode <span class="required" aria-required="true"> * </span> </label>
                         <div class="col-md-4">
                             <div class="input-icon right">
                                 <div class="input-group">
-                                    <input type="text" class="form_datetime form-control" name="deals_start" value="{{ date('d-M-Y H:i', strtotime($deals['deals_start'])) }}" required>
+                                    <input type="text" class="form_datetime form-control" name="deals_start" value="{{ !empty($deals['deals_start']) || old('deals_start') ? date('d-M-Y H:i', strtotime(old('deals_start')??$deals['deals_start'])) : ''}}" required autocomplete="off">
                                     <span class="input-group-btn">
                                         <button class="btn default" type="button">
                                             <i class="fa fa-calendar"></i>
@@ -127,7 +144,7 @@
                         <div class="col-md-4">
                             <div class="input-icon right">
                                 <div class="input-group">
-                                    <input type="text" class="form_datetime form-control" name="deals_end" value="{{ date('d-M-Y H:i', strtotime($deals['deals_end'])) }}" required>
+                                    <input type="text" class="form_datetime form-control" name="deals_end" value="{{ !empty($deals['deals_end']) || old('deals_end') ? date('d-M-Y H:i', strtotime(old('deals_end')??$deals['deals_end'])) : ''}}" required autocomplete="off">
                                     <span class="input-group-btn">
                                         <button class="btn default" type="button">
                                             <i class="fa fa-calendar"></i>
@@ -140,14 +157,15 @@
                             </div>
                         </div>
                     </div>
+                    @endif
 
-                    @if ($deals['deals_type'] == "Deals")
+                    @if ($deals_type == "Deals")
                     <div class="form-group">
                         <label class="col-md-3 control-label"> Publish Periode <span class="required" aria-required="true"> * </span> </label>
                         <div class="col-md-4">
                             <div class="input-icon right">
                                 <div class="input-group">
-                                    <input type="text" class="form_datetime form-control" name="deals_publish_start" value="{{ date('d-M-Y H:i', strtotime($deals['deals_publish_start'])) }}" required>
+                                    <input type="text" class="form_datetime form-control" name="deals_publish_start" value="{{ !empty($deals['deals_publish_start']) || old('deals_publish_start') ? date('d-M-Y H:i', strtotime(old('deals_publish_start')??$deals['deals_publish_start'])) : '' }}" required autocomplete="off">
                                     <span class="input-group-btn">
                                         <button class="btn default" type="button">
                                             <i class="fa fa-calendar"></i>
@@ -162,7 +180,7 @@
                         <div class="col-md-4">
                             <div class="input-icon right">
                                 <div class="input-group">
-                                    <input type="text" class="form_datetime form-control" name="deals_publish_end" value="{{ date('d-M-Y H:i', strtotime($deals['deals_publish_end'])) }}" required>
+                                    <input type="text" class="form_datetime form-control" name="deals_publish_end" value="{{ !empty($deals['deals_publish_end']) || old('deals_publish_end') ? date('d-M-Y H:i', strtotime(old('deals_publish_end')??$deals['deals_publish_end'])) : '' }}" required autocomplete="off">
                                     <span class="input-group-btn">
                                         <button class="btn default" type="button">
                                             <i class="fa fa-calendar"></i>
@@ -190,14 +208,14 @@
                         <div class="col-md-9">
                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                 <div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
-                                  <img src="{{ $deals['url_deals_image'] }}" alt="Image Deals">
+                                  <img src="{{ $deals['url_deals_image']??'https://www.placehold.it/500x500/EFEFEF/AAAAAA&amp;text=no+image' }}" alt="Image Deals">
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"></div>
                                 <div>
                                     <span class="btn default btn-file">
                                     <span class="fileinput-new"> Select image </span>
                                     <span class="fileinput-exists"> Change </span>
-                                    <input type="file" accept="image/*" name="deals_image" id="file">
+                                    <input type="file" accept="image/*"  {{ empty($deals['url_deals_image']) ? 'required' : '' }} name="deals_image" id="file">
 
                                     </span>
 
@@ -226,12 +244,32 @@
                             </label>
                         </div>
                         <div class="col-md-9">
-                            <select class="form-control select2-multiple" data-placeholder="Select Outlet" name="id_outlet[]" multiple data-value="{{json_encode($outletselected)}}">
+                            <select class="form-control select2-multiple" data-placeholder="Select Outlet" name="id_outlet[]" multiple data-value="{{json_encode(old('id_outlet')??$outletselected??[])}}" data-all-outlet="{{json_encode($outlets??[])}}">
+                            	@if(!empty($outlets))
+                                    <option value="all">All Outlets</option>
+                                    @foreach($outlets as $row)
+                                        <option value="{{$row['id_outlet']}}">{{$row['outlet_code']}} - {{$row['outlet_name']}}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                     </div>
 
-                    @if ($deals['deals_type'] != "Hidden")
+                    <div class="form-group">
+                        <div class="input-icon right">
+                            <label class="col-md-3 control-label">
+                            Custom Outlet Available Text
+                            <i class="fa fa-question-circle tooltips" data-original-title="Teks yang akan ditampilkan untuk mengganti daftar outlet untuk penukaran. Kosongkan bila ingin menampilkan daftar outlet saja." data-container="body"></i>
+                            </label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-icon right">
+                                <textarea name="custom_outlet_text" id="field_tos" class="form-control summernote" placeholder="Custom Outlet Available Text">{{ old('custom_outlet_text') }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if ( $deals_type == "Deals" )
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -243,7 +281,10 @@
                         <div class="col-md-3">
                             <div class="md-radio-inline">
                                 <div class="md-radio">
-                                    <input type="radio" name="prices_by" id="radio6" value="free" class="prices md-radiobtn" required @if (empty($deals['deals_voucher_price_point']) && empty($deals['deals_voucher_price_cash'])) checked @endif>
+                                    <input type="radio" name="prices_by" id="radio6" value="free" class="prices md-radiobtn" required 
+                                    	@if (old('prices_by') == "free") checked 
+                                    	@elseif (isset($deals['id_deals']) && empty($deals['deals_voucher_price_point']) && empty($deals['deals_voucher_price_cash'])) checked 
+                                    	@endif>
                                     <label for="radio6">
                                         <span></span>
                                         <span class="check"></span>
@@ -254,7 +295,10 @@
                         <div class="col-md-3">
                             <div class="md-radio-inline">
                                 <div class="md-radio">
-                                    <input type="radio" name="prices_by" id="radio7" value="point" class="prices md-radiobtn" required @if (!empty($deals['deals_voucher_price_point'])) checked @endif>
+                                    <input type="radio" name="prices_by" id="radio7" value="point" class="prices md-radiobtn" required 
+                                    	@if (old('prices_by') == "point") checked
+                                    	@elseif (!empty($deals['deals_voucher_price_point'])) checked 
+                                    	@endif>
                                     <label for="radio7">
                                         <span></span>
                                         <span class="check"></span>
@@ -265,7 +309,10 @@
                         <div class="col-md-3">
                             <div class="md-radio-inline">
                                 <div class="md-radio">
-                                    <input type="radio" name="prices_by" id="radio8" value="money" class="prices md-radiobtn" required @if (!empty($deals['deals_voucher_price_cash'])) checked @endif>
+                                    <input type="radio" name="prices_by" id="radio8" value="money" class="prices md-radiobtn" required 
+                                    	@if (old('prices_by') == "money") checked
+                                    	@elseif (!empty($deals['deals_voucher_price_cash'])) checked 
+                                    	@endif>
                                     <label for="radio8">
                                         <span></span>
                                         <span class="check"></span>
@@ -275,17 +322,17 @@
                         </div>
                     </div>
 
-                    <div class="form-group" id="prices" @if (empty($deals['deals_voucher_price_point']) && empty($deals['deals_voucher_price_cash'])) style="display: none;" @endif>
+                    <div class="form-group" id="prices" @if (old('prices_by')!='free' || (empty($deals['deals_voucher_price_point']) && empty($deals['deals_voucher_price_cash']))) style="display: none;" @endif>
                         <label class="col-md-3 control-label"></label>
                         <div class="col-md-9">
                             <div class="col-md-3">
                                 <label class="control-label">Values <span class="required" aria-required="true"> * </span> </label>
                             </div>
-                            <div class="col-md-9 payment" id="point" @if (empty($deals['deals_voucher_price_point'])) style="display: none;" @endif>
-                                <input type="text" class="form-control point moneyOpp freeOpp" name="deals_voucher_price_point" value="{{ $deals['deals_voucher_price_point'] }}" placeholder="Input point values">
+                            <div class="col-md-9 payment" id="point" @if (old('prices_by') != "point" || empty($deals['deals_voucher_price_point'])) style="display: none;" @endif>
+                                <input type="text" class="form-control point moneyOpp freeOpp" name="deals_voucher_price_point" value="{{ $deals['deals_voucher_price_point']??'' }}" placeholder="Input point values" autocomplete="off">
                             </div>
-                            <div class="col-md-9 payment" id="money" @if (empty($deals['deals_voucher_price_cash'])) style="display: none;" @endif>
-                                <input type="text" class="form-control money pointOpp freeOpp price" name="deals_voucher_price_cash" value="{{ $deals['deals_voucher_price_cash'] }}" placeholder="Input money values">
+                            <div class="col-md-9 payment" id="money" @if (old('prices_by') != "money" || empty($deals['deals_voucher_price_cash'])) style="display: none;" @endif>
+                                <input type="text" class="form-control money pointOpp freeOpp price" name="deals_voucher_price_cash" value="{{ $deals['deals_voucher_price_cash']??'' }}" placeholder="Input money values" autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -304,7 +351,9 @@
                                 <div class="col-md-3">
                                     <div class="md-radio-inline">
                                         <div class="md-radio">
-                                            <input type="radio" name="deals_voucher_type" id="radio1" value="Auto generated" class="voucherType" @if ($deals['deals_voucher_type'] == "Auto generated" || $deals['deals_voucher_type'] == "Unlimited") checked @endif>
+                                            <input type="radio" name="deals_voucher_type" id="radio1" value="Auto generated" class="voucherType" 
+                                            	@if ( old('deals_voucher_type') == 'Auto generated' || (!empty($deals['deals_voucher_type']) && ($deals['deals_voucher_type'] == "Auto generated" || $deals['deals_voucher_type'] == "Unlimited")) ) checked 
+                                            	@endif>
                                             <label for="radio1">
                                                 <span></span>
                                                 <span class="check"></span>
@@ -312,11 +361,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if($deals['deals_type']=='Deals')
                                 <div class="col-md-3">
                                     <div class="md-radio-inline">
                                         <div class="md-radio">
-                                            <input type="radio" name="deals_voucher_type" id="radio2" value="List Vouchers" class="voucherType" @if ($deals['deals_voucher_type'] == "List Vouchers") checked @endif required>
+                                            <input type="radio" name="deals_voucher_type" id="radio2" value="List Vouchers" class="voucherType" @if ( old('deals_voucher_type') == 'List Vouchers' || ($deals['deals_voucher_type']??false) == "List Vouchers") checked @endif required>
                                             <label for="radio2">
                                                 <span></span>
                                                 <span class="check"></span>
@@ -324,13 +372,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                @endif
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group" id="total-voucher-form" 
-                    @if($deals['deals_voucher_type'] != 'Auto generated' && $deals['deals_voucher_type'] != 'Unlimited')
+                    @if( old('deals_voucher_type') == 'Auto generated' || old('deals_voucher_type') == 'Unlimited' || ($deals['deals_voucher_type']??false) == 'Unlimited' || ($deals['deals_voucher_type']??false) == 'Auto generated' )
+                    @elseif( old('deals_voucher_type') != 'Auto generated' || empty($deals['deals_voucher_type']) || ($deals['deals_voucher_type'] != 'Auto generated') )
                     	style="display: none;" 
                     @endif>
                         <div class="input-icon right">
@@ -345,7 +393,7 @@
                                 <div class="col-md-3">
                                     <div class="md-radio-inline">
                                         <div class="md-radio">
-                                            <input type="radio" name="total_voucher_type" id="radio-total-limited" value="Auto generated" class="voucherType" @if ($deals['deals_voucher_type'] == "Auto generated") checked @endif>
+                                            <input type="radio" name="total_voucher_type" id="radio-total-limited" value="Auto generated" class="voucherType" @if ( old('total_voucher_type') == 'Auto generated' || ($deals['deals_voucher_type']??false) == "Auto generated") checked @endif>
                                             <label for="radio-total-limited">
                                                 <span></span>
                                                 <span class="check"></span>
@@ -357,7 +405,7 @@
                                 <div class="col-md-3">
                                     <div class="md-radio-inline">
                                         <div class="md-radio">
-                                            <input type="radio" name="total_voucher_type" id="radio-total-unlimited" value="Unlimited" class="voucherType" @if ($deals['deals_voucher_type'] == "Unlimited") checked @endif required>
+                                            <input type="radio" name="total_voucher_type" id="radio-total-unlimited" value="Unlimited" class="voucherType" @if ( old('total_voucher_type') == 'Unlimited' || ($deals['deals_voucher_type']??false) == "Unlimited") checked @endif required>
                                             <label for="radio-total-unlimited">
                                                 <span></span>
                                                 <span class="check"></span>
@@ -379,7 +427,11 @@
                     </div>
                     @endif
  --}}
-					<div class="form-group" id="listVoucher" @if (old('voucher_code')||old('deals_voucher_type',$deals['deals_voucher_type']) == "List Vouchers") style="display: block;" @else style="display: none;" @endif>
+					<div class="form-group" id="listVoucher" 
+						@if (old('voucher_code')||old('deals_voucher_type',($deals['deals_voucher_type']??false)) == "List Vouchers") style="display: block;" 
+						@else 
+							style="display: none;" 
+						@endif>
                         <label class="col-md-3 control-label"></label>
                         <div class="col-md-9">
                             <div class="col-md-3">
@@ -394,14 +446,14 @@
                         </div>
                     </div>
 
-                    <div class="form-group" id="generateVoucher" @if (!(old('voucher_code')||old('deals_voucher_type',$deals['deals_voucher_type']) == "List Vouchers")&&old('deals_total_voucher',$deals['deals_total_voucher'])) style="display: block;" @else style="display: none;" @endif>
+                    <div class="form-group" id="generateVoucher" @if (!(old('voucher_code')||old('deals_voucher_type',($deals['deals_voucher_type']??false)) == "List Vouchers")&&old('deals_total_voucher',($deals['deals_total_voucher']??false))) style="display: block;" @else style="display: none;" @endif>
                         <label class="col-md-3 control-label"></label>
                         <div class="col-md-9">
                             <div class="col-md-3">
                                 <label class="control-label">Total Voucher <span class="required" aria-required="true"> * </span> </label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" class="form-control generateVoucher" name="deals_total_voucher" value="{{ old('deals_total_voucher',$deals['deals_total_voucher']) }}" min="$deals['deals_total_voucher']??0" placeholder="Total Voucher">
+                                <input type="text" class="form-control generateVoucher digit-mask" name="deals_total_voucher" value="{{ old('deals_total_voucher',($deals['deals_total_voucher']??false)) }}" min="0" placeholder="Total Voucher" autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -417,7 +469,7 @@
                         <div class="col-md-4">
                             <div class="input-icon right">
                                 <div class="input-group">
-                                    <input type="text" class="form_datetime form-control" name="deals_voucher_start" value="{{ ($start_date=old('deals_voucher_start',$deals['deals_voucher_start']))?date('d-M-Y H:i',strtotime($start_date)):'' }}" >
+                                    <input type="text" class="form_datetime form-control" name="deals_voucher_start" value="{{ ($start_date=old('deals_voucher_start',($deals['deals_voucher_start']??false)))?date('d-M-Y H:i',strtotime($start_date)):'' }}" autocomplete="off">
                                     <span class="input-group-btn">
                                         <button class="btn default" type="button">
                                             <i class="fa fa-calendar"></i>
@@ -442,7 +494,7 @@
                         <div class="col-md-3">
                             <div class="md-radio-inline">
                                 <div class="md-radio">
-                                    <input type="radio" name="duration" id="radio9" value="dates" class="expiry md-radiobtn" required @if (!empty($deals['deals_voucher_expired'])) checked @endif>
+                                    <input type="radio" name="duration" id="radio9" value="dates" class="expiry md-radiobtn" required @if (old('duration') == "dates" || !empty($deals['deals_voucher_expired'])) checked @endif>
                                     <label for="radio9">
                                         <span></span>
                                         <span class="check"></span>
@@ -453,7 +505,7 @@
                         <div class="col-md-3">
                             <div class="md-radio-inline">
                                 <div class="md-radio">
-                                    <input type="radio" name="duration" id="radio10" value="duration" class="expiry md-radiobtn" required @if (!empty($deals['deals_voucher_duration'])) checked @endif>
+                                    <input type="radio" name="duration" id="radio10" value="duration" class="expiry md-radiobtn" required @if (old('duration') == "duration" || !empty($deals['deals_voucher_duration'])) checked @endif>
                                     <label for="radio10">
                                         <span></span>
                                         <span class="check"></span>
@@ -463,15 +515,19 @@
                         </div>
                     </div>
 
-                    <div class="form-group" id="times" >
+                    <div class="form-group" id="times" @if (old('duration') || (!empty($deals['deals_voucher_expired']) && !empty($deals['deals_voucher_duration'])) ) style="display: block;" @else style="display: none;" @endif>
                         <label class="col-md-3 control-label"></label>
                         <div class="col-md-9">
                             <div class="col-md-3">
                                 <label class="control-label">Expiry <span class="required" aria-required="true"> * </span> </label>
                             </div>
-                            <div class="col-md-9 voucherTime" id="dates"  @if (empty($deals['deals_voucher_expired'])) style="display: none;" @endif>
+                            <div class="col-md-9 voucherTime" id="dates"  
+                            	@if (old('duration') == "dates") style="display: block;" 
+                            	@elseif (empty($deals['deals_voucher_expired'])) style="display: none;" 
+                            	@else style="display: none;" 
+                            	@endif>
                                 <div class="input-group">
-                                    <input type="text" class="form_datetime form-control dates durationOpp" name="deals_voucher_expired" @if (!empty($deals['deals_voucher_expired'])) value="{{ date('d-M-Y H:i', strtotime($deals['deals_voucher_expired'])) }}" @endif>
+                                    <input type="text" class="form_datetime form-control dates durationOpp" name="deals_voucher_expired" @if (old('deals_voucher_expired') || !empty($deals['deals_voucher_expired'])) value="{{ date('d-M-Y H:i', strtotime(old('deals_voucher_expired')??$deals['deals_voucher_expired'])) }}" @endif autocomplete="off">
                                     <span class="input-group-btn">
                                         <button class="btn default" type="button">
                                             <i class="fa fa-calendar"></i>
@@ -479,9 +535,13 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-md-9 voucherTime" id="duration" @if (empty($deals['deals_voucher_duration'])) style="display: none;" @endif>
+                            <div class="col-md-9 voucherTime" id="duration" 
+                            	@if (old('duration') == "duration") style="display: block;" 
+                            	@elseif (empty($deals['deals_voucher_duration'])) style="display: none;" 
+                            	@else style="display: none;" 
+                            	@endif>
                                 <div class="input-group">
-                                    <input type="number" min="1" class="form-control duration datesOpp" name="deals_voucher_duration" value="{{ $deals['deals_voucher_duration'] }}">
+                                    <input type="text" min="1" class="form-control duration datesOpp digit-mask" name="deals_voucher_duration" value="{{ old('deals_voucher_duration')??$deals['deals_voucher_duration']??'' }}" autocomplete="off">
                                     <span class="input-group-addon">
                                         day after claimed
                                     </span>
@@ -502,7 +562,7 @@
 
                         <div class="col-md-4">
                             <div class="input-icon right">
-                                <input type="number" class="form-control" min="0" name="user_limit" value="{{ $deals['user_limit'] }}" placeholder="User limit" maxlength="30">
+                                <input type="text" class="form-control digit-mask" min="0" name="user_limit" value="{{ old('user_limit')??$deals['user_limit']??'' }}" placeholder="User limit" maxlength="30" autocomplete="off">
                             </div>
                         </div>
                     </div>

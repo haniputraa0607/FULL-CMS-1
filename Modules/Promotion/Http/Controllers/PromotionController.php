@@ -422,10 +422,15 @@ class PromotionController extends Controller
             'submenu_active' => 'deals-promotion',
         ];
 
-        $deals = MyHelper::get('promotion/deals');
+return        $deals = MyHelper::get('promotion/deals');
 
         if (isset($deals['status']) && $deals['status'] == "success") {
             $data['deals'] = $deals['result'];
+	        if (!empty($data['deals'])) {
+	        	foreach ($data['deals'] as $key => $value) {
+	        		$data['deals'][$key]['id_deals_promotion_template'] = MyHelper::createSlug($value['id_deals_promotion_template'], $value['created_at']);
+	        	}
+	        }
         }
         else {
             $data['deals'] = [];
@@ -441,7 +446,7 @@ class PromotionController extends Controller
             'menu_active'    => 'promotion',
             'submenu_active' => 'new-deals-promotion',
 		];
-
+		$data['deals_type'] = 'Promotion';
 		$post = $request->except('_token');
 		if($post){
 			if (isset($post['deals_image'])) {
@@ -467,9 +472,9 @@ class PromotionController extends Controller
 		}
 
 		$getOutlet = MyHelper::get('outlet/be/list');
-		if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlet'] = $getOutlet['result']; else $data['outlet'] = null;
+		if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = null;
 
-
+        return view('deals::deals.step1', $data);
         return view('promotion::deals.create', $data);
 	}
 

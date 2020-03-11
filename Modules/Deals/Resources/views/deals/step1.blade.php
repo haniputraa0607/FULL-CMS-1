@@ -30,6 +30,7 @@
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')}}"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js') }}" type="text/javascript"></script>
+    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/scripts/jquery.inputmask.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('js/prices.js')}}"></script>
 
 <!--     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/clockface/js/clockface.js') }}" type="text/javascript"></script>
@@ -150,6 +151,9 @@
 
     <script type="text/javascript">
         var oldOutlet=[];
+        var value=$('select[name="id_outlet[]"]').val();
+        var convertAll=false;
+
         function redrawOutlets(list,selected,convertAll){
             var html="";
             if(list.length){
@@ -160,13 +164,24 @@
             });
             $('select[name="id_outlet[]"]').html(html);
             $('select[name="id_outlet[]"]').val(selected);
-            if(convertAll&&$('select[name="id_outlet[]"]').val().length==list.length){
+            if( convertAll && $('select[name="id_outlet[]"]').val() != null && $('select[name="id_outlet[]"]').val().length==list.length){
                 $('select[name="id_outlet[]"]').val(['all']);
             }
             oldOutlet=list;
         }
+
         $(document).ready(function() {
             token = '<?php echo csrf_token();?>';
+
+            $('.digit-mask').inputmask({
+				removeMaskOnSubmit: true, 
+				placeholder: "",
+				alias: "currency", 
+				digits: 0, 
+				rightAlign: false,
+				min: 0,
+				max: '999999999'
+			});
 
             $('#is_online, #is_offline').on('change', function(){
             	var is_online = $('#is_online').is(":checked");
@@ -193,6 +208,7 @@
                 if (nilai == "List Vouchers") {
 
                 	$('input[name=total_voucher_type]:checked').prop('checked', false);
+                	$('input[name=total_voucher_type]').prop('required', false);
                 	$('input[name=deals_total_voucher]').val('');
 
                     $('#listVoucher').show();
@@ -207,6 +223,7 @@
                 else if (nilai == "Auto generated"){
                     $('#total-voucher-form').show();
                     
+                	$('input[name=total_voucher_type]').prop('required', true);
                     $('#listVoucher').hide();
                     $('.listVoucher').removeAttr('required');
                     $('.listVoucher').prop('disabled', true);
@@ -459,6 +476,17 @@
                 });
             });
             $('select[name="id_brand"]').change();
+
+            if($('select[name="id_outlet[]"]').data('value')){
+	            var value=$('select[name="id_outlet[]"]').val();
+	            var convertAll=false;
+	            if($('select[name="id_outlet[]"]').data('value')){
+	                value=$('select[name="id_outlet[]"]').data('value');
+	                $('select[name="id_outlet[]"]').data('value',false);
+	                convertAll=true;
+	            }
+	            redrawOutlets($('select[name="id_outlet[]"]').data('all-outlet'),value,convertAll);
+	        }
         });
     </script>
 @endsection
@@ -512,7 +540,7 @@
         </div>
         <div class="portlet-title">
             <div class="caption">
-                <span class="caption-subject font-blue bold uppercase">{{ $deals['deals_title'] }}</span>
+                <span class="caption-subject font-blue bold uppercase">{{ $deals['deals_title']??'New '.( ($title??'Deals') == 'Promotion' ? 'Deals Promotion' : ($title??'Deals') ) }}</span>
             </div>
         </div>
         <div class="portlet-body">
@@ -523,7 +551,7 @@
 					    <form id="form" class="form-horizontal" role="form" action=" @if($deals_type == "Deals") {{ url('deals/update') }} @else {{ url('inject-voucher/update') }} @endif" method="post" enctype="multipart/form-data">
                 				@include('deals::deals.step1-form')
 				                <div class="form-actions">
-				                @if($deals['deals_total_claimed'] == 0)
+				                @if(empty($deals['deals_total_claimed']) || $deals['deals_total_claimed'] == 0)
 				                {{ csrf_field() }}
 				                <div class="row">
 				                    <div class="col-md-offset-3 col-md-9">
@@ -539,9 +567,10 @@
 				                </div>
 				                @endif
 				            </div>
-				            <input type="hidden" name="id_deals" value="{{ $deals['id_deals'] }}">
-				            <input type="hidden" name="slug" value="{{ $deals['slug'] }}">
-				            <input type="hidden" name="deals_type" value="{{ $deals['deals_type'] }}">
+				            <input type="hidden" name="id_deals" value="{{ $deals['id_deals']??'' }}">
+				            <input type="hidden" name="slug" value="{{ $deals['slug']??'' }}">
+				            <input type="hidden" name="deals_type" value="{{ $deals['deals_type']??$deals_type??'' }}">
+				            <input type="hidden" name="template" value="{{ $deals['template']??0 }}">
 					    </form>
 					</div>
                 </div>

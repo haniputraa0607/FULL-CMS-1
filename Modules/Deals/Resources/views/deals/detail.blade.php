@@ -1,6 +1,16 @@
+@php
+	if($deals_type == 'Promotion'){
+        $rpage = 'promotion/deals';
+	}elseif($deals_type == 'WelcomeVoucher'){
+        $rpage = 'welcome-voucher';
+    }else{
+        $rpage = $deals_type=='Deals'?'deals':'inject-voucher';
+    }
+@endphp
 @extends('layouts.main-closed')
 @include('deals::deals.detail-info')
 @include('deals::deals.detail-info-content')
+@include('deals::deals.participate')
 @section('page-style')
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/datemultiselect/jquery-ui.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/datemultiselect/jquery-ui.multidatespicker.css') }}" rel="stylesheet" type="text/css" />
@@ -536,6 +546,7 @@
 	@yield('child-script')
 	@yield('child-script2')
 	@yield('detail-script')
+	@yield('participate-script')
 @endsection
 
 @section('content')
@@ -561,6 +572,7 @@
 
     @include('layouts.notifications')
 
+@if($deals_type != 'Promotion')
     <div class="row">
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <a class="dashboard-stat dashboard-stat-v2 blue">
@@ -615,7 +627,7 @@
             </a>
         </div>
     </div>
-
+@endif
     <div class="portlet light bordered">
         <div class="portlet-title tabbable-line">
             <div class="caption">
@@ -673,7 +685,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($deals['outlets'] as $res)
+                                        @foreach(($promotion_outlets??$deals['outlets']) as $res)
                                             <tr>
                                                 <td>{{ $res['outlet_code'] }}</td>
                                                 <td>{{ $res['outlet_name'] }}</td>
@@ -689,12 +701,14 @@
                         </div>
                     </div>
                 </div>
+                @if($deals_type != 'Promotion')
                 <div class="tab-pane" id="voucher">
                     @include('deals::deals.voucher')
                 </div>
                 <div class="tab-pane" id="participate">
-                    @include('deals::deals.participate')
+                    @yield('detail-participate')
                 </div>
+                @endif
             </div>
         </div>
     </div>
@@ -709,6 +723,7 @@
                 <form action="{{url('deals/update-complete')}}" method="post">
                 	@csrf
                 	<input type="hidden" name="id_deals" value="{{$deals['id_deals']}}">
+                	<input type="hidden" name="deals_type" value="{{$deals['deals_type']??$deals_type}}">
 	                <div class="modal-footer">
 	                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button>
 	                    <button type="submit" class="btn green">Confirm</button>

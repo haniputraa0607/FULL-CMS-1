@@ -14,12 +14,14 @@
                             </span>
                             @if( empty($deals['step_complete']) )
                                 <span class="sale-num sbold badge badge-pill" style="font-size: 20px!important;height: 30px!important;background-color: #F4D03F;padding: 5px 12px;color: #fff;">Not Complete</span>
-                            @elseif(strtotime($deals['deals_end']) < strtotime($datenow))
+                            @elseif(!empty($deals['deals_end']) && strtotime($deals['deals_end']) < strtotime($datenow))
                                 <span class="sale-num sbold badge badge-pill" style="font-size: 20px!important;height: 30px!important;background-color: #ACB5C3;padding: 5px 12px;color: #fff;">Ended</span>
-                            @elseif(strtotime($deals['deals_start']) <= strtotime($datenow))
+                            @elseif(!empty($deals['deals_start']) && strtotime($deals['deals_start']) <= strtotime($datenow))
                                 <span class="sale-num sbold badge badge-pill" style="font-size: 20px!important;height: 30px!important;background-color: #26C281;padding: 5px 12px;color: #fff;">Started</span>
-                            @elseif(strtotime($deals['deals_start']) > strtotime($datenow))
+                            @elseif(!empty($deals['deals_start']) && strtotime($deals['deals_start']) > strtotime($datenow))
                                 <span class="sale-num sbold badge badge-pill" style="font-size: 20px!important;height: 30px!important;background-color: #E7505A;padding: 5px 12px;color: #fff;">Not Started</span>
+                            @else
+                                <span class="sale-num sbold badge badge-pill" style="font-size: 20px!important;height: 30px!important;background-color: #26C281;padding: 5px 12px;color: #fff;">Started</span>
                             @endif
                         </li>
                         <li>
@@ -38,6 +40,7 @@
                                 {{$deals['created_by_user']['level']??''}}
                             </span>
                         </li>
+                        @if($deals_type == 'Deals')
                         <li>
                             <span class="sale-info"> Deals Price
                                 <i class="fa fa-img-up"></i>
@@ -52,6 +55,7 @@
                             	@endif
                             </span>
                         </li>
+                        @endif
                         <li>
                             <span class="sale-info"> Deals Type
                                 <i class="fa fa-img-up"></i>
@@ -72,6 +76,7 @@
                 </div>
             </div>
             <div class="portlet-body">
+            @if($deals_type != 'WelcomeVoucher' && $deals_type != 'Promotion')
                 @if(isset($deals['deals_start']))
                 <div class="row static-info">
                     <div class="col-md-4 name">Start</div>
@@ -82,6 +87,7 @@
                     <div class="col-md-8 value">: {{date("d M Y", strtotime($deals['deals_end']))}}&nbsp;{{date("H:i", strtotime($deals['deals_end']))}}</div>
                 </div>
                 @endif
+                @if($deals_type != 'Hidden')
                 @if(isset($deals['deals_end']))
                 <div class="row static-info">
                     <div class="col-md-4 name">Publish Start</div>
@@ -92,6 +98,8 @@
                     <div class="col-md-8 value">: {{date("d M Y", strtotime($deals['deals_publish_end']))}}&nbsp;{{date("H:i", strtotime($deals['deals_publish_end']))}}</div>
                 </div>
                 @endif
+                @endif
+            @endif
                 <div class="row static-info">
                     <div class="col-md-4 name">Created</div>
                     <div class="col-md-8 value">: {{date("d M Y", strtotime($deals['created_at']))}}&nbsp;{{date("H:i", strtotime($deals['created_at']))}}</div>
@@ -122,29 +130,23 @@
                 </div>
                 <div class="row static-info">
                     <div class="col-md-4 name">Image</div>
-                    <div class="col-md-8 value">: </div>
-                </div>
-                <div class="row static-info text-center">
-                    <div class="col-md-12 name">
-                    	<img src="{{ env('AWS_URL').$deals['deals_image'] }}" style="width: 200px">
+                    <div class="col-md-8 value">
+                    	<span style="float: left;margin-right: 5px">:</span> 
+                    	<div><img src="{{ env('S3_URL_api').$deals['deals_image'] }}" style="width: 100px"></div>
                     </div>
                 </div>
                 <div class="row static-info">
                     <div class="col-md-4 name">Warning Image</div>
-                    <div class="col-md-8 value">: {{ empty($deals['deals_warning_image']) ? 'Use Global' : '' }}</div>
+                    <div class="col-md-8 value">
+                    	<span style="float: left;margin-right: 5px">:</span> 
+                    	<div>@if(empty($deals['deals_warning_image'])) Use Global @else <img src="{{ env('S3_URL_api').$deals['deals_warning_image'] }}" style="width: 100px">@endif</div>
+                	</div>
                 </div>
-                @if (!empty($deals['deals_warning_image']))
-	                <div class="row static-info text-center">
-	                    <div class="col-md-12 name">
-	                    	<img src="{{ env('AWS_URL').$deals['deals_warning_image'] }}" style="width: 100px">
-	                    </div>
-	                </div>
-                @endif
                 
-            @if( ($deals['deals_total_claimed']) == 0 )
+            @if( $deals_type == 'Promotion' || $deals['deals_total_claimed'] == 0 )
             <div class="row static-info text-center">
                 <div class="col-md-11 value">
-                    <a class="btn blue" href="{{ url('/')}}/deals/step1/{{$deals['id_deals']}}">Edit Detail</a>
+                    <a class="btn blue" href="{{ url('/'.$rpage)}}/step1/{{$deals['id_deals']}}">Edit Detail</a>
                 </div>
             </div>
             @endif
@@ -169,14 +171,21 @@
 	                    	@endif
 	                    </div>
 	                    <div class="col-md-8 value">: 
-	                        {{ number_format($deals['deals_promo_id']??'') }}
+	                    	@if (isset($deals['deals_promo_id']))
+	                    		@if (is_integer($deals['deals_promo_id']))
+	                    			{{ number_format($deals['deals_promo_id']) }}
+	                    		@else
+	                    			{{ $deals['deals_promo_id'] }}
+	                    		@endif
+	                    		{{-- expr --}}
+	                    	@endif
 	                    </div>
 	                </div>
 
-	                @if( $deals['deals_total_claimed'] == 0 )
+	                @if( $deals_type == 'Promotion' || $deals['deals_total_claimed'] == 0 )
 	                <div class="row static-info">
 	                    <div class="col-md-11 value">
-	                        <a class="btn blue" href="{{ url('/')}}/deals/step2/{{$deals['id_deals']}}">Edit Rule</a>
+	                        <a class="btn blue" href="{{ url('/'.$rpage)}}/step2/{{$deals['id_deals']}}">Edit Rule</a>
 	                    </div>
 	                </div>
 	                @endif
@@ -184,10 +193,10 @@
 	            <span class="sale-num font-red sbold">
 	                No Deals Rules
 	            </span>
-	            @if( $deals['deals_total_claimed'] == 0 )
+	            @if( $deals_type == 'Promotion' || $deals['deals_total_claimed'] == 0 )
 	            <div class="row static-info">
 	                <div class="col-md-11 value">
-	                    <a class="btn blue" href="{{ url('/')}}/deals/step2/{{$deals['id_deals']}}">Create Rule</a>
+	                    <a class="btn blue" href="{{ url('/'.$rpage)}}/step2/{{$deals['id_deals']}}">Create Rule</a>
 	                </div>
 	            </div>
 	            @endif
@@ -200,7 +209,14 @@
             <div class="portlet-title"> 
             <span class="caption font-blue sbold uppercase">Voucher Online Rules : {{ $deals['promo_type']??'' }}</span>
             </div>
-            @if ( !empty($deals['deals_product_discount_rules']) || !empty($deals['deals_tier_discount_rules']) || !empty($deals['deals_buyxgety_rules']) )
+            @if ( 
+            		!empty($deals['deals_product_discount_rules']) || 
+            		!empty($deals['deals_tier_discount_rules']) || 
+            		!empty($deals['deals_buyxgety_rules']) ||
+            		!empty($deals['deals_promotion_product_discount_rules']) || 
+            		!empty($deals['deals_promotion_tier_discount_rules']) || 
+            		!empty($deals['deals_promotion_buyxgety_rules']) 
+            	)
                 @if (isset($deals['deals_product_discount_rules']) && $deals['deals_product_discount_rules'] != null)
                     <div class="row static-info">
                         <div class="col-md-4 name">Product Requirement</div>
@@ -253,7 +269,7 @@
                                     <tbody>
                                         @foreach($deals['deals_product_discount'] as $res)
                                             <tr>
-                                                <td>{{ $res['product']['product_code']??$res['product_group']['product_group_code'] }}</td>
+                                                <td>{{ $res['product']['product_code']??$res['product_group']['product_group_code']??'' }}</td>
                                                 <td>
                                                 @if (!empty($res['product_group']))
                                                 	<a href="{{ url('product-variant/group/'.($res['product_group']['id_product_group']??'')) }}">{{ $res['product_group']['product_group_name']??'' }}</a>
@@ -336,13 +352,13 @@
                                     @elseif( ($res['discount_type']??false) == 'percent' )
                                     	@if( ($res['discount_value']??false) == 100 )
                                     		Free
-                                    	@else
-                                                        		{{ ($res['discount_value']??false).'% (Max : IDR '.number_format($res['max_percent_discount']).')' }}
-                                                        	@endif
-                                                        @endif
-                                                        </td>
-                                                        <td>
-                                                        {{ ( ($res['discount_percent']??'') == 100) ? 'Free' : ( ($res['discount_percent']??false) ? $res['discount_percent'].' % (Max : IDR '.number_format($res['max_percent_discount']).')' : (($res['discount_nominal']??false) ? 'IDR '.number_format($res['discount_nominal']) : '' ) ) }}</td>
+                                		@else
+                                    		{{ ($res['discount_value']??false).'% (Max : IDR '.number_format($res['max_percent_discount']).')' }}
+                                    	@endif
+                                    @endif
+	                                    </td>
+	                                    <td>
+	                                    {{ ( ($res['discount_percent']??'') == 100) ? 'Free' : ( ($res['discount_percent']??false) ? $res['discount_percent'].' % (Max : IDR '.number_format($res['max_percent_discount']).')' : (($res['discount_nominal']??false) ? 'IDR '.number_format($res['discount_nominal']) : '' ) ) }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -363,10 +379,10 @@
                                         </div>
                                         @endif
                                     @endif
-                                    @if( $deals['deals_total_claimed'] == 0 )
+                                    @if( $deals_type == 'Promotion' || $deals['deals_total_claimed'] == 0 )
                                     <div class="row static-info">
                                         <div class="col-md-11 value">
-                                            <a class="btn blue" href="{{ url('/')}}/deals/step2/{{$deals['id_deals']}}">Edit Rule</a>
+                                            <a class="btn blue" href="{{ url('/'.$rpage)}}/step2/{{$deals['id_deals']}}">Edit Rule</a>
                                         </div>
                                     </div>
                                     @endif
@@ -376,7 +392,7 @@
             </span>
             <div class="row static-info">
                 <div class="col-md-11 value">
-                    <a class="btn blue" href="{{ url('/')}}/deals/step2/{{$deals['id_deals']}}">Create Rule</a>
+                    <a class="btn blue" href="{{ url('/'.$rpage)}}/step2/{{$deals['id_deals']}}">Create Rule</a>
                 </div>
             </div>
             @endif

@@ -1,4 +1,6 @@
-@if ($deals['deals_type'] == "Hidden")
+@include('deals::deals.participate_filter')
+@section('detail-participate')
+@if ($deals_type != 'Promotion' && $deals['deals_type'] == "Hidden" && $deals['step_complete'] == 1)
     <div class="portlet light bordered">
         <div class="portlet-title">
             <div class="caption">
@@ -77,7 +79,7 @@
 <hr>
 @endif
 <div class="portlet-body form">
-    
+	@yield('filter')
     <div class="portlet light bordered">
         <div class="portlet-title">
             <div class="caption">
@@ -143,3 +145,4 @@
         </div>
     </div>
 </div>
+@endsection

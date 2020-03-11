@@ -277,12 +277,15 @@ class PromoCampaignController extends Controller
             {
                 $get_data = MyHelper::post('promo-campaign/show-step1', ['id_promo_campaign' => $id_promo_campaign]);
 
-                $data['result'] = $get_data['result']??'';
-                $data['result']['id_promo_campaign'] = $slug;
-            }
-            // return $data['result'];
-            return view('promocampaign::create-promo-campaign-step-1', $data);
+				if ( ($get_data['status']??false) == 'success') {
+	                $data['result'] = $get_data['result']??'';
+	                $data['result']['id_promo_campaign'] = $slug;
 
+            		return view('promocampaign::create-promo-campaign-step-1', $data);
+				}else{
+					return redirect('promo-campaign')->withErrors(['Promo campaign not found']);
+				}
+            }
         }
         else
         {
