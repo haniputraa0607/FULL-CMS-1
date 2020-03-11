@@ -40,14 +40,47 @@ class PromoSettingController extends Controller
 
 	        if ($result['status']??false) {
 	        	if ($result['status'] == 'success') {
-        			return view('setting::promo-setting.promo_setting', $data)->withSuccess(['Promo warning image has been updated']);
+        			return redirect('promo-setting/warning-image')->withSuccess(['Promo warning image has been updated']);
 	        	}else{
-        			return view('setting::promo-setting.promo_setting', $data)->withErrors(['Promo warning image update failed']);
+        			return redirect('promo-setting/warning-image')->withErrors(['Promo warning image update failed']);
 	        	}
 
 	        }else{
-        		return view('setting::promo-setting.promo_setting', $data)->withErrors(['Something went wrong']);
+        		return redirect('promo-setting/warning-image')->withErrors(['Something went wrong']);
 	        }
 	    }
+    }
+
+    public function promoCashback(Request $request)
+    {
+    	$post = $request->except('_token');
+    	$data = [
+            'title'          => 'Promo Setting',
+            'sub_title'      => 'Cashback',
+            'menu_active'    => 'promo-cashback-setting',
+            'submenu_active' => ''
+        ];
+
+        $data['cashback'] = MyHelper::get('promo-setting/cashback')['result']??'';
+
+        if (empty($post)) 
+        {
+        	return view('setting::promo-setting.promo_cashback_setting', $data);
+        }
+        else
+        {
+	        $result = MyHelper::post('promo-setting/cashback', $post);
+
+	        if ($result['status']??false) {
+	        	if ($result['status'] == 'success') {
+        			return redirect('promo-setting/cashback')->withSuccess(['Promo Cashback Setting has been updated']);
+	        	}else{
+        			return redirect('promo-setting/cashback')->withErrors(['Promo Cashback Setting update failed']);
+	        	}
+
+	        }else{
+        		return redirect('promo-setting/cashback')->withErrors(['Something went wrong']);
+	        }
+	    }	
     }
 }
