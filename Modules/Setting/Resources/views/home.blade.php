@@ -258,8 +258,9 @@
 			else if(id_news != "") {
 				$('#modalBannerUpdate .click-to-radio[value="news"]').prop("checked", true);
 	            $('.click-to-type').find('.select2-container').show();
-			}
-			else {
+			}else if(type === 'referral'){
+				$('#modalBannerUpdate .click-to-radio[value="referral"]').prop("checked", true);
+			}else {
 				$('#modalBannerUpdate .click-to-radio[value="none"]').prop("checked", true);
 			}
 
@@ -747,8 +748,9 @@
 					 			 		@php
 					 			 			if ($banner['news_title'] != null) {
 					 			 				$click_to = str_limit($banner['news_title'], 20);
-					 			 			}
-					 			 			elseif ($banner['url'] != null) {
+					 			 			}elseif($banner['type'] == 'referral') {
+					 			 					$click_to = "Referral";
+											}elseif ($banner['url'] != null) {
 					 			 				if ($banner['type'] == 'general') {
 					 			 					$click_to = str_limit($banner['url'], 20);
 					 			 				} else {
@@ -1098,11 +1100,16 @@
 										<input class="click-to-radio" type="radio" name="click_to" value="none" checked> None
 									</label>
 	                            </div>
-	                            <div class="col-md-4">
+	                            <div class="col-md-3">
                                     <label class="radio-inline">
 										<input class="click-to-radio" type="radio" name="click_to" value="gofood"> GO-FOOD
 									</label>
 	                            </div>
+								<div class="col-md-2">
+									<label class="radio-inline">
+										<input class="click-to-radio" type="radio" name="click_to" value="referral"> Referral
+									</label>
+								</div>
                             </div>
 
                             <div class="col-md-12 click-to-type" style="margin-top: 10px;">
@@ -1210,11 +1217,16 @@
 										<input class="click-to-radio" type="radio" name="click_to" value="none" checked> None
 									</label>
 	                            </div>
-	                            <div class="col-md-4">
+	                            <div class="col-md-3">
                                     <label class="radio-inline">
 										<input class="click-to-radio" type="radio" name="click_to" value="gofood"> GO-FOOD
 									</label>
 	                            </div>
+								<div class="col-md-2">
+									<label class="radio-inline">
+										<input class="click-to-radio" type="radio" name="click_to" value="referral"> Referral
+									</label>
+								</div>
                             </div>
 
                             <div class="col-md-12 click-to-type" style="margin-top: 10px;">
