@@ -1091,4 +1091,9 @@ class OutletController extends Controller
         $data['last_page'] = !($raw_data['next_page_url']??false);
         return $data;
     }
+    public function updateDifferentPrice(Request $request) {
+        $post = $request->except('_token');
+        $data = MyHelper::post('outlet/different_price/update',$post);
+        return $data;
+    }
 }

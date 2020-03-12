@@ -35,6 +35,7 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'outlet',
     //different price
     Route::get('different-price', ['middleware' => 'feature_control:24', 'uses' => 'OutletController@differentPrice']);
     Route::post('different-price', ['middleware' => 'feature_control:24', 'uses' => 'OutletController@getDifferentPrice']);
+    Route::post('different-price/update', ['middleware' => 'feature_control:24', 'uses' => 'OutletController@updateDifferentPrice']);
 
     // holiday
     Route::group(['middleware' => 'config_control:4'], function()

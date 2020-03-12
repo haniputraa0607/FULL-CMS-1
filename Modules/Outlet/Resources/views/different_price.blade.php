@@ -24,7 +24,7 @@
                 <td>${item.outlet_code} - ${item.outlet_name}</td>
                 <td class="text-center">
                     <div class="md-checkbox">
-                        <input type="checkbox" id="checkboxx${item.increment}" name="enable" class="md-checkboxbtn checkbox-reload" ${item.outlet_different_price == 1?'checked':''}>
+                        <input type="checkbox" data-id="${item.id_outlet}" id="checkboxx${item.increment}" name="enable" class="md-checkboxbtn checkbox-different" ${item.outlet_different_price == 1?'checked':''}>
                         <label for="checkboxx${item.increment}">
                             <span></span>
                             <span class="check"></span>
@@ -39,6 +39,56 @@
     function updater(table,response){
         table.parents('.is-container').find('.total-record').text(response.total?response.total:0).val(response.total?response.total:0);
     }
+    $(document).ready(function(){
+        $('.is-container').on('change','.checkbox-different',function(){
+            var status = $(this).is(':checked')?1:0;
+            if($(this).data('auto')){
+                $(this).data('auto',0);
+            }else{
+                const selector = $(this);
+                $.post({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+                    },
+                    url: "{{url('outlet/different-price/update')}}",
+                    data: {
+                        ajax: 1,
+                        id_outlet: $(this).data('id'),
+                        status: status
+                    },
+                    success: function(response){
+                        selector.data('auto',1);
+                        if(response.status == 'success'){
+                            toastr.info("Update success");
+                            if(response.result == '1'){
+                                selector.prop('checked',true);
+                            }else{
+                                selector.prop('checked',false);
+                            }
+                        }else{
+                            toastr.warning("Update fail");
+                            if(status == 1){
+                                selector.prop('checked',false);
+                            }else{
+                                selector.prop('checked',true);
+                            }
+                        }
+                        selector.change();
+                    },
+                    error: function(data){
+                        toastr.warning("Update fail");
+                        selector.data('auto',1);
+                        if(status == 1){
+                            selector.prop('checked',false);
+                        }else{
+                            selector.prop('checked',true);
+                        }
+                        selector.change();
+                    }
+                });
+            }
+        });
+    });
 </script>
 @endsection
 
