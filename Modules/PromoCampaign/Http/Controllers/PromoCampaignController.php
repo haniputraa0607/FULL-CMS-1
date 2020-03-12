@@ -300,12 +300,12 @@ class PromoCampaignController extends Controller
             
             if (isset($action['status']) && $action['status'] == 'success') 
             {
-                return redirect('promo-campaign/step2/' . ($slug??''));
+                return redirect('promo-campaign/step2/' . ($slug??$id_promo_campaign??$action['promo-campaign']['id_promo_campaign']??''));
                 // return redirect('promo-campaign/step2/' . ($slug?:MyHelper::createSlug($action['promo-campaign']['id_promo_campaign'],'')));
             } 
             else 
             {
-                return back()->withErrors($action['messages'])->withInput();
+                return back()->withErrors($action['messages']??$action['message']??'Something went wrong')->withInput();
             }
         }
     }

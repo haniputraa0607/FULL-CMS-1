@@ -161,7 +161,7 @@
 				productLoad = 1;
 				listProduct=data;
 				$.each(data, function( key, value ) {
-					console.log(value);
+					
 					$('#multipleProduct').append("<option id='product"+value.id_product+"' value='"+value.id_product+"'>"+value.product+"</option>");
 					$('#multipleProduct2,#multipleProduct3').append("<option value='"+value.id_product+"'>"+value.product+"</option>");
 				});
@@ -494,7 +494,7 @@
 	@if( strtotime($datenow) > strtotime($date_start) && isset($result['campaign_complete']))
 	<script type="text/javascript">
 		$(document).ready(function() {
-			console.log('ok');
+			
 			$('#promotype-form').find('input, textarea').prop('disabled', true);
 			$('#user-search-form').find('input, textarea').prop('disabled', true);
 		});
