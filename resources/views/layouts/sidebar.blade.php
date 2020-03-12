@@ -828,7 +828,15 @@
 					<i class="fa fa-tag"></i>
 					<span class="title">Outlet Product Price</span>
 				</a>
+			</li>
+			<li class="nav-item {{($menu_active == 'outlet-different-price') ? 'active' : ''}}">
+				<a href="{{url('outlet/different-price')}}" class="nav-link nav-toggle">
+					<i class="fa fa-check"></i>
+					<span class="title">Outlet Different Price</span>
+				</a>
+			</li>
 			@endif
+
 
 			@if(MyHelper::hasAccess([17], $configs))
 				@if(MyHelper::hasAccess([64,66], $grantedFeature))
