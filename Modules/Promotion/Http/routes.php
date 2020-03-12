@@ -19,11 +19,4 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'promotio
 	Route::get('linkclicked/list/{id_promotion_content}/{page?}/{type?}', ['middleware' => 'feature_control:110', 'uses' => 'PromotionController@linkClickedList']);
 	Route::post('delete', ['middleware' => 'feature_control:113', 'uses' => 'PromotionController@delete']);
 
-	Route::group(['prefix' => 'deals'], function()
-	{
-		Route::get('/', 'PromotionController@listDeals');
-		Route::any('/create', 'PromotionController@createDeals');
-		Route::any('/detail/{id}', 'PromotionController@detailDeals');
-		
-	});
 });

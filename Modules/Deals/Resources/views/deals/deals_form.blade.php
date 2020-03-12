@@ -6,16 +6,16 @@ $configs = session('configs');
     <div class="input-icon right">
         <label class="col-md-3 control-label">
         Voucher Type
-        <span class="required" aria-required="true"> * </span>  
+        <span class="required" aria-required="true"> * </span>
         <i class="fa fa-question-circle tooltips" data-original-title="Tipe pembuatan voucher, di list secara manual, auto generate atau unlimited" data-container="body"></i>
         </label>
     </div>
-    <div class="col-md-9">
+    <div class="">
         <div class="input-icon right">
             <div class="col-md-3">
                 <div class="md-radio-inline">
                     <div class="md-radio">
-                        <input type="radio" name="deals_voucher_type" id="radio1" value="Auto generated" class="voucherType" @if (old('deals_voucher_type') == "Auto generated") checked @endif> 
+                        <input type="radio" name="deals_voucher_type" id="radio1" value="Auto generated" class="voucherType">
                         <label for="radio1">
                             <span></span>
                             <span class="check"></span>
@@ -26,7 +26,7 @@ $configs = session('configs');
             <div class="col-md-3">
                 <div class="md-radio-inline">
                     <div class="md-radio">
-                        <input type="radio" name="deals_voucher_type" id="radio2" value="List Vouchers" class="voucherType" @if (old('deals_voucher_type') == "List Vouchers") checked @endif required> 
+                        <input type="radio" name="deals_voucher_type" id="radio2" value="List Vouchers" class="voucherType"  required>
                         <label for="radio2">
                             <span></span>
                             <span class="check"></span>
@@ -34,18 +34,43 @@ $configs = session('configs');
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group" id="total-voucher-form" style="display: none;">
+    <div class="input-icon right">
+        <label class="col-md-3 control-label">
+        Total Voucher Type
+        <span class="required" aria-required="true"> * </span>
+        <i class="fa fa-question-circle tooltips" data-original-title="Total voucher yang dibuat, limited atau unlimited" data-container="body"></i>
+        </label>
+    </div>
+    <div class="">
+        <div class="input-icon right">
             <div class="col-md-3">
                 <div class="md-radio-inline">
                     <div class="md-radio">
-                        <input type="radio" name="deals_voucher_type" id="radio3" value="Unlimited" class="voucherType" @if (old('deals_voucher_type') == "Unlimited") checked @endif required> 
-                        <label for="radio3">
+                        <input type="radio" name="total_voucher_type" id="radio-total-limited" value="Auto generated" class="voucherType" required>
+                        <label for="radio-total-limited">
+                            <span></span>
+                            <span class="check"></span>
+                            <span class="box"></span> Limited </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="md-radio-inline">
+                    <div class="md-radio">
+                        <input type="radio" name="total_voucher_type" id="radio-total-unlimited" value="Unlimited" class="voucherType" required>
+                        <label for="radio-total-unlimited">
                             <span></span>
                             <span class="check"></span>
                             <span class="box"></span> Unlimited </label>
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
 </div>
@@ -112,7 +137,7 @@ $configs = session('configs');
                     </div>
                 </div>
             @endif
-<!--             <div class="col-md-3">
+            <div class="col-md-3">
                 <div class="md-radio-inline">
                     <div class="md-radio">
                         <input type="radio" name="prices_by" id="radio8" value="money" class="prices md-radiobtn" required @if (old('prices_by') == "money") checked @endif>
@@ -122,7 +147,7 @@ $configs = session('configs');
                             <span class="box"></span> Money </label>
                     </div>
                 </div>
-            </div> -->
+            </div>
         </div>
     </div>
 </div>
@@ -131,7 +156,7 @@ $configs = session('configs');
     <label class="col-md-3 control-label"></label>
     <div class="col-md-9">
         <div class="col-md-3">
-            <label class="control-label">Values <span class="required" aria-required="true"> * </span> </label>
+            <label class="control-label price-label" style="display: none;">Values <span class="required" aria-required="true"> * </span> </label>
         </div>
         <div class="col-md-9 payment" id="point"  @if (old('prices_by') == "point") style="display: block;" @else style="display: none;" @endif>
             <input type="text" class="form-control point moneyOpp freeOpp" name="deals_voucher_price_point" value="{{ old('deals_voucher_price_point') }}" placeholder="Input point values">

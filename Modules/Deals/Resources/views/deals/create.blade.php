@@ -84,35 +84,75 @@ $grantedFeature     = session('granted_features');
             });
             token = '<?php echo csrf_token();?>';
 
-            /* TYPE VOUCHER */
-            $('.voucherType').click(function() {
+            $('#is_online, #is_offline').on('change', function(){
+            	var is_online = $('#is_online').is(":checked");
+            	var is_offline = $('#is_offline').is(":checked");
+            	if (is_online || is_offline) {$('.online_offline').prop('required', false);}
+            	if (!is_offline && !is_online) {$('.online_offline').prop('required', true);}
+            });
+
+		    $('#is_online').change(function() {
+		        if(this.checked) {
+		            $('#product-type-form').show();
+		        }else{
+		            $('#product-type-form').hide();
+		        }
+		    });
+
+            $('input[name=deals_voucher_type]').click(function() {
                 // tampil duluk
                 var nilai = $(this).val();
 
                 // alert(nilai);
 
                 if (nilai == "List Vouchers") {
+
+                	$('input[name=total_voucher_type]:checked').prop('checked', false);
+                	$('input[name=deals_total_voucher]').val('');
+
                     $('#listVoucher').show();
                     $('.listVoucher').prop('required', true);
+                    $('.listVoucher').prop('disabled', false);
 
+                    $('#total-voucher-form').hide();
                     $('#generateVoucher').hide();
                     $('.generateVoucher').removeAttr('required');
+                    $('.generateVoucher').prop('disabled', true);
                 }
-                else if(nilai == "Unlimited") {
-                    $('.generateVoucher').val('');
-                    $('.listVoucher').val('');
-                    $('.listVoucher').removeAttr('required');
-
+                else if (nilai == "Auto generated"){
+                    $('#total-voucher-form').show();
+                    
                     $('#listVoucher').hide();
-                    $('#generateVoucher').hide();
-                    $('.generateVoucher').removeAttr('required');
+                    $('.listVoucher').removeAttr('required');
+                    $('.listVoucher').prop('disabled', true);
                 }
-                else {
+            });
+
+            /* TOTAL TYPE VOUCHER */
+            $('input[name=total_voucher_type]').click(function() {
+                // tampil duluk
+                var nilai = $(this).val();
+                // alert(nilai);
+
+                if (nilai == "Auto generated") {
+
                     $('#generateVoucher').show();
                     $('.generateVoucher').prop('required', true);
+                    $('.generateVoucher').prop('disabled', false);
 
                     $('#listVoucher').hide();
                     $('.listVoucher').removeAttr('required');
+                    $('.listVoucher').prop('disabled', true);
+                }
+                else if (nilai == "Unlimited"){
+                    $('#listVoucher').hide();
+                    $('.listVoucher').removeAttr('required');
+                    $('.listVoucher').prop('disabled', true);
+
+                    $('#generateVoucher').hide();
+                    $('.generateVoucher').removeAttr('required');
+                    $('.generateVoucher').prop('disabled', true);
+                    $('input[name=deals_total_voucher]').val('');
                 }
             });
 
@@ -121,7 +161,7 @@ $grantedFeature     = session('granted_features');
                 var nilai = $(this).val();
 
                 if (nilai != "free") {
-                    $('#prices').show();
+                    $('#prices, .price-label').show();
 
                     $('.payment').hide();
 
@@ -365,6 +405,29 @@ $grantedFeature     = session('granted_features');
     @include('layouts.notifications')
 
     <div class="portlet light bordered">
+    	<div class="col-md-12">
+            <div class="mt-element-step">
+                <div class="row step-line">
+                    <div id="step-online" >
+	                    <div class="col-md-4 mt-step-col first active">
+	                        <div class="mt-step-number bg-white">1</div>
+	                        <div class="mt-step-title uppercase font-grey-cascade">Info</div>
+	                        <div class="mt-step-content font-grey-cascade">Title, Image, Periode</div>
+	                    </div>
+	                    <div class="col-md-4 mt-step-col ">
+	                        <div class="mt-step-number bg-white">2</div>
+	                        <div class="mt-step-title uppercase font-grey-cascade">Rule</div>
+	                        <div class="mt-step-content font-grey-cascade">discount rule</div>
+	                    </div>
+	                    <div class="col-md-4 mt-step-col last">
+		                    <div class="mt-step-number bg-white">3</div>
+		                    <div class="mt-step-title uppercase font-grey-cascade">Content</div>
+		                    <div class="mt-step-content font-grey-cascade">Detail Content Deals</div>
+	                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="portlet-title">
             <div class="caption">
                 <span class="caption-subject font-blue sbold uppercase ">New {{ $title }}</span>
@@ -412,7 +475,29 @@ $grantedFeature     = session('granted_features');
                     </div>
                     --}}
                     @endif
-                    @if(MyHelper::hasAccess([97], $configs))
+                    @if(MyHelper::hasAccess([99], $configs))
+                    <div class="form-group">
+                        <div class="input-icon right">
+                            <label class="col-md-3 control-label">
+                            Deals Type
+                            <span class="required" aria-required="true"> * </span>
+                            <i class="fa fa-question-circle tooltips" data-original-title="Pilih tipe untuk deal ini" data-container="body"></i>
+                            </label>
+                        </div>
+                        <div class="col-md-9">
+                        	<div class="mt-checkbox-inline">
+                                <label class="mt-checkbox mt-checkbox-outline" style="margin-bottom: 0px">
+                                    <input type="checkbox" id="is_online" class="online_offline" name="is_online" value="1" @if (old('is_online') == "1") checked @endif required> Online
+                                    <span></span>
+                                </label>
+                                <label class="mt-checkbox mt-checkbox-outline" style="margin-bottom: 0px">
+                                    <input type="checkbox" id="is_offline" class="online_offline" name="is_offline" value="1" @if (old('is_offline') == "1") checked @endif required> Offline
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -435,6 +520,25 @@ $grantedFeature     = session('granted_features');
                         </div>
                     </div>
                     @endif
+
+                    <div class="form-group" id="product-type-form" style="display: none;">
+                        <div class="input-icon right">
+                            <label class="col-md-3 control-label">
+                            Product Type
+                            <span class="required" aria-required="true"> * </span>
+                            <i class="fa fa-question-circle tooltips" data-original-title="Tipe produk yang akan dikenakan deal ini" data-container="body"></i>
+                            </label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-icon right">
+                                <select class="form-control" name="product_type">
+									<option value="single" @if(isset($result['product_type']) && $result['product_type'] == "single") selected @endif required> Single </option>
+									<option value="group" @if(isset($result['product_type']) && $result['product_type'] == "group") selected @endif> Group </option>
+		                        </select>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -465,102 +569,11 @@ $grantedFeature     = session('granted_features');
                     </div>
 
                     <div class="form-group">
-                        <div class="input-icon right">
-                            <label class="col-md-3 control-label">
-                            Promo Type
-                            <span class="required" aria-required="true"> * </span>
-                            <i class="fa fa-question-circle tooltips" data-original-title="Tipe promosi berdasarkan Promo ID atau nominal promo" data-container="body"></i>
-                            </label>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="input-icon right">
-                                <div class="col-md-3">
-                                    <div class="md-radio-inline">
-                                        <div class="md-radio">
-                                            <input type="radio" id="radio14" name="deals_promo_id_type" class="md-radiobtn dealsPromoType" value="promoid" required @if (old('deals_promo_id_type') == "promoid") checked @endif>
-                                            <label for="radio14">
-                                                <span></span>
-                                                <span class="check"></span>
-                                                <span class="box"></span> Promo ID </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="md-radio-inline">
-                                        <div class="md-radio">
-                                            <input type="radio" id="radio16" name="deals_promo_id_type" class="md-radiobtn dealsPromoType" value="nominal" required @if (old('deals_promo_id_type') == "nominal") checked @endif>
-                                            <label for="radio16">
-                                                <span></span>
-                                                <span class="check"></span>
-                                                <span class="box"></span> Nominal </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="form-group dealsPromoTypeShow" @if (!old('deals_promo_id_type')) style="display: none;" @endif>
-                        <label class="col-md-3 control-label"> </label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control dealsPromoTypeValuePromo" name="deals_promo_id_promoid" value="{{ old('deals_promo_id_promoid') }}" placeholder="Input Promo ID"  @if (old('deals_promo_id_type') == "promoid") style="display: block;" @else style="display: none;" @endif>
-
-                            <input type="text" class="form-control dealsPromoTypeValuePrice price" name="deals_promo_id_nominal" value="{{ old('deals_promo_id_nominal') }}" placeholder="Input nominal" @if (old('deals_promo_id_type') == "nominal") style="display: block;" @else style="display: none;" @endif>
-                        </div>
-                    </div>
-
-<!--                     <div class="form-group">
-                        <div class="input-icon right">
-                            <label class="col-md-3 control-label">
-                            Content Short
-                            <span class="required" aria-required="true"> * </span>
-                            <i class="fa fa-question-circle tooltips" data-original-title="Deskripsi singkat tentang deals yang dibuat" data-container="body"></i>
-                            </label>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="input-icon right">
-                                <textarea name="deals_short_description" class="form-control" required>{{ old('deals_short_description') }}</textarea>
-                            </div>
-                        </div>
-                    </div> -->
-
-                    <div class="form-group">
-                        <div class="input-icon right">
-                            <label class="col-md-3 control-label">
-                            Content Long
-                            <span class="required" aria-required="true"> * </span>
-                            <i class="fa fa-question-circle tooltips" data-original-title="Deskripsi lengkap tentang deals yang dibuat" data-container="body"></i>
-                            </label>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="input-icon right">
-                                <textarea name="deals_description" id="field_content_long" class="form-control summernote" placeholder="Deals Content Long">{{ old('deals_description') }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="input-icon right">
-                            <label class="col-md-3 control-label">
-                            Terms and Conditions
-                            <span class="required" aria-required="true"> * </span>
-                            <i class="fa fa-question-circle tooltips" data-original-title="Syarat dan ketentuan mengenai deals" data-container="body"></i>
-                            </label>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="input-icon right">
-                                <textarea name="deals_tos" id="field_tos" class="form-control summernote" placeholder="Deals Terms and Conditions">{{ old('deals_tos') }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
                         <label class="col-md-3 control-label"> Deals Periode <span class="required" aria-required="true"> * </span> </label>
                         <div class="col-md-4">
                             <div class="input-icon right">
                                 <div class="input-group">
-                                    <input type="text" class="form_datetime form-control" name="deals_start" value="{{ old('deals_start') }}" required>
+                                    <input type="text" class="form_datetime form-control" name="deals_start" value="{{ old('deals_start') }}" required autocomplete="off">
                                     <span class="input-group-btn">
                                         <button class="btn default" type="button">
                                             <i class="fa fa-calendar"></i>
@@ -575,7 +588,7 @@ $grantedFeature     = session('granted_features');
                         <div class="col-md-4">
                             <div class="input-icon right">
                                 <div class="input-group">
-                                    <input type="text" class="form_datetime form-control" name="deals_end" value="{{ old('deals_end') }}" required>
+                                    <input type="text" class="form_datetime form-control" name="deals_end" value="{{ old('deals_end') }}" required autocomplete="off">
                                     <span class="input-group-btn">
                                         <button class="btn default" type="button">
                                             <i class="fa fa-calendar"></i>
@@ -595,7 +608,7 @@ $grantedFeature     = session('granted_features');
                         <div class="col-md-4">
                             <div class="input-icon right">
                                 <div class="input-group">
-                                    <input type="text" class="form_datetime form-control" name="deals_publish_start" value="{{ old('deals_publish_start') }}" required>
+                                    <input type="text" class="form_datetime form-control" name="deals_publish_start" value="{{ old('deals_publish_start') }}" required autocomplete="off">
                                     <span class="input-group-btn">
                                         <button class="btn default" type="button">
                                             <i class="fa fa-calendar"></i>
@@ -611,7 +624,7 @@ $grantedFeature     = session('granted_features');
                         <div class="col-md-4">
                             <div class="input-icon right">
                                 <div class="input-group">
-                                    <input type="text" class="form_datetime form-control" name="deals_publish_end" value="{{ old('deals_publish_end') }}">
+                                    <input type="text" class="form_datetime form-control" name="deals_publish_end" value="{{ old('deals_publish_end') }}" autocomplete="off">
                                     <span class="input-group-btn">
                                         <button class="btn default" type="button">
                                             <i class="fa fa-calendar"></i>
@@ -680,41 +693,42 @@ $grantedFeature     = session('granted_features');
                             </select>
                         </div>
                     </div> --}} -->
-                    @if(MyHelper::hasAccess([97], $configs))
-                    <div class="form-group">
-                        <div class="input-icon right">
-                            <label class="col-md-3 control-label">
-                            Outlet Available
-                            <span class="required" aria-required="true"> * </span>
-                            <i class="fa fa-question-circle tooltips" data-original-title="Pilih outlet yang memberlakukan deals tersebut" data-container="body"></i>
-                            </label>
-                        </div>
-                        <div class="col-md-9">
-                            <select class="form-control select2-multiple" data-placeholder="Select Outlet" name="id_outlet[]" multiple data-value="{{json_encode(old('id_outlet',[]))}}">
-                            </select>
-                        </div>
-                    </div>
-                    @else
-                    <div class="form-group">
-                        <div class="input-icon right">
-                            <label class="col-md-3 control-label">
-                                Outlet Available
-                                <span class="required" aria-required="true"> * </span>
-                                <i class="fa fa-question-circle tooltips" data-original-title="Pilih outlet yang memberlakukan deals tersebut" data-container="body"></i>
-                            </label>
-                        </div>
-                        <div class="col-md-9">
-                            <select class="form-control select2-multiple" data-placeholder="Select Outlet" name="id_outlet[]" multiple data-value="{{json_encode(old('id_outlet',[]))}}">
-                                @if(!empty($outlets))
-                                    <option value="all">All Outlets</option>
-                                    @foreach($outlets as $row)
-                                        <option value="{{$row['id_outlet']}}">{{$row['outlet_code']}} - {{$row['outlet_name']}}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
-                    </div>
-                    @endif
+
+                        @if(MyHelper::hasAccess([97], $configs))
+                            <div class="form-group">
+                                <div class="input-icon right">
+                                    <label class="col-md-3 control-label">
+                                        Outlet Available
+                                        <span class="required" aria-required="true"> * </span>
+                                        <i class="fa fa-question-circle tooltips" data-original-title="Pilih outlet yang memberlakukan deals tersebut" data-container="body"></i>
+                                    </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <select class="form-control select2-multiple" data-placeholder="Select Outlet" name="id_outlet[]" multiple data-value="{{json_encode(old('id_outlet',[]))}}">
+                                    </select>
+                                </div>
+                            </div>
+                        @else
+                            <div class="form-group">
+                                <div class="input-icon right">
+                                    <label class="col-md-3 control-label">
+                                        Outlet Available
+                                        <span class="required" aria-required="true"> * </span>
+                                        <i class="fa fa-question-circle tooltips" data-original-title="Pilih outlet yang memberlakukan deals tersebut" data-container="body"></i>
+                                    </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <select class="form-control select2-multiple" data-placeholder="Select Outlet" name="id_outlet[]" multiple data-value="{{json_encode(old('id_outlet',[]))}}">
+                                        @if(!empty($outlets))
+                                            <option value="all">All Outlets</option>
+                                            @foreach($outlets as $row)
+                                                <option value="{{$row['id_outlet']}}">{{$row['outlet_code']}} - {{$row['outlet_name']}}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                        @endif
 
                     <!-- IDENTIFIER DEALS OR HIDDEN -->
                     @if ($deals_type == "Deals")

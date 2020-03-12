@@ -184,9 +184,9 @@ $configs     		= session('configs');
 																	<div class="col-md-4">
 																		<p style="margin-top:2%;margin-bottom:1%;"> Icon <span class="required" aria-required="true"> * </span></p>
 																		<div style="color: #e02222;font-size: 12px;margin-top: 4%;">
-																			- Only PNG <br>
-																			- 100 x 100 <br>
-																			- max size 5 KB <br>
+																			- PNG Only <br>
+																			- max dimension 100 x 100 <br>
+																			- max size 10 KB <br>
 																		</div>
 																	</div>
 																	<div class="col-md-4">
@@ -343,8 +343,8 @@ $configs     		= session('configs');
 																	<div class="col-md-4">
 																		<p style="margin-top:2%;margin-bottom:1%;"> Icon <span class="required" aria-required="true"> * </span></p>
 																		<div style="color: #e02222;font-size: 12px;margin-top: 4%;">
-																			- Only PNG <br>
-																			- 800 x 800 <br>
+																			- PNG Only <br>
+																			- max dimension 100 x 100 <br>
 																			- max size 10 KB <br>
 																		</div>
 																	</div>

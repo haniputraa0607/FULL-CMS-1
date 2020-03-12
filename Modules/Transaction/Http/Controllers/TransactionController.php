@@ -1398,4 +1398,92 @@ class TransactionController extends Controller
         return view('transaction::fake_transaction', $data);
     }
 
+    /*================ Start POS Transaction online failed ================*/
+    public function transactionFailed(Request $request) {
+        $post = $request->except('_token');
+        $data = [
+            'title'          => 'Transactions',
+            'menu_active'    => 'transaction-online-pos',
+            'sub_title'      => '[POS] Transactions Online Failed',
+            'submenu_active' => 'transaction-online-pos-list'
+        ];
+
+        return view('transaction::transactionOnlinePOS.list', $data);
+    }
+
+    public function getlistTransactionFailed(Request $request){
+        $post = $request->except('_token');
+        $draw = $post["draw"];
+        $getData = MyHelper::post('transaction/online-pos',$post);
+
+        if(isset($getData['status']) && isset($getData['status']) == 'success'){
+            $arr_result['draw'] = $draw;
+            $arr_result['recordsTotal'] = $getData['total'];
+            $arr_result['recordsFiltered'] = $getData['total'];
+            $arr_result['data'] = $getData['result'];
+        }else{
+            $arr_result['draw'] = $draw;
+            $arr_result['recordsTotal'] = 0;
+            $arr_result['recordsFiltered'] = 0;
+            $arr_result['data'] = array();
+        }
+
+        return response()->json($arr_result);
+    }
+
+    public function resendTransactionFailed(Request $request){
+        $post = $request->except('_token');
+        $getData = MyHelper::post('transaction/online-pos/resend',$post);
+        return response()->json($getData);
+    }
+
+    public function autoresponseTransactionFailed(Request $request){
+        $post = $request->except('_token');
+        $data = [
+            'title'          => 'Transaction',
+            'menu_active'    => 'transaction-online-pos',
+            'sub_title'      => '[Response] Transaction Online Failed',
+            'submenu_active' => 'transaction-autoresponse-online-pos'
+        ];
+        $get = MyHelper::get('transaction/online-pos/autoresponse');
+        if($post){
+            $update = MyHelper::post('transaction/online-pos/autoresponse', $post);
+
+            if (isset($update['status']) && $update['status'] == 'success') {
+                return redirect('transaction/online-pos/autoresponse')->with(['success' => ['Update success']]);
+            } else {
+                if (isset($update['errors'])) {
+                    return back()->withErrors($update['errors'])->withInput();
+                }
+
+                if (isset($update['status']) && $update['status'] == "fail") {
+                    return back()->withErrors($update['messages'])->withInput();
+                }
+                return redirect('transaction/online-pos/autoresponse')->withErrors(['Update Failed']);
+            }
+        }else{
+            if(isset($get['status']) && $get['status'] == 'success'){
+                $data['result'] = $get['result'];
+
+                $textreplace = MyHelper::get('autocrm/textreplace');
+                if($textreplace['status'] == 'success'){
+                    $data['textreplaces'] = $textreplace['result'];
+                }
+
+                $custom = [];
+                if (isset($get['result']['custom_text_replace'])) {
+                    $custom = explode(';', $get['result']['custom_text_replace']);
+
+                    unset($custom[count($custom) - 1]);
+                }
+
+                $data['custom'] = $custom;
+            }else{
+                $data['result'] = [];
+            }
+
+            return view('transaction::transactionOnlinePOS.forward_email_setting', $data);
+        }
+    }
+    /*================ End POS Transaction online failed ================*/
 }

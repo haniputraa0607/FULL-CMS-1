@@ -277,16 +277,18 @@ class PromoCampaignController extends Controller
             {
                 $get_data = MyHelper::post('promo-campaign/show-step1', ['id_promo_campaign' => $id_promo_campaign]);
 
-				if ( ($get_data['status']??false) == 'success') {
-	                $data['result'] = $get_data['result']??'';
-	                $data['result']['id_promo_campaign'] = $slug;
+                if ( ($get_data['status']??false) == 'success') {
+                          $data['result'] = $get_data['result']??'';
+                          $data['result']['id_promo_campaign'] = $slug;
 
-				}elseif(($get_data['status']??false) == 'fail'){
-					return redirect('promo-campaign')->withErrors(['Promo campaign not found']);
-				}
+
+                }elseif(($get_data['status']??false) == 'fail'){
+                  return redirect('promo-campaign')->withErrors(['Promo campaign not found']);
+                }
             }
 
             return view('promocampaign::create-promo-campaign-step-1', $data);
+
 
         }
         else
@@ -342,7 +344,10 @@ class PromoCampaignController extends Controller
         }else{
 
             $post['id_promo_campaign'] = $id_promo_campaign;
-            
+            if(isset($post['promo_warning_image'])){
+	            $post['promo_warning_image'] = MyHelper::encodeImage($post['promo_warning_image']);
+	        }
+
             $action = MyHelper::post('promo-campaign/step2', $post);
 
             if (isset($action['status']) && $action['status'] == 'success') {

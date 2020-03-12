@@ -4,6 +4,7 @@
 @extends('layouts.main-closed')
 @include('promocampaign::bulkForm')
 @include('promocampaign::buyXgetYForm')
+@include('promocampaign::warning-image')
 @section('page-style')
 	<link href="{{ secure_url('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> 
 	<link href="{{ secure_url('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" /> 
@@ -18,6 +19,7 @@
 	<link href="{{ secure_url('assets/pages/css/profile-2.min.css') }}" rel="stylesheet" type="text/css" /> 
 	<link href="{{ secure_url('assets/global/plugins/bootstrap-summernote/summernote.css')}}" rel="stylesheet" type="text/css" />
 	<link href="{{ secure_url('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css') }}" rel="stylesheet" type="text/css" /> 
+	<link href="{{ secure_url('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
 	<style type="text/css">
 		.d-none {
 			display: none;
@@ -74,6 +76,7 @@
 	<script src="{{ secure_url('assets/global/scripts/datatable.js') }}" type="text/javascript"></script>
 	<script src="{{ secure_url('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
 	<script src="{{ secure_url('assets/global/scripts/jquery.inputmask.min.js') }}" type="text/javascript"></script>
+	<script src="{{ secure_url('assets/global/plugins/bootstrap-toastr/toastr.min.js') }}" type="text/javascript"></script>
 @endsection
 
 @section('page-script')
@@ -479,6 +482,7 @@
 	</script>
 	@yield('child-script')
 	@yield('child-script2')
+	@yield('warning-image-script')
 	<style>
 	input[type=number]::-webkit-inner-spin-button, 
 	input[type=number]::-webkit-outer-spin-button { 
@@ -703,6 +707,7 @@
 
 			{{-- PROMO TYPE FORM --}}
 			<div class="col-md-12">
+				@yield('warning-image')
 				<div class="portlet light bordered" id="promotype-form">
 					<div class="portlet-title">
 						<div class="caption font-blue ">

@@ -87,8 +87,8 @@ class SettingController extends Controller
         } elseif($key == 'tos') {
             $sub = 'about-tos';
             $active = 'tos';
-            $subTitle = 'Ketentuan Layanan';
-            $label = 'Ketentuan Layanan';
+            $subTitle = 'Term Of Services';
+            $label = 'Term Of Services';
         } elseif($key == 'tax') {
             $sub = 'about-tax';
             $active = 'tax';
@@ -1159,7 +1159,8 @@ class SettingController extends Controller
                     'payment_messages'=>['value_text',$post['payment_messages']],
                     'payment_messages_point'=>['value_text',$post['payment_messages_point']],
                     'payment_success_messages'=>['value_text',$post['payment_success_messages']],
-                    'payment_fail_messages'=>['value_text',$post['payment_fail_messages']]
+                    'payment_fail_messages'=>['value_text',$post['payment_fail_messages']],
+                    'payment_ovo_fail_messages'=>['value_text',$post['payment_ovo_fail_messages']]
                 ]
             ];
             $result = MyHelper::post('setting/update2', $data);
@@ -1173,11 +1174,13 @@ class SettingController extends Controller
             $payment_messages_point=MyHelper::post('setting',['key'=>'payment_messages_point'])['result']['value_text']??'Anda akan menukarkan %point% points anda dengan Voucher %deals_title%?';
             $payment_success_messages=MyHelper::post('setting',['key'=>'payment_success_messages'])['result']['value_text']??'Apakah kamu ingin menggunakan Voucher sekarang?';
             $payment_fail_messages=MyHelper::post('setting',['key'=>'payment_fail_messages'])['result']['value_text']??'Mohon maaf, point anda tidak cukup';
+            $payment_ovo_fail_messages=MyHelper::post('setting',['key'=>'payment_ovo_fail_messages'])['result']['value_text']??'Transaksi gagal';
             $data['msg']=[
                 'payment_messages'=>$payment_messages,
                 'payment_messages_point'=>$payment_messages_point,
                 'payment_success_messages'=>$payment_success_messages,
-                'payment_fail_messages'=>$payment_fail_messages
+                'payment_fail_messages'=>$payment_fail_messages,
+                'payment_ovo_fail_messages'=>$payment_ovo_fail_messages
             ];
             return view('setting::confirmation-messages.confirmation-messages',$data);
         }
@@ -1214,5 +1217,39 @@ class SettingController extends Controller
         }else{
             return redirect('setting/phone')->withErrors([$updateSetting['message']]);
         }
+    }
+
+    function maintenanceMode(Request $request){
+        $post = $request->except('_token');
+        $data = [
+            'title'   		=> 'Maintenance Mode Setting',
+            'menu_active'    => 'maintenance-mode',
+            'submenu_active' => 'maintenance-mode'
+        ];
+        if($post){
+            if(isset($post['image']) && $post['image'] !== null){
+                $post['image']= MyHelper::encodeImage($post['image']);
+            }
+
+            $updateMaintenanceMode = MyHelper::post('setting/maintenance-mode/update', $post);
+            if(($updateMaintenanceMode['status']??'')=='success'){
+                return redirect('setting/maintenance-mode')->with('success',['Success update maintenance']);
+            }else{
+                return redirect('setting/maintenance-mode')->withErrors([$updateMaintenanceMode['message']]);
+            }
+        }else{
+            $maintenanceMode = MyHelper::get('setting/maintenance-mode');
+            if(isset($maintenanceMode['status']) &&  $maintenanceMode['status']=='success'){
+                $data['status'] = $maintenanceMode['result']['status'];
+                $data['message'] = $maintenanceMode['result']['message'];
+                $data['image'] = $maintenanceMode['result']['image'];
+            }else{
+                $data['status'] = 0;
+                $data['message'] = '';
+                $data['image'] = '';
+            }
+        }
+
+        return view('setting::maintenance-mode', $data);
     }
 }

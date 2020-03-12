@@ -1,4 +1,4 @@
-@if ($deals[0]['deals_voucher_type'] == "List Vouchers")
+@if ($deals['deals_voucher_type'] == "List Vouchers")
 <form class="form-horizontal" role="form" action="{{ url('deals/update') }}" method="post" enctype="multipart/form-data">
   <div class="form-body">
         
@@ -17,7 +17,7 @@
       {{ csrf_field() }}
       <div class="row">
           <div class="col-md-offset-3 col-md-9">
-            <input type="hidden" name="id_deals" value="{{ $deals[0]['id_deals'] }}">
+            <input type="hidden" name="id_deals" value="{{ $deals['id_deals'] }}">
             <button type="submit" class="btn green">Submit</button>
           </div>
       </div>
@@ -33,7 +33,7 @@
     <div class="portlet light bordered">
         <div class="portlet-title">
             <div class="caption">
-                <span class="caption-subject font-blue sbold uppercase">{{ ucwords($deals[0]['deals_voucher_type']) }} Voucher</span>
+                <span class="caption-subject font-blue sbold uppercase">{{ ucwords($deals['deals_voucher_type']) }} Voucher</span>
             </div>
         </div>
         <div class="portlet-body form">
