@@ -175,7 +175,7 @@
 			var maxRefresh = c/2;
 			var bottom = d - (s + c);
 		    //var scrollPercent = (s / (d - c)) * 100;
-		    if(bottom <= maxRefresh){
+		    if(bottom <= maxRefresh && (maxRefresh > 0 || table.data('page') < 1)){
 		    	addMore(table);
 		    }
 		})
