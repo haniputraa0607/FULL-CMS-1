@@ -31,6 +31,7 @@ $configs            = session('configs');
             'btnCancelClass':'btn btn-sm red',
             'placement':'left'
         });
+        table.parents('.is-container').find('.total-record').text(response.total?response.total:0).val(response.total?response.total:0);
     }
     $(document).ready(function(){
         template = {
@@ -91,6 +92,20 @@ $configs            = session('configs');
     </div>
     <div class="portlet-body">
         <div class=" table-responsive is-container">
+            <div class="row">
+                <div class="col-md-offset-9 col-md-3">
+                    <form class="filter-form">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control search-field" name="keyword" placeholder="Search">
+                                <div class="input-group-btn">
+                                    <button class="btn blue search-btn" type="submit"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div class="table-infinite">
                 <table class="table table-striped" id="tableTrx" data-template="productgroup"  data-page="0" data-is-loading="0" data-is-last="0" data-url="{{url()->current()}}" data-callback="enableConfirmation" data-order="promo_campaign_referral_transactions.created_at" data-sort="asc">
                     <thead>
@@ -127,6 +142,7 @@ $configs            = session('configs');
                     </tbody>
                 </table>
             </div>
+            <div><span class="text-muted">Total record: </span><span class="total-record"></span></div>
         </div>
     </div>
 </div>

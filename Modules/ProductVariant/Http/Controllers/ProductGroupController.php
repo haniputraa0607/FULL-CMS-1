@@ -88,7 +88,7 @@ class ProductGroupController extends Controller
 
     public function indexAjax(Request $request) {
         $page = $request->page?:1;
-        $raw_data = MyHelper::get('product-variant/group?page='.$page)['result']??[];
+        $raw_data = MyHelper::post('product-variant/group',['page'=>$page,'keyword'=>$request->keyword])['result']??[];
         $data['data'] = $raw_data['data'];
         $data['total'] = $raw_data['total']??0;
         $data['from'] = $raw_data['from']??0;
