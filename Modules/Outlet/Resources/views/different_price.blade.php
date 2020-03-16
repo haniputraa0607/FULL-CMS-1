@@ -1,12 +1,16 @@
 @extends('layouts.main')
-@include('infinitescroll')
 
 @section('page-style')
+    <meta name="csrf-token" content="{{csrf_token()}}">
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
-@yield('is-style')
+    <style>
+        .multiple-select {
+            height: 70vh !important;
+        }
+    </style>
 @endsection
 
 @section('page-script')
@@ -14,82 +18,127 @@
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-select2.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.js') }}" type="text/javascript"></script>
-@yield('is-script')
-<script>
-    template = {
-        differentprice: function(item){
-            return `
-            <tr class="page${item.page}">
-                <td class="text-center">${item.increment}</td>
-                <td>${item.outlet_code} - ${item.outlet_name}</td>
-                <td class="text-center">
-                    <div class="md-checkbox">
-                        <input type="checkbox" data-id="${item.id_outlet}" id="checkboxx${item.increment}" name="enable" class="md-checkboxbtn checkbox-different" ${item.outlet_different_price == 1?'checked':''}>
-                        <label for="checkboxx${item.increment}">
-                            <span></span>
-                            <span class="check"></span>
-                            <span class="box"></span>
-                        </label>
-                    </div>
-                </td>
-            </tr>
-            `;
-        }
-    };
-    function updater(table,response){
-        table.parents('.is-container').find('.total-record').text(response.total?response.total:0).val(response.total?response.total:0);
-    }
-    $(document).ready(function(){
-        $('.is-container').on('change','.checkbox-different',function(){
-            var status = $(this).is(':checked')?1:0;
-            if($(this).data('auto')){
-                $(this).data('auto',0);
+    <script>
+        function block(status = true){
+            if(status){
+                $('.to-block :input').attr('disabled','disabled');
             }else{
-                const selector = $(this);
-                $.post({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
-                    },
-                    url: "{{url('outlet/different-price/update')}}",
-                    data: {
-                        ajax: 1,
-                        id_outlet: $(this).data('id'),
-                        status: status
-                    },
-                    success: function(response){
-                        selector.data('auto',1);
-                        if(response.status == 'success'){
-                            toastr.info("Update success");
-                            if(response.result == '1'){
-                                selector.prop('checked',true);
-                            }else{
-                                selector.prop('checked',false);
-                            }
-                        }else{
-                            toastr.warning("Update fail");
-                            if(status == 1){
-                                selector.prop('checked',false);
-                            }else{
-                                selector.prop('checked',true);
-                            }
-                        }
-                        selector.change();
-                    },
-                    error: function(data){
-                        toastr.warning("Update fail");
-                        selector.data('auto',1);
-                        if(status == 1){
-                            selector.prop('checked',false);
-                        }else{
-                            selector.prop('checked',true);
-                        }
-                        selector.change();
-                    }
-                });
+                $('.to-block :input').removeAttr('disabled');
             }
+        }
+        function reload(){
+            block();
+            $.post({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+                },
+                url: "{{url('outlet/different-price')}}",
+                data: {
+                    ajax: 1,
+                    keyword: $('input[name="keyword"]').val()
+                },
+                success: function(response){
+                    $('#different-price,#global-price').html('');
+                    response.forEach(item => {
+                        const option = `<option value="${item.id_outlet}">${item.outlet_code} - ${item.outlet_name}</option>`;
+                        if(item.outlet_different_price){
+                            $('#different-price').append(option);
+                        }else{
+                            $('#global-price').append(option);
+                        }
+                    });
+                    block(false);
+                },
+                error: function(data){
+                    block(false);
+                    toastr.danger('Load list outlet fail');
+                }
+            });
+        }
+        $(document).ready(function(){
+            $('#btn-to-different').on('click',function(){
+                block();
+                const outlets = $('#global-price').val();
+                if(outlets){
+                    $.post({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+                        },
+                        url: "{{url('outlet/different-price/update')}}",
+                        data: {
+                            ajax: 1,
+                            id_outlet: outlets,
+                            status: 1
+                        },
+                        success: function(response){
+                            if(response.status == 'success'){
+                                toastr.info("Update success");
+                                outlets.forEach(item => {
+                                    const optionData = $(`option[value="${item}"]`);
+                                    optionData.remove();
+                                    const option = `<option value="${item}">${optionData.text()}</option>`;
+                                    $('#different-price').append(option);
+                                });
+                            }else{
+                                toastr.warning("Update fail");
+                            }
+                            block(false);
+                        },
+                        error: function(data){
+                            toastr.warning("Update fail");
+                            block(false);
+                        }
+                    });
+                }else{
+                    toastr.warning("No outlet selected");
+                    block(false);
+                }
+            })
+            $('#btn-to-global').on('click',function(){
+                block();
+                const outlets = $('#different-price').val();
+                if(outlets){
+                    $.post({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') 
+                        },
+                        url: "{{url('outlet/different-price/update')}}",
+                        data: {
+                            ajax: 1,
+                            id_outlet: outlets,
+                            status: 0
+                        },
+                        success: function(response){
+                            if(response.status == 'success'){
+                                toastr.info("Update success");
+                                outlets.forEach(item => {
+                                    const optionData = $(`option[value="${item}"]`);
+                                    optionData.remove();
+                                    const option = `<option value="${item}">${optionData.text()}</option>`;
+                                    $('#global-price').append(option);
+                                });
+                            }else{
+                                toastr.warning("Update fail");
+                            }
+                            block(false);
+                        },
+                        error: function(data){
+                            toastr.warning("Update fail");
+                            block(false);
+                        }
+                    });
+                }else{
+                    toastr.warning("No outlet selected");
+                    block(false);
+                }
+            });
+            $('.filter-form').on('submit',event => {
+                event.preventDefault();
+                reload();
+            });
+            $('.filter-form').submit();
         });
-    });
-</script>
+    </script>
 @endsection
 
 @section('content')
@@ -115,40 +164,44 @@
 
     @include('layouts.notifications')
 
-    <div class="portlet light bordered">
+    <div class="portlet light bordered to-block">
         <div class="portlet-title">
             <div class="caption">
-                <span class="caption-subject font-blue sbold uppercase">Outlet List</span>
+                <span class="caption-subject font-blue sbold uppercase">Outlet Different Price</span>
             </div>
         </div>
         <div class="portlet-body form">
-            <div class=" table-responsive is-container">
-                <div class="row">
-                    <div class="col-md-offset-9 col-md-3">
+            <div class="row">
+                <div class="col-md-offset-9 col-md-3">
+                    <form class="filter-form">
                         <div class="form-group">
                             <div class="input-group">
                                 <input type="text" class="form-control search-field" name="keyword" placeholder="Search">
                                 <div class="input-group-btn">
-                                    <button class="btn blue search-btn"><i class="fa fa-search"></i></button>
+                                    <button class="btn blue search-btn" type="submit"><i class="fa fa-search"></i></button>
                                 </div>
                             </div>
                         </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <h3 class="text-center bold">Global Price</h3>
+                    <div class="form-group">
+                        <select name="" id="global-price" class="multiple-select form-control" multiple></select>
                     </div>
                 </div>
-                <div class="table-infinite">
-                    <table class="table table-striped" id="tableTrx" data-template="differentprice"  data-page="0" data-is-loading="0" data-is-last="0" data-url="{{url()->current()}}" data-callback="updater" data-order="promo_campaign_referral_transactions.created_at" data-sort="asc">
-                        <thead>
-                            <tr>
-                                <th style="width: 1%" class="text-center">No</th>
-                                <th>Outlet</th>
-                                <th style="width: 120px">Different Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                <div class="col-md-2" style="margin-top: 33vh">
+                    <button class="btn blue btn-block text-center" id="btn-to-different"><i class="fa fa-arrow-right"></i></button>
+                    <button class="btn blue btn-block text-center" id="btn-to-global"><i class="fa fa-arrow-left"></i></button>
                 </div>
-                <div><span class="text-muted">Total record: </span><span class="total-record"></span></div>
+                <div class="col-md-5">
+                    <h3 class="text-center bold">Different Price</h3>
+                    <div class="form-group">
+                        <select name="" id="different-price" class="multiple-select form-control" multiple></select>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
