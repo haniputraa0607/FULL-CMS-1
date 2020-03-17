@@ -706,6 +706,21 @@ class MyHelper
     }
     return $result;
   }
+  /**
+   * get Excel coumn name from number
+   * @param Integer number of column (ex. 1)
+   * @return String Excel column name (ex. A)
+   */
+  public static function getNameFromNumber($num) {
+      $numeric = ($num - 1) % 26;
+      $letter = chr(65 + $numeric);
+      $num2 = intval($num / 26);
+      if ($num2 > 0) {
+          return getNameFromNumber($num2 - 1) . $letter;
+      } else {
+          return $letter;
+      }
+  }
 }
 
 ?>
