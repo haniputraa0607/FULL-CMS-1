@@ -330,21 +330,21 @@ class ProductGroupController extends Controller
                     $data['products'] = [
                         [
                             'product_category_name' => 'Snacks',
-                            'product_category_position' => '1',
+                            'product_group_position' => '1',
                             'product_group_code' => '001',
                             'product_group_name' => 'Product 1',
                             'product_group_description' => 'Example product 1'
                         ],
                         [
                             'product_category_name' => 'Snacks',
-                            'product_category_position' => '2',
+                            'product_group_position' => '2',
                             'product_group_code' => '002',
                             'product_group_name' => 'Product 2',
                             'product_group_description' => 'Example product 2'
                         ],
                         [
                             'product_category_name' => 'Drinks',
-                            'product_category_position' => '1',
+                            'product_group_position' => '1',
                             'product_group_code' => '003',
                             'product_group_name' => 'Product 3',
                             'product_group_description' => 'Example product 3'
