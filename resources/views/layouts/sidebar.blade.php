@@ -492,6 +492,26 @@
 						</a>
 					</li>
 					@endif
+					@if(MyHelper::hasAccess([215], $grantedFeature))
+					<li class="nav-item {{(strpos($submenu_active , 'product-group-import') !== false) ? 'active open' : ''}}">
+						<a href="javascript:;" class="nav-link nav-toggle">
+							<span class="title">Export & Import</span>
+							<span class="arrow"></span>
+						</a>
+						<ul class="sub-menu">
+							<li class="nav-item {{($submenu_active == 'product-group-import-global') ? 'active open' : ''}}">
+								<a href="{{url('product-variant/group/import/global')}}" class="nav-link ">
+									<span class="title">Global</span>
+								</a>
+							</li>
+							<li class="nav-item {{($submenu_active == 'product-group-import-detail') ? 'active open' : ''}}">
+								<a href="{{url('product-variant/group/import/detail')}}" class="nav-link ">
+									<span class="title">Product Detail</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+					@endif
 					@if(MyHelper::hasAccess([217], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-group-list') ? 'active open' : ''}}">
 						<a href="{{url('product-variant/group')}}" class="nav-link ">
