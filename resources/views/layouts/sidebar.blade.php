@@ -379,7 +379,7 @@
 			</li>
 			@endif
 
-			@if(MyHelper::hasAccess([43,45,48,50,56,57], $grantedFeature))
+			@if(MyHelper::hasAccess([43,45,48,50,56,57,238,241], $grantedFeature))
 			<li class="nav-item {{($menu_active == 'product') ? 'active' : ''}}">
 				<a href="javascript:;" class="nav-link nav-toggle">
 					<i class="icon-wallet"></i>
@@ -398,6 +398,20 @@
 					<li class="nav-item {{($submenu_active == 'product-category-list') ? 'active open' : ''}}">
 						<a href="{{url('product/category')}}" class="nav-link ">
 							<span class="title">Category List</span>
+						</a>
+					</li>
+					@endif
+					@if(MyHelper::hasAccess([241], $grantedFeature))
+					<li class="nav-item {{($submenu_active == 'product-promo-category-new') ? 'active open' : ''}}">
+						<a href="{{url('product/promo-category/create')}}" class="nav-link ">
+							<span class="title">New Promo Category</span>
+						</a>
+					</li>
+					@endif
+					@if(MyHelper::hasAccess([238], $grantedFeature))
+					<li class="nav-item {{($submenu_active == 'product-promo-category-list') ? 'active open' : ''}}">
+						<a href="{{url('product/promo-category')}}" class="nav-link ">
+							<span class="title">Promo Category List</span>
 						</a>
 					</li>
 					@endif

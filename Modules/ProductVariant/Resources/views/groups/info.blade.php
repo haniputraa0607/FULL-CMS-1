@@ -16,8 +16,22 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <select name="id_product_category" class="select2 form-control" data-placeholder="Select category" required>
+                                        <option value="0">Uncategorized</option>
                                         @foreach($categories as $category)
                                         <option value="{{$category['id_product_category']}}" @if($product_group['id_product_category'] == $category['id_product_category']) selected @endif>{{$category['product_category_name']}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-md-4 text-right control-label">Promo Category</label>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <select name="id_product_promo_category[]" class="select2 form-control" data-placeholder="Select category" multiple>
+                                        <option value=""></option>
+                                        @foreach($promo_categories as $category)
+                                        <option value="{{$category['id_product_promo_category']}}" @if(in_array($category['id_product_promo_category'],$product_group['promo_category'])) selected @endif>{{$category['product_promo_category_name']}}</option>
                                         @endforeach
                                     </select>
                                 </div>
