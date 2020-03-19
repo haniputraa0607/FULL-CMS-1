@@ -540,6 +540,11 @@
 							<span class="title">Manage Position</span>
 						</a>
 					</li>
+					<li class="nav-item {{($submenu_active == 'product-group-manage-category') ? 'active open' : ''}}">
+						<a href="{{url('product-variant/group/category')}}" class="nav-link ">
+							<span class="title">Manage Product Category</span>
+						</a>
+					</li>
 					@endif
 
 					@if(MyHelper::hasAccess([215], $grantedFeature))

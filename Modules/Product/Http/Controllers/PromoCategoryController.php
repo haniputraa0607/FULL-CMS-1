@@ -141,9 +141,9 @@ class PromoCategoryController extends Controller
         $post['id_product_promo_category'] = $id;
         $update = MyHelper::post('product/promo-category/assign',$post);
         if(($update['status']??false) == 'success'){
-            return back()->with('success',['Update data success']);
+            return redirect("product/promo-category/$id#products")->with('success',['Update data success']);
         }else{
-            return back()->withInput()->withErrors($update['messages']??['Update data fail']);
+            return redirect("product/promo-category/$id#products")->withInput()->withErrors($update['messages']??['Update data fail']);
         }
     }
 }

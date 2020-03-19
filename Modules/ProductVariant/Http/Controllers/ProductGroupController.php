@@ -397,7 +397,7 @@ class ProductGroupController extends Controller
      */
     public function importView(Request $request,$type) {
         $data = [
-            'title'          => 'Product',
+            'title'          => 'Complex Menu',
             'sub_title'      => 'Import Product',
             'menu_active'    => 'product-variant',
             'submenu_active' => 'product-group-import',
@@ -426,5 +426,39 @@ class ProductGroupController extends Controller
         }
 
         return view('productvariant::groups.import',$data);
+    }
+
+    /**
+     * Manage Product Category
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function category(Request $request) {
+        $data = [
+            'title'          => 'Complex Menu',
+            'sub_title'      => 'Manage Category',
+            'menu_active'    => 'product-variant',
+            'submenu_active' => 'product-group-manage-category'
+        ];
+
+        $data['categories'] = MyHelper::get('product/category/be/list')['result']??[];
+        $data['all_category'] = array_column($data['categories'], 'id_product_category');
+        $data['products'] = MyHelper::post('product-variant/group',['target'=>'manage_category'])['result']??[];
+        return view('productvariant::groups.manage-category',$data);
+    }
+
+    /**
+     * Manage Product Category
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function categoryUpdate(Request $request) {
+        $post = $request->except('_token');
+        $update = MyHelper::post('product-variant/group/category/update',$post);
+        if(($update['status']??false) == 'success'){
+            return back()->with('success',['Success update category']);
+        }else{
+            return back()->withErrors($update['messages']??['Failed update category'])->withInput();
+        }
     }
 }
