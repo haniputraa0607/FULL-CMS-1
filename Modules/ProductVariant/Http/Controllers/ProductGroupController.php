@@ -161,12 +161,14 @@ class ProductGroupController extends Controller
             'submenu_active' => 'product-group-list',
         ];
         $data['categories'] = MyHelper::get('product/category/be/list')['result']??[];
+        $data['promo_categories'] = MyHelper::get('product/promo-category')['result']??[];
         $product_group = MyHelper::post('product-variant/group/detail',['id_product_group'=>$id])['result']??[];
         $variants = array_map(function($var){
             $var['variants'] = explode(',', $var['variants']);
             return $var;
         }, $product_group['variants']);
         $product_group['variants'] = $variants;
+        $product_group['promo_category'] = array_column($product_group['promo_category'], 'id_product_promo_category');
         $data['product_group'] = $product_group;
         $data['variants_tree'] = MyHelper::get('product-variant/tree')['result']??[];
         $data['products'] = MyHelper::post('product-variant/available-product',['id_product_group'=>$id])['result']??[];

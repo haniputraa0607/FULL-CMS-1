@@ -61,6 +61,7 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'product'
 		Route::post('reorder', ['middleware' => ['feature_control:240'], 'uses' => 'PromoCategoryController@reorder']);
     	Route::get('{id}', ['middleware' => 'feature_control:239', 'uses' => 'PromoCategoryController@show']);
     	Route::post('{id}', ['middleware' => 'feature_control:240', 'uses' => 'PromoCategoryController@update']);
+		Route::post('{id}/assign', ['middleware' => ['feature_control:240'], 'uses' => 'PromoCategoryController@assign']);
 	});
 
 	/**

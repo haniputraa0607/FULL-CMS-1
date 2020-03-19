@@ -32,7 +32,7 @@ class PromoCategoryController extends Controller
     public function indexAjax(Request $request)
     {
         $post = $request->except('_token');
-        $raw_data = MyHelper::post('product/promo-category',$post);
+        $raw_data = MyHelper::post('product/promo-category',$post)['result']??[];
         $data['data'] = $raw_data['data'];
         $data['total'] = $raw_data['total']??0;
         $data['from'] = $raw_data['from']??0;
@@ -86,9 +86,14 @@ class PromoCategoryController extends Controller
             'menu_active'    => 'product',
             'submenu_active' => 'product-promo-category-list',
         ];
-        $data['promo_category'] = MyHelper::post('product/promo-category/show',['id_product_promo_category'=>$id])['result'];
-        if(!$data['promo_category']){
+        $raw_data = MyHelper::post('product/promo-category/show',['id_product_promo_category'=>$id])['result']??[];
+        if(!$raw_data){
             return abort(404);
+        }
+        $data['promo_category'] = $raw_data['info'];
+        $data['products'] = [];
+        foreach ($raw_data['products'] as $product) {
+            $data['products'][$product['product_group_code']??$product['product_code']] = $product;
         }
         return view('product::promo_category.show',$data);
     }
@@ -123,6 +128,22 @@ class PromoCategoryController extends Controller
             return back()->with('success',['Delete data success']);
         }else{
             return back()->withInput()->withErrors($update['messages']??['Delete data fail']);
+        }
+    }
+
+    /**
+     * Assign products to promo categories
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function assign(Request $request,$id) {
+        $post = $request->except('_token');
+        $post['id_product_promo_category'] = $id;
+        $update = MyHelper::post('product/promo-category/assign',$post);
+        if(($update['status']??false) == 'success'){
+            return back()->with('success',['Update data success']);
+        }else{
+            return back()->withInput()->withErrors($update['messages']??['Update data fail']);
         }
     }
 }

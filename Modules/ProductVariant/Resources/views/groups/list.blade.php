@@ -46,7 +46,7 @@ $configs            = session('configs');
                     <td>
                       <div style="width: 75px">
                         <form action="{{url('product-variant/group/delete')}}" class="form-inline" method="POST">
-                          <a href="{{url('product-variant/group')}}/${item.id_product_group}" class="btn btn-sm blue"><i class="fa fa-pencil"></i></a>
+                          <a href="{{url('product-variant/group')}}/${item.id_product_group}" target="_blank" class="btn btn-sm blue"><i class="fa fa-pencil"></i></a>
                           @csrf
                           <input type="hidden" name="id_product_group" value="${item.id_product_group}">
                           <button class="btn btn-sm red deleteBtn" data-toggle="confirmation" data-title="Are you sure delete this product group?" type="submit"><i class="fa fa-trash-o"></i></button>
@@ -119,26 +119,6 @@ $configs            = session('configs');
                         </tr>
                     </thead>
                     <tbody>
-                        @php $no = 1; @endphp
-                        @foreach($product_groups??[] as $group)
-                        <tr>
-                            <td class="text-center">{{$no}} @php $no++ @endphp</td>
-                            <td>{{$group['product_group_code']}}</td>
-                            <td>{{$group['product_category']['product_category_name']}}</td>
-                            <td>{{$group['product_group_name']}}</td>
-                            <td>{{$group['products_count']}}</td>
-                            <td>
-                              <div class="btn-group" style="width: 62px;">
-                                <a href="{{url('product-variant/group/'.$group['id_product_group'])}}" class="btn btn-sm blue"><i class="fa fa-pencil"></i></a>
-                                <form action="{{url('product-variant/group/delete')}}" class="form-inline" method="POST">
-                                  @csrf
-                                  <input type="hidden" name="id_product_group" value="{{$group['id_product_group']}}">
-                                  <button class="btn btn-sm red deleteBtn" data-toggle="confirmation" data-title="Are you sure delete this product group?" type="submit"><i class="fa fa-trash-o"></i></button>
-                                </form>
-                              </div>
-                            </td>
-                        </tr>
-                        @endforeach
                     </tbody>
                 </table>
             </div>

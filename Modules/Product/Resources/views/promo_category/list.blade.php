@@ -44,7 +44,7 @@ $configs            = session('configs');
                     <td>
                       <div>
                         <form action="{{url('product/promo-category/delete')}}" class="form-inline" method="POST">
-                          <a href="{{url('product/promo-category')}}/${item.id_product_promo_category}" class="btn btn-sm blue"><i class="fa fa-pencil"></i></a>
+                          <a href="{{url('product/promo-category')}}/${item.id_product_promo_category}" target="_blank" class="btn btn-sm blue"><i class="fa fa-pencil"></i></a>
                           @csrf
                           <input type="hidden" name="id_product_promo_category" value="${item.id_product_promo_category}">
                           <button class="btn btn-sm red deleteBtn" data-toggle="confirmation" data-title="Are you sure delete this product category?" type="submit"><i class="fa fa-trash-o"></i></button>
