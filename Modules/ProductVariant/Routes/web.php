@@ -22,6 +22,8 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'product-
 	    Route::post('/delete', ['middleware' => 'feature_control:219', 'uses' => 'ProductGroupController@destroy']);
 	    Route::get('/reorder', ['middleware' => 'feature_control:220', 'uses' => 'ProductGroupController@reorder']);
 	    Route::post('/reorder', ['middleware' => 'feature_control:220', 'uses' => 'ProductGroupController@reorderAjax']);
+	    Route::get('/category', ['middleware' => 'feature_control:220', 'uses' => 'ProductGroupController@category']);
+	    Route::post('/category', ['middleware' => 'feature_control:220', 'uses' => 'ProductGroupController@categoryUpdate']);
 		Route::post('export/{type}', ['middleware' => ['feature_control:220'], 'uses' => 'ProductGroupController@export']);
 		Route::post('import/{type}', ['middleware' => ['feature_control:220'], 'uses' => 'ProductGroupController@import']);
 		Route::get('import/{type}', ['middleware' => ['feature_control:220'], 'uses' => 'ProductGroupController@importView']);
