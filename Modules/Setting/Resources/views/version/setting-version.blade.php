@@ -180,7 +180,7 @@
                                                         <div class="input-group">
                                                             <select name="IOS[0][rules]" class="form-control" placeholder="Rules For Different Verion" required>
                                                                 <option disabled selected value="">Rules For Different Verion</option>
-                                                                <option value="1">Alowed</option>
+                                                                <option value="1">Allowed</option>
                                                                 <option value="0">Not Allowed</option>
                                                             </select>
                                                             <span class="input-group-addon">
@@ -256,7 +256,7 @@
                                                         <div class="input-group">
                                                             <select name="OutletApp[0][rules]" class="form-control" placeholder="Rules For Different Verion" required="">
                                                                 <option disabled selected value="">Rules For Different Verion</option>
-                                                                <option value="1">Alowed</option>
+                                                                <option value="1">Allowed</option>
                                                                 <option value="0">Not Allowed</option>
                                                             </select>
                                                             <span class="input-group-addon">
@@ -537,7 +537,7 @@
                                             '<div class="input-group">'+
                                                 '<select name="'+id+'['+number+'][rules]" class="form-control" placeholder="Rules For Different Verion" required>'+
                                                     '<option disabled selected value="">Rules For Different Version</option>'+
-                                                    '<option '+allow+' value="1">Alowed</option>'+
+                                                    '<option '+allow+' value="1">Allowed</option>'+
                                                     '<option '+not_allow+' value="0">Not Allowed</option>'+
                                                 '</select>'+
                                                 '<span class="input-group-addon">'+
@@ -603,7 +603,7 @@
                                             '<div class="input-group">'+
                                                 '<select name="'+id+'['+number+'][rules]" class="form-control" placeholder="Rules For Different Verion" required>'+
                                                     '<option disabled selected value="">Rules For Different Version</option>'+
-                                                    '<option value="1">Alowed</option>'+
+                                                    '<option value="1">Allowed</option>'+
                                                     '<option value="0">Not Allowed</option>'+
                                                 '</select>'+
                                                 '<span class="input-group-addon">'+
