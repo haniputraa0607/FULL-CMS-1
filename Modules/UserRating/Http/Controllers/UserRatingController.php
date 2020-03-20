@@ -255,4 +255,51 @@ class UserRatingController extends Controller
         $data['date_end'] = date('d F Y',strtotime($date_end));
         return view('userrating::report_outlet_detail',$data+$post);
     }
+    public function autoresponse(Request $request) {
+        $post = $request->except('_token');
+        if(!empty($post)){
+            if (isset($post['max_rating_value'])) {
+                MyHelper::post('setting/update2',[
+                    'update'=>[
+                        'response_max_rating_value'=>['value',$post['max_rating_value']]
+                    ]
+                ]);
+                unset($post['max_rating_value']);
+            }
+
+            if (isset($post['autocrm_push_image'])) {
+                $post['autocrm_push_image'] = MyHelper::encodeImage($post['autocrm_push_image']);
+            }
+
+            if (isset($post['whatsapp_content'])) {
+                foreach($post['whatsapp_content'] as $key => $content){
+                    if($content['content'] || isset($content['content_file']) && $content['content_file']){
+                        if($content['content_type'] == 'image'){
+                            $post['whatsapp_content'][$key]['content'] = MyHelper::encodeImage($content['content']);
+                        }
+                        else if($content['content_type'] == 'file'){
+                            $post['whatsapp_content'][$key]['content'] = base64_encode(file_get_contents($content['content_file']));
+                            $post['whatsapp_content'][$key]['content_file_name'] = pathinfo($content['content_file']->getClientOriginalName(), PATHINFO_FILENAME);
+                            $post['whatsapp_content'][$key]['content_file_ext'] = pathinfo($content['content_file']->getClientOriginalName(), PATHINFO_EXTENSION);
+                            unset($post['whatsapp_content'][$key]['content_file']);
+                        }
+                    }
+                }
+            }
+
+            $query = MyHelper::post('autocrm/update', $post);
+            // print_r($query);exit;
+            return back()->withSuccess(['Response updated']);
+        }
+        $data = [ 'title'             => 'User Rating Auto Response',
+                  'menu_active'       => 'user-rating',
+                  'submenu_active'    => 'user-rating-response',
+                  'subject'           => 'user-rating'
+                ];
+        $data['max_rating_value'] = MyHelper::post('setting',['key' => 'response_max_rating_value'])['result']['value']??2;
+        $data['textreplaces'] = MyHelper::get('autocrm/textreplace')['result']??[];
+        $data['data'] = MyHelper::post('autocrm/list',['autocrm_title'=>'User Rating'])['result']??[];
+        $data['custom'] = explode(';',$data['data']['custom_text_replace']);
+        return view('userrating::response',$data);
+    }
 }
