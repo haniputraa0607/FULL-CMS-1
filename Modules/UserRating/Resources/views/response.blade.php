@@ -587,8 +587,8 @@ $configs = session('configs');
 		<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
 			<div class="form-body">
 				<div class="form-inline">
-					<p>Forward will be sent when the user gives a rating with the rating value below 
-						<input name="max_rating_value" class="form-control" style="width: 100px" type="number" value="{{$max_rating_value}}" max="5" required>
+					<p>Forward will be sent when the user gives a rating with the rating value below or equal 
+						<input name="max_rating_value" class="form-control" style="width: 100px" type="number" value="{{$max_rating_value}}" max="5" min="1" required>
 					</p>
 				</div>
 				<h4>Forward</h4>
