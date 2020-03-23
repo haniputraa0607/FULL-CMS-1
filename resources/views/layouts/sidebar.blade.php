@@ -947,6 +947,11 @@
 							</a>
 						</li>
 					@endif
+					<li class="nav-item {{($submenu_active == 'user-rating-response') ? 'active open' : ''}}">
+						<a href="{{url('user-rating/autoresponse')}}" class="nav-link ">
+							<span class="title">[Response] User Rating</span>
+						</a>
+					</li>
 				</ul>
 			</li>
 			@endif
