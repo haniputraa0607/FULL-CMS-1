@@ -152,10 +152,13 @@ date_default_timezone_set('Asia/Jakarta');
                 </div>
                 <div class="form-group">
                     <div class="row appender" data-target=".target-text">
-                        <div class="col-md-3" style="margin-bottom:5px;">
-                            <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%value%' with bonus value" data-value="%value%">%value%</span>
+                        <div class="col-md-5" style="margin-bottom:5px;">
+                            <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%benefit_referred%' with recipient bonus value" data-value="%benefit_referred%">%benefit_referred%</span>
                         </div>
-                        <div class="col-md-3" style="margin-bottom:5px;">
+                        <div class="col-md-5" style="margin-bottom:5px;">
+                            <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%benefit_referrer%' with giver bonus value" data-value="%benefit_referrer%">%benefit_referrer%</span>
+                        </div>
+                        <div class="col-md-5" style="margin-bottom:5px;">
                             <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%code%' with promo code" data-value="%code%">%code%</span>
                         </div>
                     </div>
@@ -277,8 +280,11 @@ date_default_timezone_set('Asia/Jakarta');
                                     <div class="form-group">
                                         <textarea type="text" class="form-control" name="referral_messages" id="referral_messages" required>{{old('referral_messages',$setting['referral_messages']??'')}}</textarea><br>
                                         <div class="row appender" data-target="#referral_messages">
-                                            <div class="col-md-3" style="margin-bottom:5px;">
-                                                <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%value%' with bonus value" data-value="%value%">%value%</span>
+                                            <div class="col-md-5" style="margin-bottom:5px;">
+                                                <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%benefit_referred%' with recipient bonus value" data-value="%benefit_referred%">%benefit_referred%</span>
+                                            </div>
+                                            <div class="col-md-5" style="margin-bottom:5px;">
+                                                <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%benefit_referrer%' with giver bonus value" data-value="%benefit_referrer%">%benefit_referrer%</span>
                                             </div>
                                             <div class="col-md-3" style="margin-bottom:5px;">
                                                 <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%code%' with promo code" data-value="%code%">%code%</span>
@@ -320,10 +326,13 @@ date_default_timezone_set('Asia/Jakarta');
                                             </div>
                                             <div class="form-group">
                                                 <div class="row appender" data-target=".target-text">
-                                                    <div class="col-md-3" style="margin-bottom:5px;">
-                                                        <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%value%' with bonus value" data-value="%value%">%value%</span>
+                                                    <div class="col-md-5" style="margin-bottom:5px;">
+                                                        <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%benefit_referred%' with recipient bonus value" data-value="%benefit_referred%">%benefit_referred%</span>
                                                     </div>
-                                                    <div class="col-md-3" style="margin-bottom:5px;">
+                                                    <div class="col-md-5" style="margin-bottom:5px;">
+                                                        <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%benefit_referrer%' with giver bonus value" data-value="%benefit_referrer%">%benefit_referrer%</span>
+                                                    </div>
+                                                    <div class="col-md-5" style="margin-bottom:5px;">
                                                         <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%code%' with promo code" data-value="%code%">%code%</span>
                                                     </div>
                                                 </div>
