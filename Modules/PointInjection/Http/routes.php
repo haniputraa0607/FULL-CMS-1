@@ -12,4 +12,5 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'point-in
     Route::any('/page/{page}', 'PointInjectionController@index');
     Route::any('/review/{id_point_injection}/page/{page}', 'PointInjectionController@review');
     Route::get('/edit/{id_point_injection}/page/{page}', 'PointInjectionController@show');
+    Route::any('/report/{id_point_injection}', 'PointInjectionController@report');
 });

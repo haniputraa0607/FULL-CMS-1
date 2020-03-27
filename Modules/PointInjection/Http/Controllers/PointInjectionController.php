@@ -8,7 +8,8 @@ use Illuminate\Routing\Controller;
 use App\Lib\MyHelper;
 use Session;
 use Excel;
-
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Exports\MultisheetExport;
 class PointInjectionController extends Controller
 {
     /**
@@ -387,5 +388,65 @@ class PointInjectionController extends Controller
         } else {
             return redirect('point-injection')->withErrors($action['message']);
         }
+    }
+
+    public function report(Request $request, $id_point_injection){
+        $post = $request->except('_token');
+        $data = [
+            'title'             => 'Report Point Injection',
+            'menu_active'       => 'point-injection',
+            'submenu_active'    => 'point-injection-report'
+        ];
+        $export = 0;
+        if(isset($post['export'])){
+            $export = 1;
+        }
+
+        if(Session::has('filter-point-inject') && !empty($post) && !isset($post['filter'])){
+            $post = Session::get('filter-point-inject');
+        }else{
+            Session::forget('filter-point-inject');
+        }
+
+        $post['export'] = $export;
+        $post['id_point_injection'] = $id_point_injection;
+        $report = MyHelper::post('point-injection/report?page='.$request->get('page'), $post);
+        if(isset($report['status']) && $report['status'] == 'success'){
+            if(isset($post['export']) && $post['export'] == 1){
+                foreach($report['result'] as $row){
+                    $dt = [
+                        'Name' => $row['name'],
+                        'Phone' => $row['phone'],
+                        'Email' => $row['email'],
+                        'Date Send' => $row['created_at'] == NULL ? '' : date('d M Y H:i', strtotime($row['created_at'])),
+                        'Status' => $row['status'],
+                        'Point Received' => number_format($row['point']),
+                        'Total Point Received' => number_format($row['total_point']),
+                    ];
+                    $arr['All Type'][] = $dt;
+                }
+
+                $dataExport = new MultisheetExport($arr);
+                return Excel::download($dataExport, date('d M Y Hi').'.xls');
+            }else{
+                $data['data']      = $report['result']['data'];
+                $data['total']     = $report['result']['total'];
+                $data['perPage']   = $report['result']['from'];
+                $data['upTo']      = $report['result']['from'] + count($report['result']['data'])-1;
+                $data['paginator'] = new LengthAwarePaginator($report['result']['data'], $report['result']['total'], $report['result']['per_page'], $report['result']['current_page'], ['path' => url()->current()]);
+            }
+        }else {
+            $data['data']          = [];
+            $data['total']     = 0;
+            $data['perPage']   = 0;
+            $data['upTo']      = 0;
+            $data['paginator'] = false;
+        }
+
+        if($post){
+            Session::put('filter-point-inject',$post);
+        }
+
+        return view('pointinjection::report', $data);
     }
 }
