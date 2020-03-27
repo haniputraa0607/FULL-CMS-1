@@ -1479,7 +1479,7 @@
 							<span class="title">New Point Injection</span>
 						</a>
 					</li>
-					<li class="nav-item {{($submenu_active == 'point-injection-create') ? 'active open' : ''}}">
+					<li class="nav-item {{($submenu_active == 'point-injection-list') ? 'active open' : ''}}">
 						<a href="{{url('point-injection')}}" class="nav-link ">
 							<span class="title">List Point Injection</span>
 						</a>
