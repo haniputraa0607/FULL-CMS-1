@@ -420,7 +420,7 @@ class PointInjectionController extends Controller
                         'Email' => $row['email'],
                         'Date Send' => $row['created_at'] == NULL ? '' : date('d M Y H:i', strtotime($row['created_at'])),
                         'Status' => $row['status'],
-                        'Point Received' => number_format($row['point']),
+                        'Total Point' => number_format($row['point']),
                         'Total Point Received' => number_format($row['total_point']),
                     ];
                     $arr['All Type'][] = $dt;
@@ -445,6 +445,15 @@ class PointInjectionController extends Controller
 
         if($post){
             Session::put('filter-point-inject',$post);
+        }
+
+        $detail = MyHelper::post('point-injection/detail', ['id_point_injection' => $id_point_injection]);
+        if(isset($detail['status']) && $detail['status'] == 'success'){
+            $data['detail'] = $detail['result'];
+            $data['detail']['count'] = $detail['count'];
+        }else{
+            $data['detail'] = [];
+            $data['detail']['count'] = 0;
         }
 
         return view('pointinjection::report', $data);
