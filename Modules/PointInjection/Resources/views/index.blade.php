@@ -129,7 +129,7 @@ $grantedFeature     = session('granted_features');
                                             @endif
 											@if(MyHelper::hasAccess([243], $grantedFeature))
 											<li>
-												<a href="{{ url('point-injection/report') }}/{{ $data['id_point_injection'] }}">
+												<a target="_blank" href="{{ url('point-injection/report') }}/{{ $data['id_point_injection'] }}">
 													<i class="fa fa-edit"></i> Report Point Injection </a>
 											</li>
 											@endif
