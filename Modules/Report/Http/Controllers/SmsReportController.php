@@ -94,4 +94,12 @@ class SmsReportController extends Controller
 
         return view('report::sms_report.sms_report', $data);
     }
+
+    public function detailRequest(Request $request)
+    {
+        $post = $request->except('_token');
+        $dt = MyHelper::post('report/sms/detail-request', $post);
+
+        return response()->json($dt);
+    }
 }

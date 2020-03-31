@@ -43,6 +43,17 @@
 			var parameter = "conditions["+index+"][parameter]";
 			document.getElementsByName(parameter)[0].type = 'hidden';
 		}
+
+		if(subject_value == 'status'){
+			var operator = "conditions["+index+"][operator]";
+			var operator_value = document.getElementsByName(operator)[0];
+			for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
+			operator_value.options[operator_value.options.length] = new Option('Success', 'success');
+			operator_value.options[operator_value.options.length] = new Option('Fail', 'fail');
+
+			var parameter = "conditions["+index+"][parameter]";
+			document.getElementsByName(parameter)[0].type = 'hidden';
+		}
 	}
 
 </script>
@@ -104,6 +115,7 @@
 													<option value="phone" @if ($con['subject'] == 'phone') selected @endif>Customer Phone</option>
 													<option value="email" @if ($con['subject'] == 'email') selected @endif>Customer Email</option>
 													<option value="response" @if ($con['subject'] == 'response') selected @endif>Response</option>
+													<option value="status" @if ($con['subject'] == 'status') selected @endif>Status</option>
 												</select>
 											</div>
 											<div class="col-md-4">
@@ -121,6 +133,9 @@
 														<option value="20" @if ($con['operator']  == '20') selected @endif>Invalid Channel</option>
 														<option value="21" @if ($con['operator']  == '21') selected @endif>Token Not Enough</option>
 														<option value="22" @if ($con['operator']  == '22') selected @endif>Token Not Available</option>
+													@elseif($con['subject'] == 'status')
+														<option value="success" @if ($con['operator'] == 'success') selected @endif>Success</option>
+														<option value="fail" @if ($con['operator']  == 'fail') selected @endif>Fail</option>
 													@else
 														<option value="=" @if ($con['operator'] == '=') selected @endif>=</option>
 														<option value="like" @if ($con['operator']  == 'like') selected @endif>Like</option>
@@ -128,7 +143,7 @@
 												</select>
 											</div>
 
-											@if ($con['subject'] == 'response')
+											@if ($con['subject'] == 'response' || $con['subject'] == 'status')
 												<div class="col-md-3">
 													<input type="hidden" placeholder="Keyword" class="form-control" name="parameter" required @if (isset($con['parameter'])) value="{{ $con['parameter'] }}" @endif/>
 												</div>
@@ -156,6 +171,7 @@
 													<option value="phone">Customer Phone</option>
 													<option value="email">Customer Email</option>
 													<option value="response">Response</option>
+													<option value="status">Status</option>
 												</select>
 											</div>
 											<div class="col-md-4">
@@ -188,6 +204,7 @@
 											<option value="phone">Customer Phone</option>
 											<option value="email">Customer Email</option>
 											<option value="response">Response</option>
+											<option value="status">Status</option>
 										</select>
 									</div>
 									<div class="col-md-4">
