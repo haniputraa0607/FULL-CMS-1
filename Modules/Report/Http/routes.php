@@ -39,4 +39,7 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'report',
     // COMPARE REPORT
     Route::any('compare/', [ 'uses' => 'CompareReportController@index']);
     Route::post('compare/ajax', [ 'uses' => 'CompareReportController@ajaxCompareReport']);
+
+    // SMS REPORT
+    Route::any('sms', [ 'uses' => 'SmsReportController@index']);
 });
