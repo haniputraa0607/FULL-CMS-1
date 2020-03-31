@@ -1832,7 +1832,7 @@
 			@endif -->
 		@endif
 
-		@if(MyHelper::hasAccess([125,126,127,128,129], $grantedFeature))
+		@if(MyHelper::hasAccess([125,126,127,128,129,244], $grantedFeature))
 			<li class="heading" style="height: 50px;padding: 25px 15px 10px;">
 				<h3 class="uppercase" style="color: #10704e;font-weight: 600;">Report</h3>
 			</li>
@@ -1891,6 +1891,14 @@
 		</li>
 		@endif
 
+		@if(MyHelper::hasAccess([244], $grantedFeature))
+		<li class="nav-item {{($menu_active == 'report-sms') ? 'active' : ''}}">
+			<a href="{{url('report/sms')}}" class="nav-link nav-toggle">
+				<i class="icon-graph"></i>
+				<span class="title">SMS Report</span>
+			</a>
+		</li>
+		@endif
 	</ul>
 	<!-- END SIDEBAR MENU -->
 	<!-- END SIDEBAR MENU -->
