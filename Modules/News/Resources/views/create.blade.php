@@ -1,6 +1,7 @@
 <?php
     use App\Lib\MyHelper;
     $grantedFeature     = session('granted_features');
+    $configs    		= session('configs');
  ?>
 @extends('layouts.main-closed')
 
@@ -203,16 +204,22 @@
             <button class=\"btn btn-danger remove-video-btn\" type=\"button\" data-id=\"%id%\"><i class=\"fa fa-times\"></i></button>\
           </span>\
         </div>";
+        var video_template_2= "<input name=\"news_video[]\" type=\"url\" class=\"form-control featureVideoForm video-content\" id=\"newsVideo%id%\" placeholder=\"Example: https://www.youtube.com/watch?v=u9_2wWSOQ\" value=\"%value%\"  data-id=\"%id%\" required>";
 
         function drawVideo(){
           if(video.length<=0){
             return addVideo();
           }
           var html="";
+          @if(MyHelper::hasAccess([106], $configs))
           video.forEach(function(vrb,id){
-            console.log(vrb);
             html+=video_template.replace(/%id%/g,id).replace('%value%',vrb);
           });
+          @else
+          video.forEach(function(vrb,id){
+              html+=video_template_2.replace(/%id%/g,id).replace('%value%',vrb);
+          });
+          @endif
           $('#video-container').html(html);
         }
 
@@ -1084,9 +1091,11 @@
                                     <label class="control-label">Link Video <span class="required" aria-required="true"> * </span> </label>
                                 </div>
                                 <div class="col-md-9" id="video-container"></div>
+                                @if(MyHelper::hasAccess([106], $configs))
                                 <div class="col-md-offset-3 col-md-9" style="margin-top: 10px">
                                   <button class="btn blue" type="button" id="add-video-btn"><i class="fa fa-plus"></i> Add</button>
                                 </div>
+                                @endif
                             </div>
                         </div>
 
