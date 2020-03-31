@@ -42,4 +42,5 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'report',
 
     // SMS REPORT
     Route::any('sms', [ 'uses' => 'SmsReportController@index']);
+    Route::any('sms/detail-request', [ 'uses' => 'SmsReportController@detailRequest']);
 });

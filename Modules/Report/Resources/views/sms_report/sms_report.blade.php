@@ -11,6 +11,7 @@
 	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
 	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
 	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet" type="text/css" />
+	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('page-plugin')
@@ -22,6 +23,7 @@
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/clockface/js/clockface.js') }}" type="text/javascript"></script>
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-repeater/jquery.repeater.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.js') }}" type="text/javascript"></script>
 @endsection
 
 @section('page-script')
@@ -30,6 +32,59 @@
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/scripts/datatable.js') }}" type="text/javascript"></script>
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script>
+	<script type="text/javascript">
+
+		function viewLogDetailRequest(id_log){
+			var token  = "{{ csrf_token() }}";
+			var url = "{{url('report/sms/detail-request')}}";
+
+			$.ajax({
+				type : "POST",
+				url : url,
+				data : {
+					id_log_api_sms : id_log,
+					_token : token
+				},
+				success : function(result) {
+					if (result.status == "success") {
+						var data = result.result;
+						var code = data.response.split('=').pop();
+						var arrStatusCode = {
+							1 :	'Success',
+							2 :	'Missing Parameter',
+							3 :	'Invalid User Id or Password',
+							4 : 'Invalid Message',
+							5 : 'Invalid MSISDN',
+							6 : 'Invalid Sender',
+							7 : 'Client’s IP Address is not allowed',
+							8 : 'Internal Server Error',
+							9 : 'Invalid division',
+							20 : 'Invalid Channel',
+							21: 'Token Not Enough',
+							22:'Token Not Available',
+						};
+
+						if(code == 1){
+							var status = 'Success';
+						}else{
+							var status = 'Fail';
+						}
+						document.getElementById("log-url").value = data.request_url;
+						document.getElementById("log-status").value = status;
+						document.getElementById("log-request").innerHTML = JSON.stringify(JSON.parse(data.request_body), null, 4);
+						document.getElementById("log-response").innerHTML = data.response + ' (' + arrStatusCode[code] + ')';
+						$('#logModal').modal('show');
+					}
+					else {
+						toastr.warning('Failed get data');
+					}
+				},
+				error: function (jqXHR, exception) {
+					toastr.warning('Failed get data');
+				}
+			});
+		}
+	</script>
 @endsection
 
 @section('content')
@@ -85,6 +140,7 @@ if(Session::has('filter-report-sms')){
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 		<tr>
+			<th scope="col"> Status </th>
 			<th scope="col"> Name </th>
 			<th scope="col"> Phone </th>
 			<th scope="col"> Email </th>
@@ -97,15 +153,24 @@ if(Session::has('filter-report-sms')){
 		<tbody>
 			@if(!empty($data))
 				@foreach($data as $val)
-					<tr>
+					<?php
+					$code = substr($val['response'], strpos($val['response'], "=") + 1);
+					if($code == 1){
+						$status = 'Success';
+						echo '<tr>';
+					}else{
+						echo '<tr style="color:red;">';
+						$status = 'Fail';
+					}
+					?>
+						<td>{{$status}}</td>
 						<td>{{$val['name']}}</td>
 						<td>{{$val['phone']}}</td>
 						<td>{{$val['email']}}</td>
 						<td>{{$val['request_url']}}</td>
-						<?php
-							$decode = json_decode($val['request_body']);
-						?>
-						<td width="30%">{{json_encode($decode, JSON_PRETTY_PRINT)}}</td>
+						<td>
+							<a class="btn btn-block green btn-xs" onClick="viewLogDetailRequest('{{$val['id_log_api_sms']}}')"> Detail Request </a>
+						</td>
 						<?php
 							$statusCodes = [
 									1  => 'Success',
@@ -135,3 +200,39 @@ if(Session::has('filter-report-sms')){
 	</table>
 </div>
 @endsection
+
+<div class="modal fade" id="logModal" tabindex="-1" role="basic" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h4 class="modal-title">Request & Response Detail</h4>
+			</div>
+			<div class="modal-body form">
+				<form role="form">
+					<div class="form-body">
+						<div class="form-group">
+							<label>URL</label>
+							<input type="text" class="form-control" readonly id="log-url">
+						</div>
+						<div class="form-group">
+							<label>Status</label>
+							<input type="text" class="form-control" readonly id="log-status">
+						</div>
+						<div class="form-group">
+							<label>Request</label>
+							<textarea class="form-control" rows="4" readonly id="log-request"></textarea>
+						</div>
+						<div class="form-group">
+							<label>Response</label>
+							<textarea class="form-control" rows="4" readonly id="log-response"></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
