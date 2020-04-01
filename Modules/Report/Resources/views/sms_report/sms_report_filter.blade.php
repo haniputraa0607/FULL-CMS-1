@@ -238,6 +238,7 @@
 					<div class="col-md-4">
 						{{ csrf_field() }}
 						<button type="submit" class="btn yellow"><i class="fa fa-search"></i> Search</button>
+						<a class="btn green" href="{{url()->current()}}">Reset</a>
 					</div>
 				</div>
 			</div>
