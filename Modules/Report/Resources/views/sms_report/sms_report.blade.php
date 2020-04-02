@@ -173,6 +173,7 @@
 		<table class="table table-striped table-bordered table-hover">
 			<thead>
 			<tr>
+				<th scope="col"> Date Send </th>
 				<th scope="col"> Status </th>
 				<th scope="col"> Name </th>
 				<th scope="col"> Phone </th>
@@ -180,7 +181,6 @@
 				<th width="30%"> Request URL </th>
 				<th scope="col"> Request Body </th>
 				<th scope="col"> Response </th>
-				<th scope="col"> Date Send </th>
 			</tr>
 			</thead>
 			<tbody>
@@ -196,6 +196,7 @@
 							$status = 'Fail';
 						}
 						?>
+							<td>{{date('d F Y H:i', strtotime($val['created_at']))}}</td>
 							<td>{{$status}}</td>
 							<td>{{$val['name']}}</td>
 							<td>{{$val['phone']}}</td>
@@ -223,7 +224,6 @@
 								$code = substr($val['response'], strpos($val['response'], "=") + 1);
 								echo '<td>'.$val['response'].'<br>('.$statusCodes[$code].')</td>';
 							?>
-							<td>{{date('d F Y H:i', strtotime($val['created_at']))}}</td>
 						</tr>
 					@endforeach
 				@else

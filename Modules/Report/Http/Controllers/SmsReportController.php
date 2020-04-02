@@ -60,13 +60,13 @@ class SmsReportController extends Controller
 
                     $code = substr($row['response'], strpos($row['response'], "=") + 1);
                     $dt = [
+                        'Date Send' => $row['created_at'] == NULL ? '' : date('d M Y H:i', strtotime($row['created_at'])),
                         'Name' => $row['name'],
                         'Phone' => $row['phone'],
                         'Email' => $row['email'],
                         'Request URL' => $row['request_url'],
                         'Request Body' => $row['request_body'],
-                        'Request Response' => $row['response'].' - ('.$statusCodes[$code].')',
-                        'Date Send' => $row['created_at'] == NULL ? '' : date('d M Y H:i', strtotime($row['created_at']))
+                        'Request Response' => $row['response'].' - ('.$statusCodes[$code].')'
                     ];
                     $arr['All Type'][] = $dt;
                 }
