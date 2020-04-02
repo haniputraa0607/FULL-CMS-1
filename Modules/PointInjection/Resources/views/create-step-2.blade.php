@@ -323,6 +323,11 @@
 							</div>
 						</div>
 						@endif
+						<div class="row static-info">
+							<div class="col-md-12 value">
+								<a class="btn blue col-md-12" target="_blank" href="{{ url('point-injection/report') }}/{{ $result['id_point_injection'] }}">Report Point Injection</a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
