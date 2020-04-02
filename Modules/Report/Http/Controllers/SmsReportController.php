@@ -102,4 +102,10 @@ class SmsReportController extends Controller
 
         return response()->json($dt);
     }
+
+    function checkPin(Request $request){
+        $post = $request->except('_token');
+        $checkpin = MyHelper::post('users/pin/check-backend', array('phone' => Session::get('phone'), 'pin' => $post['pin'], 'admin_panel' => 1));
+        return response()->json($checkpin);
+    }
 }

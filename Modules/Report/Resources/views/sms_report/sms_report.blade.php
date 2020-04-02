@@ -4,7 +4,6 @@
  ?>
  @extends('layouts.main')
 
-
 @section('page-style')
 	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
 	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
@@ -33,6 +32,40 @@
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script>
 	<script type="text/javascript">
+		function showModalPin(id_log) {
+			$('input[name=pin]').val('');
+			$('#psModal').modal('show');
+			$('#id_log').val(id_log);
+		}
+
+		function checkPin() {
+			var id_log = $('#id_log').val();
+			var pin = $('input[name=pin]').val();
+
+			var token  = "{{ csrf_token() }}";
+			var url = "{{url('report/sms/detail-request/checkpin')}}";
+
+			$.ajax({
+				type : "POST",
+				url : url,
+				data : {
+					pin : pin,
+					_token : token
+				},
+				success : function(result) {
+					if (result.status == "success") {
+						$('#psModal').modal('hide');
+						viewLogDetailRequest(id_log);
+					}
+					else {
+						toastr.warning('Incorect Pin');
+					}
+				},
+				error: function (jqXHR, exception) {
+					toastr.warning('Failed check pin');
+				}
+			});
+		}
 
 		function viewLogDetailRequest(id_log){
 			var token  = "{{ csrf_token() }}";
@@ -88,151 +121,171 @@
 @endsection
 
 @section('content')
-<div class="page-bar">
-	<ul class="page-breadcrumb">
-		<li>
-			<a href="{{url('/')}}">Home</a>
-		</li>
-	</ul>
-</div>
-@include('layouts.notifications')
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li>
+				<a href="{{url('/')}}">Home</a>
+			</li>
+		</ul>
+	</div>
+	@include('layouts.notifications')
 
-<br>
-<h1 class="page-title" style="margin-top: 0px;">
-	{{$sub_title}}
-</h1>
+	<br>
+	<h1 class="page-title" style="margin-top: 0px;">
+		{{$sub_title}}
+	</h1>
 
-<?php
-$date_start = '';
-$date_end = '';
+	<?php
+	$date_start = '';
+	$date_end = '';
 
-if(Session::has('filter-report-sms')){
-	$search_param = Session::get('filter-report-sms');
-	if(isset($search_param['date_start'])){
-		$date_start = $search_param['date_start'];
+	if(Session::has('filter-report-sms')){
+		$search_param = Session::get('filter-report-sms');
+		if(isset($search_param['date_start'])){
+			$date_start = $search_param['date_start'];
+		}
+
+		if(isset($search_param['date_end'])){
+			$date_end = $search_param['date_end'];
+		}
+
+		if(isset($search_param['rule'])){
+			$rule = $search_param['rule'];
+		}
+
+		if(isset($search_param['conditions'])){
+			$conditions = $search_param['conditions'];
+		}
 	}
+	?>
 
-	if(isset($search_param['date_end'])){
-		$date_end = $search_param['date_end'];
-	}
+	<form role="form" class="form-horizontal" action="{{url()->current()}}?filter=1" method="POST">
+		{{ csrf_field() }}
+		@include('report::sms_report.sms_report_filter')
+	</form>
 
-	if(isset($search_param['rule'])){
-		$rule = $search_param['rule'];
-	}
+	<div @if(!empty($data)) style="text-align: right;" @else style="text-align: right;display: none" @endif>
+		<a class="btn blue" href="{{url()->current()}}?export=1"><i class="fa fa-download"></i> Export to Excel</a>
+	</div>
+	<br>
 
-	if(isset($search_param['conditions'])){
-		$conditions = $search_param['conditions'];
-	}
-}
-?>
-
-<form role="form" class="form-horizontal" action="{{url()->current()}}?filter=1" method="POST">
-	{{ csrf_field() }}
-	@include('report::sms_report.sms_report_filter')
-</form>
-
-<div @if(!empty($data)) style="text-align: right;" @else style="text-align: right;display: none" @endif>
-	<a class="btn blue" href="{{url()->current()}}?export=1"><i class="fa fa-download"></i> Export to Excel</a>
-</div>
-<br>
-
-<div class="table-scrollable">
-	<table class="table table-striped table-bordered table-hover">
-		<thead>
-		<tr>
-			<th scope="col"> Status </th>
-			<th scope="col"> Name </th>
-			<th scope="col"> Phone </th>
-			<th scope="col"> Email </th>
-			<th width="30%"> Request URL </th>
-			<th scope="col"> Request Body </th>
-			<th scope="col"> Response </th>
-			<th scope="col"> Date Send </th>
-		</tr>
-		</thead>
-		<tbody>
-			@if(!empty($data))
-				@foreach($data as $val)
-					<?php
-					$code = substr($val['response'], strpos($val['response'], "=") + 1);
-					if($code == 1){
-						$status = 'Success';
-						echo '<tr>';
-					}else{
-						echo '<tr style="color:red;">';
-						$status = 'Fail';
-					}
-					?>
-						<td>{{$status}}</td>
-						<td>{{$val['name']}}</td>
-						<td>{{$val['phone']}}</td>
-						<td>{{$val['email']}}</td>
-						<td>{{$val['request_url']}}</td>
-						<td>
-							<a class="btn btn-block green btn-xs" onClick="viewLogDetailRequest('{{$val['id_log_api_sms']}}')"> Detail Request </a>
-						</td>
+	<div class="table-scrollable">
+		<table class="table table-striped table-bordered table-hover">
+			<thead>
+			<tr>
+				<th scope="col"> Status </th>
+				<th scope="col"> Name </th>
+				<th scope="col"> Phone </th>
+				<th scope="col"> Email </th>
+				<th width="30%"> Request URL </th>
+				<th scope="col"> Request Body </th>
+				<th scope="col"> Response </th>
+				<th scope="col"> Date Send </th>
+			</tr>
+			</thead>
+			<tbody>
+				@if(!empty($data))
+					@foreach($data as $val)
 						<?php
-							$statusCodes = [
-									1  => 'Success',
-									2  => 'Missing Parameter',
-									3  => 'Invalid User Id or Password',
-									4  => 'Invalid Message',
-									5  => 'Invalid MSISDN',
-									6  => 'Invalid Sender',
-									7  => 'Client’s IP Address is not allowed',
-									8  => 'Internal Server Error',
-									9  => 'Invalid division',
-									20 => 'Invalid Channel',
-									21 => 'Token Not Enough',
-									22 => 'Token Not Available',
-							];
-
-							$code = substr($val['response'], strpos($val['response'], "=") + 1);
-							echo '<td>'.$val['response'].'<br>('.$statusCodes[$code].')</td>';
+						$code = substr($val['response'], strpos($val['response'], "=") + 1);
+						if($code == 1){
+							$status = 'Success';
+							echo '<tr>';
+						}else{
+							echo '<tr style="color:red;">';
+							$status = 'Fail';
+						}
 						?>
-						<td>{{date('d F Y H:i', strtotime($val['created_at']))}}</td>
-					</tr>
-				@endforeach
-			@else
-				<tr style="text-align: center"><td colspan="10">Data No Available</td></tr>
-			@endif
-		</tbody>
-	</table>
-</div>
-@endsection
+							<td>{{$status}}</td>
+							<td>{{$val['name']}}</td>
+							<td>{{$val['phone']}}</td>
+							<td>{{$val['email']}}</td>
+							<td>{{$val['request_url']}}</td>
+							<td>
+								<a class="btn btn-block green btn-xs" onClick="showModalPin('{{$val['id_log_api_sms']}}')"> Detail Request </a>
+							</td>
+							<?php
+								$statusCodes = [
+										1  => 'Success',
+										2  => 'Missing Parameter',
+										3  => 'Invalid User Id or Password',
+										4  => 'Invalid Message',
+										5  => 'Invalid MSISDN',
+										6  => 'Invalid Sender',
+										7  => 'Client’s IP Address is not allowed',
+										8  => 'Internal Server Error',
+										9  => 'Invalid division',
+										20 => 'Invalid Channel',
+										21 => 'Token Not Enough',
+										22 => 'Token Not Available',
+								];
 
-<div class="modal fade" id="logModal" tabindex="-1" role="basic" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-				<h4 class="modal-title">Request & Response Detail</h4>
-			</div>
-			<div class="modal-body form">
-				<form role="form">
-					<div class="form-body">
-						<div class="form-group">
-							<label>URL</label>
-							<input type="text" class="form-control" readonly id="log-url">
+								$code = substr($val['response'], strpos($val['response'], "=") + 1);
+								echo '<td>'.$val['response'].'<br>('.$statusCodes[$code].')</td>';
+							?>
+							<td>{{date('d F Y H:i', strtotime($val['created_at']))}}</td>
+						</tr>
+					@endforeach
+				@else
+					<tr style="text-align: center"><td colspan="10">Data No Available</td></tr>
+				@endif
+			</tbody>
+		</table>
+	</div>
+
+	<div class="modal fade" id="logModal" tabindex="-1" role="basic" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					<h4 class="modal-title">Request & Response Detail</h4>
+				</div>
+				<div class="modal-body form">
+					<form role="form">
+						<div class="form-body">
+							<div class="form-group">
+								<label>URL</label>
+								<input type="text" class="form-control" readonly id="log-url">
+							</div>
+							<div class="form-group">
+								<label>Status</label>
+								<input type="text" class="form-control" readonly id="log-status">
+							</div>
+							<div class="form-group">
+								<label>Request</label>
+								<textarea class="form-control" rows="4" readonly id="log-request"></textarea>
+							</div>
+							<div class="form-group">
+								<label>Response</label>
+								<textarea class="form-control" rows="4" readonly id="log-response"></textarea>
+							</div>
 						</div>
-						<div class="form-group">
-							<label>Status</label>
-							<input type="text" class="form-control" readonly id="log-status">
-						</div>
-						<div class="form-group">
-							<label>Request</label>
-							<textarea class="form-control" rows="4" readonly id="log-request"></textarea>
-						</div>
-						<div class="form-group">
-							<label>Response</label>
-							<textarea class="form-control" rows="4" readonly id="log-response"></textarea>
-						</div>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+
+	<div class="modal fade bs-modal-sm" id="psModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					<h4 class="modal-title">Please Input You'r Pin</h4>
+				</div>
+				<div class="modal-body" style="text-align: center">
+					<div class="form-body">
+						<input type="password" maxlength="6" class="form-control" name="pin">
+						<br>
+						<a type="button" class="btn green" onclick="checkPin()">Submit</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<input type="hidden" id="id_log">
+@endsection
