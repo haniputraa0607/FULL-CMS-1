@@ -2,6 +2,7 @@
 
 Route::group(['middleware' => ['web', 'validate_session', 'config_control:25,26,or'], 'prefix' => 'deals', 'namespace' => 'Modules\Deals\Http\Controllers'], function () {
     Route::any('/', ['middleware' => 'feature_control:72', 'uses' => 'DealsController@deals']);
+    Route::get('/list/active', ['uses' => 'DealsController@listActiveDeals']);
     Route::any('create', ['middleware' => 'feature_control:74', 'uses' => 'DealsController@create']);
     Route::any('step1/{id}', ['middleware' => 'feature_control:74', 'uses' => 'DealsController@step1']);
     Route::any('step2/{id}', ['middleware' => 'feature_control:74', 'uses' => 'DealsController@step2']);

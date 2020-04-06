@@ -1199,211 +1199,214 @@
                                 </div>
                             </div>
                         </div>
-						<!-- BUTTON TO FORM -->
-						<div class="form-group" id="customform">
-							<div class="input-icon right">
-								<label class="col-md-3 control-label">
-								Custom Form
-								<i class="fa fa-question-circle tooltips" data-original-title="Button to Form 'ON' jika news memiliki form yang harus diisi" data-container="body"></i>
-								</label>
-							</div>
-							<div class="col-md-9">
-								<span class="m-switch">
-									<label>
-									<input name="custom_form_checkbox" type="checkbox" class="make-switch" id="featureForm" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF" @if (!empty(old('news_button_form_text'))) checked @endif>
-									<span></span>
-									</label>
-								</span>
-							</div>
-						</div>
 
-						<div class="form-group featureForm">
-							<label class="col-md-3 control-label"></label>
-							<div class="col-md-9">
-								<div class="col-md-3">
-									<label class="control-label">Button Text <span class="required" aria-required="true"> * </span> </label>
-								</div>
-								<div class="col-md-9">
-									<input type="text" class="form-control featureFormForm" name="news_button_form_text" value="{{ old('news_button_form_text') }}" placeholder="Button to Form text">
-								</div>
-							</div>
-						</div>
-
-						<div class="form-group featureForm">
-							<label class="col-md-3 control-label"></label>
-							<div class="col-md-9">
-								<div class="col-md-3">
-									<label class="control-label">Button Exp <span class="required" aria-required="true"> * </span> </label>
-								</div>
-								<div class="col-md-9">
-									<div class="input-group">
-										<input type="text" class="datepicker form-control featureFormForm field_event" name="news_button_form_expired" value="@if(!empty(old('news_button_form_expired'))){{ date('d-M-Y',strtotime(old('news_button_form_expired'))) }}@endif">
-										<span class="input-group-btn">
-											<button class="btn default" type="button">
-												<i class="fa fa-calendar"></i>
-											</button>
-										</span>
-									</div>
-								</div>
-							</div>
-						</div>
-
-            <div class="form-group featureForm">
-              <label class="col-md-3 control-label"></label>
-              <div class="col-md-9">
-                <div class="col-md-3">
-                  <label class="control-label">Success Msg</label>
-                </div>
-                <div class="col-md-9">
-                  <input type="text" class="form-control field_event" name="news_form_success_message" value="{{ old('news_form_success_message') }}">
-                </div>
-              </div>
-            </div>
-
-						<div class="form-group featureForm">
-							<label class="col-md-3 control-label"></label>
-							<div class="col-md-9">
-								<div class="col-md-12">
-									<div class="form-group mt-repeater">
-										<div data-repeater-list="customform" id="sortable">
-											<div data-repeater-item class="mt-repeater-item mt-overflow" style="border-bottom: 1px #ddd;">
-												<div class="mt-repeater-cell" style="position: relative;">
-                          <div class="sort-icon">
-                            <i class="fa fa-arrows"></i>
-                          </div>
-													<div class="col-md-12">
-                            <div class="col-md-2">
-															<a href="javascript:;" data-repeater-delete class="btn btn-danger mt-repeater-delete mt-repeater-del-right mt-repeater-btn-inline">
-																<i class="fa fa-close"></i>
-															</a>
-														</div>
-														<div class="input-icon right">
-															<div class="col-md-4" style="padding-top: 5px;">
-																Input Name
-																<i class="fa fa-question-circle tooltips" data-original-title="Nama Input pada Form" data-container="body"></i>
-                                <span class="required" aria-required="true"> * </span>
-															</div>
-														</div>
-														<div class="col-md-6" >
-															<div class="input-icon right">
-																<input type="text" name="form_input_label" class="form-control demo featureFormForm">
-															</div>
-														</div>
-													</div>
-													<div class="col-md-12" style="margin-top:20px">
-														<div class="input-icon right">
-															<div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
-																Input Types
-																<i class="fa fa-question-circle tooltips" data-original-title="Tipe inputan user" data-container="body"></i>
-                                <span class="required" aria-required="true"> * </span>
-															</div>
-														</div>
-														<div class="col-md-6" >
-															<select class="form-control form_input_types featureFormForm" name="form_input_types">
-																<option value="Short Text">Short Text</option>
-																<option value="Long Text">Long Text</option>
-																<option value="Number Input">Number Input</option>
-																<option value="Date">Date</option>
-																<option value="Date & Time">Date & Time</option>
-																<option value="Dropdown Choice">Dropdown Choice</option>
-																<option value="Radio Button Choice">Radio Button Choice</option>
-																<option value="Multiple Choice">Multiple Choice</option>
-																<option value="File Upload">File Upload</option>
-																<option value="Image Upload">Image Upload</option>
-															</select>
-														</div>
-													</div>
-													<div class="col-md-12 form_input_options" style="margin-top:20px; display: none;">
-														<div class="input-icon right">
-															<div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
-																Input Options
-																<i class="fa fa-question-circle tooltips" data-original-title="Warna teks nama level pada aplikasi" data-container="body"></i>
-                                <span class="required" aria-required="true"> * </span>
-															</div>
-														</div>
-														<div class="col-md-6" >
-															<div class="input-icon right">
-																<input type="text" name="form_input_options" class="form-control demo tagsinput" data-role="tagsinput" placeholder="comma (,) separated">
-															</div>
-														</div>
-													</div>
-                          <div class="col-md-12 form_input_autofill" style="margin-top:20px;">
-                            <div class="input-icon right">
-                              <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
-                                Input Autofill
-                                <i class="fa fa-question-circle tooltips" data-original-title="Isian otomatis dari data profil user" data-container="body"></i>
-                              </div>
-                            </div>
-                            <div class="col-md-6" >
-                              <div class="input-icon right">
-                                <select class="form-control" name="form_input_autofill">
-                                  <option value="">--None--</option>
-                                  <option value="Name">Name</option>
-                                  <option value="Phone">Phone</option>
-                                  <option value="Email">Email</option>
-                                  <option value="Gender">Gender</option>
-                                  <option value="City">City</option>
-                                  <option value="Birthday">Birthday</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-12" style="margin-top:20px;">
-                            <div class="input-icon right">
-                              <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
-                                Is Required
-                                <i class="fa fa-question-circle tooltips" data-original-title="Apakah wajib diisi?" data-container="body"></i>
-                              </div>
-                            </div>
-                            <div class="col-md-6" >
-                              <div class="input-icon right">
-                                <div class="mt-checkbox-list">
-                                  <label class="mt-checkbox mt-checkbox-outline">
-                                      <input type="checkbox" name="is_required" value="1">
-                                      <span></span>
-                                  </label>
+						@if(MyHelper::hasAccess([107], $configs))
+                            <!-- BUTTON TO FORM -->
+                            <div class="form-group" id="customform">
+                                <div class="input-icon right">
+                                    <label class="col-md-3 control-label">
+                                    Custom Form
+                                    <i class="fa fa-question-circle tooltips" data-original-title="Button to Form 'ON' jika news memiliki form yang harus diisi" data-container="body"></i>
+                                    </label>
                                 </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-12 is_unique" style="margin-top:20px;">
-                            <div class="input-icon right">
-                              <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
-                                Is Unique
-                                <i class="fa fa-question-circle tooltips" data-original-title="Apakah data unik?" data-container="body"></i>
-                              </div>
-                            </div>
-                            <div class="col-md-6" >
-                              <div class="input-icon right">
-                                <div class="mt-checkbox-list">
-                                  <label class="mt-checkbox mt-checkbox-outline">
-                                      <input type="checkbox" name="is_unique" value="1">
-                                      <span></span>
-                                  </label>
+                                <div class="col-md-9">
+                                    <span class="m-switch">
+                                        <label>
+                                        <input name="custom_form_checkbox" type="checkbox" class="make-switch" id="featureForm" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF" @if (!empty(old('news_button_form_text'))) checked @endif>
+                                        <span></span>
+                                        </label>
+                                    </span>
                                 </div>
-
-                              </div>
                             </div>
-                          </div>
 
-												</div>
-											</div>
-										</div>
-										<div class="form-action col-md-12">
-											<div class="col-md-2"></div>
-											<div class="col-md-10">
-												@if(MyHelper::hasAccess([12], $grantedFeature))
-													<a href="javascript:;" data-repeater-create class="btn btn-success mt-repeater-add">
-													<i class="fa fa-plus"></i> Add New Input</a>
-												@endif
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+                            <div class="form-group featureForm">
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-9">
+                                    <div class="col-md-3">
+                                        <label class="control-label">Button Text <span class="required" aria-required="true"> * </span> </label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control featureFormForm" name="news_button_form_text" value="{{ old('news_button_form_text') }}" placeholder="Button to Form text">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group featureForm">
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-9">
+                                    <div class="col-md-3">
+                                        <label class="control-label">Button Exp <span class="required" aria-required="true"> * </span> </label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <input type="text" class="datepicker form-control featureFormForm field_event" name="news_button_form_expired" value="@if(!empty(old('news_button_form_expired'))){{ date('d-M-Y',strtotime(old('news_button_form_expired'))) }}@endif">
+                                            <span class="input-group-btn">
+                                                <button class="btn default" type="button">
+                                                    <i class="fa fa-calendar"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group featureForm">
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-9">
+                                    <div class="col-md-3">
+                                        <label class="control-label">Success Msg</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control field_event" name="news_form_success_message" value="{{ old('news_form_success_message') }}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group featureForm">
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-9">
+                                    <div class="col-md-12">
+                                        <div class="form-group mt-repeater">
+                                            <div data-repeater-list="customform" id="sortable">
+                                                <div data-repeater-item class="mt-repeater-item mt-overflow" style="border-bottom: 1px #ddd;">
+                                                    <div class="mt-repeater-cell" style="position: relative;">
+                                                        <div class="sort-icon">
+                                                            <i class="fa fa-arrows"></i>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="col-md-2">
+                                                                <a href="javascript:;" data-repeater-delete class="btn btn-danger mt-repeater-delete mt-repeater-del-right mt-repeater-btn-inline">
+                                                                    <i class="fa fa-close"></i>
+                                                                </a>
+                                                            </div>
+                                                            <div class="input-icon right">
+                                                                <div class="col-md-4" style="padding-top: 5px;">
+                                                                    Input Name
+                                                                    <i class="fa fa-question-circle tooltips" data-original-title="Nama Input pada Form" data-container="body"></i>
+                                    <span class="required" aria-required="true"> * </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6" >
+                                                                <div class="input-icon right">
+                                                                    <input type="text" name="form_input_label" class="form-control demo featureFormForm">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12" style="margin-top:20px">
+                                                            <div class="input-icon right">
+                                                                <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
+                                                                    Input Types
+                                                                    <i class="fa fa-question-circle tooltips" data-original-title="Tipe inputan user" data-container="body"></i>
+                                    <span class="required" aria-required="true"> * </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6" >
+                                                                <select class="form-control form_input_types featureFormForm" name="form_input_types">
+                                                                    <option value="Short Text">Short Text</option>
+                                                                    <option value="Long Text">Long Text</option>
+                                                                    <option value="Number Input">Number Input</option>
+                                                                    <option value="Date">Date</option>
+                                                                    <option value="Date & Time">Date & Time</option>
+                                                                    <option value="Dropdown Choice">Dropdown Choice</option>
+                                                                    <option value="Radio Button Choice">Radio Button Choice</option>
+                                                                    <option value="Multiple Choice">Multiple Choice</option>
+                                                                    <option value="File Upload">File Upload</option>
+                                                                    <option value="Image Upload">Image Upload</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 form_input_options" style="margin-top:20px; display: none;">
+                                                            <div class="input-icon right">
+                                                                <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
+                                                                    Input Options
+                                                                    <i class="fa fa-question-circle tooltips" data-original-title="Warna teks nama level pada aplikasi" data-container="body"></i>
+                                    <span class="required" aria-required="true"> * </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6" >
+                                                                <div class="input-icon right">
+                                                                    <input type="text" name="form_input_options" class="form-control demo tagsinput" data-role="tagsinput" placeholder="comma (,) separated">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                            <div class="col-md-12 form_input_autofill" style="margin-top:20px;">
+                                <div class="input-icon right">
+                                <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
+                                    Input Autofill
+                                    <i class="fa fa-question-circle tooltips" data-original-title="Isian otomatis dari data profil user" data-container="body"></i>
+                                </div>
+                                </div>
+                                <div class="col-md-6" >
+                                <div class="input-icon right">
+                                    <select class="form-control" name="form_input_autofill">
+                                    <option value="">--None--</option>
+                                    <option value="Name">Name</option>
+                                    <option value="Phone">Phone</option>
+                                    <option value="Email">Email</option>
+                                    <option value="Gender">Gender</option>
+                                    <option value="City">City</option>
+                                    <option value="Birthday">Birthday</option>
+                                    </select>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" style="margin-top:20px;">
+                                <div class="input-icon right">
+                                <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
+                                    Is Required
+                                    <i class="fa fa-question-circle tooltips" data-original-title="Apakah wajib diisi?" data-container="body"></i>
+                                </div>
+                                </div>
+                                <div class="col-md-6" >
+                                <div class="input-icon right">
+                                    <div class="mt-checkbox-list">
+                                    <label class="mt-checkbox mt-checkbox-outline">
+                                        <input type="checkbox" name="is_required" value="1">
+                                        <span></span>
+                                    </label>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 is_unique" style="margin-top:20px;">
+                                <div class="input-icon right">
+                                <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
+                                    Is Unique
+                                    <i class="fa fa-question-circle tooltips" data-original-title="Apakah data unik?" data-container="body"></i>
+                                </div>
+                                </div>
+                                <div class="col-md-6" >
+                                <div class="input-icon right">
+                                    <div class="mt-checkbox-list">
+                                    <label class="mt-checkbox mt-checkbox-outline">
+                                        <input type="checkbox" name="is_unique" value="1">
+                                        <span></span>
+                                    </label>
+                                    </div>
+
+                                </div>
+                                </div>
+                            </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-action col-md-12">
+                                                <div class="col-md-2"></div>
+                                                <div class="col-md-10">
+                                                    @if(MyHelper::hasAccess([12], $grantedFeature))
+                                                        <a href="javascript:;" data-repeater-create class="btn btn-success mt-repeater-add">
+                                                        <i class="fa fa-plus"></i> Add New Input</a>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                     </div>
                 </div>

@@ -938,7 +938,6 @@ class SettingController extends Controller
             // remove click_to index
             unset($post['click_to']);
         }
-
         if(isset($post['banner_start'])){
             $post['banner_start'] = MyHelper::convertDateTime2($post['banner_start']);
         }
