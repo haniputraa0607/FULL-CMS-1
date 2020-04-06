@@ -7,13 +7,14 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\URL;
 
 use App\Lib\MyHelper;
 use Session;
 
 class TransactionController extends Controller
 {
-	
+
 	public function banksList(Request $request){
 		$data = [
             'title'          => 'Bank List',
@@ -21,7 +22,7 @@ class TransactionController extends Controller
             'sub_title'      => 'bank',
             'submenu_active' => 'bank'
         ];
-		
+
         $lists = MyHelper::get('transaction/manualpayment/bank');
 		// print_r($lists);exit;
         if (isset($lists['status']) && $lists['status'] == 'success') {
@@ -34,18 +35,18 @@ class TransactionController extends Controller
 
         return view('transaction::payment.bankList', $data);
 	}
-	
+
 	public function banksDelete($id) {
         $delete = MyHelper::post('transaction/manualpayment/bank/delete', ['id' => $id]);
         return parent::redirect($delete, 'Bank has been deleted');
     }
-	
+
 	public function banksCreate(Request $request) {
         $post = $request->except('_token');
         $save = MyHelper::post('transaction/manualpayment/bank/create', $post);
         return parent::redirect($save, 'Bank has been created.');
     }
-	
+
 	public function banksMethodList(Request $request){
 		 $data = [
             'title'          => 'Payment Method List',
@@ -66,127 +67,18 @@ class TransactionController extends Controller
 
         return view('transaction::payment.bankMethodList', $data);
 	}
-	
+
 	public function bankMethodsDelete($id) {
         $delete = MyHelper::post('transaction/manualpayment/bankmethod/delete', ['id' => $id]);
         return parent::redirect($delete, 'Payment Method has been deleted');
     }
-	
+
 	public function bankMethodsCreate(Request $request) {
         $post = $request->except('_token');
         $save = MyHelper::post('transaction/manualpayment/bankmethod/create', $post);
         return parent::redirect($save, 'Payment Method has been created.');
     }
-	
-	public function autoResponse(Request $request, $subject){
-        // return $subject;
-		$data = [ 'title'             => 'Transaction Auto Response '.ucfirst(str_replace('-',' ',$subject)),
-				  'menu_active'       => 'transaction',
-                  'submenu_active'    => 'transaction-autoresponse-'.$subject,
-                  'type'              => 'trx'  
-				];
-        switch ($subject) {
-            case 'receive-inject-voucher':
-                $data['menu_active'] = 'deals-autoresponse';
-                $data['submenu_active'] = 'deals-autoresponse-receive-inject-voucher';
-                break;
 
-            case 'redeem-voucher-success':
-                $data['menu_active'] = 'deals-autoresponse';
-                $data['submenu_active'] = 'deals-autoresponse-redeem-deals-success';
-                break;
-            
-            case 'claim-free-deals-success':
-                $data['menu_active'] = 'deals-autoresponse';
-                $data['submenu_active'] = 'deals-autoresponse-claim-free-deals-success';
-                break;
-
-            case 'claim-paid-deals-success':
-                $data['menu_active'] = 'deals-autoresponse';
-                $data['submenu_active'] = 'deals-autoresponse-claim-paid-deals-success';
-                break;
-
-            case 'transaction-point-achievement':
-                $data['menu_active'] = 'transaction';
-                $data['submenu_active'] = 'transaction-point-achievement';
-                break;
-                        
-            case 'transaction-failed-point-refund':
-                $data['menu_active'] = 'transaction';
-                $data['submenu_active'] = 'transaction-failed-point-refund';
-                break;
-                        
-            case 'rejected-order-point-refund':
-                $data['menu_active'] = 'transaction';
-                $data['submenu_active'] = 'rejected-order-point-refund';
-                break;
-
-            case 'receive-welcome-voucher':
-                $data['title'] = 'Auto Response '.ucfirst(str_replace('-',' ',$subject));
-                $data['menu_active'] = 'welcome-voucher';
-                $data['submenu_active'] = 'deals-autoresponse-welcome-voucher';
-                break;
-
-            default:
-                # code...
-                break;
-        }
-        $query = MyHelper::get('autocrm/list');
-		$test = MyHelper::get('autocrm/textreplace');
-		$auto = null;
-		$post = $request->except('_token');
-		if(!empty($post)){
-			if (isset($post['autocrm_push_image'])) {
-				$post['autocrm_push_image'] = MyHelper::encodeImage($post['autocrm_push_image']);
-            }
-            
-            if(isset($post['files'])){
-                unset($post['files']);
-            }
-			
-			$query = MyHelper::post('autocrm/update', $post);
-			return back()->withSuccess(['Response updated']);
-        }
-        
-        $getApiKey = MyHelper::get('setting/whatsapp');
-		if(isset($getApiKey['status']) && $getApiKey['status'] == 'success' && $getApiKey['result']['value']){
-			$data['api_key_whatsapp'] = $getApiKey['result']['value'];
-		}else{
-			$data['api_key_whatsapp'] = null;
-		}
-        
-		foreach($query['result'] as $autonya){
-			if($autonya['autocrm_title'] == ucwords(str_replace('-',' ',$subject))){
-				$auto = $autonya;
-			}
-		}
-		
-		if($auto == null) return back()->withErrors(['No such response']);
-		$data['data'] = $auto;
-		if($test['status'] == 'success'){
-			$data['textreplaces'] = $test['result'];
-			$data['subject'] = $subject;
-		}
-
-        $custom = [];
-        if (isset($data['data']['custom_text_replace'])) {
-            $custom = explode(';', $data['data']['custom_text_replace']);
-
-            unset($custom[count($custom) - 1]);
-        }
-
-        if(stristr($request->url(), 'deals')||stristr($request->url(), 'voucher')){
-            $data['deals'] = true;
-            $custom[] = '%outlet_name%';
-            $custom[] = '%outlet_code%';
-            $data['type'] = '';
-        }
-        
-        $data['custom'] = $custom;
-
-        return view('users::response', $data);
-	}
-	
     public function ruleTransaction() {
         $data = [
             'title'          => 'Order',
@@ -272,7 +164,7 @@ class TransactionController extends Controller
 
                     array_push($attrKey, $key);
                     array_push($attrColor, $color);
-                    
+
                     $list['result']['service']['attrKey'] = $attrKey;
                     $list['result']['service']['attrColor'] = $attrColor;
 
@@ -329,7 +221,7 @@ class TransactionController extends Controller
 
                     array_push($attrKey, $key);
                     array_push($attrColor, $color);
-                    
+
                     $list['result']['discount']['attrKey'] = $attrKey;
                     $list['result']['discount']['attrColor'] = $attrColor;
 
@@ -348,7 +240,7 @@ class TransactionController extends Controller
             $data['discount'] = $list['result']['discount'];
             $attrKey = [];
             $attrColor = [];
-            
+
             $countDataTax = count($list['result']['tax']['data']) - 1;
 
             foreach ($list['result']['tax']['data'] as $row => $value) {
@@ -386,7 +278,7 @@ class TransactionController extends Controller
 
                     array_push($attrKey, $key);
                     array_push($attrColor, $color);
-                    
+
                     $list['result']['tax']['attrKey'] = $attrKey;
                     $list['result']['tax']['attrColor'] = $attrColor;
 
@@ -443,7 +335,7 @@ class TransactionController extends Controller
 
                     array_push($attrKey, $key);
                     array_push($attrColor, $color);
-                    
+
                     $list['result']['point']['attrKey'] = $attrKey;
                     $list['result']['point']['attrColor'] = $attrColor;
 
@@ -500,7 +392,7 @@ class TransactionController extends Controller
 
                     array_push($attrKey, $key);
                     array_push($attrColor, $color);
-                    
+
                     $list['result']['cashback']['attrKey'] = $attrKey;
                     $list['result']['cashback']['attrColor'] = $attrColor;
 
@@ -573,7 +465,7 @@ class TransactionController extends Controller
 
                     array_push($attrKey, $key);
                     array_push($attrColor, $color);
-                    
+
                     $list['result']['courier']['attrKey'] = $attrKey;
                     $list['result']['courier']['attrColor'] = $attrColor;
                     $list['result']['courier']['courier'] = $courier;
@@ -589,7 +481,7 @@ class TransactionController extends Controller
 
     public function ruleTransactionUpdate(Request $request) {
         $post = $request->except('_token');
-     
+
         $update = MyHelper::post('transaction/rule/update', $post);
         if ($post['key'] == 'delivery' || $post['key'] == 'outlet') {
             return parent::redirect($update, 'Setting has been updated.');
@@ -602,7 +494,7 @@ class TransactionController extends Controller
                 return 'abort';
             }
         }
-        
+
     }
 
     public function manualPaymentList() {
@@ -645,7 +537,7 @@ class TransactionController extends Controller
         }
 
         $save = MyHelper::post('transaction/manualpayment/create', $post);
-     
+
         return parent::redirect($save, 'Manual payment has been created.');
 
     }
@@ -719,7 +611,7 @@ class TransactionController extends Controller
 
     public function manualPaymentMethodDelete(Request $request) {
         $id = $request['id'];
-        
+
         $delete = MyHelper::post('transaction/manualpayment/method/delete', ['id' => $id]);
 
         if (isset($delete['status']) && $delete['status'] == 'success') {
@@ -970,7 +862,7 @@ class TransactionController extends Controller
             Session::put('filterPaymentManual',$post);
 
             $list = MyHelper::post('transaction/manualpayment/data/filter/'.$type, $post);
-            
+
             if (isset($list['status']) && $list['status'] == 'success') {
                 $data['list'] = $list['result']['data'];
                 $data['page'] = $list['result']['current_page'];
@@ -998,11 +890,11 @@ class TransactionController extends Controller
                 }else{
                     $list = MyHelper::post('transaction/manualpayment/data/filter/'.$type, $session);
                 }
-                
+
             }else{
                 $data['date_start'] = date('Y-m-01');
                 $data['date_end'] = date('Y-m-d');
-                
+
                 if(!empty($page)){
                     $list = MyHelper::get('transaction/manualpayment/data/'.$type.'?page='.$page);
                 }else{
@@ -1024,7 +916,7 @@ class TransactionController extends Controller
             }
         }
         $data['paginator'] = new LengthAwarePaginator($list['result']['data'], $list['result']['total'], $list['result']['per_page'], $list['result']['current_page'], ['path' => url('transaction/manualpayment/list/'.$type)]);
-        
+
         return view('transaction::payment.manualPaymentListUnpay', $data);
     }
 
@@ -1046,7 +938,7 @@ class TransactionController extends Controller
                 'sub_title'      => 'Manual Payment Confirmation',
                 'submenu_active' => 'manual-payment-list'
             ];
-    
+
             $detail = MyHelper::post('transaction/manualpayment/data/detail', ['transaction_receipt_number' => $id]);
 
             if (isset($detail['status']) && $detail['status'] == 'success') {
@@ -1054,14 +946,14 @@ class TransactionController extends Controller
             } else {
                 return parent::redirect($detail, 'Data not valid');
             }
-    
+
             return view('transaction::payment.manualPaymentConfirm', $data);
         }else{
 
             $confirm = MyHelper::post('transaction/manualpayment/data/confirm', $post);
             return parent::redirect($confirm, 'Transaction Payment Manual has been confirmed.');
         }
-       
+
     }
 
     public function transactionList() {
@@ -1135,7 +1027,7 @@ class TransactionController extends Controller
         }
 
         return view('transaction::transactionDetail3', $data);
-    	
+
     }
 
     public function transactionDelete($id) {
@@ -1180,10 +1072,10 @@ class TransactionController extends Controller
 
         $getProvince = MyHelper::get('province/list?log_save=0');
         if($getProvince['status'] == 'success') $data['province'] = $getProvince['result']; else $data['province'] = null;
-		
+
 		$getCourier = MyHelper::get('courier/list?log_save=0');
 		if($getCourier['status'] == 'success') $data['couriers'] = $getCourier['result']; else $data['couriers'] = null;
-			
+
         return view('transaction::transaction.transaction_delivery', $data);
     }
 
@@ -1261,7 +1153,7 @@ class TransactionController extends Controller
             $data['search']     = $filter['search'];
 
             return view('transaction::transaction.transaction_delivery', $data);
-            
+
         }
 
     }
@@ -1312,7 +1204,7 @@ class TransactionController extends Controller
                 return redirect('transaction/setting/free-delivery')->with(['success' => ['Update Success']]);
             } else {
                 return redirect('transaction/setting/free-delivery')->withErrors(['Update failed']);
-            } 
+            }
         }
 
         $data = [
@@ -1342,7 +1234,7 @@ class TransactionController extends Controller
                 return redirect('transaction/setting/go-send-package-detail')->with(['success' => ['Update Success']]);
             } else {
                 return redirect('transaction/setting/go-send-package-detail')->withErrors(['Update failed']);
-            } 
+            }
         }
 
         $data = [
@@ -1372,15 +1264,15 @@ class TransactionController extends Controller
             if (isset($update['status']) && $update['status'] == 'success') {
                 return redirect('transaction/create/fake')->with(['success' => ['Create '.$post['how_many'].' Data Transaction Success']]);
             } else {
-                if (isset($update['errors'])) { 
-                    return back()->withErrors($update['errors'])->withInput(); 
-                } 
- 
-                if (isset($update['status']) && $update['status'] == "fail") { 
-                    return back()->withErrors($update['messages'])->withInput(); 
-                } 
+                if (isset($update['errors'])) {
+                    return back()->withErrors($update['errors'])->withInput();
+                }
+
+                if (isset($update['status']) && $update['status'] == "fail") {
+                    return back()->withErrors($update['messages'])->withInput();
+                }
                 return redirect('transaction/create/fake')->withErrors(['Create Transaction Failed'])->withInput();
-            } 
+            }
         }
 
         $data = [

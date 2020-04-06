@@ -633,7 +633,7 @@
         <div class="portlet-body m-form__group row">
                 <div class="col-md-4">
                     <img src="{{env('S3_URL_VIEW') }}{{('img/news/news1.jpg')}}"  style="box-shadow: 0 0 5px rgba(0,0,0,.08); width:100%" alt="tutorial" id="tutorial1">
-                    <img src="{{env('S3_URL_VIEW') }}{{('img/news/news2.jpg')}}" style="box-shadow: 0 0 5px rgba(0,0,0,.08); width:100%" alt="tutorial" id="tutorial2">                
+                    <img src="{{env('S3_URL_VIEW') }}{{('img/news/news2.jpg')}}" style="box-shadow: 0 0 5px rgba(0,0,0,.08); width:100%" alt="tutorial" id="tutorial2">
                 </div>
                 <div class="col-md-8">
                 <div class="form-body">
@@ -959,613 +959,612 @@
                             </div>
                         </div>
 
-                    <!-- LOCATION -->
-                    <div class="form-group">
-                        <div class="input-icon right">
-                            <label class="col-md-3 control-label">
-                            Featured Location
-                            <i class="fa fa-question-circle tooltips" data-original-title="feature location 'ON' jika news berkenaan dengan tempat event" data-container="body"></i>
-                            </label>
-                        </div>
-                        <div class="col-md-9">
-                            <span class="m-switch">
-                                <label>
-                                <input type="checkbox" class="make-switch" id="featureLocation" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF" @if (!empty($value['news_event_location_name'])) checked @endif>
-                                <span></span>
+                        <!-- LOCATION -->
+                        <div class="form-group">
+                            <div class="input-icon right">
+                                <label class="col-md-3 control-label">
+                                Featured Location
+                                <i class="fa fa-question-circle tooltips" data-original-title="feature location 'ON' jika news berkenaan dengan tempat event" data-container="body"></i>
                                 </label>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="form-group featureLocation">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
-                            <div class="col-md-3">
-                                <label class="control-label">Location Name <span class="required" aria-required="true"> * </span> </label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" class="form-control featureLocationForm field_event" name="news_event_location_name" value="{{ $value['news_event_location_name'] }}" placeholder="Location name or name of a place">
+                                <span class="m-switch">
+                                    <label>
+                                    <input type="checkbox" class="make-switch" id="featureLocation" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF" @if (!empty($value['news_event_location_name'])) checked @endif>
+                                    <span></span>
+                                    </label>
+                                </span>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group featureLocation">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
-                            <div class="col-md-3">
-                                <label class="control-label">Contact Person </label>
-                            </div>
+                        <div class="form-group featureLocation">
+                            <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control field_event" name="news_event_location_phone" value="{{ $value['news_event_location_phone'] }}" placeholder="Contact Person in location">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group featureLocation">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
-                            <div class="col-md-3"  style="text-align: right;">
-                                <label class="control-label">Address </label>
-                            </div>
-                            <div class="col-md-9">
-                                <textarea type="text" class="form-control field_event" name="news_event_location_address" placeholder="Event's Address">{{ $value['news_event_location_address'] }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group featureLocation">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
-                            <div class="col-md-3"  style="text-align: right;">
-                                <label class="control-label">Maps </label>
-                            </div>
-                            <div class="col-md-9">
-                                <input id="pac-input" class="controls field_event" type="text" placeholder="Enter a location" style="padding:10px;width:50%" onkeydown="if (event.keyCode == 13) return false;" name="news_event_location_map" value="{{ $value['news_event_location_map'] }}">
-                                <div id="map-canvas" style="width:900;height:380px;"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group featureLocation">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
-                            <div class="col-md-3">
-                                <label class="control-label"></label>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="col-md-6">
-                                    <input type="text" class="form-control featureLocationForm" name="news_event_latitude" value="{{ $value['news_event_latitude'] }}" id="lat" readonly>
+                                <div class="col-md-3">
+                                    <label class="control-label">Location Name <span class="required" aria-required="true"> * </span> </label>
                                 </div>
-                                <div class="col-md-6">
-                                    <input type="text" class="form-control featureLocationForm" name="news_event_longitude" value="{{ $value['news_event_longitude'] }}" id="lng" readonly>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control featureLocationForm field_event" name="news_event_location_name" value="{{ $value['news_event_location_name'] }}" placeholder="Location name or name of a place">
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- VIDEO -->
-                    <div class="form-group">
-                        <div class="input-icon right">
-                            <label class="col-md-3 control-label">
-                            Featured Video
-                            <i class="fa fa-question-circle tooltips" data-original-title="feature video 'ON' jika ingin menambahkan video pada news" data-container="body"></i>
-                            </label>
+                        <div class="form-group featureLocation">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <div class="col-md-3">
+                                    <label class="control-label">Contact Person </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control field_event" name="news_event_location_phone" value="{{ $value['news_event_location_phone'] }}" placeholder="Contact Person in location">
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-9">
-                            <span class="m-switch">
-                                <label>
-                                <input type="checkbox" class="make-switch" id="featureVideo" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF"  @if (!empty($value['news_video'])) checked @endif>
-                                <span></span>
+
+                        <div class="form-group featureLocation">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <div class="col-md-3"  style="text-align: right;">
+                                    <label class="control-label">Address </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <textarea type="text" class="form-control field_event" name="news_event_location_address" placeholder="Event's Address">{{ $value['news_event_location_address'] }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group featureLocation">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <div class="col-md-3"  style="text-align: right;">
+                                    <label class="control-label">Maps </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input id="pac-input" class="controls field_event" type="text" placeholder="Enter a location" style="padding:10px;width:50%" onkeydown="if (event.keyCode == 13) return false;" name="news_event_location_map" value="{{ $value['news_event_location_map'] }}">
+                                    <div id="map-canvas" style="width:900;height:380px;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group featureLocation">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <div class="col-md-3">
+                                    <label class="control-label"></label>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control featureLocationForm" name="news_event_latitude" value="{{ $value['news_event_latitude'] }}" id="lat" readonly>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control featureLocationForm" name="news_event_longitude" value="{{ $value['news_event_longitude'] }}" id="lng" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VIDEO -->
+                        <div class="form-group">
+                            <div class="input-icon right">
+                                <label class="col-md-3 control-label">
+                                Featured Video
+                                <i class="fa fa-question-circle tooltips" data-original-title="feature video 'ON' jika ingin menambahkan video pada news" data-container="body"></i>
                                 </label>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="form-group featureVideo">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
-                            <div class="col-md-3">
-                                <label class="control-label">Title <span class="required" aria-required="true"> * </span> </label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" class="form-control featureVideoForm" name="news_video_text" value="{{ $value['news_video_text'] }}" placeholder="Featured Video Title">
+                                <span class="m-switch">
+                                    <label>
+                                    <input type="checkbox" class="make-switch" id="featureVideo" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF"  @if (!empty($value['news_video'])) checked @endif>
+                                    <span></span>
+                                    </label>
+                                </span>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group featureVideo">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
-                            <div class="col-md-3">
-                                <label class="control-label">Link Video <span class="required" aria-required="true"> * </span> </label>
+                        <div class="form-group featureVideo">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <div class="col-md-3">
+                                    <label class="control-label">Title <span class="required" aria-required="true"> * </span> </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control featureVideoForm" name="news_video_text" value="{{ $value['news_video_text'] }}" placeholder="Featured Video Title">
+                                </div>
                             </div>
-                            <div class="col-md-9" id="video-container"></div>
-                            @if(MyHelper::hasAccess([106], $configs))
-                            <div class="col-md-offset-3 col-md-9" style="margin-top: 10px">
-                              <button class="btn blue" type="button" id="add-video-btn" onclick="addVideo"><i class="fa fa-plus"></i> Add</button>
-                            </div>
-                            @endif
                         </div>
-                    </div>
 
-                    <!-- OUTLET -->
-                    <div class="form-group">
-                        <div class="input-icon right">
-                            <label class="col-md-3 control-label">
-                            Featured Outlet
-                            <i class="fa fa-question-circle tooltips" data-original-title="feature Outlet 'ON' jika news berkenaan dengan outlet" data-container="body"></i>
-                            </label>
+                        <div class="form-group featureVideo">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <div class="col-md-3">
+                                    <label class="control-label">Link Video <span class="required" aria-required="true"> * </span> </label>
+                                </div>
+                                <div class="col-md-9" id="video-container"></div>
+                                @if(MyHelper::hasAccess([106], $configs))
+                                <div class="col-md-offset-3 col-md-9" style="margin-top: 10px">
+                                <button class="btn blue" type="button" id="add-video-btn" onclick="addVideo"><i class="fa fa-plus"></i> Add</button>
+                                </div>
+                                @endif
+                            </div>
                         </div>
-                        <div class="col-md-9">
-                            <span class="m-switch">
-                                <label>
-                                <input type="checkbox" class="make-switch" id="featureOutlet" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF" @if (!empty($value['news_outlet'])) checked @endif>
-                                <span></span>
+
+                        <!-- OUTLET -->
+                        <div class="form-group">
+                            <div class="input-icon right">
+                                <label class="col-md-3 control-label">
+                                Featured Outlet
+                                <i class="fa fa-question-circle tooltips" data-original-title="feature Outlet 'ON' jika news berkenaan dengan outlet" data-container="body"></i>
                                 </label>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="form-group featureOutlet">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
-                            <div class="col-md-3">
-                                <label class="control-label">Title <span class="required" aria-required="true"> * </span> </label>
                             </div>
                             <div class="col-md-9">
-                                <input type="text" class="form-control featureOutletForm" name="news_outlet_text" value="{{ $value['news_outlet_text'] }}" placeholder="Featured Outlet Title">
+                                <span class="m-switch">
+                                    <label>
+                                    <input type="checkbox" class="make-switch" id="featureOutlet" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF" @if (!empty($value['news_outlet'])) checked @endif>
+                                    <span></span>
+                                    </label>
+                                </span>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group featureOutlet">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
-                            <div class="col-md-3">
-                                <label class="control-label">Outlet <span class="required" aria-required="true"> * </span> </label>
+                        <div class="form-group featureOutlet">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <div class="col-md-3">
+                                    <label class="control-label">Title <span class="required" aria-required="true"> * </span> </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control featureOutletForm" name="news_outlet_text" value="{{ $value['news_outlet_text'] }}" placeholder="Featured Outlet Title">
+                                </div>
                             </div>
-                            <div class="col-md-9" id='selectOutlet'>
-                                <select class="form-control select2-multiple featureOutletForm" multiple data-placeholder="Select Outlet" name="id_outlet[]">
-                                    <optgroup label="Outlet List">
-                                        @php
-                                            if (!empty($value['news_outlet'])) {
-                                            $selectedOutlet = array_pluck($value['news_outlet'], 'id_outlet');
+                        </div>
+
+                        <div class="form-group featureOutlet">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <div class="col-md-3">
+                                    <label class="control-label">Outlet <span class="required" aria-required="true"> * </span> </label>
+                                </div>
+                                <div class="col-md-9" id='selectOutlet'>
+                                    <select class="form-control select2-multiple featureOutletForm" multiple data-placeholder="Select Outlet" name="id_outlet[]">
+                                        <optgroup label="Outlet List">
+                                            @php
+                                                if (!empty($value['news_outlet'])) {
+                                                $selectedOutlet = array_pluck($value['news_outlet'], 'id_outlet');
+                                                }
+                                                else {
+                                                $selectedOutlet = [];
+                                                }
+                                            @endphp
+
+                                            @if (!empty($outlet))
+                                                @foreach($outlet as $suw)
+                                                    <option value="{{ $suw['id_outlet'] }}" @if (in_array($suw['id_outlet'], $selectedOutlet)) selected @endif>{{ $suw['outlet_name'] }}</option>
+                                                @endforeach
+                                            @endif
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PRODUCT -->
+                        <div class="form-group">
+                            <div class="input-icon right">
+                                <label class="col-md-3 control-label">
+                                Featured Product
+                                <i class="fa fa-question-circle tooltips" data-original-title="feature product 'ON' jika news berkenaan dengan produk" data-container="body"></i>
+                                </label>
+                            </div>
+                            <div class="col-md-9">
+                                <span class="m-switch">
+                                    <label>
+                                    <input type="checkbox" class="make-switch" id="featureProduct" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF" @if (!empty($value['news_product'])) checked @endif>
+                                    <span></span>
+                                    </label>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group featureProduct">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <div class="col-md-3">
+                                    <label class="control-label">Title <span class="required" aria-required="true"> * </span> </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control featureProductForm" name="news_product_text" value="{{ $value['news_product_text'] }}" placeholder="Featured Product Title">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group featureProduct">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <div class="col-md-3">
+                                    <label class="control-label">Product <span class="required" aria-required="true"> * </span> </label>
+                                </div>
+                                <div class="col-md-9" id="selectProduct">
+                                    <select class="form-control select2-multiple featureProductForm" multiple data-placeholder="Select Product" name="id_product[]">
+                                        <optgroup label="Product List">
+                                            @php
+                                            if (!empty($value['news_product'])) {
+                                                $selectedProduct = array_pluck($value['news_product'], 'id_product');
                                             }
                                             else {
-                                            $selectedOutlet = [];
+                                                $selectedProduct = [];
                                             }
-                                        @endphp
+                                            @endphp
 
-                                        @if (!empty($outlet))
-                                            @foreach($outlet as $suw)
-                                                <option value="{{ $suw['id_outlet'] }}" @if (in_array($suw['id_outlet'], $selectedOutlet)) selected @endif>{{ $suw['outlet_name'] }}</option>
-                                            @endforeach
-                                        @endif
-                                    </optgroup>
-                                </select>
+                                            @if (!empty($product))
+                                                @foreach($product as $suw)
+                                                    <option value="{{ $suw['id_product'] }}" @if (in_array($suw['id_product'], $selectedProduct)) selected @endif>{{ $suw['product_name'] }}</option>
+                                                @endforeach
+                                            @endif
+                                        </optgroup>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- PRODUCT -->
-                    <div class="form-group">
-                        <div class="input-icon right">
-                            <label class="col-md-3 control-label">
-                            Featured Product
-                            <i class="fa fa-question-circle tooltips" data-original-title="feature product 'ON' jika news berkenaan dengan produk" data-container="body"></i>
-                            </label>
-                        </div>
-                        <div class="col-md-9">
-                            <span class="m-switch">
-                                <label>
-                                <input type="checkbox" class="make-switch" id="featureProduct" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF" @if (!empty($value['news_product'])) checked @endif>
-                                <span></span>
-                                </label>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="form-group featureProduct">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
-                            <div class="col-md-3">
-                                <label class="control-label">Title <span class="required" aria-required="true"> * </span> </label>
+                        @if(MyHelper::hasAccess([107], $configs))
+                            <!-- BUTTON TO FORM -->
+                            <div class="form-group" id="customform">
+                                <div class="input-icon right">
+                                    <label class="col-md-3 control-label">
+                                    Custom Form
+                                    <i class="fa fa-question-circle tooltips" data-original-title="Button to Form 'ON' jika news memiliki form yang harus diisi" data-container="body"></i>
+                                    </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <span class="m-switch">
+                                        <label>
+                                        <input name="custom_form_checkbox" type="checkbox" class="make-switch" id="featureForm" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF" @if (!empty($value['news_button_form_text'])) checked @endif>
+                                        <span></span>
+                                        </label>
+                                    </span>
+                                </div>
                             </div>
+
+                            <div class="form-group featureForm">
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-9">
+                                    <div class="col-md-3">
+
+                                    </div>
+                                    <div class="col-md-9">
+                                        <a href="{{url('/news/form-preview', $value['id_news'])}}" target="_BLANK">Klik disini untuk melihat form</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group featureForm">
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-9">
+                                    <div class="col-md-3">
+                                        <label class="control-label">Button Text <span class="required" aria-required="true"> * </span> </label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control featureFormForm" name="news_button_form_text" value="{{ $value['news_button_form_text'] }}" placeholder="Button to Form text">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group featureForm">
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-9">
+                                    <div class="col-md-3">
+                                        <label class="control-label">Button Exp <span class="required" aria-required="true"> * </span> </label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <input type="text" class="datepicker form-control featureFormForm field_event" name="news_button_form_expired" value="{{ ($value['news_button_form_expired']!="" ? date('d-M-Y',strtotime($value['news_button_form_expired'])) : "") }}">
+                                            <span class="input-group-btn">
+                                                <button class="btn default" type="button">
+                                                    <i class="fa fa-calendar"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group featureForm">
+                            <label class="col-md-3 control-label"></label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control featureProductForm" name="news_product_text" value="{{ $value['news_product_text'] }}" placeholder="Featured Product Title">
+                                <div class="col-md-3">
+                                <label class="control-label">Success Msg</label>
+                                </div>
+                                <div class="col-md-9">
+                                <input type="text" class="form-control field_event" name="news_form_success_message" value="{{ $value['news_form_success_message'] }}">
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group featureProduct">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
-                            <div class="col-md-3">
-                                <label class="control-label">Product <span class="required" aria-required="true"> * </span> </label>
                             </div>
-                            <div class="col-md-9" id="selectProduct">
-                                <select class="form-control select2-multiple featureProductForm" multiple data-placeholder="Select Product" name="id_product[]">
-                                    <optgroup label="Product List">
-                                        @php
-                                        if (!empty($value['news_product'])) {
-                                            $selectedProduct = array_pluck($value['news_product'], 'id_product');
-                                        }
-                                        else {
-                                            $selectedProduct = [];
-                                        }
-                                        @endphp
 
-                                        @if (!empty($product))
-                                            @foreach($product as $suw)
-                                                <option value="{{ $suw['id_product'] }}" @if (in_array($suw['id_product'], $selectedProduct)) selected @endif>{{ $suw['product_name'] }}</option>
-                                            @endforeach
-                                        @endif
-                                    </optgroup>
-                                </select>
+                            <div class="form-group featureForm">
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-9">
+                                    <div class="col-md-12">
+                                        <div class="form-group mt-repeater">
+                                            <div data-repeater-list="customform" id="sortable">
+                                                @foreach($value['news_form_structures'] as $key => $form)
+                                                    <div data-repeater-item class="mt-repeater-item mt-overflow" style="border-bottom: 1px #ddd;">
+                                                        <div class="mt-repeater-cell" style="position: relative;">
+                                                            <div class="sort-icon">
+                                                            <i class="fa fa-arrows tooltips" data-original-title="Ubah urutan form dengan drag n drop" data-container="body"></i>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="col-md-2">
+                                                                    <a href="javascript:;" data-repeater-delete class="btn btn-danger mt-repeater-delete mt-repeater-del-right mt-repeater-btn-inline">
+                                                                        <i class="fa fa-close"></i>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="input-icon right">
+                                                                    <div class="col-md-4" style="padding-top: 5px;">
+                                                                        Input Name
+                                                                        <i class="fa fa-question-circle tooltips" data-original-title="Nama Input pada Form" data-container="body" ></i>
+                                                                        <span class="required" aria-required="true"> * </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6" >
+                                                                    <div class="input-icon right">
+                                                                        <input type="text" name="form_input_label" class="form-control demo featureFormForm" value="{{$form['form_input_label']}}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12" style="margin-top:20px">
+                                                                <div class="input-icon right">
+                                                                    <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
+                                                                        Input Types
+                                                                        <i class="fa fa-question-circle tooltips" data-original-title="Tipe inputan user" data-container="body"></i>
+                                                                        <span class="required" aria-required="true"> * </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6" >
+                                                                    <select class="form-control form_input_types featureFormForm" name="form_input_types">
+                                                                        <option value="Short Text" @if($form['form_input_types'] == "Short Text") selected @endif>Short Text</option>
+                                                                        <option value="Long Text" @if($form['form_input_types'] == "Long Text") selected @endif>Long Text</option>
+                                                                        <option value="Number Input" @if($form['form_input_types'] == "Number Input") selected @endif>Number Input</option>
+                                                                        <option value="Date" @if($form['form_input_types'] == "Date") selected @endif>Date</option>
+                                                                        <option value="Date & Time" @if($form['form_input_types'] == "Date & Time") selected @endif>Date & Time</option>
+                                                                        <option value="Dropdown Choice" @if($form['form_input_types'] == "Dropdown Choice") selected @endif>Dropdown Choice</option>
+                                                                        <option value="Radio Button Choice" @if($form['form_input_types'] == "Radio Button Choice") selected @endif>Radio Button Choice</option>
+                                                                        <option value="Multiple Choice" @if($form['form_input_types'] == "Multiple Choice") selected @endif>Multiple Choice</option>
+                                                                        <option value="File Upload" @if($form['form_input_types'] == "File Upload") selected @endif>File Upload</option>
+                                                                        <option value="Image Upload" @if($form['form_input_types'] == "Image Upload") selected @endif>Image Upload</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            @if($form['form_input_types'] == "Radio Button Choice" || $form['form_input_types'] == "Multiple Choice" || $form['form_input_types'] == "Dropdown Choice")
+                                                            <div class="col-md-12 form_input_options" style="margin-top:20px" id="option_{{$key}}" >
+                                                            @else
+                                                            <div class="col-md-12 form_input_options" style="margin-top:20px; display:none;" id="option_{{$key}}">
+                                                            @endif
+                                                                <div class="input-icon right">
+                                                                    <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
+                                                                        Input Options
+                                                                        <i class="fa fa-question-circle tooltips" data-original-title="Warna teks nama level pada aplikasi" data-container="body" ></i>
+                                                                        <span class="required" aria-required="true"> * </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6" >
+                                                                    <div class="input-icon right">
+                                                                        <input type="text" name="form_input_options" class="form-control demo tagsinput" value="{{$form['form_input_options']}}" data-role="tagsinput" placeholder="comma (,) separated">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            {{-- form_input_autofill --}}
+                                                            @if( $form['form_input_types'] == "Short Text" || $form['form_input_types'] == "Long Text" || $form['form_input_types'] == "Date" )
+                                                                <div class="col-md-12 form_input_autofill" style="margin-top:20px;">
+                                                            @else
+                                                                <div class="col-md-12 form_input_autofill" style="margin-top:20px; display: none;">
+                                                            @endif
+                                                            <div class="input-icon right">
+                                                                <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
+                                                                Input Autofill
+                                                                <i class="fa fa-question-circle tooltips" data-original-title="Isian otomatis dari data profil user" data-container="body"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6" >
+                                                                <div class="input-icon right">
+                                                                <select class="form-control" name="form_input_autofill">
+                                                                    <option value="">--None--</option>
+                                                                    <option value="Name" {{ ($form['form_input_autofill']=='Name' ? 'selected' : '') }}>Name</option>
+                                                                    <option value="Phone" {{ ($form['form_input_autofill']=='Phone' ? 'selected' : '') }}>Phone</option>
+                                                                    <option value="Email" {{ ($form['form_input_autofill']=='Email' ? 'selected' : '') }}>Email</option>
+                                                                    <option value="Gender" {{ ($form['form_input_autofill']=='Gender' ? 'selected' : '') }}>Gender</option>
+                                                                    <option value="City" {{ ($form['form_input_autofill']=='City' ? 'selected' : '') }}>City</option>
+                                                                    <option value="Birthday" {{ ($form['form_input_autofill']=='Birthday' ? 'selected' : '') }}>Birthday</option>
+                                                                </select>
+                                                                </div>
+                                                            </div>
+                                                            </div>
+
+                                                            <div class="col-md-12" style="margin-top:20px;">
+                                                                <div class="input-icon right">
+                                                                <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
+                                                                    Is Required
+                                                                    <i class="fa fa-question-circle tooltips" data-original-title="Apakah wajib diisi?" data-container="body"></i>
+                                                                </div>
+                                                                </div>
+                                                                <div class="col-md-6" >
+                                                                <div class="input-icon right">
+                                                                    <div class="mt-checkbox-list">
+                                                                    <label class="mt-checkbox mt-checkbox-outline">
+                                                                        <input type="checkbox" name="is_required" value="1" {{ ($form['is_required']==1 ? "checked" : "") }}>
+                                                                        <span></span>
+                                                                    </label>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12 is_unique" style="margin-top:20px;">
+                                                                <div class="input-icon right">
+                                                                <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
+                                                                    Is Unique
+                                                                    <i class="fa fa-question-circle tooltips" data-original-title="Apakah data unik?" data-container="body"></i>
+                                                                </div>
+                                                                </div>
+                                                                <div class="col-md-6" >
+                                                                    <div class="input-icon right">
+                                                                        <div class="mt-checkbox-list">
+                                                                            <label class="mt-checkbox mt-checkbox-outline">
+                                                                                <input type="checkbox" name="is_unique" value="1" {{ ($form['is_unique']==1 ? "checked" : "") }}>
+                                                                                <span></span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+
+                                                @if(empty($value['news_form_structures']))
+                                                    <div data-repeater-item class="mt-repeater-item mt-overflow" style="border-bottom: 1px #ddd;">
+                                                        <div class="mt-repeater-cell" style="position: relative;">
+                                                            <div class="sort-icon">
+                                                                <i class="fa fa-arrows tooltips" data-original-title="Ubah urutan form dengan drag n drop" data-container="body"></i>
+                                                            </div>
+
+                                                            <div class="col-md-12">
+                                                                <div class="col-md-2">
+                                                                    <a href="javascript:;" data-repeater-delete class="btn btn-danger mt-repeater-delete mt-repeater-del-right mt-repeater-btn-inline">
+                                                                        <i class="fa fa-close"></i>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="input-icon right">
+                                                                    <div class="col-md-4" style="padding-top: 5px;">
+                                                                        Input Name
+                                                                        <i class="fa fa-question-circle tooltips" data-original-title="Nama Input pada Form" data-container="body"></i>
+                                                                        <span class="required" aria-required="true"> * </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6" >
+                                                                    <div class="input-icon right">
+                                                                        <input type="text" name="form_input_label" class="form-control demo featureFormForm">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12" style="margin-top:20px">
+                                                                <div class="input-icon right">
+                                                                    <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
+                                                                        Input Types
+                                                                        <i class="fa fa-question-circle tooltips" data-original-title="Tipe inputan user" data-container="body"></i>
+                                                                        <span class="required" aria-required="true"> * </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6" >
+                                                                    <select class="form-control form_input_types featureFormForm" name="form_input_types">
+                                                                        <option value="Short Text">Short Text</option>
+                                                                        <option value="Long Text">Long Text</option>
+                                                                        <option value="Number Input">Number Input</option>
+                                                                        <option value="Date">Date</option>
+                                                                        <option value="Date & Time">Date & Time</option>
+                                                                        <option value="Dropdown Choice">Dropdown Choice</option>
+                                                                        <option value="Radio Button Choice">Radio Button Choice</option>
+                                                                        <option value="Multiple Choice">Multiple Choice</option>
+                                                                        <option value="File Upload">File Upload</option>
+                                                                        <option value="Image Upload">Image Upload</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 form_input_options" style="margin-top:20px; display: none;">
+                                                                <div class="input-icon right">
+                                                                    <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
+                                                                        Input Options
+                                                                        <i class="fa fa-question-circle tooltips" data-original-title="Warna teks nama level pada aplikasi" data-container="body"></i>
+                                                                        <span class="required" aria-required="true"> * </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6" >
+                                                                    <div class="input-icon right">
+                                                                        <input type="text" name="form_input_options" class="form-control demo tagsinput" data-role="tagsinput" placeholder="comma (,) separated">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12 form_input_autofill" style="margin-top:20px;">
+                                                                <div class="input-icon right">
+                                                                    <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
+                                                                    Input Autofill
+                                                                    <i class="fa fa-question-circle tooltips" data-original-title="Isian otomatis dari data profil user" data-container="body"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6" >
+                                                                    <div class="input-icon right">
+                                                                    <select class="form-control" name="form_input_autofill">
+                                                                        <option value="">--None--</option>
+                                                                        <option value="Name">Name</option>
+                                                                        <option value="Phone">Phone</option>
+                                                                        <option value="Email">Email</option>
+                                                                        <option value="Gender">Gender</option>
+                                                                        <option value="City">City</option>
+                                                                        <option value="Birthday">Birthday</option>
+                                                                    </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12" style="margin-top:20px;">
+                                                                <div class="input-icon right">
+                                                                <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
+                                                                    Is Required
+                                                                    <i class="fa fa-question-circle tooltips" data-original-title="Apakah wajib diisi?" data-container="body"></i>
+                                                                </div>
+                                                                </div>
+                                                                <div class="col-md-6" >
+                                                                <div class="input-icon right">
+                                                                    <div class="mt-checkbox-list">
+                                                                    <label class="mt-checkbox mt-checkbox-outline">
+                                                                        <input type="checkbox" name="is_required" value="1">
+                                                                        <span></span>
+                                                                    </label>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12 is_unique" style="margin-top:20px;">
+                                                                <div class="input-icon right">
+                                                                <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
+                                                                    Is Unique
+                                                                    <i class="fa fa-question-circle tooltips" data-original-title="Apakah data unik?" data-container="body"></i>
+                                                                </div>
+                                                                </div>
+                                                                <div class="col-md-6" >
+                                                                <div class="input-icon right">
+                                                                    <div class="mt-checkbox-list">
+                                                                    <label class="mt-checkbox mt-checkbox-outline">
+                                                                        <input type="checkbox" name="is_unique" value="1">
+                                                                        <span></span>
+                                                                    </label>
+                                                                    </div>
+
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <div class="form-action col-md-12">
+                                                <div class="col-md-2"></div>
+                                                <div class="col-md-10">
+                                                    @if(MyHelper::hasAccess([12], $grantedFeature))
+                                                        <a href="javascript:;" data-repeater-create class="btn btn-success mt-repeater-add">
+                                                        <i class="fa fa-plus"></i> Add New Input</a>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-					<!-- BUTTON TO FORM -->
-                    <div class="form-group" id="customform">
-                        <div class="input-icon right">
-                            <label class="col-md-3 control-label">
-                            Custom Form
-                            <i class="fa fa-question-circle tooltips" data-original-title="Button to Form 'ON' jika news memiliki form yang harus diisi" data-container="body"></i>
-                            </label>
-                        </div>
-                        <div class="col-md-9">
-                            <span class="m-switch">
-                                <label>
-                                <input name="custom_form_checkbox" type="checkbox" class="make-switch" id="featureForm" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF" @if (!empty($value['news_button_form_text'])) checked @endif>
-                                <span></span>
-                                </label>
-                            </span>
-                        </div>
-                    </div>
-
-					<div class="form-group featureForm">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
-                            <div class="col-md-3">
-
-                            </div>
-                            <div class="col-md-9">
-                                <a href="{{url('/news/form-preview', $value['id_news'])}}" target="_BLANK">Klik disini untuk melihat form</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group featureForm">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
-                            <div class="col-md-3">
-                                <label class="control-label">Button Text <span class="required" aria-required="true"> * </span> </label>
-                            </div>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control featureFormForm" name="news_button_form_text" value="{{ $value['news_button_form_text'] }}" placeholder="Button to Form text">
-                            </div>
-                        </div>
-                    </div>
-
-					<div class="form-group featureForm">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
-                            <div class="col-md-3">
-                                <label class="control-label">Button Exp <span class="required" aria-required="true"> * </span> </label>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="input-group">
-									<input type="text" class="datepicker form-control featureFormForm field_event" name="news_button_form_expired" value="{{ ($value['news_button_form_expired']!="" ? date('d-M-Y',strtotime($value['news_button_form_expired'])) : "") }}">
-									<span class="input-group-btn">
-										<button class="btn default" type="button">
-											<i class="fa fa-calendar"></i>
-										</button>
-									</span>
-								</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group featureForm">
-                      <label class="col-md-3 control-label"></label>
-                      <div class="col-md-9">
-                        <div class="col-md-3">
-                          <label class="control-label">Success Msg</label>
-                        </div>
-                        <div class="col-md-9">
-                          <input type="text" class="form-control field_event" name="news_form_success_message" value="{{ $value['news_form_success_message'] }}">
-                        </div>
-                      </div>
-                    </div>
-
-					          <div class="form-group featureForm">
-                        <label class="col-md-3 control-label"></label>
-                        <div class="col-md-9">
-                            <div class="col-md-12">
-                                <div class="form-group mt-repeater">
-									<div data-repeater-list="customform" id="sortable">
-										@foreach($value['news_form_structures'] as $key => $form)
-										<div data-repeater-item class="mt-repeater-item mt-overflow" style="border-bottom: 1px #ddd;">
-											<div class="mt-repeater-cell" style="position: relative;">
-                        <div class="sort-icon">
-                          <i class="fa fa-arrows tooltips" data-original-title="Ubah urutan form dengan drag n drop" data-container="body"></i>
-                        </div>
-												<div class="col-md-12">
-													<div class="col-md-2">
-														<a href="javascript:;" data-repeater-delete class="btn btn-danger mt-repeater-delete mt-repeater-del-right mt-repeater-btn-inline">
-															<i class="fa fa-close"></i>
-														</a>
-													</div>
-													<div class="input-icon right">
-														<div class="col-md-4" style="padding-top: 5px;">
-															Input Name
-															<i class="fa fa-question-circle tooltips" data-original-title="Nama Input pada Form" data-container="body" ></i>
-                              <span class="required" aria-required="true"> * </span>
-														</div>
-													</div>
-													<div class="col-md-6" >
-														<div class="input-icon right">
-															<input type="text" name="form_input_label" class="form-control demo featureFormForm" value="{{$form['form_input_label']}}">
-														</div>
-													</div>
-												</div>
-												<div class="col-md-12" style="margin-top:20px">
-													<div class="input-icon right">
-														<div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
-															Input Types
-															<i class="fa fa-question-circle tooltips" data-original-title="Tipe inputan user" data-container="body"></i>
-                              <span class="required" aria-required="true"> * </span>
-														</div>
-													</div>
-													<div class="col-md-6" >
-														<select class="form-control form_input_types featureFormForm" name="form_input_types">
-															<option value="Short Text" @if($form['form_input_types'] == "Short Text") selected @endif>Short Text</option>
-															<option value="Long Text" @if($form['form_input_types'] == "Long Text") selected @endif>Long Text</option>
-															<option value="Number Input" @if($form['form_input_types'] == "Number Input") selected @endif>Number Input</option>
-															<option value="Date" @if($form['form_input_types'] == "Date") selected @endif>Date</option>
-															<option value="Date & Time" @if($form['form_input_types'] == "Date & Time") selected @endif>Date & Time</option>
-															<option value="Dropdown Choice" @if($form['form_input_types'] == "Dropdown Choice") selected @endif>Dropdown Choice</option>
-															<option value="Radio Button Choice" @if($form['form_input_types'] == "Radio Button Choice") selected @endif>Radio Button Choice</option>
-															<option value="Multiple Choice" @if($form['form_input_types'] == "Multiple Choice") selected @endif>Multiple Choice</option>
-															<option value="File Upload" @if($form['form_input_types'] == "File Upload") selected @endif>File Upload</option>
-															<option value="Image Upload" @if($form['form_input_types'] == "Image Upload") selected @endif>Image Upload</option>
-														</select>
-													</div>
-												</div>
-												@if($form['form_input_types'] == "Radio Button Choice" || $form['form_input_types'] == "Multiple Choice" || $form['form_input_types'] == "Dropdown Choice")
-												<div class="col-md-12 form_input_options" style="margin-top:20px" id="option_{{$key}}" >
-												@else
-												<div class="col-md-12 form_input_options" style="margin-top:20px; display:none;" id="option_{{$key}}">
-												@endif
-													<div class="input-icon right">
-														<div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
-															Input Options
-															<i class="fa fa-question-circle tooltips" data-original-title="Warna teks nama level pada aplikasi" data-container="body" ></i>
-                              <span class="required" aria-required="true"> * </span>
-														</div>
-													</div>
-													<div class="col-md-6" >
-														<div class="input-icon right">
-															<input type="text" name="form_input_options" class="form-control demo tagsinput" value="{{$form['form_input_options']}}" data-role="tagsinput" placeholder="comma (,) separated">
-														</div>
-													</div>
-												</div>
-                        {{-- form_input_autofill --}}
-                        @if( $form['form_input_types'] == "Short Text" || $form['form_input_types'] == "Long Text" || $form['form_input_types'] == "Date" )
-                        <div class="col-md-12 form_input_autofill" style="margin-top:20px;">
-                        @else
-                        <div class="col-md-12 form_input_autofill" style="margin-top:20px; display: none;">
                         @endif
-                          <div class="input-icon right">
-                            <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
-                              Input Autofill
-                              <i class="fa fa-question-circle tooltips" data-original-title="Isian otomatis dari data profil user" data-container="body"></i>
-                            </div>
-                          </div>
-                          <div class="col-md-6" >
-                            <div class="input-icon right">
-                              <select class="form-control" name="form_input_autofill">
-                                <option value="">--None--</option>
-                                <option value="Name" {{ ($form['form_input_autofill']=='Name' ? 'selected' : '') }}>Name</option>
-                                <option value="Phone" {{ ($form['form_input_autofill']=='Phone' ? 'selected' : '') }}>Phone</option>
-                                <option value="Email" {{ ($form['form_input_autofill']=='Email' ? 'selected' : '') }}>Email</option>
-                                <option value="Gender" {{ ($form['form_input_autofill']=='Gender' ? 'selected' : '') }}>Gender</option>
-                                <option value="City" {{ ($form['form_input_autofill']=='City' ? 'selected' : '') }}>City</option>
-                                <option value="Birthday" {{ ($form['form_input_autofill']=='Birthday' ? 'selected' : '') }}>Birthday</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="col-md-12" style="margin-top:20px;">
-                            <div class="input-icon right">
-                              <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
-                                Is Required
-                                <i class="fa fa-question-circle tooltips" data-original-title="Apakah wajib diisi?" data-container="body"></i>
-                              </div>
-                            </div>
-                            <div class="col-md-6" >
-                              <div class="input-icon right">
-                                <div class="mt-checkbox-list">
-                                  <label class="mt-checkbox mt-checkbox-outline">
-                                      <input type="checkbox" name="is_required" value="1" {{ ($form['is_required']==1 ? "checked" : "") }}>
-                                      <span></span>
-                                  </label>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-12 is_unique" style="margin-top:20px;">
-                            <div class="input-icon right">
-                              <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
-                                Is Unique
-                                <i class="fa fa-question-circle tooltips" data-original-title="Apakah data unik?" data-container="body"></i>
-                              </div>
-                            </div>
-                            <div class="col-md-6" >
-                              <div class="input-icon right">
-                                <div class="mt-checkbox-list">
-                                  <label class="mt-checkbox mt-checkbox-outline">
-                                      <input type="checkbox" name="is_unique" value="1" {{ ($form['is_unique']==1 ? "checked" : "") }}>
-                                      <span></span>
-                                  </label>
-                                </div>
-
-                              </div>
-                            </div>
-                          </div>
-
-											</div>
-										</div>
-										@endforeach
-
-										@if(empty($value['news_form_structures']))
-										<div data-repeater-item class="mt-repeater-item mt-overflow" style="border-bottom: 1px #ddd;">
-											<div class="mt-repeater-cell" style="position: relative;">
-                        <div class="sort-icon">
-                          <i class="fa fa-arrows tooltips" data-original-title="Ubah urutan form dengan drag n drop" data-container="body"></i>
-                        </div>
-
-												<div class="col-md-12">
-													<div class="col-md-2">
-														<a href="javascript:;" data-repeater-delete class="btn btn-danger mt-repeater-delete mt-repeater-del-right mt-repeater-btn-inline">
-															<i class="fa fa-close"></i>
-														</a>
-													</div>
-													<div class="input-icon right">
-														<div class="col-md-4" style="padding-top: 5px;">
-															Input Name
-															<i class="fa fa-question-circle tooltips" data-original-title="Nama Input pada Form" data-container="body"></i>
-                              <span class="required" aria-required="true"> * </span>
-														</div>
-													</div>
-													<div class="col-md-6" >
-														<div class="input-icon right">
-															<input type="text" name="form_input_label" class="form-control demo featureFormForm">
-														</div>
-													</div>
-												</div>
-												<div class="col-md-12" style="margin-top:20px">
-													<div class="input-icon right">
-														<div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
-															Input Types
-															<i class="fa fa-question-circle tooltips" data-original-title="Tipe inputan user" data-container="body"></i>
-                              <span class="required" aria-required="true"> * </span>
-														</div>
-													</div>
-													<div class="col-md-6" >
-														<select class="form-control form_input_types featureFormForm" name="form_input_types">
-															<option value="Short Text">Short Text</option>
-															<option value="Long Text">Long Text</option>
-															<option value="Number Input">Number Input</option>
-															<option value="Date">Date</option>
-															<option value="Date & Time">Date & Time</option>
-															<option value="Dropdown Choice">Dropdown Choice</option>
-															<option value="Radio Button Choice">Radio Button Choice</option>
-															<option value="Multiple Choice">Multiple Choice</option>
-															<option value="File Upload">File Upload</option>
-															<option value="Image Upload">Image Upload</option>
-														</select>
-													</div>
-												</div>
-												<div class="col-md-12 form_input_options" style="margin-top:20px; display: none;">
-													<div class="input-icon right">
-														<div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
-															Input Options
-															<i class="fa fa-question-circle tooltips" data-original-title="Warna teks nama level pada aplikasi" data-container="body"></i>
-                              <span class="required" aria-required="true"> * </span>
-														</div>
-													</div>
-													<div class="col-md-6" >
-														<div class="input-icon right">
-															<input type="text" name="form_input_options" class="form-control demo tagsinput" data-role="tagsinput" placeholder="comma (,) separated">
-														</div>
-													</div>
-												</div>
-
-                        <div class="col-md-12 form_input_autofill" style="margin-top:20px;">
-                          <div class="input-icon right">
-                            <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
-                              Input Autofill
-                              <i class="fa fa-question-circle tooltips" data-original-title="Isian otomatis dari data profil user" data-container="body"></i>
-                            </div>
-                          </div>
-                          <div class="col-md-6" >
-                            <div class="input-icon right">
-                              <select class="form-control" name="form_input_autofill">
-                                <option value="">--None--</option>
-                                <option value="Name">Name</option>
-                                <option value="Phone">Phone</option>
-                                <option value="Email">Email</option>
-                                <option value="Gender">Gender</option>
-                                <option value="City">City</option>
-                                <option value="Birthday">Birthday</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="col-md-12" style="margin-top:20px;">
-                            <div class="input-icon right">
-                              <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
-                                Is Required
-                                <i class="fa fa-question-circle tooltips" data-original-title="Apakah wajib diisi?" data-container="body"></i>
-                              </div>
-                            </div>
-                            <div class="col-md-6" >
-                              <div class="input-icon right">
-                                <div class="mt-checkbox-list">
-                                  <label class="mt-checkbox mt-checkbox-outline">
-                                      <input type="checkbox" name="is_required" value="1">
-                                      <span></span>
-                                  </label>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-12 is_unique" style="margin-top:20px;">
-                            <div class="input-icon right">
-                              <div class="col-md-offset-2 col-md-4" style="padding-top: 5px;">
-                                Is Unique
-                                <i class="fa fa-question-circle tooltips" data-original-title="Apakah data unik?" data-container="body"></i>
-                              </div>
-                            </div>
-                            <div class="col-md-6" >
-                              <div class="input-icon right">
-                                <div class="mt-checkbox-list">
-                                  <label class="mt-checkbox mt-checkbox-outline">
-                                      <input type="checkbox" name="is_unique" value="1">
-                                      <span></span>
-                                  </label>
-                                </div>
-
-                              </div>
-                            </div>
-                          </div>
-
-											</div>
-										</div>
-										@endif
-									</div>
-									<div class="form-action col-md-12">
-										<div class="col-md-2"></div>
-										<div class="col-md-10">
-											@if(MyHelper::hasAccess([12], $grantedFeature))
-												<a href="javascript:;" data-repeater-create class="btn btn-success mt-repeater-add">
-												<i class="fa fa-plus"></i> Add New Input</a>
-											@endif
-										</div>
-									</div>
-								</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
-                </div>
-                </div>
+            </div>
                 <div class="form-actions">
                     {{ csrf_field() }}
                     <div class="row">

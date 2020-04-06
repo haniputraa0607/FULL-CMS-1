@@ -54,9 +54,7 @@ class MyHelper
 
   // Example = 03 October 2019 - 10:35
   public static function convertDateTime2($date, $decode = null) {
-    $date    = explode(' ', $date);
-    $tanggal = $date[2].'-'.$date[1].'-'.$date[0];
-    $tanggal = $tanggal.' '.$date[4];
+    $tanggal    = str_replace(' - ', ' ', $date);
     $date    = date('Y-m-d H:i:s', strtotime($tanggal));
     return $date;
   }
