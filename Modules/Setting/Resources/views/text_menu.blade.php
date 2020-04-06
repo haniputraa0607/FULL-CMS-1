@@ -270,11 +270,11 @@ $configs     		= session('configs');
 								<p style="text-align: center">(a)</p>
 							</div>
 							<div class="col-md-4">
-								<img class="zoom-in" src="{{ env('S3_URL_VIEW') }}images/text_menu/other_menu_2.jpg" height="150px" onclick="window.open(this.src)"/>
+								<img class="zoom-in" src="{{ env('S3_URL_VIEW') }}images/text_menu/other_menu_2.jpg" height="170px" onclick="window.open(this.src)"/>
 								<p style="text-align: center">(b)</p>
 							</div>
 							<div class="col-md-4">
-								<img class="zoom-in" src="{{ env('S3_URL_VIEW') }}images/text_menu/other_menu_3.jpg" height="150px" onclick="window.open(this.src)"/>
+								<img class="zoom-in" src="{{ env('S3_URL_VIEW') }}images/text_menu/other_menu_3.jpg" height="170px" onclick="window.open(this.src)"/>
 								<p style="text-align: center">(c)</p>
 							</div>
 						</div>
