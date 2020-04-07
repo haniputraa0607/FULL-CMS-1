@@ -573,15 +573,12 @@ class DealsController extends Controller
         }
 
         $data['deals']['slug'] = $slug;
-        // DEALS USER VOUCHER
-        $user = $this->voucherUserList($id, $request->get('page'));
-
-        foreach ($user as $key => $value) {
-            $data[$key] = $value;
-        }
 
         // VOUCHER
-        $voucher = $this->voucherList($id, $request->get('page'));
+		if ($data['deals']['deals_voucher_type'] == 'List Vouchers') {
+			$is_all='is_all';
+		}
+        $voucher = $this->voucherList($id, $request->get('page'), ['id_deals_voucher','voucher_code'], $is_all??null);
 
         foreach ($voucher as $key => $value) {
             $data[$key] = $value;
@@ -618,18 +615,12 @@ class DealsController extends Controller
 
 	        $data                   = $dataDeals['data'];
 	        $post                   = $dataDeals['post'];
-	        // $data = [
-	        //     'title'          => 'Deals',
-	        //     'sub_title'      => 'Deals Create',
-	        //     'menu_active'    => 'deals',
-	        //     'submenu_active' => 'deals-create',
-	        //     'deals_type' => 'Deals'
-	        // ];
+	        
 	        $post['id_deals']   = $id;
 	        $post['step'] 		= 2;
 	        $post['deals_type'] = $data['deals_type'];
-	        // DEALS
 
+	        // DEALS
 	        $deals = MyHelper::post('deals/be/detail', $post);
 
 	        if (isset($deals['status']) && $deals['status'] == 'success') {
@@ -640,12 +631,10 @@ class DealsController extends Controller
 
 	            return redirect('deals')->withErrors($deals['messages']);
 	        }
-	        // $data['deals']   = parent::getData(MyHelper::post('deals/be/list', $post));
+	        $data['warning_image'] = MyHelper::post('setting', ['key' => 'promo_warning_image'])['result']['value'];
 
 	        return view('deals::deals.step2', $data);
-	        if (empty($data['result'])) {
-	            return back()->withErrors(['Data deals not found.']);
-	        }
+	        
 	    }else{
 
             $post['id_deals'] = $id;
@@ -747,6 +736,7 @@ class DealsController extends Controller
     function updateReq(Create $request) {
         $post = $request->except('_token');
 
+            // dd($post);
         if (empty($post['id_deals'])) {
             /* SAVE DEALS */
             return $this->saveDefaultDeals($post);
@@ -768,10 +758,10 @@ class DealsController extends Controller
                 'rule_next'=>'and',
             ];
         }
-
         // ADD VOUCHER CODE
-        if (isset($post['voucher_code'])) {
-            return parent::redirect($this->saveVoucherList($post['id_deals'], $post['voucher_code']), "Voucher has been added.");
+        if (isset($post['voucher_code']) && empty($post['deals_title'])) {
+        	$post['id_deals'] = MyHelper::explodeSlug($post['id_deals'])[0];
+            return parent::redirect($this->saveVoucherList($post['id_deals'], $post['voucher_code'], 'add'), "Voucher has been added.");
         }
 
         // ASSIGN USER TO VOUCHER
@@ -804,6 +794,11 @@ class DealsController extends Controller
         }
 
         if ( ($update['status']??false) == 'success') {
+
+        	if ($post['deals_voucher_type'] == "List Vouchers" && $post['deals_type'] != 'Promotion') {
+                return parent::redirect($this->saveVoucherList($post['id_deals'], $post['voucher_code']), "Deals has been updated.","$rpage/step2/{$slug}");
+            }
+
         	return redirect($rpage.'/step2/'.$slug)->withSuccess(['Deals has been updated']);
         }else{
         	return redirect($rpage.'/step1/'.$slug)->withErrors($update['messages']??['Something went wrong']);
@@ -827,9 +822,10 @@ class DealsController extends Controller
     }
 
     /* SAVE VOUCHER LIST */
-    function saveVoucherList($id_deals, $voucher_code) {
+    function saveVoucherList($id_deals, $voucher_code, $add_type='update') {
         $voucher['type']         = "list";
         $voucher['id_deals']     = $id_deals;
+        $voucher['add_type']     = $add_type;
         $voucher['voucher_code'] = array_filter(explode("\n", $voucher_code));
 
         $saveVoucher = MyHelper::post('deals/voucher/create', $voucher);
@@ -838,22 +834,34 @@ class DealsController extends Controller
     }
 
     /* LIST VOUCHER */
-    function voucherList($id, $page) {
-        $voucher = parent::getData(MyHelper::post('deals/voucher?page='.$page, ['id_deals' => $id]));
-        // print_r($voucher); exit();
-        if (!empty($voucher['data'])) {
-            $data['voucher']          = $voucher['data'];
-            $data['voucherTotal']     = $voucher['total'];
-            $data['voucherPerPage']   = $voucher['from'];
-            $data['voucherUpTo']      = $voucher['from'] + count($voucher['data'])-1;
-            $data['voucherPaginator'] = new LengthAwarePaginator($voucher['data'], $voucher['total'], $voucher['per_page'], $voucher['current_page'], ['path' => url()->current()]);
-        }
-        else {
-            $data['voucher']          = [];
-            $data['voucherTotal']     = 0;
-            $data['voucherPerPage']   = 0;
-            $data['voucherUpTo']      = 0;
-            $data['voucherPaginator'] = false;
+    function voucherList($id, $page, $select = null, $is_all=null) {
+    	$post['select'] = $select;
+    	$post['is_all'] = $is_all;
+    	$post['id_deals'] = $id;
+
+        $voucher = parent::getData(MyHelper::post('deals/voucher?page='.$page, $post));
+
+        if (empty($is_all)) {
+	        if (!empty($voucher['data'])) {
+	            $data['voucher']          = $voucher['data'];
+	            $data['voucherTotal']     = $voucher['total'];
+	            $data['voucherPerPage']   = $voucher['from'];
+	            $data['voucherUpTo']      = $voucher['from'] + count($voucher['data'])-1;
+	            $data['voucherPaginator'] = new LengthAwarePaginator($voucher['data'], $voucher['total'], $voucher['per_page'], $voucher['current_page'], ['path' => url()->current()]);
+	        }
+	        else {
+	            $data['voucher']          = [];
+	            $data['voucherTotal']     = 0;
+	            $data['voucherPerPage']   = 0;
+	            $data['voucherUpTo']      = 0;
+	            $data['voucherPaginator'] = false;
+	        }
+        }else{
+        	if (!empty($voucher)) {
+        		$data['voucher'] = $voucher;
+        	}else{
+        		$data['voucher'] = [];
+        	}
         }
 
         return $data;

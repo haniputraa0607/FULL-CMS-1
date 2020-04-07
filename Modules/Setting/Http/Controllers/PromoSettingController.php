@@ -21,7 +21,7 @@ class PromoSettingController extends Controller
     {
     	$post = $request->except('_token');
     	$data = [
-            'title'          => 'Promo Setting',
+            'title'          => 'Warning Image',
             'sub_title'      => 'Warning Image',
             'menu_active'    => 'warning-image',
             'submenu_active' => ''
