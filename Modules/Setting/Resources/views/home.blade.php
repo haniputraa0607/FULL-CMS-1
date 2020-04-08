@@ -1217,11 +1217,11 @@
 										<input class="click-to-radio" type="radio" name="click_to" value="none" checked> None
 									</label>
 	                            </div>
-	                            <div class="col-md-3">
+	                            {{-- <div class="col-md-3">
                                     <label class="radio-inline">
 										<input class="click-to-radio" type="radio" name="click_to" value="gofood"> GO-FOOD
 									</label>
-	                            </div>
+	                            </div> --}}
 								<div class="col-md-2">
 									<label class="radio-inline">
 										<input class="click-to-radio" type="radio" name="click_to" value="referral"> Referral
