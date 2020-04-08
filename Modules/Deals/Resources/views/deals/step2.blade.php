@@ -518,8 +518,8 @@
 									<span class="required" aria-required="true"> (100 * 100) (PNG Only) </span>
 								</label><br>
 								<div class="fileinput-new thumbnail">
-									@if(!empty($result['deals_warning_image']))
-										<img src="{{ env('S3_URL_API').$result['deals_warning_image'] }}" alt="">
+									@if(!empty($result['deals_warning_image']) || !empty($warning_image))
+										<img src="{{ env('S3_URL_API').($result['deals_warning_image']??$warning_image) }}" alt="">
 									@else
 										<img src="https://www.placehold.it/100x100/EFEFEF/AAAAAA&amp;text=no+image" alt="">
 									@endif
@@ -684,12 +684,11 @@
 							</div>
 							<div class="form-group">
 								<label class="control-label">Max product discount per transaction</label>
-								<span class="required" aria-required="true"> * </span>
-								<i class="fa fa-question-circle tooltips" data-original-title="Jumlah maksimal masing-masing produk yang dapat dikenakan diskon dalam satu transaksi </br></br>Note : isi dengan 0 jika jumlah maksimal produk tidak dibatasi" data-container="body" data-html="true"></i>
+								<i class="fa fa-question-circle tooltips" data-original-title="Jumlah maksimal masing-masing produk yang dapat dikenakan diskon dalam satu transaksi </br></br>Note : Kosongkan jika jumlah maksimal produk tidak dibatasi" data-container="body" data-html="true"></i>
 								<div class="row">
 									<div class="col-md-2">
 										
-										<input required type="text" class="form-control text-center digit_mask" name="max_product" placeholder="" 
+										<input type="text" class="form-control text-center digit_mask" name="max_product" placeholder="" 
 											@if(
 												( 	isset($result['deals_product_discount_rules']['max_product']) && 
 													$result['deals_product_discount_rules']['max_product'] != "" ) ||
@@ -732,7 +731,9 @@
 								</div>
 							</div>
 							<div class="form-group" id="product-discount-div" 
-								@if( empty($result['deals_product_discount_rules']) || empty($result['deals_promotion_product_discount_rules']) ) style="display: none;" 
+								@if(!empty($result['deals_product_discount_rules']) || 
+									!empty($result['deals_promotion_product_discount_rules']))
+								@else style="display: none;" 
 								@endif >
 								<div class="row">
 									<div class="col-md-3">
@@ -781,7 +782,7 @@
 								<div class="row">
 									<div class="col-md-3">
 										<label class="control-label" id="product-discount-value">Max Percent Discount</label>
-										<i class="fa fa-question-circle tooltips" data-original-title="Jumlah diskon maksimal yang bisa didapatkan ketika menggunakan promo. Kosongkan jika maksimal persen mengikuti harga produk " data-container="body"></i>
+										<i class="fa fa-question-circle tooltips" data-original-title="Jumlah diskon maksimal yang bisa didapatkan ketika menggunakan promo. </br></br>Note : Kosongkan jika maksimal persen mengikuti harga produk " data-container="body" data-html="true"></i>
 										<div class="input-group col-md-12">
 
 											<div class="input-group-addon">IDR</div>

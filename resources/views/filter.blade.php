@@ -929,7 +929,7 @@ $configs = session('configs');
 				var elementData = document.getElementsByName(data)[0];
 				for(i = elementData.options.length - 1 ; i >= 0 ; i--) elementData.remove(i);
 				<?php
-						foreach($products as $product){
+						foreach($products??[] as $product){
 						?>
 						elementData.options[elementData.options.length] = new Option("<?php echo $product['product_name'];?>", "<?php echo $product['id_product']; ?>");
 						<?php
@@ -965,7 +965,7 @@ $configs = session('configs');
 				var operator_value = document.getElementsByName(operator)[0];
 				for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
 				<?php
-						foreach($products as $product){
+						foreach($products??[] as $product){
 						?>
 						operator_value.options[operator_value.options.length] = new Option("<?php echo $product['product_name'];?>", "<?php echo $product['id_product']; ?>");
 						<?php
@@ -990,7 +990,7 @@ $configs = session('configs');
 			var operator_value = document.getElementsByName(operator)[0];
 			for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
 			<?php
-					foreach($tags as $tag){
+					foreach($tags??[] as $tag){
 					?>
 					operator_value.options[operator_value.options.length] = new Option("<?php echo $tag['tag_name'];?>", "<?php echo $tag['id_tag']; ?>");
 					<?php

@@ -99,21 +99,21 @@ $grantedFeature     = session('granted_features');
     	<div class="portlet-title">
 			<div class="caption font-blue ">
 				<i class="icon-settings font-blue "></i>
-				<span class="caption-subject bold uppercase">Promo Setting</span>
+				<span class="caption-subject bold uppercase">Warning Image</span>
 			</div>
 		</div>
 		<div class="portlet-body">
 			<form role="form" class="form-horizontal" action="" method="POST" enctype="multipart/form-data">
 				<div class="form-body">
 					<div class="form-group col-md-12">
-						<label class="control-label col-md-4">Warning Image
+						<label class="control-label col-md-4">Image
 							<br>
 							<span class="required" aria-required="true"> (100*100) </span>
 						</label><br>
 						<div class="fileinput fileinput-new col-md-4" data-provides="fileinput">
 							<div class="fileinput-new thumbnail">
 								@if(isset($warning_image))
-									<img src="{{ env('S3_URL_API')}}{{'img/'.$warning_image}}" alt="">
+									<img src="{{ env('S3_URL_API').$warning_image}}" alt="">
 								@else
 									<img src="https://www.placehold.it/100x100/EFEFEF/AAAAAA&amp;text=no+image" alt="">
 								@endif
