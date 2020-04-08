@@ -479,12 +479,28 @@
                                 </label>
                             </div>
                             <div class="col-md-9">
-                                <textarea name="voucher_code" class="form-control listVoucher" rows="10">@if(old('voucher_code')) {{old('voucher_code')}}
-                                @else
-@foreach($voucher as $row)
-{{ $row['voucher_code'] }}
-@endforeach
-                                @endif</textarea>
+                            	@php 
+                            		$voucher_code = old('voucher_code')??$voucher??"";
+
+                            		if(!empty($voucher))
+                            		{
+                            			$voucher_code = "";
+                            			foreach($voucher??[] as $row)
+										{
+											$voucher_code .= $row['voucher_code']."\n";
+										}
+										// dd($voucher_code);
+                            		}
+                            	@endphp
+                                <textarea name="voucher_code" class="form-control listVoucher" rows="10">@php 
+                                	if(old('voucher_code'))
+                                	{
+                                		echo old('voucher_code');
+                                	}
+                                	else
+                                	{
+										echo $voucher_code;
+                                	}@endphp</textarea>
                             </div>
                         </div>
                     </div>
