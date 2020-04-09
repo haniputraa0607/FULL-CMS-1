@@ -16,12 +16,12 @@
                         <div class="col-md-9">
                         	<div class="mt-checkbox-inline">
                                 <label class="mt-checkbox mt-checkbox-outline" style="margin-bottom: 0px">
-                                    <input class="online_offline" type="checkbox" id="is_online" name="is_online" value="1" 
+                                    <input class="online_offline" type="checkbox" id="is_online" name="is_online" value="1"
                                     @if ( old('is_online') == "1" )
-                                        checked 
-                                    @elseif ( !empty($deals['is_online']) ) 
-                                        checked 
-                                    @endif 
+                                        checked
+                                    @elseif ( !empty($deals['is_online']) )
+                                        checked
+                                    @endif
 
                                     @if (old('is_online') == 1 || old('is_offline') == 1)
                                     @elseif(empty($deals['is_online']) && empty($deals['is_offline']))
@@ -31,12 +31,12 @@
                                     <span></span>
                                 </label>
                                 <label class="mt-checkbox mt-checkbox-outline" style="margin-bottom: 0px">
-                                    <input class="online_offline" type="checkbox" id="is_offline" name="is_offline" value="1" 
+                                    <input class="online_offline" type="checkbox" id="is_offline" name="is_offline" value="1"
                                     @if ( old('is_offline') == "1" )
-                                        checked 
-                                    @elseif ( !empty($deals['is_offline']) ) 
-                                        checked 
-                                    @endif 
+                                        checked
+                                    @elseif ( !empty($deals['is_offline']) )
+                                        checked
+                                    @endif
 
                                     @if (old('is_online') == 1 || old('is_offline') == 1)
                                     @elseif(empty($deals['is_online']) && empty($deals['is_offline']))
@@ -53,13 +53,13 @@
                     @elseif(MyHelper::hasAccess([100], $configs))
                     <input type="hidden" name="is_online" value="1">
                     @endif
-                    
+
                     @if(MyHelper::hasAccess([97], $configs))
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
                             Brand
-                            <span class="required" aria-required="true"> * </span>  
+                            <span class="required" aria-required="true"> * </span>
                             <i class="fa fa-question-circle tooltips" data-original-title="Pilih brand untuk deal ini" data-container="body"></i>
                             </label>
                         </div>
@@ -118,7 +118,7 @@
                             </label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="deals_second_title" value="{{ old('deals_second_title')??$deals['deals_second_title']??'' }}" placeholder="Second Title" maxlength="20" autocomplete="off">    
+                            <input type="text" class="form-control" name="deals_second_title" value="{{ old('deals_second_title')??$deals['deals_second_title']??'' }}" placeholder="Second Title" maxlength="20" autocomplete="off">
                         </div>
                     </div>
                     @endif
@@ -281,11 +281,11 @@
                         <div class="col-md-3">
                             <div class="md-radio-inline">
                                 <div class="md-radio">
-                                    <input type="radio" name="prices_by" id="radio6" value="free" class="prices md-radiobtn" required 
-                                    	@if (old('prices_by')) 
-	                                    	@if (old('prices_by') == "free") checked 
+                                    <input type="radio" name="prices_by" id="radio6" value="free" class="prices md-radiobtn" required
+                                    	@if (old('prices_by'))
+	                                    	@if (old('prices_by') == "free") checked
 	                                    	@endif
-                                    	@elseif (isset($deals['id_deals']) && empty($deals['deals_voucher_price_point']) && empty($deals['deals_voucher_price_cash'])) checked 
+                                    	@elseif (isset($deals['id_deals']) && empty($deals['deals_voucher_price_point']) && empty($deals['deals_voucher_price_cash'])) checked
                                     	@endif>
                                     <label for="radio6">
                                         <span></span>
@@ -297,11 +297,11 @@
                         <div class="col-md-3">
                             <div class="md-radio-inline">
                                 <div class="md-radio">
-                                    <input type="radio" name="prices_by" id="radio7" value="point" class="prices md-radiobtn" required 
+                                    <input type="radio" name="prices_by" id="radio7" value="point" class="prices md-radiobtn" required
                                     	@if (old('prices_by'))
                                     		@if (old('prices_by') == "point") checked
                                     		@endif
-                                    	@elseif (!empty($deals['deals_voucher_price_point'])) checked 
+                                    	@elseif (!empty($deals['deals_voucher_price_point'])) checked
                                     	@endif>
                                     <label for="radio7">
                                         <span></span>
@@ -313,11 +313,11 @@
                         <div class="col-md-3">
                             <div class="md-radio-inline">
                                 <div class="md-radio">
-                                    <input type="radio" name="prices_by" id="radio8" value="money" class="prices md-radiobtn" required 
+                                    <input type="radio" name="prices_by" id="radio8" value="money" class="prices md-radiobtn" required
                                     	@if (old('prices_by'))
 	                                    	@if (old('prices_by') == "money") checked
 	                                    	@endif
-                                    	@elseif (!empty($deals['deals_voucher_price_cash'])) checked 
+                                    	@elseif (!empty($deals['deals_voucher_price_cash'])) checked
                                     	@endif>
                                     <label for="radio8">
                                         <span></span>
@@ -331,33 +331,33 @@
                     <div class="form-group" id="prices"
                     	@if (old('prices_by'))
                     		@if (old('prices_by') == "free")
-                    	 		style="display: none;" 
-                    		@endif 
-                    	@elseif ( empty($deals['deals_voucher_price_point']) && empty($deals['deals_voucher_price_cash']) ) 
-                    		style="display: none;" 
+                    	 		style="display: none;"
+                    		@endif
+                    	@elseif ( empty($deals['deals_voucher_price_point']) && empty($deals['deals_voucher_price_cash']) )
+                    		style="display: none;"
                     	@endif>
                         <label class="col-md-3 control-label"></label>
                         <div class="col-md-9">
                             <div class="col-md-3">
                                 <label class="control-label">Values <span class="required" aria-required="true"> * </span> </label>
                             </div>
-                            <div class="col-md-9 payment" id="point" 
-                            	@if ( old('prices_by')) 
-                                    @if ( old('prices_by') != "point" ) 
+                            <div class="col-md-9 payment" id="point"
+                            	@if ( old('prices_by'))
+                                    @if ( old('prices_by') != "point" )
                                         style="display: none;"
                                     @endif
                                 @elseif ( empty($deals['deals_voucher_price_point']) )
-                            		style="display: none;" 
+                            		style="display: none;"
                             	@endif>
                                 <input type="text" class="form-control point moneyOpp freeOpp" name="deals_voucher_price_point" value="{{ $deals['deals_voucher_price_point']??'' }}" placeholder="Input point values" autocomplete="off">
                             </div>
-                            <div class="col-md-9 payment" id="money" 
-                            	@if ( old('prices_by')) 
-                                    @if ( old('prices_by') != "money" ) 
+                            <div class="col-md-9 payment" id="money"
+                            	@if ( old('prices_by'))
+                                    @if ( old('prices_by') != "money" )
                                         style="display: none;"
                                     @endif
                                 @elseif ( empty($deals['deals_voucher_price_cash']) )
-                            		style="display: none;" 
+                            		style="display: none;"
                             	@endif>
                                 <input type="text" class="form-control money pointOpp freeOpp price" name="deals_voucher_price_cash" value="{{ $deals['deals_voucher_price_cash']??'' }}" placeholder="Input money values" autocomplete="off">
                             </div>
@@ -378,14 +378,14 @@
                                 <div class="col-md-3">
                                     <div class="md-radio-inline">
                                         <div class="md-radio">
-                                            <input type="radio" name="deals_voucher_type" id="radio1" value="Auto generated" class="voucherType" 
-                                            	@if ( old('deals_voucher_type') ) 
-                                            		@if ( old('deals_voucher_type') == 'Auto generated' ) checked 
+                                            <input type="radio" name="deals_voucher_type" id="radio1" value="Auto generated" class="voucherType"
+                                            	@if ( old('deals_voucher_type') )
+                                            		@if ( old('deals_voucher_type') == 'Auto generated' ) checked
                                             		@endif
-                                            	@elseif ( 	
-                                            			($deals['deals_voucher_type']??false) == "Auto generated" || 
+                                            	@elseif (
+                                            			($deals['deals_voucher_type']??false) == "Auto generated" ||
                                             			($deals['deals_voucher_type']??false) == "Unlimited"
-                                            		) checked 
+                                            		) checked
                                             	@endif>
                                             <label for="radio1">
                                                 <span></span>
@@ -397,11 +397,11 @@
                                 <div class="col-md-3">
                                     <div class="md-radio-inline">
                                         <div class="md-radio">
-                                            <input type="radio" name="deals_voucher_type" id="radio2" value="List Vouchers" class="voucherType" 
-                                            @if ( old('deals_voucher_type') ) 
-                                            	@if ( old('deals_voucher_type') == 'List Vouchers' ) checked 
+                                            <input type="radio" name="deals_voucher_type" id="radio2" value="List Vouchers" class="voucherType"
+                                            @if ( old('deals_voucher_type') )
+                                            	@if ( old('deals_voucher_type') == 'List Vouchers' ) checked
                                             	@endif
-                                            @elseif ( ($deals['deals_voucher_type']??false) == "List Vouchers") checked 
+                                            @elseif ( ($deals['deals_voucher_type']??false) == "List Vouchers") checked
                                             @endif required>
                                             <label for="radio2">
                                                 <span></span>
@@ -414,10 +414,10 @@
                         </div>
                     </div>
 
-                    <div class="form-group" id="total-voucher-form" 
+                    <div class="form-group" id="total-voucher-form"
                     @if( old('deals_voucher_type') == 'Auto generated' || old('deals_voucher_type') == 'Unlimited' || ($deals['deals_voucher_type']??false) == 'Unlimited' || ($deals['deals_voucher_type']??false) == 'Auto generated' )
                     @elseif( old('deals_voucher_type') != 'Auto generated' || empty($deals['deals_voucher_type']) || ($deals['deals_voucher_type'] != 'Auto generated') )
-                    	style="display: none;" 
+                    	style="display: none;"
                     @endif>
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -454,7 +454,7 @@
                             </div>
                         </div>
                     </div>
-{{-- 
+{{--
                     @if ($deals['deals_voucher_type'] == "Auto generated" || $deals['deals_voucher_type'] == "List Vouchers")
                     <div class="form-group">
                         <label class="col-md-3 control-label">Voucher Total <span class="required" aria-required="true"> * </span></label>
@@ -465,25 +465,27 @@
                     </div>
                     @endif
  --}}
-					<div class="form-group" id="listVoucher" 
-						@if (old('voucher_code')||old('deals_voucher_type',($deals['deals_voucher_type']??false)) == "List Vouchers") style="display: block;" 
-						@else 
-							style="display: none;" 
+					<div class="form-group" id="listVoucher"
+						@if (old('voucher_code')||old('deals_voucher_type',($deals['deals_voucher_type']??false)) == "List Vouchers") style="display: block;"
+						@else
+							style="display: none;"
 						@endif>
                         <label class="col-md-3 control-label"></label>
                         <div class="col-md-9">
                             <div class="col-md-3">
-                                <label class="control-label">Input Voucher 
-                                    <span class="required" aria-required="true"> * </span> 
+                                <label class="control-label">Input Voucher
+                                    <span class="required" aria-required="true"> * </span>
                                     <br> <small> Separated by new line </small>
                                 </label>
                             </div>
                             <div class="col-md-9">
                                 <textarea name="voucher_code" class="form-control listVoucher" rows="10">@if(old('voucher_code')) {{old('voucher_code')}}
                                 @else
-@foreach($voucher as $row)
-{{ $row['voucher_code'] }}
-@endforeach
+                                    @if(isset($voucher))
+                                        @foreach($voucher as $row)
+                                        {{ $row['voucher_code'] }}
+                                        @endforeach
+                                    @endif
                                 @endif</textarea>
                             </div>
                         </div>
@@ -537,11 +539,11 @@
                         <div class="col-md-3">
                             <div class="md-radio-inline">
                                 <div class="md-radio">
-                                    <input type="radio" name="duration" id="radio9" value="dates" class="expiry md-radiobtn" required 
-                                    	@if ( old('duration') ) checked 
-                                    		@if ( old('duration') == "dates" ) checked 
+                                    <input type="radio" name="duration" id="radio9" value="dates" class="expiry md-radiobtn" required
+                                    	@if ( old('duration') ) checked
+                                    		@if ( old('duration') == "dates" ) checked
                                     		@endif
-                                    	@elseif (!empty($deals['deals_voucher_expired'])) checked 
+                                    	@elseif (!empty($deals['deals_voucher_expired'])) checked
                                     	@endif>
                                     <label for="radio9">
                                         <span></span>
@@ -553,11 +555,11 @@
                         <div class="col-md-3">
                             <div class="md-radio-inline">
                                 <div class="md-radio">
-                                    <input type="radio" name="duration" id="radio10" value="duration" class="expiry md-radiobtn" required 
-                                    	@if ( old('duration') ) checked 
-                                    		@if ( old('duration') == "duration" ) checked 
+                                    <input type="radio" name="duration" id="radio10" value="duration" class="expiry md-radiobtn" required
+                                    	@if ( old('duration') ) checked
+                                    		@if ( old('duration') == "duration" ) checked
                                     		@endif
-                                    	@elseif ( !empty($deals['deals_voucher_duration']) ) checked 
+                                    	@elseif ( !empty($deals['deals_voucher_duration']) ) checked
                                     	@endif>
                                     <label for="radio10">
                                         <span></span>
@@ -568,19 +570,19 @@
                         </div>
                     </div>
 
-                    <div class="form-group" id="times" 
-                    	@if (old('duration') || (!empty($deals['deals_voucher_expired']) || !empty($deals['deals_voucher_duration'])) ) style="display: block;" 
-                    	@else 
-                    		style="display: none;" 
+                    <div class="form-group" id="times"
+                    	@if (old('duration') || (!empty($deals['deals_voucher_expired']) || !empty($deals['deals_voucher_duration'])) ) style="display: block;"
+                    	@else
+                    		style="display: none;"
                     	@endif>
                         <label class="col-md-3 control-label"></label>
                         <div class="col-md-9">
                             <div class="col-md-3">
                                 <label class="control-label">Expiry <span class="required" aria-required="true"> * </span> </label>
                             </div>
-                            <div class="col-md-9 voucherTime" id="dates"  
-                            	@if (old('duration') == "dates") style="display: block;" 
-                            	@elseif (empty($deals['deals_voucher_expired'])) style="display: none;" 
+                            <div class="col-md-9 voucherTime" id="dates"
+                            	@if (old('duration') == "dates") style="display: block;"
+                            	@elseif (empty($deals['deals_voucher_expired'])) style="display: none;"
                             	@endif>
                                 <div class="input-group">
                                     <input type="text" class="form_datetime form-control dates durationOpp" name="deals_voucher_expired" @if (old('deals_voucher_expired') || !empty($deals['deals_voucher_expired'])) value="{{ date('d-M-Y H:i', strtotime(old('deals_voucher_expired')??$deals['deals_voucher_expired'])) }}" @endif autocomplete="off">
@@ -591,9 +593,9 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-md-9 voucherTime" id="duration" 
-                            	@if (old('duration') == "duration") style="display: block;" 
-                            	@elseif (empty($deals['deals_voucher_duration'])) style="display: none;" 
+                            <div class="col-md-9 voucherTime" id="duration"
+                            	@if (old('duration') == "duration") style="display: block;"
+                            	@elseif (empty($deals['deals_voucher_duration'])) style="display: none;"
                             	@endif>
                                 <div class="input-group">
                                     <input type="text" min="1" class="form-control duration datesOpp digit-mask" name="deals_voucher_duration" value="{{ old('deals_voucher_duration')??$deals['deals_voucher_duration']??'' }}" autocomplete="off">
@@ -626,4 +628,3 @@
             @else
                 @include('deals::deals.info-point')
             @endif
-            
