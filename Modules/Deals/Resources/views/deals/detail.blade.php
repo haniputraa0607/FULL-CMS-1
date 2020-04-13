@@ -581,7 +581,15 @@
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="{{ $deals['deals_total_voucher'] }}">{{ !empty($deals['deals_total_voucher']) ? number_format(($deals['deals_total_voucher']??0)-($deals['deals_total_claimed']??0)) : (isset($deals['deals_total_voucher']) ? 'unlimited' : '') }}</span>
+                        <span data-counter="counterup" data-value="{{ $deals['deals_total_voucher'] }}">
+                        @if (!empty($deals['deals_voucher_type']))
+                        	@if ( $deals['deals_voucher_type'] == "Unlimited")
+                        		{{ 'Unlimited' }}
+                        	@else
+                        		{{ number_format(($deals['deals_total_voucher']??0)-($deals['deals_total_claimed']??0)) }}
+                        	@endif
+                        @endif
+                        </span>
                     </div>
                     <div class="desc"> Total Voucher </div>
                 </div>

@@ -127,6 +127,7 @@
 		listProductSingle=[];
 		productLoad = 0;
 		product_type = '{!! $result['product_type']??'single' !!}';
+		brand = '{!!$result['id_brand']!!}';
 
 		$.ajax({
 			type: "GET",
