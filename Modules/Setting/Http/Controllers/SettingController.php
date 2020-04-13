@@ -931,12 +931,13 @@ class SettingController extends Controller
         if (isset($post['click_to'])) {
             if ($post['click_to'] == 'gofood') {
                 $post['type'] = 'gofood';
+            }elseif ($post['click_to'] == 'referral') {
+                $post['type'] = 'referral';
             }
 
             // remove click_to index
             unset($post['click_to']);
         }
-
         if(isset($post['banner_start'])){
             $post['banner_start'] = MyHelper::convertDateTime2($post['banner_start']);
         }
@@ -968,6 +969,8 @@ class SettingController extends Controller
         if (isset($post['click_to'])) {
             if ($post['click_to'] == 'gofood') {
                 $post['type'] = 'gofood';
+            }elseif ($post['click_to'] == 'referral') {
+                $post['type'] = 'referral';
             }
 
             // remove click_to index

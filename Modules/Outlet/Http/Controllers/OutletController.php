@@ -1069,4 +1069,25 @@ class OutletController extends Controller
         $dataExport = new MultisheetExport($dataExport);
         return Excel::download($dataExport,'Data_Brand_'.date('Ymdhis').'.xls');
     }
+
+    public function differentPrice(Request $request) {
+        $data = [
+            'title'          => 'Outlet',
+            'sub_title'      => 'Outlet Different Price',
+            'menu_active'    => 'outlet-different-price',
+            'submenu_active' => 'outlet-different-price',
+            'filter_title'   => 'Filter Product',
+        ];
+        return view('outlet::different_price',$data);
+    }
+    public function getDifferentPrice(Request $request) {
+        $filter['keyword'] = $request->post('keyword');
+        $data = MyHelper::post('outlet/different_price',$filter)['result']??[];
+        return $data;
+    }
+    public function updateDifferentPrice(Request $request) {
+        $post = $request->except('_token');
+        $data = MyHelper::post('outlet/different_price/update',$post);
+        return $data;
+    }
 }

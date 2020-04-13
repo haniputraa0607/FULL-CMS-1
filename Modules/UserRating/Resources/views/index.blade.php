@@ -103,7 +103,7 @@
             ]
         },
         notes_only:{
-            display:'Suggestiion',
+            display:'Suggestion',
             operator:[],
             opsi:[
                 ['1',"With Suggestiion Only"],

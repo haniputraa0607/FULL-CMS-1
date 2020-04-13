@@ -161,7 +161,7 @@
 				productLoad = 1;
 				listProduct=data;
 				$.each(data, function( key, value ) {
-					console.log(value);
+					
 					$('#multipleProduct').append("<option id='product"+value.id_product+"' value='"+value.id_product+"'>"+value.product+"</option>");
 					$('#multipleProduct2,#multipleProduct3').append("<option value='"+value.id_product+"'>"+value.product+"</option>");
 				});
@@ -178,38 +178,6 @@
 		});
 		// if (productLoad == 0) {
 		// }
-
-		outletLoad = 0;
-		$('input[name=filter_outlet]').change(function() {
-			outlet = $('input[name=filter_outlet]:checked').val()
-			$('#multipleOutlet').prop('required', false)
-			$('#multipleOutlet').prop('disabled', true)
-			if (outlet == 'Selected') {
-				$('#selectOutlet').show()
-				if (outletLoad == 0) {					
-					$.ajax({
-						type: "GET",
-						url: "getData",
-						data : {
-							get : 'Outlet'
-						},
-						dataType: "json",
-						success: function(data){
-							$.each(data, function( key, value ) {
-								$('#multipleOutlet').append("<option id='outlet"+value.id_outlet+"' value='"+value.id_outlet+"'>"+value.outlet+"</option>");
-							});
-							$('#multipleOutlet').prop('required', true)
-							$('#multipleOutlet').prop('disabled', false)
-						}
-					});
-				} else {
-					$('#multipleOutlet').prop('required', true)
-					$('#multipleOutlet').prop('disabled', false)
-				}
-			} else {
-				$('#selectOutlet').hide()
-			}
-		});
 
 		var is_all_product = '{!!$is_all_product!!}'
 		if (is_all_product == 0 && is_all_product.length != 0) {
@@ -494,7 +462,7 @@
 	@if( strtotime($datenow) > strtotime($date_start) && isset($result['campaign_complete']))
 	<script type="text/javascript">
 		$(document).ready(function() {
-			console.log('ok');
+			
 			$('#promotype-form').find('input, textarea').prop('disabled', true);
 			$('#user-search-form').find('input, textarea').prop('disabled', true);
 		});

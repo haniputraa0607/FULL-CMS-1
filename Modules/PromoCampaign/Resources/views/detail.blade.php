@@ -440,7 +440,7 @@
 					                @if (!empty($result['promo_campaign_warning_image']))
 						                <div class="row static-info text-center">
 						                    <div class="col-md-12 name">
-						                    	<img src="{{ env('AWS_URL').$result['promo_campaign_warning_image'] }}" style="width: 100px">
+						                    	<img src="{{ env('S3_URL_API').$result['promo_campaign_warning_image'] }}" style="width: 100px">
 						                    </div>
 						                </div>
 					                @endif

@@ -16,7 +16,7 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'autocrm'
     Route::get('{media}/turnon/{id}', 'AutocrmController@mediaOn');
 });
 
-Route::group(['middleware' => ['web','validate_session'], 'prefix' => 'about', 'namespace' => 'Modules\Autocrm\Http\Controllers'], function()
+Route::group(['middleware' => ['web', 'validate_session'],'namespace' => 'Modules\Autocrm\Http\Controllers'], function()
 {
-    Route::any('autoresponse/{subject}', 'AutocrmController@autoResponse');
+  Route::any('autoresponse/{type}/{subject}', 'AutocrmController@autoResponse');
 });

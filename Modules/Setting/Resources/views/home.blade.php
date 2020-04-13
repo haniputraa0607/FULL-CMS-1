@@ -258,8 +258,9 @@
 			else if(id_news != "") {
 				$('#modalBannerUpdate .click-to-radio[value="news"]').prop("checked", true);
 	            $('.click-to-type').find('.select2-container').show();
-			}
-			else {
+			}else if(type === 'referral'){
+				$('#modalBannerUpdate .click-to-radio[value="referral"]').prop("checked", true);
+			}else {
 				$('#modalBannerUpdate .click-to-radio[value="none"]').prop("checked", true);
 			}
 
@@ -731,7 +732,7 @@
 											</div>
 											<div class="col-md-10 text-right">
 												@if(MyHelper::hasAccess([146], $grantedFeature))
-												<a class="btn blue btn-circle btn-edit" href="#modalBannerUpdate" data-toggle="modal" data-id="{{ $banner['id_banner'] }}" data-img="{{$banner['image_url']}}" data-news="{{$banner['id_news']}}" data-url="{{$banner['url']}}" data-type="{{ $banner['type'] }}" data-start="{{ ($banner['banner_start']??false)?date("d F Y - H:i", strtotime(implode(' ',[explode(' ', $banner['banner_start'])[0], explode(' ', $banner['banner_start'])[1]]))):'' }}" data-end="{{ ($banner['banner_start']??false)?date("d F Y - H:i", strtotime(implode(' ',[explode(' ', $banner['banner_start'])[0], explode(' ', $banner['banner_start'])[1]]))):''}}"><i class="fa fa-pencil"></i> </a>
+												<a class="btn blue btn-circle btn-edit" href="#modalBannerUpdate" data-toggle="modal" data-id="{{ $banner['id_banner'] }}" data-img="{{$banner['image_url']}}" data-news="{{$banner['id_news']}}" data-url="{{$banner['url']}}" data-type="{{ $banner['type'] }}" data-start="{{ ($banner['banner_start']??false)?date("d F Y - H:i", strtotime(implode(' ',[explode(' ', $banner['banner_start'])[0], explode(' ', $banner['banner_start'])[1]]))):'' }}" data-end="{{ ($banner['banner_end']??false)?date("d F Y - H:i", strtotime(implode(' ',[explode(' ', $banner['banner_end'])[0], explode(' ', $banner['banner_end'])[1]]))):''}}"><i class="fa fa-pencil"></i> </a>
 												@endif
 												@if(MyHelper::hasAccess([147], $grantedFeature))
 												<a class="btn red-mint btn-circle btn-delete" data-id="{{ $banner['id_banner'] }}"><i class="fa fa-trash-o"></i> </a>
@@ -747,8 +748,9 @@
 					 			 		@php
 					 			 			if ($banner['news_title'] != null) {
 					 			 				$click_to = str_limit($banner['news_title'], 20);
-					 			 			}
-					 			 			elseif ($banner['url'] != null) {
+					 			 			}elseif($banner['type'] == 'referral') {
+					 			 					$click_to = "Referral";
+											}elseif ($banner['url'] != null) {
 					 			 				if ($banner['type'] == 'general') {
 					 			 					$click_to = str_limit($banner['url'], 20);
 					 			 				} else {
@@ -765,7 +767,7 @@
 										<div>Date Start:</div>
 										<div>{{ ($banner['banner_start']??false)?date("d F Y H:i", strtotime(implode(' ',[explode(' ', $banner['banner_start'])[0], explode(' ', $banner['banner_start'])[1]]))):'-' }}</div><br>
 										<div>Date End:</div>
-					 			 		<div>{{ ($banner['banner_start']??false)?date("d F Y H:i", strtotime(implode(' ',[explode(' ', $banner['banner_end'])[0], explode(' ', $banner['banner_end'])[1]]))):'-' }}</div>
+					 			 		<div>{{ ($banner['banner_end']??false)?date("d F Y H:i", strtotime(implode(' ',[explode(' ', $banner['banner_end'])[0], explode(' ', $banner['banner_end'])[1]]))):'-' }}</div>
 					 			 	</div>
 					 			</div>
 					 			@endforeach
@@ -1098,11 +1100,16 @@
 										<input class="click-to-radio" type="radio" name="click_to" value="none" checked> None
 									</label>
 	                            </div>
-	                            <div class="col-md-4">
+	                            {{-- <div class="col-md-3">
                                     <label class="radio-inline">
 										<input class="click-to-radio" type="radio" name="click_to" value="gofood"> GO-FOOD
 									</label>
-	                            </div>
+	                            </div> --}}
+								<div class="col-md-2">
+									<label class="radio-inline">
+										<input class="click-to-radio" type="radio" name="click_to" value="referral"> Referral
+									</label>
+								</div>
                             </div>
 
                             <div class="col-md-12 click-to-type" style="margin-top: 10px;">
@@ -1210,11 +1217,16 @@
 										<input class="click-to-radio" type="radio" name="click_to" value="none" checked> None
 									</label>
 	                            </div>
-	                            <div class="col-md-4">
+	                            {{-- <div class="col-md-3">
                                     <label class="radio-inline">
 										<input class="click-to-radio" type="radio" name="click_to" value="gofood"> GO-FOOD
 									</label>
-	                            </div>
+	                            </div> --}}
+								<div class="col-md-2">
+									<label class="radio-inline">
+										<input class="click-to-radio" type="radio" name="click_to" value="referral"> Referral
+									</label>
+								</div>
                             </div>
 
                             <div class="col-md-12 click-to-type" style="margin-top: 10px;">

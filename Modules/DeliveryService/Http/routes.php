@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['middleware' => 'web', 'prefix' => 'delivery-service', 'namespace' => 'Modules\DeliveryService\Http\Controllers'], function () {
+Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'delivery-service', 'namespace' => 'Modules\DeliveryService\Http\Controllers'], function () {
     Route::get('/', 'DeliveryServiceController@index');
     Route::post('store', 'DeliveryServiceController@store');
 });

@@ -37,6 +37,9 @@ date_default_timezone_set('Asia/Jakarta');
     .inactive .active_only{
         display: none !important;
     }
+    .handle{
+        cursor: move;
+    }
 </style>
 @endsection
 
@@ -117,13 +120,57 @@ date_default_timezone_set('Asia/Jakarta');
     $('.form-toggler').change();
     $('#active_checkbox').trigger('switchChange.bootstrapSwitch');
     $(document).ready(function(){
-        $('.appender').on('click','.appender-btn',function(){
+        $('body').on('click','.appender-btn',function(){
             var value=$(this).data('value');
             var target=$(this).parents('.appender').data('target');
-            var newValue=$(target).val()+" "+value;
-            $(target).val(newValue);
-            $(target).focus();
+            var target2=$(this).parents('.append-child').find(target);
+            if(target2.length){
+                var newValue=$(target2).val()+" "+value;
+                $(target2).val(newValue);
+                $(target2).focus();
+            }else{
+                var newValue=$(target).val()+" "+value;
+                $(target).val(newValue);
+                $(target).focus();
+            }
         });
+        $('#append-area').on('click','.remove-btn',function(){
+            $(this).parents('.append-child').remove();
+        });
+        const template = `
+            <div class="append-child">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <span class="handle"><i class="fa fa-ellipsis-h" style="transform: rotate(90deg);"></i></span> 
+                        </div>
+                        <input type="text" class="form-control target-text" name="referral_content_description[]" required/><br>
+                        <div class="input-group-btn">
+                            <button class="remove-btn btn red"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row appender" data-target=".target-text">
+                        <div class="col-md-5" style="margin-bottom:5px;">
+                            <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%benefit_referred%' with recipient bonus value" data-value="%benefit_referred%">%benefit_referred%</span>
+                        </div>
+                        <div class="col-md-5" style="margin-bottom:5px;">
+                            <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%benefit_referrer%' with giver bonus value" data-value="%benefit_referrer%">%benefit_referrer%</span>
+                        </div>
+                        <div class="col-md-5" style="margin-bottom:5px;">
+                            <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%code%' with promo code" data-value="%code%">%code%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        $('.append-btn').on('click',function(){
+            $('#append-area').append(template);
+        });
+        $('.sortable').sortable({
+            handle: '.handle'
+        }).disableSelection();
     });
 </script>
 @endsection
@@ -220,24 +267,108 @@ date_default_timezone_set('Asia/Jakarta');
                             </div>
                         </div>
                     </div>
+                    <h4>Custom Message</h4>
                     <div class="row">
-                        <label class="col-md-4 control-label">Referral Messages
-                            <span class="required" aria-required="true"> *
-                            </span>
-                            <i class="fa fa-question-circle tooltips" data-original-title="Teks default yang akan digunakan saat pengguna membagikan kode referral" data-container="body"></i>
-                        </label>
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <input type="text" value="{{old('referral_messages',$setting['referral_messages'])}}" class="form-control" name="referral_messages" id="referral_messages" required><br>
-                                <div class="row appender" data-target="#referral_messages">
-                                    <div class="col-md-3" style="margin-bottom:5px;">
-                                        <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%value%' with bonus value" data-value="%value%">%value%</span>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <label class="col-md-5 control-label">Sharing Content
+                                    <span class="required" aria-required="true"> *
+                                    </span>
+                                    <i class="fa fa-question-circle tooltips" data-original-title="Teks default yang akan digunakan saat pengguna membagikan kode referral" data-container="body"></i>
+                                </label>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <textarea type="text" class="form-control" name="referral_messages" id="referral_messages" required>{{old('referral_messages',$setting['referral_messages']??'')}}</textarea><br>
+                                        <div class="row appender" data-target="#referral_messages">
+                                            <div class="col-md-5" style="margin-bottom:5px;">
+                                                <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%benefit_referred%' with recipient bonus value" data-value="%benefit_referred%">%benefit_referred%</span>
+                                            </div>
+                                            <div class="col-md-5" style="margin-bottom:5px;">
+                                                <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%benefit_referrer%' with giver bonus value" data-value="%benefit_referrer%">%benefit_referrer%</span>
+                                            </div>
+                                            <div class="col-md-3" style="margin-bottom:5px;">
+                                                <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%code%' with promo code" data-value="%code%">%code%</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-3" style="margin-bottom:5px;">
-                                        <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%code%' with promo code" data-value="%code%">%code%</span>
+                                </div>
+                                <label class="col-md-5 control-label">Referral Content Title
+                                    <span class="required" aria-required="true"> *
+                                    </span>
+                                    <i class="fa fa-question-circle tooltips" data-original-title="Teks yang akan ditambilkan di bagian atas halaman referral" data-container="body"></i>
+                                </label>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <textarea type="text" class="form-control" name="referral_content_title" id="referral_content_title" required>{{old('referral_content_title',$setting['referral_content_title']??'')}}</textarea><br>
+                                    </div>
+                                </div>
+                                <label class="col-md-5 control-label">Referral Content Description
+                                    <span class="required" aria-required="true"> *
+                                    </span>
+                                    <i class="fa fa-question-circle tooltips" data-original-title="Teks yang akan ditambilkan di deskripsi halaman referral" data-container="body"></i>
+                                </label>
+                                <div class="col-md-7">
+                                    <div class="alert alert-info">Drag [<i class="fa fa-ellipsis-h" style="transform: rotate(90deg);"></i>] handle button to reorder</div>
+                                    <div class="sortable" id="append-area">
+                                        @if($setting['referral_content_description']??false)
+                                        @foreach(json_decode($setting['referral_content_description'])??[] as $set)
+                                        <div class="append-child">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <span class="handle"><i class="fa fa-ellipsis-h" style="transform: rotate(90deg);"></i></span> 
+                                                    </div>
+                                                    <input type="text" class="form-control target-text" name="referral_content_description[]" required value="{{old('referral_content_description',$set)}}"/><br>
+                                                    <div class="input-group-btn">
+                                                        <button class="remove-btn btn red"><i class="fa fa-times"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row appender" data-target=".target-text">
+                                                    <div class="col-md-5" style="margin-bottom:5px;">
+                                                        <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%benefit_referred%' with recipient bonus value" data-value="%benefit_referred%">%benefit_referred%</span>
+                                                    </div>
+                                                    <div class="col-md-5" style="margin-bottom:5px;">
+                                                        <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%benefit_referrer%' with giver bonus value" data-value="%benefit_referrer%">%benefit_referrer%</span>
+                                                    </div>
+                                                    <div class="col-md-5" style="margin-bottom:5px;">
+                                                        <span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%code%' with promo code" data-value="%code%">%code%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                        @endif
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn blue append-btn" type="button"><i class="fa fa-plus"></i> Add</button>
+                                    </div>
+                                </div>
+                                <label class="col-md-5 control-label">Referral Text Header
+                                    <span class="required" aria-required="true"> *
+                                    </span>
+                                    <i class="fa fa-question-circle tooltips" data-original-title="Teks yang akan ditambilkan di atas kode referral" data-container="body"></i>
+                                </label>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="referral_text_header" id="referral_text_header" required value="{{old('referral_text_header',$setting['referral_text_header']??'')}}"/><br>
+                                    </div>
+                                </div>
+                                <label class="col-md-5 control-label">Referral Text Button
+                                    <span class="required" aria-required="true"> *
+                                    </span>
+                                    <i class="fa fa-question-circle tooltips" data-original-title="Teks yang akan ditambilkan di atas kode referral" data-container="body"></i>
+                                </label>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="referral_text_button" id="referral_text_button" required value="{{old('referral_text_button',$setting['referral_text_button']??'')}}"/>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="preview col-md-4 pull-right" style="right: 0;top: 70px; position: sticky">
+                            <img id="img_preview" src="{{env('S3_URL_VIEW')}}img/setting/referral_preview.png" class="img-responsive">
                         </div>
                     </div>
                 </div>

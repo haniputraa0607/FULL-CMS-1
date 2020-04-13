@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
+use Excel;
+use App\Exports\ProductExport;
+use App\Imports\ProductImport;
+
+
 use App\Lib\MyHelper;
 
 class ProductGroupController extends Controller
@@ -88,7 +93,7 @@ class ProductGroupController extends Controller
 
     public function indexAjax(Request $request) {
         $page = $request->page?:1;
-        $raw_data = MyHelper::get('product-variant/group?page='.$page)['result']??[];
+        $raw_data = MyHelper::post('product-variant/group',['page'=>$page,'keyword'=>$request->keyword])['result']??[];
         $data['data'] = $raw_data['data'];
         $data['total'] = $raw_data['total']??0;
         $data['from'] = $raw_data['from']??0;
@@ -156,12 +161,14 @@ class ProductGroupController extends Controller
             'submenu_active' => 'product-group-list',
         ];
         $data['categories'] = MyHelper::get('product/category/be/list')['result']??[];
+        $data['promo_categories'] = MyHelper::get('product/promo-category')['result']??[];
         $product_group = MyHelper::post('product-variant/group/detail',['id_product_group'=>$id])['result']??[];
         $variants = array_map(function($var){
             $var['variants'] = explode(',', $var['variants']);
             return $var;
         }, $product_group['variants']);
         $product_group['variants'] = $variants;
+        $product_group['promo_category'] = array_column($product_group['promo_category'], 'id_product_promo_category');
         $data['product_group'] = $product_group;
         $data['variants_tree'] = MyHelper::get('product-variant/tree')['result']??[];
         $data['products'] = MyHelper::post('product-variant/available-product',['id_product_group'=>$id])['result']??[];
@@ -282,6 +289,176 @@ class ProductGroupController extends Controller
             return back()->with('success',['Success delete data']);
         }else{
             return back()->withInput()->withErrors($request['messages']??['Failed delete data']);
+        }
+    }
+
+    /**
+     * Export product
+     */
+    public function export(Request $request,$type) {
+        $post = $request->except('_token');
+        $data = MyHelper::post('product-variant/group/export',['type'=>$type]+$post)['result']??[];
+        if(!$data){
+            return back()->withErrors(['Something went wrong']);
+        }
+        $tab_title = 'List Products';
+        switch ($type) {
+            case 'global':
+                $tab_title = 'List Products';
+                if(!$data['products']){
+                    $data['products'] = [
+                        [
+                            'product_group_code' => '001',
+                            'product_group_name' => 'Product 1',
+                            'product_group_description' => 'Example product 1'
+                        ],
+                        [
+                            'product_group_code' => '002',
+                            'product_group_name' => 'Product 2',
+                            'product_group_description' => 'Example product 2'
+                        ],
+                        [
+                            'product_group_code' => '003',
+                            'product_group_name' => 'Product 3',
+                            'product_group_description' => 'Example product 3'
+                        ],
+                    ];
+                }
+                break;
+
+            case 'detail':
+                $tab_title = 'Product Detail';
+                if(!$data['products']){
+                    $data['products'] = [
+                        [
+                            'product_category_name' => 'Snacks',
+                            'product_group_position' => '1',
+                            'product_group_code' => '001',
+                            'product_group_name' => 'Product 1',
+                            'product_group_description' => 'Example product 1'
+                        ],
+                        [
+                            'product_category_name' => 'Snacks',
+                            'product_group_position' => '2',
+                            'product_group_code' => '002',
+                            'product_group_name' => 'Product 2',
+                            'product_group_description' => 'Example product 2'
+                        ],
+                        [
+                            'product_category_name' => 'Drinks',
+                            'product_group_position' => '1',
+                            'product_group_code' => '003',
+                            'product_group_name' => 'Product 3',
+                            'product_group_description' => 'Example product 3'
+                        ],
+                    ];
+                }
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+        return Excel::download(new ProductExport($data['products'],$tab_title),date('YmdHi').'_'.$type.'.xlsx');
+    }
+
+    /**
+     * Import product
+     */
+    public function import(Request $request,$type) {
+        $post = $request->except('_token');
+
+        if ($request->hasFile('import_file')) {
+            $path = $request->file('import_file')->getRealPath();
+            $data['products'] = \Excel::toArray(new ProductImport(),$request->file('import_file'))[0]??[];
+            if(!empty($data)){
+                $code_brand = '';
+                $import = MyHelper::post('product-variant/group/import', [
+                    'type' => $type,
+                    'data' => $data
+                ]);
+                return $import;
+            }else{
+                return [
+                    'status'=>'fail',
+                    'messages'=>['File empty']
+                ];
+            }
+        }
+
+        return [
+            'status'=>'fail',
+            'messages'=>['Something went wrong']
+        ];
+    }
+
+    /**
+     * Import product
+     */
+    public function importView(Request $request,$type) {
+        $data = [
+            'title'          => 'Complex Menu',
+            'sub_title'      => 'Import Product',
+            'menu_active'    => 'product-variant',
+            'submenu_active' => 'product-group-import',
+            'type'           => $type
+        ];
+        switch ($type) {
+            case 'global':
+                $data['sub_title'] = 'Import Product Group Global';
+                $data['submenu_active'] = 'product-group-import-global';
+                $data['brands'] = MyHelper::get('brand/be/list')['result']??[];
+                break;
+
+            case 'detail':
+                $data['sub_title'] = 'Import Detail Product Group';
+                $data['submenu_active'] = 'product-group-import-detail';
+                $products = MyHelper::post('product/be/list', ['admin_list' => 1])['result']??[];
+                if(!$products){
+                    return redirect('product/import/global')->withErrors(['Product list empty','Upload global list product first']);
+                }
+                $data['brands'] = MyHelper::get('brand/be/list')['result']??[];
+                break;
+
+            default:
+                return abort(404);
+                break;
+        }
+
+        return view('productvariant::groups.import',$data);
+    }
+
+    /**
+     * Manage Product Category
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function category(Request $request) {
+        $data = [
+            'title'          => 'Complex Menu',
+            'sub_title'      => 'Manage Category',
+            'menu_active'    => 'product-variant',
+            'submenu_active' => 'product-group-manage-category'
+        ];
+
+        $data['categories'] = MyHelper::get('product/category/be/list')['result']??[];
+        $data['all_category'] = array_column($data['categories'], 'id_product_category');
+        $data['products'] = MyHelper::post('product-variant/group',['target'=>'manage_category'])['result']??[];
+        return view('productvariant::groups.manage-category',$data);
+    }
+
+    /**
+     * Manage Product Category
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function categoryUpdate(Request $request) {
+        $post = $request->except('_token');
+        $update = MyHelper::post('product-variant/group/category/update',$post);
+        if(($update['status']??false) == 'success'){
+            return back()->with('success',['Success update category']);
+        }else{
+            return back()->withErrors($update['messages']??['Failed update category'])->withInput();
         }
     }
 }

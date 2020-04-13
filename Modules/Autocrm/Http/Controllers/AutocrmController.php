@@ -21,7 +21,7 @@ class AutocrmController extends Controller
 				];
 		$query = MyHelper::get('autocrm/list');
 		$test = MyHelper::get('autocrm/textreplace');
-		
+
 		$data['data'] = $query['result'];
 		if($test['status'] == 'success'){
 			$data['textreplaces'] = $test['result'];
@@ -29,19 +29,19 @@ class AutocrmController extends Controller
 
         return view('autocrm::index', $data);
     }
-	
+
     public function email(Request $request){
 		$post = $request->except('_token');
 		$query = MyHelper::post('autocrm/update', $post);
 		return back();
     }
-	
+
 	public function sms(Request $request){
 		$post = $request->except('_token');
 		$query = MyHelper::post('autocrm/update', $post);
 		return back();
     }
-	
+
 	public function push(Request $request){
 		$post = $request->except('_token');
 		if (isset($post['autocrm_push_image'])) {
@@ -51,19 +51,19 @@ class AutocrmController extends Controller
 		$query = MyHelper::post('autocrm/update', $post);
 		return back();
     }
-	
+
 	public function inbox(Request $request){
 		$post = $request->except('_token');
 		$query = MyHelper::post('autocrm/update', $post);
 		return back();
     }
-	
+
 	public function forward(Request $request){
 		$post = $request->except('_token');
 		$query = MyHelper::post('autocrm/update', $post);
 		return back();
     }
-	
+
     public function mediaOn($media, $id){
 		$post = [];
 		$post['id_autocrm'] = $id;
@@ -72,7 +72,7 @@ class AutocrmController extends Controller
 		if($media == 'push') $post['autocrm_push_toogle'] = '1';
 		if($media == 'inbox') $post['autocrm_inbox_toogle'] = '1';
 		if($media == 'forward') $post['autocrm_forward_toogle'] = '1';
-		
+
 		$query = MyHelper::post('autocrm/update', $post);
 		return back();
     }
@@ -111,39 +111,60 @@ class AutocrmController extends Controller
     public function destroy()
     {
     }
-    public function autoResponse(Request $request, $subject){
-		$data = [ 'title'             => 'About Auto Response '.ucfirst(str_replace('-',' ',$subject)),
-				  'menu_active'       => 'about-autoresponse',
-				  'submenu_active'    => 'about-autoresponse-'.$subject
-				];
-		if(stristr($subject, 'enquiry')){
-			$data['menu_active'] = 'enquiries';
-			$data['submenu_active'] = 'autoresponse-'.$subject;
-			$data['title'] = 'Auto Response '.ucfirst(str_replace('-',' ',$subject));
-		}
-		$query = MyHelper::get('autocrm/list');
-		$test = MyHelper::get('autocrm/textreplace');
-		$auto = null;
+    public function autoResponse(Request $request, $type, $subject){
 		$post = $request->except('_token');
 		if(!empty($post)){
+			if(!isset($post['attachment_mail'])){
+				$post['attachment_mail']=0;
+			}
+			if(!isset($post['attachment_forward'])){
+				$post['attachment_forward']=0;
+			}
+
 			if (isset($post['autocrm_push_image'])) {
 				$post['autocrm_push_image'] = MyHelper::encodeImage($post['autocrm_push_image']);
 			}
-			
+
+			if (isset($post['whatsapp_content'])) {
+				foreach($post['whatsapp_content'] as $key => $content){
+					if($content['content'] || isset($content['content_file']) && $content['content_file']){
+						if($content['content_type'] == 'image'){
+							$post['whatsapp_content'][$key]['content'] = MyHelper::encodeImage($content['content']);
+						}
+						else if($content['content_type'] == 'file'){
+							$post['whatsapp_content'][$key]['content'] = base64_encode(file_get_contents($content['content_file']));
+							$post['whatsapp_content'][$key]['content_file_name'] = pathinfo($content['content_file']->getClientOriginalName(), PATHINFO_FILENAME);
+							$post['whatsapp_content'][$key]['content_file_ext'] = pathinfo($content['content_file']->getClientOriginalName(), PATHINFO_EXTENSION);
+							unset($post['whatsapp_content'][$key]['content_file']);
+						}
+					}
+				}
+			}
+
 			$query = MyHelper::post('autocrm/update', $post);
 			// print_r($query);exit;
 			return back()->withSuccess(['Response updated']);
 		}
-		foreach($query['result'] as $autonya){
-			if($autonya['autocrm_title'] == ucwords(str_replace('-',' ',$subject))){
-				$auto = $autonya;
-			}
+
+		$data = [ 'title'             => ucfirst($type),
+				  'sub_title'         => ' Auto Response '.ucwords(str_replace('-',' ',$subject)),
+				  'menu_active'       => $type,
+				  'submenu_active'    => $type.'-autoresponse-'.$subject,
+				  'type' 			  => $type
+				];
+
+		if($data['type'] == 'enquiries'){
+			$data['type'] = "";
+			$data['attachment'] = '1';
 		}
-		
-		if($auto == null) return back()->withErrors(['No such response']);
-		$data['data'] = $auto;
-		if($test['status'] == 'success'){
-			$data['textreplaces'] = $test['result'];
+
+		$query = MyHelper::post('autocrm/list', ['autocrm_title' => ucwords(str_replace('-',' ',$subject))]);
+		if(!isset($query['result'])) return back()->withErrors(['No such response']);
+		$data['data'] = $query['result'];
+
+		$textReplace = MyHelper::get('autocrm/textreplace?log_save=0');
+		if($textReplace['status'] == 'success'){
+			$data['textreplaces'] = $textReplace['result'];
 			$data['subject'] = $subject;
 		}
 
@@ -153,7 +174,21 @@ class AutocrmController extends Controller
 		}else{
 			$data['api_key_whatsapp'] = null;
 		}
-		// dd($data);exit;
+
+		$custom = [];
+        if (isset($data['data']['custom_text_replace'])) {
+			$custom = explode(';', $data['data']['custom_text_replace']);
+			if($custom[count($custom) - 1] == ''){
+				unset($custom[count($custom) - 1]);
+			}
+        }
+
+		if(stristr($request->url(), 'deals')){
+			$data['deals'] = true;
+		}
+
+		$data['custom'] = $custom;
+		// print_r($data);exit;
         return view('users::response', $data);
 	}
 
@@ -172,7 +207,7 @@ class AutocrmController extends Controller
 
         return view('autocrm::list', $data);
 	}
-	
+
 	public function create(Request $request){
 		$post = $request->except('_token');
 		if(empty($post)){
@@ -181,28 +216,28 @@ class AutocrmController extends Controller
 					  'menu_active'       => 'autocrm',
 					  'submenu_active'    => 'autocrm-new'
 					];
-	
+
 			$getCity = MyHelper::get('city/list?log_save=0');
 			if($getCity['status'] == 'success') $data['city'] = $getCity['result']; else $data['city'] = [];
-			
+
 			$getProvince = MyHelper::get('province/list?log_save=0');
 			if($getProvince['status'] == 'success') $data['province'] = $getProvince['result']; else $data['province'] = [];
-			
+
 			$getCourier = MyHelper::get('courier/list?log_save=0');
 			if($getCourier['status'] == 'success') $data['couriers'] = $getCourier['result']; else $data['couriers'] = [];
-			
+
 			$getOutlet = MyHelper::get('outlet/list?log_save=0');
 			if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
-			
+
 			$getProduct = MyHelper::get('product/be/list?log_save=0');
 			if (isset($getProduct['status']) && $getProduct['status'] == 'success') $data['products'] = $getProduct['result']; else $data['products'] = [];
-			
+
 			$getTag = MyHelper::get('product/tag/list?log_save=0');
 			if (isset($getTag['status']) && $getTag['status'] == 'success') $data['tags'] = $getTag['result']; else $data['tags'] = [];
-			
+
 			$getMembership = MyHelper::post('membership/be/list?log_save=0', []);
 			if (isset($getMembership['status']) && $getMembership['status'] == 'success') $data['memberships'] = $getMembership['result']; else $data['memberships'] = [];
-			
+
 			$test = MyHelper::get('autocrm/textreplace?log_save=0');
 			if($test['status'] == 'success'){
 				$data['textreplaces'] = $test['result'];
@@ -255,7 +290,7 @@ class AutocrmController extends Controller
 					  'menu_active'       => 'autocrm',
 					  'submenu_active'    => 'autocrm-list'
 					];
-			$post['id_autocrm'] = $id_autocrm;	
+			$post['id_autocrm'] = $id_autocrm;
 			$query = MyHelper::post('autocrm/cron/list', $post);
 			// dd($query);
 			if(isset($query['status']) && $query['status'] == 'success'){
@@ -269,25 +304,25 @@ class AutocrmController extends Controller
 			}else{
 				$data['conditions'] = [];
 			}
-			
+
 			$getCity = MyHelper::get('city/list?log_save=0');
 			if($getCity['status'] == 'success') $data['city'] = $getCity['result']; else $data['city'] = [];
-			
+
 			$getProvince = MyHelper::get('province/list?log_save=0');
 			if($getProvince['status'] == 'success') $data['province'] = $getProvince['result']; else $data['province'] = [];
-			
+
 			$getCourier = MyHelper::get('courier/list?log_save=0');
 			if($getCourier['status'] == 'success') $data['couriers'] = $getCourier['result']; else $data['couriers'] = [];
-			
+
 			$getOutlet = MyHelper::get('outlet/list?log_save=0');
 			if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlets'] = $getOutlet['result']; else $data['outlets'] = [];
-			
+
 			$getProduct = MyHelper::get('product/be/list?log_save=0');
 			if (isset($getProduct['status']) && $getProduct['status'] == 'success') $data['products'] = $getProduct['result']; else $data['products'] = [];
-			
+
 			$getTag = MyHelper::get('product/tag/list?log_save=0');
 			if (isset($getTag['status']) && $getTag['status'] == 'success') $data['tags'] = $getTag['result']; else $data['tags'] = [];
-			
+
 			$getMembership = MyHelper::post('membership/be/list?log_save=0', []);
 			if (isset($getMembership['status']) && $getMembership['status'] == 'success') $data['memberships'] = $getMembership['result']; else $data['memberships'] = [];
 
@@ -304,7 +339,7 @@ class AutocrmController extends Controller
 			}else{
 				$data['api_key_whatsapp'] = null;
 			}
-			
+
 			return view('autocrm::create', $data);
 		}else{
 			unset($post['files']);
@@ -340,7 +375,7 @@ class AutocrmController extends Controller
         $post   = $request->all();
 
         $delete = MyHelper::post('autocrm/cron/delete', ['id_autocrm' => $post['id_autocrm']]);
-        
+
         if (isset($delete['status']) && $delete['status'] == "success") {
             return "success";
         }
@@ -348,5 +383,5 @@ class AutocrmController extends Controller
             return "fail";
         }
     }
-	
+
 }

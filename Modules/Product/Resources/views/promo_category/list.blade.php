@@ -39,17 +39,15 @@ $configs            = session('configs');
                 return `
                 <tr class="page${item.page}">
                     <td class="text-center">${item.increment}</td>
-                    <td>${item.product_group_code}</td>
-                    <td>${item.product_category?item.product_category.product_category_name:'Uncategorized'}</td>
-                    <td>${item.product_group_name}</td>
+                    <td>${item.product_promo_category_name}</td>
                     <td>${item.products_count}</td>
                     <td>
-                      <div style="width: 75px">
-                        <form action="{{url('product-variant/group/delete')}}" class="form-inline" method="POST">
-                          <a href="{{url('product-variant/group')}}/${item.id_product_group}" target="_blank" class="btn btn-sm blue"><i class="fa fa-pencil"></i></a>
+                      <div>
+                        <form action="{{url('product/promo-category/delete')}}" class="form-inline" method="POST">
+                          <a href="{{url('product/promo-category')}}/${item.id_product_promo_category}" target="_blank" class="btn btn-sm blue"><i class="fa fa-pencil"></i></a>
                           @csrf
-                          <input type="hidden" name="id_product_group" value="${item.id_product_group}">
-                          <button class="btn btn-sm red deleteBtn" data-toggle="confirmation" data-title="Are you sure delete this product group?" type="submit"><i class="fa fa-trash-o"></i></button>
+                          <input type="hidden" name="id_product_promo_category" value="${item.id_product_promo_category}">
+                          <button class="btn btn-sm red deleteBtn" data-toggle="confirmation" data-title="Are you sure delete this product category?" type="submit"><i class="fa fa-trash-o"></i></button>
                         </form>
                       </div>
                     </td>
@@ -111,10 +109,8 @@ $configs            = session('configs');
                     <thead>
                         <tr>
                             <th style="width: 1%" class="text-center">No</th>
-                            <th>Code</th>
-                            <th>Category</th>
                             <th>Name</th>
-                            <th>Variants</th>
+                            <th>Products</th>
                             <th>Action</th>
                         </tr>
                     </thead>

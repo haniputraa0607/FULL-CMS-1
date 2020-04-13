@@ -262,8 +262,6 @@
 					<input type="submit" id="dumpSubmit">
 				</form>
 			</div>
-			<div style="width: 136px;padding: 13px 13px 0 0" class="pull-right">
-			</div>
 		</div>
 		<div class="row" style="margin-bottom: 20px">
 			@php $col = $reportData['rating_item_count']==3?'3':'4' @endphp

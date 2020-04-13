@@ -603,7 +603,7 @@ class CampaignController extends Controller
 
     public function showRecipient(Request $request,$id_campaign){
     	if($request->input('ajax')){
-    		$post=array_merge(['id_campaign' => $id_campaign],$request->input());    		
+    		$post=array_merge(['id_campaign' => $id_campaign],$request->input());
     	}else{
     		$post=['id_campaign' => $id_campaign];
     	}
@@ -632,7 +632,7 @@ class CampaignController extends Controller
 			  'menu_active'       => 'campaign',
 			  'submenu_active'    => ''
 			];
-		return view('campaign::show-recipient', $data);    	
+		return view('campaign::show-recipient', $data);
     }
 
 	public function campaignStep2Post(Request $request, $id_campaign){
@@ -685,7 +685,7 @@ class CampaignController extends Controller
 	public function campaignStep3($id_campaign){
 		$action = MyHelper::post('campaign/step2', ['id_campaign' => $id_campaign]);
 		// print_r($action);exit;
-		if($action['status'] == 'success'){
+		if(isset($action['status']) && $action['status'] == 'success'){
 			$data = [ 'title'		  => 'Campaign',
 				  'menu_active'       => 'campaign',
 				  'submenu_active'    => 'campaign-create'

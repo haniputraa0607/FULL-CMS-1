@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['middleware' => 'web', 'prefix' => 'brand', 'namespace' => 'Modules\Brand\Http\Controllers'], function () {
+Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'brand', 'namespace' => 'Modules\Brand\Http\Controllers'], function () {
     Route::get('/', 'BrandController@index');
     Route::post('/reorder', 'BrandController@reOrder');
     Route::get('create', 'BrandController@create');

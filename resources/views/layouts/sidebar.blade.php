@@ -66,56 +66,56 @@
 						@if(MyHelper::hasAccess([91], $grantedFeature))
 							@if(MyHelper::hasAccess([41], $configs))
 								<li class="nav-item {{($submenu_active == 'user-autoresponse-pin-sent') ? 'active open' : ''}}">
-									<a href="{{url('user/autoresponse/pin-sent')}}" class="nav-link ">
+									<a href="{{url('autoresponse/user/pin-sent')}}" class="nav-link ">
 										<span class="title">[Response] Pin Sent</span>
 									</a>
 								</li>
 							@endif
 							@if(MyHelper::hasAccess([42], $configs))
 								<li class="nav-item {{($submenu_active == 'user-autoresponse-pin-verify') ? 'active open' : ''}}">
-									<a href="{{url('user/autoresponse/pin-verify')}}" class="nav-link ">
+									<a href="{{url('autoresponse/user/pin-verify')}}" class="nav-link ">
 										<span class="title">[Response] Pin Verified</span>
 									</a>
 								</li>
 							@endif
 							@if(MyHelper::hasAccess([43], $configs))
 								<li class="nav-item {{($submenu_active == 'user-autoresponse-pin-changed') ? 'active open' : ''}}">
-									<a href="{{url('user/autoresponse/pin-changed')}}" class="nav-link ">
+									<a href="{{url('autoresponse/user/pin-changed')}}" class="nav-link ">
 										<span class="title">[Response] Pin Changed First Time</span>
 									</a>
 								</li>
 							@endif
 							@if(MyHelper::hasAccess([43], $configs))
 								<li class="nav-item {{($submenu_active == 'user-autoresponse-pin-changed-forgot-password') ? 'active open' : ''}}">
-									<a href="{{url('user/autoresponse/pin-changed-forgot-password')}}" class="nav-link ">
+									<a href="{{url('autoresponse/user/pin-changed-forgot-password')}}" class="nav-link ">
 										<span class="title">[Response] Pin Changed Forgot Password</span>
 									</a>
 								</li>
 							@endif
 							@if(MyHelper::hasAccess([83], $configs))
 								<li class="nav-item {{($submenu_active == 'user-autoresponse-pin-forgot') ? 'active open' : ''}}">
-									<a href="{{url('user/autoresponse/pin-forgot')}}" class="nav-link ">
+									<a href="{{url('autoresponse/user/pin-forgot')}}" class="nav-link ">
 										<span class="title">[Response] Pin Forgot</span>
 									</a>
 								</li>
 							@endif
 							@if(MyHelper::hasAccess([44], $configs))
 								<li class="nav-item {{($submenu_active == 'user-autoresponse-login-success') ? 'active open' : ''}}">
-									<a href="{{url('user/autoresponse/login-success')}}" class="nav-link ">
+									<a href="{{url('autoresponse/user/login-success')}}" class="nav-link ">
 										<span class="title">[Response] Login Success</span>
 									</a>
 								</li>
 							@endif
 							@if(MyHelper::hasAccess([45], $configs))
 								<li class="nav-item {{($submenu_active == 'user-autoresponse-login-failed') ? 'active open' : ''}}">
-									<a href="{{url('user/autoresponse/login-failed')}}" class="nav-link ">
+									<a href="{{url('autoresponse/user/login-failed')}}" class="nav-link ">
 										<span class="title">[Response] Login Failed</span>
 									</a>
 								</li>
 							@endif
 							@if(MyHelper::hasAccess([43], $configs))
 								<li class="nav-item {{($submenu_active == 'user-autoresponse-login-first-time') ? 'active open' : ''}}">
-									<a href="{{url('user/autoresponse/login-first-time')}}" class="nav-link ">
+									<a href="{{url('autoresponse/user/login-first-time')}}" class="nav-link ">
 										<span class="title">[Response] Login First Time</span>
 									</a>
 								</li>
@@ -207,7 +207,7 @@
 				@endif
 				@if(MyHelper::hasAccess([120], $grantedFeature))
 				<li class="nav-item {{($submenu_active == 'complete-user-profile-point-bonus') ? 'active' : ''}}">
-					<a href="{{url('user/autoresponse/complete-user-profile-point-bonus')}}" class="nav-link nav-toggle">
+					<a href="{{url('autoresponse/user/complete-user-profile-point-bonus')}}" class="nav-link nav-toggle">
 						<span class="title">[Response] User Profile Completion Point Bonus</span>
 					</a>
 				</li>
@@ -379,7 +379,7 @@
 			</li>
 			@endif
 
-			@if(MyHelper::hasAccess([43,45,48,50,56,57], $grantedFeature))
+			@if(MyHelper::hasAccess([43,45,48,50,56,57,238,241], $grantedFeature))
 			<li class="nav-item {{($menu_active == 'product') ? 'active' : ''}}">
 				<a href="javascript:;" class="nav-link nav-toggle">
 					<i class="icon-wallet"></i>
@@ -398,6 +398,20 @@
 					<li class="nav-item {{($submenu_active == 'product-category-list') ? 'active open' : ''}}">
 						<a href="{{url('product/category')}}" class="nav-link ">
 							<span class="title">Category List</span>
+						</a>
+					</li>
+					@endif
+					@if(MyHelper::hasAccess([241], $grantedFeature))
+					<li class="nav-item {{($submenu_active == 'product-promo-category-new') ? 'active open' : ''}}">
+						<a href="{{url('product/promo-category/create')}}" class="nav-link ">
+							<span class="title">New Promo Category</span>
+						</a>
+					</li>
+					@endif
+					@if(MyHelper::hasAccess([238], $grantedFeature))
+					<li class="nav-item {{($submenu_active == 'product-promo-category-list') ? 'active open' : ''}}">
+						<a href="{{url('product/promo-category')}}" class="nav-link ">
+							<span class="title">Promo Category List</span>
 						</a>
 					</li>
 					@endif
@@ -492,6 +506,26 @@
 						</a>
 					</li>
 					@endif
+					@if(MyHelper::hasAccess([215], $grantedFeature))
+					<li class="nav-item {{(strpos($submenu_active , 'product-group-import') !== false) ? 'active open' : ''}}">
+						<a href="javascript:;" class="nav-link nav-toggle">
+							<span class="title">Export & Import</span>
+							<span class="arrow"></span>
+						</a>
+						<ul class="sub-menu">
+							<li class="nav-item {{($submenu_active == 'product-group-import-global') ? 'active open' : ''}}">
+								<a href="{{url('product-variant/group/import/global')}}" class="nav-link ">
+									<span class="title">Global</span>
+								</a>
+							</li>
+							<li class="nav-item {{($submenu_active == 'product-group-import-detail') ? 'active open' : ''}}">
+								<a href="{{url('product-variant/group/import/detail')}}" class="nav-link ">
+									<span class="title">Product Detail</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+					@endif
 					@if(MyHelper::hasAccess([217], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-group-list') ? 'active open' : ''}}">
 						<a href="{{url('product-variant/group')}}" class="nav-link ">
@@ -504,6 +538,11 @@
 					<li class="nav-item {{($submenu_active == 'product-group-reorder') ? 'active open' : ''}}">
 						<a href="{{url('product-variant/group/reorder')}}" class="nav-link ">
 							<span class="title">Manage Position</span>
+						</a>
+					</li>
+					<li class="nav-item {{($submenu_active == 'product-group-manage-category') ? 'active open' : ''}}">
+						<a href="{{url('product-variant/group/category')}}" class="nav-link ">
+							<span class="title">Manage Product Category</span>
 						</a>
 					</li>
 					@endif
@@ -621,76 +660,76 @@
 					@endif
 					@if(MyHelper::hasAccess([12, 13], $configs))
 					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-transaction-success') ? 'active open' : ''}}">
-						<a href="{{url('transaction/autoresponse/transaction-success')}}" class="nav-link ">
+						<a href="{{url('autoresponse/transaction/transaction-success')}}" class="nav-link ">
 							<span class="title">[Response] Transaction Success</span>
 						</a>
 					</li>
 					<!--<li class="nav-item {{($submenu_active == 'transaction-autoresponse-transaction-payment') ? 'active open' : ''}}">-->
-					<!--	<a href="{{url('transaction/autoresponse/transaction-payment')}}" class="nav-link ">-->
+					<!--	<a href="{{url('autoresponse/transaction/transaction-payment')}}" class="nav-link ">-->
 					<!--		<span class="title">[Response] Transaction Payment</span>-->
 					<!--	</a>-->
 					<!--</li>-->
 					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-transaction-expired') ? 'active open' : ''}}">
-						<a href="{{url('transaction/autoresponse/transaction-expired')}}" class="nav-link ">
+						<a href="{{url('autoresponse/transaction/transaction-expired')}}" class="nav-link ">
 							<span class="title">[Response] Transaction Expired</span>
 						</a>
 					</li>
 					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-order-accepted') ? 'active open' : ''}}">
-						<a href="{{url('transaction/autoresponse/order-accepted')}}" class="nav-link ">
+						<a href="{{url('autoresponse/transaction/order-accepted')}}" class="nav-link ">
 							<span class="title">[Response] Order Accepted</span>
 						</a>
 					</li>
 					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-order-ready') ? 'active open' : ''}}">
-						<a href="{{url('transaction/autoresponse/order-ready')}}" class="nav-link ">
+						<a href="{{url('autoresponse/transaction/order-ready')}}" class="nav-link ">
 							<span class="title">[Response] Order Ready</span>
 						</a>
 					</li>
 					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-order-taken') ? 'active open' : ''}}">
-						<a href="{{url('transaction/autoresponse/order-taken')}}" class="nav-link ">
+						<a href="{{url('autoresponse/transaction/order-taken')}}" class="nav-link ">
 							<span class="title">[Response] Order Taken</span>
 						</a>
 					</li>
 					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-order-reject') ? 'active open' : ''}}">
-						<a href="{{url('transaction/autoresponse/order-reject')}}" class="nav-link ">
+						<a href="{{url('autoresponse/transaction/order-reject')}}" class="nav-link ">
 							<span class="title">[Response] Order Rejected</span>
 						</a>
 					</li>
 					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-cron-transaction') ? 'active open' : ''}}">
-						<a href="{{url('transaction/autoresponse/cron-transaction')}}" class="nav-link ">
+						<a href="{{url('autoresponse/transaction/cron-transaction')}}" class="nav-link ">
 							<span class="title">[Response] Cron Transaction</span>
 						</a>
 					</li>
 					@endif
-					<li class="nav-item {{($submenu_active == 'transaction-point-achievement') ? 'active' : ''}}">
-						<a href="{{url('transaction/autoresponse/transaction-point-achievement')}}" class="nav-link nav-toggle">
+					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-transaction-point-achievement') ? 'active' : ''}}">
+						<a href="{{url('autoresponse/transaction/transaction-point-achievement')}}" class="nav-link nav-toggle">
 							<span class="title">[Response] Transaction Point Achievement</span>
 						</a>
 					</li>
 					@if(MyHelper::hasAccess([12, 13], $configs))
-					<li class="nav-item {{($submenu_active == 'transaction-failed-point-refund') ? 'active' : ''}}">
-						<a href="{{url('transaction/autoresponse/transaction-failed-point-refund')}}" class="nav-link nav-toggle">
+					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-transaction-failed-point-refund') ? 'active' : ''}}">
+						<a href="{{url('autoresponse/transaction/transaction-failed-point-refund')}}" class="nav-link nav-toggle">
 							<span class="title">[Response] Transaction Failed Point Refund</span>
 						</a>
 					</li>
-					<li class="nav-item {{($submenu_active == 'rejected-order-point-refund') ? 'active' : ''}}">
-						<a href="{{url('transaction/autoresponse/rejected-order-point-refund')}}" class="nav-link nav-toggle">
+					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-rejected-order-point-refund') ? 'active' : ''}}">
+						<a href="{{url('autoresponse/transaction/rejected-order-point-refund')}}" class="nav-link nav-toggle">
 							<span class="title">[Response] Rejected Order Point Refund</span>
 						</a>
 					</li>
 					@endif
 
 					<!-- <li class="nav-item {{($submenu_active == 'transaction-autoresponse-topup-success') ? 'active open' : ''}}">
-						<a href="{{url('transaction/autoresponse/topup-success')}}" class="nav-link ">
+						<a href="{{url('autoresponse/transaction/topup-success')}}" class="nav-link ">
 							<span class="title">[Response] Topup Success</span>
 						</a>
 					</li>
 					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-admin-notification') ? 'active open' : ''}}">
-						<a href="{{url('transaction/autoresponse/admin-notification')}}" class="nav-link ">
+						<a href="{{url('autoresponse/transaction/admin-notification')}}" class="nav-link ">
 							<span class="title">[Response] Admin Notification</span>
 						</a>
 					</li>
 					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-generate-approval-code') ? 'active open' : ''}}">
-						<a href="{{url('transaction/autoresponse/generate-approval-code')}}" class="nav-link ">
+						<a href="{{url('autoresponse/transaction/generate-approval-code')}}" class="nav-link ">
 							<span class="title">[Response] Generate Approval Code</span>
 						</a>
 					</li> -->
@@ -808,7 +847,15 @@
 					<i class="fa fa-tag"></i>
 					<span class="title">Outlet Product Price</span>
 				</a>
+			</li>
+			<li class="nav-item {{($menu_active == 'outlet-different-price') ? 'active' : ''}}">
+				<a href="{{url('outlet/different-price')}}" class="nav-link nav-toggle">
+					<i class="fa fa-check"></i>
+					<span class="title">Outlet Different Price</span>
+				</a>
+			</li>
 			@endif
+
 
 			@if(MyHelper::hasAccess([17], $configs))
 				@if(MyHelper::hasAccess([64,66], $grantedFeature))
@@ -900,6 +947,11 @@
 							</a>
 						</li>
 					@endif
+					<li class="nav-item {{($submenu_active == 'user-rating-response') ? 'active open' : ''}}">
+						<a href="{{url('user-rating/autoresponse')}}" class="nav-link ">
+							<span class="title">[Response] User Rating</span>
+						</a>
+					</li>
 				</ul>
 			</li>
 			@endif
@@ -949,6 +1001,25 @@
 								</li>
 								@endif
 							@endif
+							@if(MyHelper::hasAccess([49], $configs))
+							@if(MyHelper::hasAccess([95], $grantedFeature))
+								<li class="nav-item {{($submenu_active == 'deals-autoresponse-claim-free-deals-success') ? 'active open' : ''}}">
+									<a href="{{url('autoresponse/deals/claim-free-deals-success')}}" class="nav-link ">
+										<span class="title">[Response] Claim Free Deals Success</span>
+									</a>
+								</li>
+								<li class="nav-item {{($submenu_active == 'deals-autoresponse-claim-paid-deals-success') ? 'active open' : ''}}">
+									<a href="{{url('autoresponse/deals/claim-paid-deals-success')}}" class="nav-link ">
+										<span class="title">[Response] Claim Paid Deals Success</span>
+									</a>
+								</li>
+								<li class="nav-item {{($submenu_active == 'deals-autoresponse-redeem-voucher-success') ? 'active open' : ''}}">
+									<a href="{{url('autoresponse/deals/redeem-voucher-success')}}" class="nav-link ">
+										<span class="title">[Response] Redeems Voucher Success</span>
+									</a>
+								</li>
+							@endif
+						@endif
 						</ul>
 					</li>
 					@endif
@@ -1005,6 +1076,15 @@
 								</a>
 							</li>
 							@endif
+							@if(MyHelper::hasAccess([49], $configs))
+							@if(MyHelper::hasAccess([95], $grantedFeature))
+								<li class="nav-item {{($submenu_active == 'inject-voucher-autoresponse-receive-inject-voucher') ? 'active open' : ''}}">
+									<a href="{{url('autoresponse/inject-voucher/receive-inject-voucher')}}" class="nav-link ">
+										<span class="title">[Response] Receive Inject Voucher</span>
+									</a>
+								</li>
+							@endif
+						@endif
 						</ul>
 					</li>
 					@endif
@@ -1039,8 +1119,8 @@
 									</a>
 								</li>
 							@endif
-							<li class="nav-item {{($submenu_active == 'deals-autoresponse-welcome-voucher') ? 'active open' : ''}}">
-								<a href="{{url('transaction/autoresponse/receive-welcome-voucher')}}" class="nav-link ">
+							<li class="nav-item {{($submenu_active == 'welcome-voucher-autoresponse-receive-welcome-voucher') ? 'active open' : ''}}">
+								<a href="{{url('autoresponse/welcome-voucher/receive-welcome-voucher')}}" class="nav-link ">
 									<span class="title">[Response] Welcome Voucher</span>
 								</a>
 							</li>
@@ -1128,35 +1208,6 @@
 						@endif
 					</ul>
 				</li>
-				@endif
-			@endif
-
-			@if(MyHelper::hasAccess([49], $configs))
-				@if(MyHelper::hasAccess([95], $grantedFeature))
-					<li class="nav-item {{($submenu_active == 'deals-autoresponse-claim-free-deals-success') ? 'active open' : ''}}">
-						<a href="{{url('transaction/autoresponse/claim-free-deals-success')}}" class="nav-link ">
-							<i class="fa fa-mail-forward"></i>
-							<span class="title">[Response] Claim Free Deals Success</span>
-						</a>
-					</li>
-					<li class="nav-item {{($submenu_active == 'deals-autoresponse-claim-paid-deals-success') ? 'active open' : ''}}">
-						<a href="{{url('transaction/autoresponse/claim-paid-deals-success')}}" class="nav-link ">
-							<i class="fa fa-mail-forward"></i>
-							<span class="title">[Response] Claim Paid Deals Success</span>
-						</a>
-					</li>
-					<li class="nav-item {{($submenu_active == 'deals-autoresponse-redeem-deals-success') ? 'active open' : ''}}">
-						<a href="{{url('transaction/autoresponse/redeem-voucher-success')}}" class="nav-link ">
-							<i class="fa fa-mail-forward"></i>
-							<span class="title">[Response] Redeems Deals</span>
-						</a>
-					</li>
-					<li class="nav-item {{($submenu_active == 'deals-autoresponse-receive-inject-voucher') ? 'active open' : ''}}">
-						<a href="{{url('transaction/autoresponse/receive-inject-voucher')}}" class="nav-link ">
-							<i class="fa fa-mail-forward"></i>
-							<span class="title">[Response] Receive Inject Voucher</span>
-						</a>
-					</li>
 				@endif
 			@endif
 
@@ -1278,29 +1329,29 @@
 						@if(MyHelper::hasAccess([40], $configs))
 							@if(MyHelper::hasAccess([94], $grantedFeature))
 								@if(MyHelper::hasAccess([46], $configs))
-								<li class="nav-item {{($submenu_active == 'autoresponse-enquiry-customer-feedback') ? 'active open' : ''}}">
-									<a href="{{url('about/autoresponse/enquiry-customer-feedback')}}" class="nav-link ">
+								<li class="nav-item {{($submenu_active == 'enquiries-autoresponse-enquiry-customer-feedback') ? 'active open' : ''}}">
+									<a href="{{url('autoresponse/enquiries/enquiry-customer-feedback')}}" class="nav-link ">
 										<span class="title">[Response] Enquiry Customer Feedback</span>
 									</a>
 								</li>
 								@endif
 								@if(MyHelper::hasAccess([47], $configs))
-									<li class="nav-item {{($submenu_active == 'autoresponse-enquiry-marketing-partnership') ? 'active open' : ''}}">
-										<a href="{{url('about/autoresponse/enquiry-marketing-partnership')}}" class="nav-link ">
+									<li class="nav-item {{($submenu_active == 'enquiries-autoresponse-enquiry-marketing-partnership') ? 'active open' : ''}}">
+										<a href="{{url('autoresponse/enquiries/enquiry-marketing-partnership')}}" class="nav-link ">
 											<span class="title">[Response] Enquiry Marketing Partnership</span>
 										</a>
 									</li>
 								@endif
 								@if(MyHelper::hasAccess([48], $configs))
-									<li class="nav-item {{($submenu_active == 'autoresponse-enquiry-business-development') ? 'active open' : ''}}">
-										<a href="{{url('about/autoresponse/enquiry-business-development')}}" class="nav-link ">
+									<li class="nav-item {{($submenu_active == 'enquiries-autoresponse-enquiry-business-development') ? 'active open' : ''}}">
+										<a href="{{url('autoresponse/enquiries/enquiry-business-development')}}" class="nav-link ">
 											<span class="title">[Response] Enquiry Business Development</span>
 										</a>
 									</li>
 								@endif
 								@if(MyHelper::hasAccess([47], $configs))
-									<li class="nav-item {{($submenu_active == 'autoresponse-enquiry-career') ? 'active open' : ''}}">
-										<a href="{{url('about/autoresponse/enquiry-career')}}" class="nav-link ">
+									<li class="nav-item {{($submenu_active == 'enquiries-autoresponse-enquiry-career') ? 'active open' : ''}}">
+										<a href="{{url('autoresponse/enquiries/enquiry-career')}}" class="nav-link ">
 											<span class="title">[Response] Enquiry Career</span>
 										</a>
 									</li>
@@ -1427,7 +1478,7 @@
 							<span class="title">New Point Injection</span>
 						</a>
 					</li>
-					<li class="nav-item {{($submenu_active == 'point-injection-create') ? 'active open' : ''}}">
+					<li class="nav-item {{($submenu_active == 'point-injection-list') ? 'active open' : ''}}">
 						<a href="{{url('point-injection')}}" class="nav-link ">
 							<span class="title">List Point Injection</span>
 						</a>
@@ -1663,30 +1714,32 @@
 			</ul>
 		</li>
 		@endif
-		@if(MyHelper::hasAccess([168,169,170,171], $grantedFeature))
-		<li class="nav-item {{($menu_active == 'setting-intro') ? 'active open' : ''}}">
-			<a href="javascript:;" class="nav-link nav-toggle">
-				<i class="icon-screen-tablet"></i>
-				<span class="title">Intro Apps</span>
-				<span class="arrow {{($menu_active == 'setting-intro') ? 'open' : ''}}"></span>
-			</a>
-			<ul class="sub-menu">
-				@if(MyHelper::hasAccess([150], $grantedFeature))
-				<li class="nav-item {{($submenu_active == 'setting-intro-first') ? 'active open' : ''}}">
-					<a href="{{url('setting/intro/first')}}" class="nav-link ">
-						<span class="title">Intro First Install</span>
-					</a>
-				</li>
-				@endif
-				@if(MyHelper::hasAccess([149,151,152,153], $grantedFeature))
-				<li class="nav-item {{($submenu_active == 'setting-intro-home') ? 'active open' : ''}}">
-					<a href="{{url('setting/intro/home')}}" class="nav-link ">
-						<span class="title">Tutorial In Home</span>
-					</a>
-				</li>
-				@endif
-			</ul>
-		</li>
+		@if(MyHelper::hasAccess([108], $configs))
+			@if(MyHelper::hasAccess([168,169,170,171], $grantedFeature))
+			<li class="nav-item {{($menu_active == 'setting-intro') ? 'active open' : ''}}">
+				<a href="javascript:;" class="nav-link nav-toggle">
+					<i class="icon-screen-tablet"></i>
+					<span class="title">Intro Apps</span>
+					<span class="arrow {{($menu_active == 'setting-intro') ? 'open' : ''}}"></span>
+				</a>
+				<ul class="sub-menu">
+					@if(MyHelper::hasAccess([150], $grantedFeature))
+					<li class="nav-item {{($submenu_active == 'setting-intro-first') ? 'active open' : ''}}">
+						<a href="{{url('setting/intro/first')}}" class="nav-link ">
+							<span class="title">Intro First Install</span>
+						</a>
+					</li>
+					@endif
+					@if(MyHelper::hasAccess([149,151,152,153], $grantedFeature))
+					<li class="nav-item {{($submenu_active == 'setting-intro-home') ? 'active open' : ''}}">
+						<a href="{{url('setting/intro/home')}}" class="nav-link ">
+							<span class="title">Tutorial In Home</span>
+						</a>
+					</li>
+					@endif
+				</ul>
+			</li>
+			@endif
 		@endif
 
 		@if(MyHelper::hasAccess([162,163], $grantedFeature))
@@ -1780,7 +1833,7 @@
 			@endif -->
 		@endif
 
-		@if(MyHelper::hasAccess([125,126,127,128,129], $grantedFeature))
+		@if(MyHelper::hasAccess([125,126,127,128,129,244], $grantedFeature))
 			<li class="heading" style="height: 50px;padding: 25px 15px 10px;">
 				<h3 class="uppercase" style="color: #10704e;font-weight: 600;">Report</h3>
 			</li>
@@ -1839,6 +1892,14 @@
 		</li>
 		@endif
 
+		@if(MyHelper::hasAccess([244], $grantedFeature))
+		<li class="nav-item {{($menu_active == 'report-sms') ? 'active' : ''}}">
+			<a href="{{url('report/sms')}}" class="nav-link nav-toggle">
+				<i class="icon-graph"></i>
+				<span class="title">SMS Report</span>
+			</a>
+		</li>
+		@endif
 	</ul>
 	<!-- END SIDEBAR MENU -->
 	<!-- END SIDEBAR MENU -->

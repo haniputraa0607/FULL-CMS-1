@@ -54,9 +54,7 @@ class MyHelper
 
   // Example = 03 October 2019 - 10:35
   public static function convertDateTime2($date, $decode = null) {
-    $date    = explode(' ', $date);
-    $tanggal = $date[2].'-'.$date[1].'-'.$date[0];
-    $tanggal = $tanggal.' '.$date[4];
+    $tanggal    = str_replace(' - ', ' ', $date);
     $date    = date('Y-m-d H:i:s', strtotime($tanggal));
     return $date;
   }
@@ -705,6 +703,21 @@ class MyHelper
       return [];
     }
     return $result;
+  }
+  /**
+   * get Excel coumn name from number
+   * @param Integer number of column (ex. 1)
+   * @return String Excel column name (ex. A)
+   */
+  public static function getNameFromNumber($num) {
+      $numeric = ($num - 1) % 26;
+      $letter = chr(65 + $numeric);
+      $num2 = intval($num / 26);
+      if ($num2 > 0) {
+          return getNameFromNumber($num2 - 1) . $letter;
+      } else {
+          return $letter;
+      }
   }
 }
 

@@ -98,7 +98,7 @@ class DealsController extends Controller
         	// return $save;
         	$id_deals = $save['result']['id_deals']??$save['result']['id_deals_promotion_template'];
         	$save['result']['id_deals'] = MyHelper::createSlug($save['result']['id_deals']??$save['result']['id_deals_promotion_template'], $save['result']['created_at']);
-        	
+
         	if($post['deals_type'] == 'Promotion'){
                 $rpage = 'promotion/deals';
         	}elseif($post['deals_type'] == 'WelcomeVoucher'){
@@ -457,7 +457,7 @@ class DealsController extends Controller
         $post['deals_type'] 	= $data['deals_type'];
         // DEALS
         $data['deals']   = parent::getData(MyHelper::post('deals/be/detail', $post));;
-        
+
         if($post['deals_type'] == 'Promotion'){
             $rpage = 'promotion/deals';
     	}elseif($post['deals_type'] == 'WelcomeVoucher'){
@@ -546,7 +546,7 @@ class DealsController extends Controller
         }else{
             $data['conditions'] = [];
         }
-        
+
         return view('deals::deals.detail', $data);
     }
 
@@ -655,7 +655,7 @@ class DealsController extends Controller
 	            }
 
                 return redirect($rpage.'/step3/' . $slug)->withSuccess(['Deals has been updated']);
-            } 
+            }
             elseif($action['messages']??$action['message']??false) {
                 return back()->withErrors($action['messages']??$action['message'])->withInput();
             }
@@ -687,7 +687,7 @@ class DealsController extends Controller
 	        $post['id_deals']   = $id;
 	        $post['step'] 		= 3;
 	        $post['deals_type'] = $data['deals_type'];
-	        
+
 	        // DEALS
 	        $deals = MyHelper::post('deals/be/detail', $post);
 
@@ -721,7 +721,7 @@ class DealsController extends Controller
 	            }
 
                 return redirect($rpage.'/detail/' . $slug)->withSuccess(['Deals has been updated']);
-            } 
+            }
             elseif($action['messages']??false) {
                 return back()->withErrors($action['messages'])->withInput();
             }
@@ -1377,13 +1377,13 @@ class DealsController extends Controller
             $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
         }
 
-		if ( ($update['status']??false) == 'success' ) 
+		if ( ($update['status']??false) == 'success' )
 		{
 			return redirect($rpage.'/detail/'.$slug)->withSuccess(['Deals has been completed'])	;
 		}
-		elseif ( ($update['status']??false) == 'fail' ) 
+		elseif ( ($update['status']??false) == 'fail' )
 		{
-			if ( !empty($update['step']) ) 
+			if ( !empty($update['step']) )
 			{
 				return redirect($rpage.'/step'.$update['step'].'/'.$slug)->withErrors($update['messages']);
 			}
@@ -1394,7 +1394,22 @@ class DealsController extends Controller
 		}
 		else
 		{
-			return ['status' => 'fail', 'messages' => 'Something went wrong'];	
+			return ['status' => 'fail', 'messages' => 'Something went wrong'];
 		}
+    }
+
+    /* get list of deals that haven't ended yet */
+    public function listActiveDeals(Request $request) {
+        $post = $request->except('_token');
+        $post['select'] = ['id_deals', 'deals_title', 'deals_second_title'];
+
+        $deals = MyHelper::post('deals/list/active?log_save=0', $post);
+		if (isset($deals['status']) && $deals['status'] == "success") {
+            $data = $deals['result'];
+        }
+        else {
+            $data = [];
+        }
+		return response()->json($data);
     }
 }

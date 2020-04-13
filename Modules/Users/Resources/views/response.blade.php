@@ -323,38 +323,6 @@ $configs = session('configs');
 			if(type=="inbox") document.getElementById('div_inbox_content').style.display = 'none';
 		}
 
-		else if(det == 'Home'){
-			document.getElementById('atd_'+type).style.display = 'none';
-			var operator_value = document.getElementsByName('autocrm_'+type+'_id_reference')[0];
-			for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
-			document.getElementById('link_'+type).style.display = 'none';
-			if(type=="inbox") document.getElementById('div_inbox_content').style.display = 'none';
-		}
-
-		else if(det == 'Inbox'){
-			document.getElementById('atd_'+type).style.display = 'none';
-			var operator_value = document.getElementsByName('autocrm_'+type+'_id_reference')[0];
-			for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
-			document.getElementById('link_'+type).style.display = 'none';
-			if(type=="inbox") document.getElementById('div_inbox_content').style.display = 'none';
-		}
-
-		else if(det == 'Voucher'){
-			document.getElementById('atd_'+type).style.display = 'none';
-			var operator_value = document.getElementsByName('autocrm_'+type+'_id_reference')[0];
-			for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
-			document.getElementById('link_'+type).style.display = 'none';
-			if(type=="inbox") document.getElementById('div_inbox_content').style.display = 'none';
-		}
-
-		else if(det == 'Contact Us' || det == 'Transaction'){
-			document.getElementById('atd_'+type).style.display = 'none';
-			var operator_value = document.getElementsByName('autocrm_'+type+'_id_reference')[0];
-			for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
-			document.getElementById('link_'+type).style.display = 'none';
-			if(type=="inbox") document.getElementById('div_inbox_content').style.display = 'none';
-		}
-
 		else if(det == 'Link'){
 			document.getElementById('atd_'+type).style.display = 'none';
 			var operator_value = document.getElementsByName('autocrm_'+type+'_id_reference')[0];
@@ -628,7 +596,7 @@ $configs = session('configs');
 									@if (isset($custom))
 										@foreach($custom as $key=>$row)
 											<div class="col-md-3" style="margin-bottom:5px;">
-												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}'" onClick="addEmailSubject('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addEmailSubject('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
 											</div>
 										@endforeach
 									@endif
@@ -636,6 +604,15 @@ $configs = session('configs');
 							</div>
 						</div>
 						<div class="form-group" id="div_email_content" @if($data['autocrm_email_toogle'] == 0) style="display:none;" @endif>
+							@if(isset($attachment))
+								<label class="col-md-3 control-label">
+								Send Attachment
+								<i class="fa fa-question-circle tooltips" data-original-title="Jika diaktifkan maka email akan melampirkan lampiran enquiry" data-container="body"></i>
+								</label>
+								<div class="col-md-9" style="margin-bottom: 10px">
+									<input type="checkbox" name="attachment_mail" class="make-switch" data-size="small" data-on-color="info" data-on-text="Active" data-off-color="default" data-off-text="Inactive" value="1" @if($data['attachment_mail']) checked @endif >
+								</div>
+							@endif
 							<div class="input-icon right">
 								<label class="col-md-3 control-label">
 								Content
@@ -656,7 +633,7 @@ $configs = session('configs');
 									@if (isset($custom))
 										@foreach($custom as $key=>$row)
 											<div class="col-md-3" style="margin-bottom:5px;">
-												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}'" onClick="addEmailContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addEmailContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
 											</div>
 										@endforeach
 									@endif
@@ -707,7 +684,7 @@ $configs = session('configs');
 									@if (isset($custom))
 										@foreach($custom as $key=>$row)
 											<div class="col-md-3" style="margin-bottom:5px;">
-												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}'" onClick="addSmsContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addSmsContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
 											</div>
 										@endforeach
 									@endif
@@ -758,7 +735,7 @@ $configs = session('configs');
 									@if (isset($custom))
 										@foreach($custom as $key=>$row)
 											<div class="col-md-3" style="margin-bottom:5px;">
-												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}'" onClick="addPushSubject('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addPushSubject('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
 											</div>
 										@endforeach
 									@endif
@@ -788,7 +765,7 @@ $configs = session('configs');
 									@if (isset($custom))
 										@foreach($custom as $key=>$row)
 											<div class="col-md-3" style="margin-bottom:5px;">
-												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}'" onClick="addPushContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addPushContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
 											</div>
 										@endforeach
 									@endif
@@ -833,31 +810,35 @@ $configs = session('configs');
 							</div>
 							<div class="col-md-9">
 								<select name="autocrm_push_clickto" id="autocrm_push_clickto" class="form-control select2" onChange="fetchDetail(this.value, 'push')">
-									<option value="Home" @if($data['autocrm_push_clickto'] == 'Home') selected @endif>Home</option>
-									<option value="News" @if($data['autocrm_push_clickto'] == 'News') selected @endif>News</option>
-									<option value="Order" @if($data['autocrm_push_clickto'] == 'Order') selected @endif>Order</option>
-									<option value="History On Going" @if($data['autocrm_push_clickto'] == 'History On Going') selected @endif>History On Going</option>
-									<option value="History Transaksi" @if($data['autocrm_push_clickto'] == 'History Transaksi') selected @endif>History Transaksi</option>
-									<option value="History Point" @if($data['autocrm_push_clickto'] == 'History Point') selected @endif>History Point</option>
-									<option value="Outlet" @if($data['autocrm_push_clickto'] == 'Outlet') selected @endif>Outlet</option>
-									<option value="Profil" @if($data['autocrm_push_clickto'] == 'Profil') selected @endif>Profil</option>
-									<option value="Inbox" @if($data['autocrm_push_clickto'] == 'Inbox') selected @endif>Inbox</option>
-									<option value="About" @if($data['autocrm_push_clickto'] == 'About') selected @endif>About</option>
-									<option value="FAQ" @if($data['autocrm_push_clickto'] == 'FAQ') selected @endif>FAQ</option>
-									<option value="TOS" @if($data['autocrm_push_clickto'] == 'TOS') selected @endif>TOS</option>
-									<option value="Contact Us" @if($data['autocrm_push_clickto'] == 'Contact Us') selected @endif>Contact Us</option>
-									<option value="Link" @if($data['autocrm_push_clickto'] == 'Link') selected @endif>Link</option>
-									<option value="Logout" @if($data['autocrm_push_clickto'] == 'Logout') selected @endif>Logout</option>
+									<option value="Home" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Home") selected @endif>Home</option>
+									<option value="Deals" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Deals") selected @endif>Deals</option>
 									@if(isset($deals))
 									<option value="Voucher" @if($data['autocrm_push_clickto'] == 'Voucher') selected @endif>Voucher</option>
 									<option value="Voucher Detail" @if($data['autocrm_push_clickto'] == 'Voucher Detail') selected @endif>Voucher Detail</option>
-									<option value="Deals" @if($data['autocrm_push_clickto'] == 'Deals') selected @endif>Deals</option>
-									<option value="Deals Detail" @if($data['autocrm_push_clickto'] == 'Deals Detail') selected @endif>Deals Detail</option>
 									@endif
 									@if(isset($type) && $type == 'trx')
-									<option value="Transaction" @if(isset($data['autocrm_push_clickto']) && $data['autocrm_inbox_clickto'] == 'Transaction') selected @endif>Transaction</option>
 									<option value="Transaction Detail" @if(isset($data['autocrm_push_clickto']) && $data['autocrm_inbox_clickto'] == 'Transaction Detail') selected @endif>Transaction Detail</option>
 									@endif
+									<option value="Voucher" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Voucher") selected @endif>My Voucher</option>
+									<option value="Order" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Order") selected @endif>Order</option>
+									<option value="History Transaction" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "History Transaction") selected @endif>History Transaction</option>
+									<option value="History On Going" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "History On Going") selected @endif>History On Going</option>
+									<option value="History Point" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "History Point") selected @endif>History Point</option>
+									<option value="Membership" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Membership") selected @endif>Membership</option>
+									<option value="Profil" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Profil") selected @endif>Profile</option>
+									<option value="News" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "News") selected @endif>News</option>
+									<option value="Outlet" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Outlet") selected @endif>Outlet</option>
+									<option value="Referral" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Referral") selected @endif>Referral</option>
+									<option value="About" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "About") selected @endif>About</option>
+									<option value="FAQ" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "FAQ") selected @endif>FAQ</option>
+									<option value="TOS" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "TOS") selected @endif>Term Of Services</option>
+									<option value="Contact Us" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Contact Us") selected @endif>Contact Us</option>
+									<option value="Inbox" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Inbox") selected @endif>Inbox</option>
+									<option value="Link" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Link") selected @endif>Link</option>
+									<option value="Logout" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Logout") selected @endif>Logout</option>
+									<!-- <option value="Product" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Product") selected @endif>Product</option> -->
+									<!-- <option value="Transaction" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Transaction") selected @endif>History</option> -->
+									<!-- <option value="Voucher Detail" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Voucher Detail") selected @endif>Voucher Detail</option> -->
 								</select>
 							</div>
 						</div>
@@ -928,7 +909,7 @@ $configs = session('configs');
 									@if (isset($custom))
 										@foreach($custom as $key=>$row)
 											<div class="col-md-3" style="margin-bottom:5px;">
-												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}'" onClick="addInboxSubject('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addInboxSubject('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
 											</div>
 										@endforeach
 									@endif
@@ -940,32 +921,35 @@ $configs = session('configs');
 							<label for="autocrm_inbox_clickto" class="control-label col-md-3">Click Action</label>
 							<div class="col-md-9">
 								<select name="autocrm_inbox_clickto" id="autocrm_inbox_clickto" class="form-control select2" onChange="fetchDetail(this.value, 'inbox')">
-									<option value="Home" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "Home") selected @endif>Home</option>
-									{{-- <option value="Content" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "Content") selected @endif>Content</option> --}}
-									<option value="News" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "News") selected @endif>News</option>
-									<option value="Order" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "Order") selected @endif>Order</option>
-									<option value="History On Going" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "History On Going") selected @endif>History On Going</option>
-									<option value="History Transaksi" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "History Transaksi") selected @endif>History Transaksi</option>
-									<option value="History Point" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "History Point") selected @endif>History Point</option>
-									<option value="Outlet" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "Outlet") selected @endif>Outlet</option>
-									<option value="Profil" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "Profil") selected @endif>Profil</option>
-									<option value="Inbox" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "Inbox") selected @endif>Inbox</option>
-									<option value="About" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "About") selected @endif>About</option>
-									<option value="FAQ" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "FAQ") selected @endif>FAQ</option>
-									<option value="TOS" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "TOS") selected @endif>TOS</option>
-									<option value="Contact Us" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "Contact Us") selected @endif>Contact Us</option>
-									<option value="Link" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "Link") selected @endif>Link</option>
-									<option value="Logout" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "Logout") selected @endif>Logout</option>
+									<option value="Home" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Home") selected @endif>Home</option>
+									<option value="Deals" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Deals") selected @endif>Deals</option>
 									@if(isset($deals))
 									<option value="Voucher" @if($data['autocrm_inbox_clickto'] == 'Voucher') selected @endif>Voucher</option>
 									<option value="Voucher Detail" @if($data['autocrm_inbox_clickto'] == 'Voucher Detail') selected @endif>Voucher Detail</option>
-									<option value="Deals" @if($data['autocrm_inbox_clickto'] == 'Deals') selected @endif>Deals</option>
-									<option value="Deals Detail" @if($data['autocrm_inbox_clickto'] == 'Deals Detail') selected @endif>Deals Detail</option>
 									@endif
 									@if(isset($type) && $type == 'trx')
-									<option value="Transaction" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == 'Transaction') selected @endif>Transaction</option>
 									<option value="Transaction Detail" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == 'Transaction Detail') selected @endif>Transaction Detail</option>
 									@endif
+									<option value="Voucher" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Voucher") selected @endif>My Voucher</option>
+									<option value="Order" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Order") selected @endif>Order</option>
+									<option value="History Transaction" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "History Transaction") selected @endif>History Transaction</option>
+									<option value="History On Going" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "History On Going") selected @endif>History On Going</option>
+									<option value="History Point" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "History Point") selected @endif>History Point</option>
+									<option value="Membership" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Membership") selected @endif>Membership</option>
+									<option value="Profil" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Profil") selected @endif>Profile</option>
+									<option value="News" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "News") selected @endif>News</option>
+									<option value="Outlet" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Outlet") selected @endif>Outlet</option>
+									<option value="Referral" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Referral") selected @endif>Referral</option>
+									<option value="About" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "About") selected @endif>About</option>
+									<option value="FAQ" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "FAQ") selected @endif>FAQ</option>
+									<option value="TOS" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "TOS") selected @endif>Term Of Services</option>
+									<option value="Contact Us" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Contact Us") selected @endif>Contact Us</option>
+									<option value="Link" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Link") selected @endif>Link</option>
+									<option value="Logout" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Logout") selected @endif>Logout</option>
+									<!-- <option value="Product" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Product") selected @endif>Product</option> -->
+									<!-- <option value="Transaction" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Transaction") selected @endif>History</option> -->
+									<!-- <option value="Voucher Detail" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Voucher Detail") selected @endif>Voucher Detail</option> -->
+
 								</select>
 							</div>
 						</div>
@@ -997,7 +981,7 @@ $configs = session('configs');
 									@if (isset($custom))
 										@foreach($custom as $key=>$row)
 											<div class="col-md-3" style="margin-bottom:5px;">
-												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}'" onClick="addInboxContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addInboxContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
 											</div>
 										@endforeach
 									@endif
@@ -1307,7 +1291,7 @@ $configs = session('configs');
 								@if (isset($custom))
 										@foreach($custom as $key=>$row)
 											<div class="col-md-3" style="margin-bottom:5px;">
-												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}'" onClick="addForwardSubject('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addForwardSubject('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
 											</div>
 										@endforeach
 									@endif
@@ -1316,6 +1300,15 @@ $configs = session('configs');
 					</div>
 				</div>
 				<div class="form-group" id="div_forward_content" @if($data['autocrm_forward_toogle'] == 0) style="display:none;" @endif>
+					@if(isset($attachment))
+						<label class="col-md-3 control-label">
+						Send Attachment
+						<i class="fa fa-question-circle tooltips" data-original-title="Jika diaktifkan maka email akan melampirkan lampiran enquiry" data-container="body"></i>
+						</label>
+						<div class="col-md-9" style="margin-bottom: 10px">
+							<input type="checkbox" name="attachment_forward" class="make-switch" data-size="small" data-on-color="info" data-on-text="Active" data-off-color="default" data-off-text="Inactive" @if($data['attachment_forward']) checked @endif >
+						</div>
+					@endif
 					<div class="input-icon right">
 					    <label class="col-md-3 control-label">
 					    Content
@@ -1337,7 +1330,7 @@ $configs = session('configs');
 								@if (isset($custom))
 										@foreach($custom as $key=>$row)
 											<div class="col-md-3" style="margin-bottom:5px;">
-												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}'" onClick="addForwardContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addForwardContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
 											</div>
 										@endforeach
 									@endif

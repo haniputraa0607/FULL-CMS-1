@@ -1,3 +1,7 @@
+<?php
+use App\Lib\MyHelper;
+$grantedFeature     = session('granted_features');
+?>
 @extends('layouts.main')
 @section('page-style')
 <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
@@ -123,6 +127,12 @@
 												<i class="fa fa-trash"></i> Delete Point Injection </a>
 											</li>
                                             @endif
+											@if(MyHelper::hasAccess([243], $grantedFeature))
+											<li>
+												<a target="_blank" href="{{ url('point-injection/report') }}/{{ $data['id_point_injection'] }}">
+													<i class="fa fa-edit"></i> Report Point Injection </a>
+											</li>
+											@endif
 										</ul>
 									</div>
 								</td>
