@@ -349,7 +349,7 @@
                                 @elseif ( empty($deals['deals_voucher_price_point']) )
                             		style="display: none;"
                             	@endif>
-                                <input type="text" class="form-control point moneyOpp freeOpp" name="deals_voucher_price_point" value="{{ $deals['deals_voucher_price_point']??'' }}" placeholder="Input point values" autocomplete="off">
+                                <input type="text" class="form-control point moneyOpp freeOpp digit-mask" name="deals_voucher_price_point" value="{{ $deals['deals_voucher_price_point']??'' }}" placeholder="Input point values" autocomplete="off">
                             </div>
                             <div class="col-md-9 payment" id="money"
                             	@if ( old('prices_by'))
@@ -480,27 +480,27 @@
                             </div>
                             <div class="col-md-9">
                             	@php 
-                            		$voucher_code = old('voucher_code')??$voucher??"";
+	                        		$voucher_code = old('voucher_code')??"";
 
-                            		if(!empty($voucher))
-                            		{
-                            			$voucher_code = "";
-                            			foreach($voucher??[] as $row)
+	                        		if(!empty($voucher))
+	                        		{
+	                        			$voucher_code = "";
+	                        			foreach($voucher??[] as $row)
 										{
 											$voucher_code .= $row['voucher_code']."\n";
 										}
 										// dd($voucher_code);
-                            		}
-                            	@endphp
-                                <textarea name="voucher_code" class="form-control listVoucher" rows="10">@php 
-                                	if(old('voucher_code'))
-                                	{
-                                		echo old('voucher_code');
-                                	}
-                                	else
-                                	{
+	                        		}
+	                        	@endphp
+	                            <textarea name="voucher_code" class="form-control listVoucher" rows="10">@php 
+	                            	if(old('voucher_code'))
+	                            	{
+	                            		echo old('voucher_code');
+	                            	}
+	                            	else
+	                            	{
 										echo $voucher_code;
-                                	}@endphp</textarea>
+	                            	}@endphp</textarea>
                             </div>
                         </div>
                     </div>

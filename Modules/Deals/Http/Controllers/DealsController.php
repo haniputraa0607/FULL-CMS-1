@@ -175,7 +175,15 @@ class DealsController extends Controller
 
         switch ($identifier) {
             case 'deals':
-                if ($type == "") {
+                if ($type == "detail") {
+                    $data = [
+                        'title'          => 'Deals',
+                        'sub_title'      => 'Deals Detail',
+                        'menu_active'    => 'deals',
+                        'submenu_active' => 'deals-list'
+                    ];
+                }
+                elseif ($type == "") {
                     $data = [
                         'title'          => 'Deals',
                         'sub_title'      => 'Deals List',
@@ -198,7 +206,14 @@ class DealsController extends Controller
 
             break;
             case 'inject-voucher':
-                if ($type == "") {
+                if ($type == "detail") {
+                    $data = [
+                        'title'          => 'Inject Voucher',
+                        'sub_title'      => 'Inject Voucher Detail',
+                        'menu_active'    => 'inject-voucher',
+                        'submenu_active' => 'inject-voucher-list'
+                    ];
+                }elseif ($type == "") {
                     $data = [
                         'title'          => 'Inject Voucher',
                         'sub_title'      => 'Inject Voucher List',
@@ -256,6 +271,13 @@ class DealsController extends Controller
                         'sub_title'      => 'Welcome Voucher Setting',
                         'menu_active'    => 'welcome-voucher',
                         'submenu_active' => 'welcome-voucher-setting'
+                    ];
+                }elseif($type == "detail"){
+                    $data = [
+                        'title'          => 'Welcome Voucher',
+                        'sub_title'      => 'Welcome Voucher Detail',
+                        'menu_active'    => 'welcome-voucher',
+                        'submenu_active' => 'welcome-voucher-list'
                     ];
                 }else {
                     $data = [
@@ -435,7 +457,7 @@ class DealsController extends Controller
         $id_encrypt = $id;
         $id = MyHelper::explodeSlug($id)[0]??'';
         $identifier             = $this->identifier();
-        $dataDeals              = $this->dataDeals($identifier);
+        $dataDeals              = $this->dataDeals($identifier, 'detail');
 
         if($post)
         {
