@@ -26,8 +26,8 @@
 							<span class="required" aria-required="true"> (100 * 100) (PNG Only) </span>
 						</label><br>
 						<div class="fileinput-new thumbnail">
-							@if(!empty($result['promo_campaign_warning_image']))
-								<img src="{{ env('S3_URL_API').$result['promo_campaign_warning_image'] }}" alt="">
+							@if(!empty($result['promo_campaign_warning_image']) || !empty($warning_image))
+								<img src="{{ env('S3_URL_API').($result['promo_campaign_warning_image']??$warning_image) }}" alt="">
 							@else
 								<img src="https://www.placehold.it/100x100/EFEFEF/AAAAAA&amp;text=no+image" alt="">
 							@endif

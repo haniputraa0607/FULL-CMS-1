@@ -339,6 +339,8 @@ class PromoCampaignController extends Controller
                 return redirect('promo-campaign')->withErrors($get_data['messages']);
             }
 
+            $data['warning_image'] = MyHelper::post('setting', ['key' => 'promo_warning_image'])['result']['value'];
+
             return view('promocampaign::promo-campaign-step-2', $data);
 
         }else{
