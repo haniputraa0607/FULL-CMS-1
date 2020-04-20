@@ -271,16 +271,52 @@ class Controller extends BaseController
 				}
 				$data['settings'] = $settings;
 			}
+
+            $getData = MyHelper::get('setting/url-email');
+
+            if(isset($getData['status']) &&  $getData['status']=='success'){
+                $data['data'] = $getData['result'];
+            }else{
+                $data['data'] = [];
+            }
 			// print_r($data);exit;
 			return view('email-header-footer-settings', $data);
 		} else {
-			if (isset($post['email_logo'])) {
-                $post['email_logo']   = MyHelper::encodeImage($post['email_logo']);
-			}
+			$dataToUpdate = [
+			    'email_from' => $post['email_from'],
+                'email_sender' => $post['email_sender'],
+                'email_reply_to' => $post['email_reply_to'],
+                'email_cc' => $post['email_cc'],
+                'email_bcc' => $post['email_bcc'],
+                'email_logo_position' => $post['email_logo_position'],
+                'email_copyright' => $post['email_copyright'],
+                'email_disclaimer' => $post['email_disclaimer'],
+                'email_contact' => $post['email_contact']
+            ];
 
-			$update = MyHelper::post('setting/email/update',$post);
-			// print_r($update);exit;
-			return back()->with('success', ['Email Header and Footer Settings has been updated']);
+            if (isset($post['email_logo'])) {
+                $dataToUpdate['email_logo']   = MyHelper::encodeImage($post['email_logo']);
+            }
+			$update = MyHelper::post('setting/email/update',$dataToUpdate);
+
+            if(isset($update['status']) &&  $update['status']=='success'){
+                $allData = $request->all();
+                if(isset($allData['images'])){
+                    foreach($allData['images'] as $key => $value){
+                        if($allData['images'][$key] !== null){
+                            $allData['images'][$key] = MyHelper::encodeImage($allData['images'][$key]);
+                        }
+                    }
+                }
+                $updateUrl = MyHelper::post('setting/url-email', $allData);
+                if(isset($updateUrl['status']) &&  $updateUrl['status']=='success'){
+                    return back()->with('success', ['Email Header and Footer Settings has been updated']);
+                }else{
+                    return back()->withErrors($updateUrl['messages']);
+                }
+            }else{
+                return back()->withErrors(['Failed update Email Header and Footer']);
+            }
 		}
 	}
 

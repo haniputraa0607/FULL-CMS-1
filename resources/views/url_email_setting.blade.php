@@ -4,7 +4,7 @@
 			<?php
 			$value = (array)$value;
 			?>
-			<div class="portlet light bordered" style="display: none" id="div_{{$key}}">
+			<div class="portlet light bordered" @if($value['use'] == 0)style="display: none" @endif id="div_{{$key}}">
 				<div class="portlet-title">
 					<div class="caption">
 						<span class="caption-subject font-dark sbold uppercase">{{$value['text']}}</span>

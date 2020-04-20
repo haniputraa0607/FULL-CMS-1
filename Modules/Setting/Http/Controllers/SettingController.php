@@ -1255,41 +1255,4 @@ class SettingController extends Controller
 
         return view('setting::maintenance-mode', $data);
     }
-
-    function updateSomeUrlEmail(Request $request){
-        $post = $request->except('_token');
-
-        $data = [
-            'title'   		 => 'Setting Some URL Email',
-            'menu_active'    => 'setting-url-email',
-            'submenu_active' => 'setting-url-email'
-        ];
-
-        if($post){
-            $allData = $request->all();
-            if(isset($allData['images'])){
-                foreach($allData['images'] as $key => $value){
-                    if($allData['images'][$key] !== null){
-                        $allData['images'][$key] = MyHelper::encodeImage($allData['images'][$key]);
-                    }
-                }
-            }
-            $getData = MyHelper::post('setting/url-email', $allData);
-            if(isset($getData['status']) &&  $getData['status']=='success'){
-                return redirect('setting/url-email')->with('success',['Success update url']);
-            }else{
-                return redirect('setting/url-email')->withErrors(['Failed update url']);
-            }
-        }else{
-            $getData = MyHelper::get('setting/url-email');
-
-            if(isset($getData['status']) &&  $getData['status']=='success'){
-                $data['data'] = $getData['result'];
-            }else{
-                $data['data'] = [];
-            }
-
-            return view('setting::url_email_setting', $data);
-        }
-    }
 }
