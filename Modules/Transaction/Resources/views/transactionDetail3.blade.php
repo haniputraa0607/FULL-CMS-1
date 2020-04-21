@@ -452,265 +452,301 @@
             @endif
         @endif
     @endif
-
-        <div class="kotak-biasa">
-            <div class="col-12">
-                <div class="row text-center space-nice">
-
-                @if ($data['trasaction_type'] != 'Offline')
-                    <div class="col-12 seravek-font text-15px space-text text-grey">Kode Pickup</div>
-
-                    <div class="kotak-qr" data-toggle="modal" data-target="#exampleModal">
-                        <div class="col-12 text-14-3px space-top"><img class="img-responsive" style="display: block; max-width: 100%; padding-top: 10px" src="{{ $data['qr'] }}"></div>
+        <div class="@if(isset($data['admin'])) body-admin @endif">
+            @if(isset($data['detail']['pickup_by']) && $data['detail']['pickup_by'] == 'GO-SEND')
+                <div class="kotak-biasa">
+                    <div class="container">
+                        <div class=" row text-center">
+                            <div class="col-12 Ubuntu text-15px space-nice text-grey">Detail Pengiriman</div>
+                            <div class="col-12 text-red text-21-7px space-bottom Ubuntu-Medium">GO-SEND</div>
+                            <div class="col-12 text-16-7px text-black space-bottom Ubuntu">
+                                {{ $data['detail']['transaction_pickup_go_send']['destination_name'] }}
+                                <br>
+                                {{ $data['detail']['transaction_pickup_go_send']['destination_phone'] }}
+                            </div>
+                            <div class="kotak-inside col-12">
+                                <div class="col-12 text-13-3px text-grey-white space-nice text-center Ubuntu">{{ $data['detail']['transaction_pickup_go_send']['destination_address'] }}</div>
+                            </div>
+                            <div class="col-12 text-15px space-bottom text-black Ubuntu">Map</div>
+                            <div class="col-12 space-bottom-big">
+                                <div class="container">
+                                    <div id="map"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="col-12 text-greyish-brown text-21-7px space-bottom space-top-all seravek-medium-font">{{ $data['detail']['order_id'] }}</div>
-                @endif
-
-                    <div class="col-12 text-16-7px text-black space-text seravek-font">{{ strtoupper($data['user']['name']) }}</div>
-                    <div class="col-12 text-16-7px text-black space-bottom-big seravek-font">{{ $data['user']['phone'] }}</div>
-
-                @if ($data['trasaction_type'] != 'Offline')
-                    @if ($data['detail']['pickup_type'] == 'set time')
-                        <div class="col-12 text-15px space-bottom text-greyish-brown seravek-medium-font">Pesanan akan siap pada</div>
-                    @else
-                        <div class="col-12 text-15px space-bottom text-greyish-brown seravek-medium-font">Pesanan akan diproses pada</div>
-                    @endif
-                    @if ($data['detail']['pickup_type'] == 'set time')
-                        <div class="col-12 text-21-7px space-nice text-greyish-brown seravek-medium-font">{{ date('H:i', strtotime($data['detail']['pickup_at'])) }}</div>
-                    @elseif($data['detail']['pickup_type'] == 'at arrival')
-                        <div class="col-12 text-21-7px space-nice text-greyish-brown seravek-medium-font">Saat Kedatangan</div>
-                    @else
-                        <div class="col-12 text-21-7px space-nice text-greyish-brown seravek-medium-font">Saat Ini</div>
-                    @endif
-
-                    @if($data['detail']['receive_at'] != null)
-                        <div class="col-12 text-16-7px space-text text-grey seravek-font">Waktu Order Diterima</div>
-                        <div class="col-12 text-16-7px space-nice text-black seravek-font">{{ date('d F Y H:i', strtotime($data['detail']['receive_at'])) }}</div>
-                    @endif
-                @endif
                 </div>
-            </div>
-        </div>
-
-    <div class="kotak">
-        <div class="col-12 line-bottom">
-            <div class="row space-bottom">
-                <div class="col-6 text-grey-black text-14-3px seravek-font">{{ $data['outlet']['outlet_name'] }}</div>
-                <div class="col-6 text-right text-medium-grey text-13-3px seravek-light-font">{{ date('d F Y H:i', strtotime($data['transaction_date'])) }}</div>
-            </div>
-            <div class="row space-text">
-                <div class="col-4"></div>
-                <div class="col-8 text-right text-medium-grey-black text-13-3px seravek-font">#{{ $data['transaction_receipt_number'] }}</div>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="row">
-                <div class="col-12 text-13-3px text-grey-light seravek-light-font">
-                    Transaksi Anda
-                    <hr style="margin:10px 0 20px 0">
-                </div>
-                @php $countQty = 0; @endphp
-                @foreach ($data['product_transaction'] as $key => $val)
-                    <div class="col-7 text-13-3px text-black seravek-light-font">{{ $val['product']['product_name'] }}</div>
-                    <div class="col-5 text-right text-13-3px text-black seravek-light-font">{{ str_replace(',', '.', number_format($val['transaction_product_subtotal'])) }}</div>
-                    <div class="col-12 text-grey text-12-7px text-black-grey-light seravek-light-font">{{ $val['transaction_product_qty'] }} x {{ str_replace(',', '.', number_format($val['transaction_product_price'])) }}</div>
-                    <div class="space-bottom col-12">
-                        <div class="space-bottom text-12-7px text-grey-medium-light seravek-italic-font" style="word-wrap: break-word;">
-                            @if (isset($val['transaction_product_note']))
-                                {{ $val['transaction_product_note'] }}
-                            @else
-                                -
+            @else
+                <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 10px 0px;margin-top: 10px;">
+                    <div class="container">
+                        <div class="row text-center" style="background-color: #FFFFFF;padding: 5px;padding-top: 0px;margin-top: 20px;">
+                            <div class="col-12 text-black space-text Ubuntu-Bold" style="font-size: 16.7px;">{{ $data['outlet']['outlet_name'] }}</div>
+                            <div class="kotak-inside col-12">
+                                <div class="col-12 text-11-7px text-grey-white space-nice text-center Ubuntu">{{ $data['outlet']['outlet_address'] }}</div>
+                            </div>
+                            @if(isset($data['transaction_payment_status']) && $data['transaction_payment_status'] != 'Cancelled' && $data['trasaction_type'] != 'Offline')
+                                <div class="col-12 Ubuntu-Medium space-text text-black" style="font-size: 15px;">Your Pick Up Code</div>
+                                <div style="width: 135px;height: 135px;margin: 0 auto;" data-toggle="modal" data-target="#exampleModal">
+                                    <div class="col-12 text-14-3px space-top"><img class="img-responsive" style="display: block;max-width: 100%;padding-top: 10px" src="{{ $data['qr'] }}"></div>
+                                </div>
+                                <div class="col-12 text-black Ubuntu-Medium" style="color: #333333;font-size: 21.7px;padding-bottom: 5px;padding-top: 18px">{{ $data['detail']['order_id'] }}</div>
                             @endif
                         </div>
                     </div>
-                    @php $countQty += $val['transaction_product_qty']; @endphp
+                </div>
+                @if($data['trasaction_type'] != 'Offline')
+                    <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 10px 0px;margin-top: 10px;">
+                        <div class="container">
+                            <div class="row text-center">
+                                @if(isset($data['admin']))
+                                    <div class="col-12 text-16-7px text-black space-text Ubuntu">{{ strtoupper($data['user']['name']) }}</div>
+                                    <div class="col-12 text-16-7px text-black Ubuntu space-nice">{{ $data['user']['phone'] }}</div>
+                                @endif
+                                @if (isset($data['transaction_payment_status']) && $data['transaction_payment_status'] == 'Cancelled')
+                                    <div class="col-12 space-nice text-black Ubuntu" style="padding-bottom: 10px;">
+                                        Your order cancelled on
+                                    </div>
+                                    <div class="col-12 text-14px space-text text-black Ubuntu-Medium">{{ date('d F Y', strtotime($data['transaction_date'])) }}</div>
+                                @else
+                                    <div class="col-12 space-nice text-black Ubuntu" style="padding-bottom: 10px;">
+                                        Your order will be ready on
+                                    </div>
+                                    <div class="col-12 text-14px space-text text-black Ubuntu-Medium">{{ date('d F Y', strtotime($data['transaction_date'])) }}</div>
+                                    <div class="col-12 text-21-7px Ubuntu-Medium" style="color: #8fd6bd;">
+                                        @if ($data['detail']['pickup_type'] == 'set time')
+                                            {{ date('H:i', strtotime($data['detail']['pickup_at'])) }}
+                                        @elseif($data['detail']['pickup_type'] == 'at arrival')
+                                            ON ARRIVAL
+                                        @else
+                                            RIGHT NOW
+                                        @endif
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endif
+
+            <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 15px;margin-top: 10px;">
+                <div class="row space-bottom">
+                    <div class="col-7 text-left text-medium-grey-black text-13-3px Ubuntu">#{{ $data['transaction_receipt_number'] }}</div>
+                    <div class="col-5 text-right text-medium-grey text-11-7px Ubuntu">{{ date('d M Y H:i', strtotime($data['transaction_date'])) }}</div>
+                </div>
+                <div class="row space-text" style="margin-top: 10px;">
+                    <div class="col-12 text-14px Ubuntu-Medium">Your Transaction</div>
+                </div>
+                @foreach ($data['product_transaction'] as $key => $item)
+                    <div class="row space-text">
+                        <div class="col-2 Ubuntu text-left" style="color: #8fd6bd;">{{$item['transaction_product_qty']}}x</div>
+                        <div class="col-7 Ubuntu-Medium text-black">{{$item['product']['product_name']}}</div>
+                        <div class="col-3 text-right Ubuntu-Medium text-black">{{ MyHelper::requestNumber(explode('.',$item['transaction_product_price'])[0], '_CURRENCY') }}</div>
+                    </div>
+
+                    <div class="row space-text">
+                        <div class="col-2 Ubuntu text-left"></div>
+                        <div class="col-7 Ubuntu-Medium text-grey">
+                            <?php
+                            $topping = '';
+                            foreach ($data['modifiers'] as $mf){
+                                $topping .= $mf['text']. '('.$mf['qty'].'), ';
+                            }
+                            echo '<div style="font-size: 11px;">'.substr($topping, 0, -2).'</div>';
+                            ?>
+                        </div>
+                        <div class="col-3 text-right Ubuntu-Medium text-black" style="padding-right: 0px;"></div>
+                    </div>
+
+                    @if (!empty($item['product']['product_discounts']))
+                        <div class="row space-text">
+                            <div class="col-2 Ubuntu text-black">{{$item['transaction_product_qty']}}x</div>
+                            <div class="col-7 Ubuntu text-black" style="margin-left: -20px;">{{$item['product']['product_name']}}</div>
+                            <div class="col-3 text-right Ubuntu-Medium text-black" style="padding-right: 0px;">{{ MyHelper::requestNumber($data['transaction_subtotal'], '_CURRENCY') }}</div>
+                        </div>
+                    @endif
+                    <div class="col-12">
+                        <hr style="margin: 10px 0px;border-top: dashed 1px #aaaaaa;"/>
+                    </div>
                 @endforeach
-
-                <div class="col-12 text-12-7px text-right"><hr style="margin:0"></div>
-                <div class="col-6 text-13-3px space-bottom space-top-all text-black seravek-font">SubTotal ({{$countQty}} item)</div>
-                <div class="col-6 text-13-3px space-bottom space-top-all text-black text-right seravek-font">{{ str_replace(',', '.', number_format($data['transaction_subtotal'])) }}</div>
             </div>
-        </div>
-    </div>
 
-    <div class="kotak">
-        <div class="col-12">
-            <div class="row">
-                <div class="col-12 text-14-3px space-top seravek-font text-greyish-brown">Detail Pembayaran <hr> </div>
-                <div class="col-6 text-13-3px space-text seravek-light-font text-black">SubTotal ({{$countQty}} item)</div>
-                <div class="col-6 text-13-3px text-right space-text seravek-light-font text-grey-black">{{ str_replace(',', '.',number_format($data['transaction_subtotal'])) }}</div>
-
-                @if($data['transaction_tax'] > 0)
-                <div class="col-6 text-13-3px space-text seravek-light-font text-black">Tax</div>
-                <div class="col-6 text-13-3px text-right seravek-light-font text-grey-black">{{ str_replace(',', '.',number_format($data['transaction_tax'])) }}</div>
-                @endif
-
-                @if(isset($data['balance']))
-                <div class="col-6 text-13-3px space-text seravek-light-font text-black">{{env('POINT_NAME', 'Points')}}</div>
-                <div class="col-6 text-13-3px text-right seravek-light-font text-grey-black">{{ str_replace(',', '.',number_format($data['balance'])) }}</div>
-                @endif
-
-                <div class="col-12 text-12-7px text-right"><hr></div>
-                <div class="col-6 text-13-3px seravek-font text-black ">Total Pembayaran</div>
-                @if(isset($data['balance']))
-                <div class="col-6 text-13-3px text-right seravek-font text-black">{{ str_replace(',', '.', number_format($data['transaction_grandtotal'] + $data['balance'])) }}</div>
-                @else
-                <div class="col-6 text-13-3px text-right seravek-font text-black">{{ str_replace(',', '.', number_format($data['transaction_grandtotal'])) }}</div>
-                @endif
+            <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 15px;margin-top: 10px;">
+                <div class="row space-bottom">
+                    <div class="col-12 text-14px Ubuntu-Bold text-black">Payment Details</div>
+                </div>
+                <div class="row space-bottom">
+                    <div class="col-6 text-13-3px Ubuntu-Medium text-black ">Subtotal</div>
+                    <div class="col-6 text-13-3px text-right Ubuntu text-black">{{ MyHelper::requestNumber($data['transaction_subtotal'], '_CURRENCY') }}</div>
+                </div>
+                <div class="row" style="background-color: #f0f3f7;border-radius: 5px;">
+                    <div class="col-6 text-13-3px Ubuntu-Medium text-black" style="padding-top: 4px;padding-bottom: 4px;">Grand Total</div>
+                    <div class="col-6 text-13-3px text-right Ubuntu-Bold text-black" style="padding-top: 4px;padding-bottom: 4px;">{{ MyHelper::requestNumber($data['transaction_grandtotal'], '_CURRENCY') }}</div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    @if ($data['transaction_payment_status'] == 'Completed'|| $data['transaction_payment_status'] == 'Paid')
-        <div class="kotak">
-            <div class="container">
+            <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 15px;margin-top: 10px;">
+                <div class="row space-bottom">
+                    <div class="col-12 text-14px Ubuntu-Bold text-black">Payment Method</div>
+                </div>
                 <div class="row">
-                    <div class="col-12 text-14-3px space-top text-greyish-brown seravek-font">Metode Pembayaran <hr> </div>
-                    <div class="col-6 text-13-3px seravek-font text-black">
-                        @if ($data['trasaction_payment_type'] == 'Balance')
-                            {{env('POINT_NAME', 'Points')}}
-                        @elseif ($data['trasaction_payment_type'] == 'Midtrans')
-                            @if(isset($data['data_payment'][0]['payment_type']))
-                                {{ ucwords(str_replace('_', ' ', $data['data_payment'][0]['payment_type'])) }}
-                            @else
-                                Online Payment
-                            @endif
-                        @elseif ($data['trasaction_payment_type'] == 'Manual')
-                            Transfer Bank
-                        @elseif ($data['trasaction_payment_type'] == 'Offline')
-                            @if(isset($data['data_payment'][0]['payment_bank']))
-                                {{$data['data_payment'][0]['payment_bank']}}
-                            @else
-                                TUNAI
-                            @endif
-                        @endif
-                    </div>
-                    <div class="col-6 text-12-7px text-right">
-                    @if ($data['trasaction_payment_type'] == 'Offline')
-                        SELESAI
-                    @else
-                        LUNAS
-                    @endif
-                    </div>
-
-                    @if (isset($data['payment']['bank']))
-                        <div class="col-6 text-grey text-12-7px">{{ $data['payment']['bank'] }}</div>
-                    @endif
-
-                    @if (isset($data['payment']['payment_method']))
-                        <div class="col-6 text-grey text-12-7px">{{ $data['payment']['payment_method'] }}</div>
-                    @endif
+                    @foreach($data['data_payment'] as $dp)
+                        <div class="col-6 text-13-3px Ubuntu text-black ">{{strtoupper($dp['payment_method'])}}</div>
+                        <div class="col-6 text-13-3px text-right Ubuntu-Medium text-black">{{ MyHelper::requestNumber($dp['nominal'], '_CURRENCY') }}</div>
+                    @endforeach
                 </div>
             </div>
-        </div>
-    @endif
 
-    @if ($data['trasaction_type'] != 'Offline')
-    <div class="kotak">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-14-3px space-top text-greyish-brown seravek-font">Status Pesanan <hr> </div>
-                @php $top = 5; $bg = true; @endphp
-                @if($data['detail']['reject_at'] != null)
-                    <div class="col-12 text-13-3px seravek-font text-black">
-                        <div class="round-greyish-brown bg-greyish-brown"></div>
-                        Pesanan Anda ditolak
-                    </div>
-                    <div class="col-12 top-5px">
-                        <div class="inline text-center">
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
+                @if ($data['trasaction_type'] != 'Offline')
+                    <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 15px;margin-top: 10px;">
+                        <div class="row space-bottom">
+                            <div class="col-12 text-14px Ubuntu-Medium text-black">Order Status</div>
                         </div>
-                        <div class="inline vertical-top">
-                            <div class="text-11-7px seravek-light-font text-black space-bottom">
-                                {{date('d F Y H:i', strtotime($data['detail']['reject_at']))}}
-                            </div>
+                        <div class="row" style="margin-top: 10px;">
+                            @php $top = 5; $bg = true; @endphp
+                            @if(isset($data['transaction_payment_status']) && $data['transaction_payment_status'] == 'Cancelled')
+                                <div class="col-12 text-13-3px Ubuntu-Medium text-black top-{{$top}}px">
+                                    <div class="round-black @if($bg) bg-black @endif"></div>
+                                    Your order has been canceled
+                                </div>
+                                @php $top += 5; $bg = false; @endphp
+                                <div class="col-12 top-{{$top}}px">
+                                    <div class="inline text-center">
+                                        <div class="line-vertical text-grey-medium-light">|</div>
+                                        <div class="line-vertical text-grey-medium-light">|</div>
+                                        <div class="line-vertical text-grey-medium-light">|</div>
+                                        <div class="line-vertical text-grey-medium-light">|</div>
+                                        <div class="line-vertical text-grey-medium-light">|</div>
+                                    </div>
+                                    <div class="inline vertical-top">
+                                        <div class="text-11-7px Ubuntu text-black space-bottom">
+                                            {{ date('d F Y H:i', strtotime($data['void_date'])) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                @php $top += 5; @endphp
+                            @else
+                                @if($data['detail']['reject_at'] != null)
+                                    <div class="col-12 text-13-3px Ubuntu-Medium text-black">
+                                        <div class="round-black bg-black"></div>
+                                        Order rejected
+                                    </div>
+                                    <div class="col-12 top-5px">
+                                        <div class="inline text-center">
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                        </div>
+                                        <div class="inline vertical-top">
+                                            <div class="text-11-7px Ubuntu text-black space-bottom">
+                                                {{ date('d F Y H:i', strtotime($data['detail']['reject_at'])) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @php $top += 5; $bg = false; @endphp
+                                @endif
+                                @if($data['detail']['taken_by_system_at'] != null)
+                                    <div class="col-12 text-13-3px Ubuntu-Medium text-black top-{{$top}}px">
+                                        <div class="round-black @if($bg) bg-black @endif"></div>
+                                        Your order has been done by system
+                                    </div>
+                                    @php $top += 5; $bg = false; @endphp
+                                    <div class="col-12 top-{{$top}}px">
+                                        <div class="inline text-center">
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                        </div>
+                                        <div class="inline vertical-top">
+                                            <div class="text-11-7px Ubuntu text-black space-bottom">
+                                                {{date('d F Y H:i', strtotime($data['detail']['taken_by_system_at']))}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @php $top += 5; @endphp
+                                @endif
+                                @if($data['detail']['taken_at'] != null)
+                                    <div class="col-12 text-13-3px Ubuntu-Medium text-black top-{{$top}}px">
+                                        <div class="round-black @if($bg) bg-black @endif"></div>
+                                        Your order has been taken
+                                    </div>
+                                    @php $top += 5; $bg = false; @endphp
+                                    <div class="col-12 top-{{$top}}px">
+                                        <div class="inline text-center">
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                        </div>
+                                        <div class="inline vertical-top">
+                                            <div class="text-11-7px Ubuntu text-black space-bottom">
+                                                {{date('d F Y H:i', strtotime($data['detail']['taken_at']))}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @php $top += 5; @endphp
+                                @endif
+                                @if($data['detail']['ready_at'] != null)
+                                    <div class="col-12 text-13-3px Ubuntu-Medium text-black top-{{$top}}px">
+                                        <div class="round-black @if($bg) bg-black @endif"></div>
+                                        Your order is ready
+                                    </div>
+                                    @php $top += 5; $bg = false; @endphp
+                                    <div class="col-12 top-{{$top}}px">
+                                        <div class="inline text-center">
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                        </div>
+                                        <div class="inline vertical-top">
+                                            <div class="text-11-7px Ubuntu text-black space-bottom">
+                                                {{ date('d F Y H:i', strtotime($data['detail']['ready_at'])) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @php $top += 5; @endphp
+                                @endif
+                                @if($data['detail']['receive_at'] != null)
+                                    <div class="col-12 text-13-3px Ubuntu-Medium text-black top-{{$top}}px">
+                                        <div class="round-black @if($bg) bg-black @endif"></div>
+                                        Your order has been received
+                                    </div>
+                                    @php $top += 5; $bg = false; @endphp
+                                    <div class="col-12 top-{{$top}}px">
+                                        <div class="inline text-center">
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                            <div class="line-vertical text-grey-medium-light">|</div>
+                                        </div>
+                                        <div class="inline vertical-top">
+                                            <div class="text-11-7px Ubuntu text-black space-bottom">
+                                                {{ date('d F Y H:i', strtotime($data['detail']['receive_at'])) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @php $top += 5; @endphp
+                                @endif
+                                <div class="col-12 text-13-3px Ubuntu-Medium text-black top-{{$top}}px">
+                                    <div class="round-black @if($bg) bg-black @endif"></div>
+                                    Your order awaits confirmation
+                                </div>
+                                <div class="col-12 text-11-7px Ubuntu text-black space-bottom top-{{$top}}px">
+                                    <div class="round-white"></div>
+                                    {{ date('d F Y H:i', strtotime($data['transaction_date'])) }}
+                                </div>
+                            @endif
                         </div>
                     </div>
-                    @php $top += 5; $bg = false; @endphp
                 @endif
-                @if($data['detail']['taken_at'] != null)
-                    <div class="col-12 text-13-3px seravek-font text-black top-{{$top}}px">
-                        <div class="round-greyish-brown @if($bg) bg-greyish-brown @endif"></div>
-                        Pesanan Anda sudah diambil
-                    </div>
-                    @php $top += 5; $bg = false; @endphp
-                    <div class="col-12 top-{{$top}}px">
-                        <div class="inline text-center">
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                        </div>
-                        <div class="inline vertical-top">
-                            <div class="text-11-7px seravek-light-font text-black space-bottom">
-                                {{date('d F Y H:i', strtotime($data['detail']['taken_at']))}}
-                            </div>
-                        </div>
-                    </div>
-                    @php $top += 5; @endphp
-                @endif
-                @if($data['detail']['ready_at'] != null)
-                    <div class="col-12 text-13-3px seravek-font text-black top-{{$top}}px">
-                        <div class="round-greyish-brown @if($bg) bg-greyish-brown @endif"></div>
-                        Pesanan Anda sudah siap
-                    </div>
-                    @php $top += 5; $bg = false; @endphp
-                    <div class="col-12 top-{{$top}}px">
-                        <div class="inline text-center">
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                        </div>
-                        <div class="inline vertical-top">
-                            <div class="text-11-7px seravek-light-font text-black space-bottom">
-                                {{date('d F Y H:i', strtotime($data['detail']['ready_at']))}}
-                            </div>
-                        </div>
-                    </div>
-                    @php $top += 5; @endphp
-                @endif
-                @if($data['detail']['receive_at'] != null)
-                    <div class="col-12 text-13-3px seravek-font text-black top-{{$top}}px">
-                        <div class="round-greyish-brown @if($bg) bg-greyish-brown @endif"></div>
-                            Pesanan Anda sudah diterima
-                    </div>
-                    @php $top += 5; $bg = false; @endphp
-                    <div class="col-12 top-{{$top}}px">
-                        <div class="inline text-center">
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                            <div class="line-vertical text-grey-medium-light">|</div>
-                        </div>
-                        <div class="inline vertical-top">
-                            <div class="text-11-7px seravek-light-font text-black space-bottom">
-                                {{date('d F Y H:i', strtotime($data['detail']['receive_at']))}}
-                            </div>
-                        </div>
-                    </div>
-                    @php $top += 5; @endphp
-                @endif
-                <div class="col-12 text-13-3px seravek-font text-black top-{{$top}}px">
-                    <div class="round-greyish-brown @if($bg) bg-greyish-brown @endif"></div>
-                    Pesanan Anda Menunggu Konfirmasi
-                </div>
-                <div class="col-12 text-11-7px seravek-light-font text-black space-bottom top-{{$top}}px">
-                    <div class="round-white"></div>
-                    {{date('d F Y H:i', strtotime($data['transaction_date']))}}
-                </div>
-            </div>
         </div>
-    </div>
-    @endif
 
     </div>
 @endsection

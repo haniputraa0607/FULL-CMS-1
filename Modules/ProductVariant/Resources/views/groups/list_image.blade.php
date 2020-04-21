@@ -62,7 +62,7 @@ $( document ).ready(function() {
         parallelUploads: 1,
         init: function () {
             this.on("thumbnail", function(file) {
-                if (file.width == 200 || file.height == 200) {
+                if (file.width == 400 || file.height == 400) {
                     file.acceptDimensions();
                 }
                 else {
@@ -127,12 +127,12 @@ $( document ).ready(function() {
                 <h4>Dropzone Product Image</h4>
                 <p> Untuk melakukan perubahan image pada product, anda hanya perlu melakukan drop image yang ingin di ganti atau di tambahkan </p>
                 <p>
-                    <span class="label label-warning">NOTE:</span> &nbsp; Pastikan nama file sesuai dengan product code. Jika product code PR-001, maka nama file gambar PR-001.jpg dan pastikan ukuran gambar 200px X 200px. </p>
+                    <span class="label label-warning">NOTE:</span> &nbsp; Pastikan nama file sesuai dengan product code. Jika product code PR-001, maka nama file gambar PR-001.jpg dan pastikan ukuran gambar 400px X 400px. </p>
             </div>
             <form action="{{ url()->current() }}" method="POST" class="dropzone dropzone-file-area dz-clickable" id="my-dropzone" style="width: 600px; margin-top: 50px;">
                 {{ csrf_field() }}
                 <h3 class="sbold">Drop files here or click to upload</h3>
-                <p> Image Pixel 200 X 200. </p>
+                <p> Image Pixel 400 X 400. </p>
             <div class="dz-default dz-message"><span></span></div></form>
         </div>
     </div>

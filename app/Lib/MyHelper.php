@@ -719,6 +719,65 @@ class MyHelper
           return $letter;
       }
   }
+
+  public static function requestNumber($number,$type='int',$custom=[]) {
+    if($type === '_CURRENCY'){$type = env('CURRENCY_FORMAT');}
+    elseif($type === '_POINT'){$type = env('POINT_FORMAT');}
+    switch ($type) {
+      case 'int':
+        return (int) $number;
+        break;
+
+      case 'float':
+        return (float) $number;
+        break;
+
+      case 'double':
+        return (double) $number;
+        break;
+
+      case 'rupiah':
+        return 'Rp'.number_format($number,0,',','.');
+        break;
+
+      case 'dollar':
+        return '$'.number_format($number,2,'.',',');
+        break;
+
+      case 'thousand_id':
+        return number_format($number,0,',','.');
+        break;
+
+      case 'thousand_sg':
+        return number_format($number,2,'.',',');
+        break;
+
+      case 'custom':
+        return number_format($number,...$custom);
+        break;
+
+      case 'short':
+        if ($number < 1000) {
+          // Anything less than a million
+          $n_format = number_format($number,0);
+        } elseif ($number < 1000000) {
+          // Anything less than a billion
+          $n_format = number_format($number / 1000, 0) . 'K';
+        } elseif ($number < 1000000000) {
+          // Anything less than a billion
+          $n_format = number_format($number / 1000000, 0) . 'M';
+        } else {
+          // At least a billion
+          $n_format = number_format($number / 1000000000, 0) . 'B';
+        }
+        return $n_format;
+        break;
+
+      default:
+        return $number;
+        break;
+    }
+  }
 }
 
 ?>
