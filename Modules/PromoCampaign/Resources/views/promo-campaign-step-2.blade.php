@@ -446,6 +446,17 @@
 			min: 0,
 			max: '999999999'
 		});
+
+		$('input[name=filter_outlet]').on('click', function(){
+			outlet = $(this).val();
+
+			if(outlet == 'Selected') {
+				$('#selectOutlet').show();
+			}
+			else {
+				$('#selectOutlet').hide();
+			}
+		});
 	});
 	</script>
 	@yield('child-script')
@@ -459,7 +470,7 @@
 	}
 	</style>
 
-	@if( strtotime($datenow) > strtotime($date_start) && isset($result['campaign_complete']))
+	@if( !empty($result['promo_campaign_reports']) && isset($result['step_complete']))
 	<script type="text/javascript">
 		$(document).ready(function() {
 			
@@ -732,12 +743,11 @@
 								</div>
 								<div class="form-group">
 									<label class="control-label">Max product discount per transaction</label>
-									<span class="required" aria-required="true"> * </span>
 									<i class="fa fa-question-circle tooltips" data-original-title="Jumlah maksimal masing-masing produk yang dapat dikenakan diskon dalam satu transaksi </br></br>Note : isi dengan 0 jika jumlah maksimal produk tidak dibatasi" data-container="body" data-html="true"></i>
 									<div class="row">
 										<div class="col-md-2">
 											
-											<input required type="text" class="form-control text-center digit_mask" name="max_product" placeholder="" @if(isset($result['promo_campaign_product_discount_rules']['max_product']) && $result['promo_campaign_product_discount_rules']['max_product'] != "") value="{{$result['promo_campaign_product_discount_rules']['max_product']}}" @elseif(old('max_product') != "") value="{{old('max_product')}}" @endif min="0" oninput="validity.valid||(value='');" autocomplete="off">
+											<input type="text" class="form-control text-center digit_mask" name="max_product" placeholder="" @if(isset($result['promo_campaign_product_discount_rules']['max_product']) && $result['promo_campaign_product_discount_rules']['max_product'] != "") value="{{$result['promo_campaign_product_discount_rules']['max_product']}}" @elseif(old('max_product') != "") value="{{old('max_product')}}" @endif min="0" oninput="validity.valid||(value='');" autocomplete="off">
 											
 										</div>
 									</div>
@@ -796,7 +806,7 @@
 					</div>
 				</div>
 			</div>
-			@if( strtotime($datenow) <= strtotime($date_start) || $date_start == null || empty($result['campaign_complete']) )
+			@if( empty($result['promo_campaign_reports']) || empty($result['step_complete']) )
 			<div class="col-md-12" style="text-align:center;">
 				<div class="form-actions">
 					{{ csrf_field() }}

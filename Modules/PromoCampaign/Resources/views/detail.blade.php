@@ -240,7 +240,7 @@
                         </div>
                         <div class="details">
                             <div class="number">
-                                <span data-counter="counterup" data-value="3">{{ !empty($result['total_coupon']) ? number_format(($result['total_coupon']??0)-($result['count']??0)) : isset($result['total_coupon']) ? 'unlimited' : '' }}</span>
+                                <span data-counter="counterup" data-value="3">{{ !empty($result['total_coupon']) ? number_format(($result['total_coupon']??0)-($result['total']??0)) : isset($result['total_coupon']) ? 'unlimited' : '' }}</span>
                             </div>
                             <div class="desc"> Available </div>
                         </div>
@@ -253,7 +253,7 @@
                         </div>
                         <div class="details">
                             <div class="number">
-                                <span data-counter="counterup" data-value="20">{{ number_format($result['count']??0) }}</span>
+                                <span data-counter="counterup" data-value="20">{{ number_format($result['total']??0) }}</span>
                             </div>
                             <div class="desc"> Total Used </div>
                         </div>
@@ -444,7 +444,7 @@
 						                    </div>
 						                </div>
 					                @endif
-                                @if( strtotime($datenow) < strtotime($result['date_start']) || empty($result['step_complete']))
+                                @if( empty($result['promo_campaign_reports']) || empty($result['step_complete']))
                                 <div class="row static-info">
                                     <div class="col-md-11 value">
                                         <a class="btn blue" href="{{ url('/')}}/promo-campaign/step1/{{$result['id_promo_campaign']}}">Edit Detail</a>
@@ -622,7 +622,7 @@
                                         </div>
                                         @endif
                                     @endif
-                                    @if( strtotime($datenow) < strtotime($result['date_start']) || empty($result['step_complete']))
+                                    @if( empty($result['promo_campaign_reports']) || empty($result['step_complete']))
                                     <div class="row static-info">
                                         <div class="col-md-11 value">
                                             <a class="btn blue" href="{{ url('/')}}/promo-campaign/step2/{{$result['id_promo_campaign']}}">Edit Rule</a>
