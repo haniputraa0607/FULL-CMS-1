@@ -87,6 +87,32 @@
             background: #fafafa;
         }
 
+        .bg-green2{
+            background: #a6ba35;
+        }
+
+        .bg-black{
+            background: #aaaaaa;
+        }
+
+        .round-green{
+            border: 1px solid #a6ba35;
+            border-radius: 50% !important;
+            width: 10px;
+            height: 10px;
+            display: inline-block;
+            margin-right:3px;
+        }
+
+        .round-black{
+            border: 1px solid #aaaaaa;
+            border-radius: 50% !important;
+            width: 10px;
+            height: 10px;
+            display: inline-block;
+            margin-right:3px;
+        }
+
         .completed {
             color: green;
         }
@@ -590,8 +616,14 @@
                 </div>
                 <div class="row">
                     @foreach($data['data_payment'] as $dp)
-                        <div class="col-6 text-13-3px Ubuntu text-black ">{{strtoupper($dp['payment_method'])}}</div>
-                        <div class="col-6 text-13-3px text-right Ubuntu-Medium text-black">{{ MyHelper::requestNumber($dp['nominal'], '_CURRENCY') }}</div>
+                        @if(isset($dp['payment_method']))
+                                <div class="col-6 text-13-3px Ubuntu text-black ">{{strtoupper($dp['payment_method'])}}</div>
+                                <div class="col-6 text-13-3px text-right Ubuntu-Medium text-black">{{ MyHelper::requestNumber($dp['nominal'], '_CURRENCY') }}</div>
+                        @else
+                                <div class="col-6 text-13-3px Ubuntu text-black ">{{strtoupper($dp['payment_type'])}}</div>
+                                <div class="col-6 text-13-3px text-right Ubuntu-Medium text-black">{{ MyHelper::requestNumber($dp['payment_amount'], '_CURRENCY') }}</div>
+                        @endif
+
                     @endforeach
                 </div>
             </div>
@@ -606,133 +638,44 @@
                             @if(isset($data['transaction_payment_status']) && $data['transaction_payment_status'] == 'Cancelled')
                                 <div class="col-12 text-13-3px Ubuntu-Medium text-black top-{{$top}}px">
                                     <div class="round-black @if($bg) bg-black @endif"></div>
-                                    Your order has been canceled
+                                    Your order has been canceled<br>
+                                    <div style="margin-left: 4%;">{{ date('d F Y H:i', strtotime($data['void_date'])) }}</div>
                                 </div>
-                                @php $top += 5; $bg = false; @endphp
-                                <div class="col-12 top-{{$top}}px">
-                                    <div class="inline text-center">
-                                        <div class="line-vertical text-grey-medium-light">|</div>
-                                        <div class="line-vertical text-grey-medium-light">|</div>
-                                        <div class="line-vertical text-grey-medium-light">|</div>
-                                        <div class="line-vertical text-grey-medium-light">|</div>
-                                        <div class="line-vertical text-grey-medium-light">|</div>
-                                    </div>
-                                    <div class="inline vertical-top">
-                                        <div class="text-11-7px Ubuntu text-black space-bottom">
-                                            {{ date('d F Y H:i', strtotime($data['void_date'])) }}
-                                        </div>
-                                    </div>
-                                </div>
-                                @php $top += 5; @endphp
                             @else
                                 @if($data['detail']['reject_at'] != null)
                                     <div class="col-12 text-13-3px Ubuntu-Medium text-black">
                                         <div class="round-black bg-black"></div>
-                                        Order rejected
+                                        Order rejected<br>
+                                        <div style="margin-left: 4%;">{{ date('d F Y H:i', strtotime($data['detail']['reject_at'])) }}</div>
                                     </div>
-                                    <div class="col-12 top-5px">
-                                        <div class="inline text-center">
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                        </div>
-                                        <div class="inline vertical-top">
-                                            <div class="text-11-7px Ubuntu text-black space-bottom">
-                                                {{ date('d F Y H:i', strtotime($data['detail']['reject_at'])) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @php $top += 5; $bg = false; @endphp
                                 @endif
                                 @if($data['detail']['taken_by_system_at'] != null)
                                     <div class="col-12 text-13-3px Ubuntu-Medium text-black top-{{$top}}px">
                                         <div class="round-black @if($bg) bg-black @endif"></div>
-                                        Your order has been done by system
+                                        Your order has been done by system<br>
+                                        <div style="margin-left: 4%;">{{date('d F Y H:i', strtotime($data['detail']['taken_by_system_at']))}}</div>
                                     </div>
-                                    @php $top += 5; $bg = false; @endphp
-                                    <div class="col-12 top-{{$top}}px">
-                                        <div class="inline text-center">
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                        </div>
-                                        <div class="inline vertical-top">
-                                            <div class="text-11-7px Ubuntu text-black space-bottom">
-                                                {{date('d F Y H:i', strtotime($data['detail']['taken_by_system_at']))}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @php $top += 5; @endphp
                                 @endif
                                 @if($data['detail']['taken_at'] != null)
                                     <div class="col-12 text-13-3px Ubuntu-Medium text-black top-{{$top}}px">
                                         <div class="round-black @if($bg) bg-black @endif"></div>
-                                        Your order has been taken
+                                        Your order has been taken<br>
+                                        <div style="margin-left: 4%;">{{date('d F Y H:i', strtotime($data['detail']['taken_at']))}}</div>
                                     </div>
-                                    @php $top += 5; $bg = false; @endphp
-                                    <div class="col-12 top-{{$top}}px">
-                                        <div class="inline text-center">
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                        </div>
-                                        <div class="inline vertical-top">
-                                            <div class="text-11-7px Ubuntu text-black space-bottom">
-                                                {{date('d F Y H:i', strtotime($data['detail']['taken_at']))}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @php $top += 5; @endphp
                                 @endif
                                 @if($data['detail']['ready_at'] != null)
                                     <div class="col-12 text-13-3px Ubuntu-Medium text-black top-{{$top}}px">
                                         <div class="round-black @if($bg) bg-black @endif"></div>
-                                        Your order is ready
+                                        Your order is ready<br>
+                                        <div style="margin-left: 4%;">{{date('d F Y H:i', strtotime($data['detail']['ready_at']))}}</div>
                                     </div>
-                                    @php $top += 5; $bg = false; @endphp
-                                    <div class="col-12 top-{{$top}}px">
-                                        <div class="inline text-center">
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                        </div>
-                                        <div class="inline vertical-top">
-                                            <div class="text-11-7px Ubuntu text-black space-bottom">
-                                                {{ date('d F Y H:i', strtotime($data['detail']['ready_at'])) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @php $top += 5; @endphp
                                 @endif
                                 @if($data['detail']['receive_at'] != null)
                                     <div class="col-12 text-13-3px Ubuntu-Medium text-black top-{{$top}}px">
                                         <div class="round-black @if($bg) bg-black @endif"></div>
-                                        Your order has been received
+                                        Your order has been received<br>
+                                        <div style="margin-left: 4%;">{{date('d F Y H:i', strtotime($data['detail']['receive_at']))}}</div>
                                     </div>
-                                    @php $top += 5; $bg = false; @endphp
-                                    <div class="col-12 top-{{$top}}px">
-                                        <div class="inline text-center">
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                            <div class="line-vertical text-grey-medium-light">|</div>
-                                        </div>
-                                        <div class="inline vertical-top">
-                                            <div class="text-11-7px Ubuntu text-black space-bottom">
-                                                {{ date('d F Y H:i', strtotime($data['detail']['receive_at'])) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @php $top += 5; @endphp
                                 @endif
                                 <div class="col-12 text-13-3px Ubuntu-Medium text-black top-{{$top}}px">
                                     <div class="round-black @if($bg) bg-black @endif"></div>
