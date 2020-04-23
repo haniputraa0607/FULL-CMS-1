@@ -132,6 +132,17 @@ class PromoCategoryController extends Controller
     }
 
     /**
+     * Reorder position of promo category
+     * @param  string $value [description]
+     * @return [type]        [description]
+     */
+    public function reorder(Request $request)
+    {
+        $post = $request->except(['_token']);
+        return MyHelper::post('product/promo-category/reorder',$post);
+    }
+
+    /**
      * Assign products to promo categories
      * @param  Request $request [description]
      * @return [type]           [description]

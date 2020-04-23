@@ -10,6 +10,7 @@ $configs            = session('configs');
 <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
 @yield('is-style')
 <style>
     .btn{
@@ -22,9 +23,34 @@ $configs            = session('configs');
 <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/scripts/datatable.js') }}" type="text/javascript"></script>
 <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
 <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script>
+<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.js') }}" type="text/javascript"></script>
 <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
 @yield('is-script')
 <script type="text/javascript">
+    $('.sortable').sortable({
+        items: '> .can-sort',
+        handle:'.handle',
+        stop: function(){
+            const id_promo_category = [];
+            $('.input-id-product-promo-category').each(function(idx,val){
+                id_promo_category.push($(val).val());
+            });
+            $.ajax({
+                method: 'POST',
+                url: "{{url('product/promo-category/reorder')}}",
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    id_product_promo_category: id_promo_category
+                },
+                success: function(response) {
+                    if(response.status == 'success'){
+                        toastr.info("Success reorder promo category");
+                    }else{
+                        toastr.warning("Failed reorder promo category");
+                    }
+                }
+            });
+        }});
     function enableConfirmation(table,response){
         $(`.page${table.data('page')+1} [data-toggle='confirmation']`).confirmation({
             'btnOkClass':'btn btn-sm green',
@@ -37,8 +63,11 @@ $configs            = session('configs');
         template = {
             productgroup: function(item){
                 return `
-                <tr class="page${item.page}">
-                    <td class="text-center">${item.increment}</td>
+                <tr class="page${item.page} can-sort">
+                    <td class="text-center handle">
+                        <i class="fa fa-ellipsis-h" style="transform: rotate(90deg);"></i>
+                        <input type="hidden" class="input-id-product-promo-category" value="${item.id_product_promo_category}"/>
+                    </td>
                     <td>${item.product_promo_category_name}</td>
                     <td>${item.products_count}</td>
                     <td>
@@ -85,7 +114,7 @@ $configs            = session('configs');
 <div class="portlet light bordered">
     <div class="portlet-title">
         <div class="caption">
-            <span class="caption-subject sbold uppercase font-blue">List Product Group</span>
+            <span class="caption-subject sbold uppercase font-blue">List Promo Category</span>
         </div>
     </div>
     <div class="portlet-body">
@@ -104,17 +133,18 @@ $configs            = session('configs');
                     </form>
                 </div>
             </div>
+            <div class="alert alert-info">Drag [<i class="fa fa-ellipsis-h" style="transform: rotate(90deg);"></i>] handle button to reorder promo category</div>
             <div class="table-infinite">
                 <table class="table table-striped" id="tableTrx" data-template="productgroup"  data-page="0" data-is-loading="0" data-is-last="0" data-url="{{url()->current()}}" data-callback="enableConfirmation" data-order="promo_campaign_referral_transactions.created_at" data-sort="asc">
                     <thead>
                         <tr>
-                            <th style="width: 1%" class="text-center">No</th>
+                            <th style="width: 1%" class="text-center">#</th>
                             <th>Name</th>
                             <th>Products</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="sortable">
                     </tbody>
                 </table>
             </div>
