@@ -158,6 +158,21 @@ class AutocrmController extends Controller
 			$data['attachment'] = '1';
 		}
 
+		switch ($subject){
+			case 'update-promo-campaign':
+			case 'create-promo-campaign':
+			case 'update-deals':
+			case 'create-deals':
+			case 'update-inject-voucher':
+			case 'create-inject-voucher':
+			case 'update-welcome-voucher':
+			case 'create-welcome-voucher':
+			case 'update-news':
+			case 'create-news':
+				$data['forwardOnly'] = true;
+				break;
+		}
+
 		$query = MyHelper::post('autocrm/list', ['autocrm_title' => ucwords(str_replace('-',' ',$subject))]);
 		if(!isset($query['result'])) return back()->withErrors(['No such response']);
 		$data['data'] = $query['result'];

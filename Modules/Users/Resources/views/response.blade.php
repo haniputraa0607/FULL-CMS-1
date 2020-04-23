@@ -555,7 +555,7 @@ $configs = session('configs');
 	<div class="portlet-body form">
 		<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
 			<div class="form-body">
-				@if ($subject != 'cron-transaction')
+				@if ($subject != 'cron-transaction' && !($forwardOnly??false))
 					@if(MyHelper::hasAccess([38], $configs))
 						<h4>Email</h4>
 						<div class="form-group">
