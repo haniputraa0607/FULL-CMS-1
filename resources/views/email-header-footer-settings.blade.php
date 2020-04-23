@@ -7,19 +7,65 @@
     <link href="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
 	<link href="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/bootstrap-summernote/summernote.css')}}" rel="stylesheet" type="text/css" />
 	<link href="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css')}}" rel="stylesheet" type="text/css" />
-	 <link href="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css')}}" rel="stylesheet" type="text/css" />
+	<link href="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css')}}" rel="stylesheet" type="text/css" />
+	<link href="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/icheck/skins/all.css')}}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('page-script')
-    <script src="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
-    <script src="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
-    <script src="{{ env('S3_URL_VIEW') }}{{ ('assets/pages/scripts/components-select2.min.js') }}" type="text/javascript"></script>
-    <script src="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/bootstrap-toastr/toastr.min.js') }}" type="text/javascript"></script>
-    <script src="{{ env('S3_URL_VIEW') }}{{ ('assets/global/scripts/datatable.js') }}" type="text/javascript"></script>
-    <script src="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
-    <script src="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{ ('assets/pages/scripts/components-select2.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/bootstrap-toastr/toastr.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{ ('assets/global/scripts/datatable.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script>
 	<script src="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript"></script>
 	<script src="{{ env('S3_URL_VIEW') }}{{ ('assets/global/plugins/bootstrap-summernote/summernote.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/ui-confirmations.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/icheck/icheck.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/form-icheck.min.js') }}" type="text/javascript"></script>
+	<script>
+		$(".file").change(function(e) {
+			var type      = $(this).data('type');
+			var widthImg  = 0;
+			var heightImg = 0;
+			var _URL = window.URL || window.webkitURL;
+			var image, file;
+
+			if ((file = this.files[0])) {
+				image = new Image();
+				var size = file.size/1024;
+
+				image.onload = function() {
+					if (this.width !== this.height) {
+						toastr.warning("Please check dimension of your photo. Recommended dimensions are 1:1");
+						$("#removeImage_"+type).trigger( "click" );
+					}
+					if (this.width > 100 ||  this.height > 100) {
+						toastr.warning("Please check dimension of your photo. The maximum height and width 100px.");
+						$("#removeImage_"+type).trigger( "click" );
+					}
+					if (size > 10) {
+						toastr.warning("The maximum size is 10 KB");
+						$("#removeImage_"+type).trigger( "click" );
+					}
+				};
+				image.src = _URL.createObjectURL(file);
+			}
+		});
+
+		$('.url_footer').on('ifChecked', function() {
+			var value = this.value;
+			document.getElementById('input_'+value).required = true;
+			document.getElementById('div_'+value).style.display = 'block';
+		});
+
+		$('.url_footer').on('ifUnchecked', function() {
+			var value = this.value;
+			document.getElementById('div_'+value).style.display = 'none';
+			document.getElementById('input_'+value).required = false;
+		});
+	</script>
 @endsection
 
 @section('content')
@@ -159,6 +205,45 @@
 					<label class="col-md-3 control-label">Contact</label>
 					<div class="col-md-9">
 						<input type="text" class="form-control" name="email_contact" value="@if(isset($settings['email_contact'])){{$settings['email_contact']}}@endif">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">Some URL</label>
+					<div class="col-md-9">
+						<?php
+						//========= start setting column and row =========//
+						$count = count($data);
+						$totalRow = $count / 2;
+						$countNumberOther= 1;
+
+						if(is_float($totalRow) === true){
+							$totalRow = (int)$totalRow + 1;
+						}
+
+						$dataColumn1 = array_slice($data, 0, $totalRow);
+						$dataColumn2 = array_slice($data, $totalRow, $totalRow);
+						$allData = [$dataColumn1, $dataColumn2];
+						//========= end setting =========//
+						?>
+						<div class="row">
+							@foreach($allData as $dt)
+								<div class="col-md-4">
+									<div class="input-group">
+										<div class="icheck-list">
+											@foreach($dt as $key => $value)
+												<?php
+												$value = (array)$value;
+												?>
+												<label><input type="checkbox" name="checkbox_{{$key}}" class="icheck url_footer" value="{{$key}}" @if($value['use'] == 1) checked @endif> {{$value['text']}} </label>
+											@endforeach
+										</div>
+									</div>
+								</div>
+							@endforeach
+						</div>
+						<div class="row" style="padding-top: 20px;">
+							@include('url_email_setting')
+						</div>
 					</div>
 				</div>
 			</div>
