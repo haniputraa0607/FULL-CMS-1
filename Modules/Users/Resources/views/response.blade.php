@@ -640,403 +640,512 @@ $configs = session('configs');
 								</div>
 							</div>
 						</div>
-						<hr>
 					@else
 						<input hidden name="autocrm_email_toogle" value="0">
 					@endif
-					@if(MyHelper::hasAccess([39], $configs))
-						<h4>SMS</h4>
-						<div class="form-group" >
-							<div class="input-icon right">
-								<label class="col-md-3 control-label">
-								Status
-								<span class="required" aria-required="true"> * </span>
-								<i class="fa fa-question-circle tooltips" data-original-title="Pilih enabled untuk mengedit template sms auto response ketika {{strtolower(str_replace('-',' ',$subject))}}" data-container="body"></i>
-								</label>
-							</div>
-							<div class="col-md-9">
-								<select name="autocrm_sms_toogle" id="autocrm_sms_toogle" class="form-control select2" id="sms_toogle" onChange="visibleDiv('sms',this.value)">
-									<option value="0" @if($data['autocrm_sms_toogle'] == 0) selected @endif>Disabled</option>
-									<option value="1" @if($data['autocrm_sms_toogle'] == 1) selected @endif>Enabled</option>
-								</select>
 
-							</div>
-						</div>
-						<div class="form-group" id="div_sms_content" @if($data['autocrm_sms_toogle'] == 0) style="display:none;" @endif>
-							<div class="input-icon right">
-								<label class="col-md-3 control-label">
-								Description
-								<span class="required" aria-required="true"> * </span>
-								<i class="fa fa-question-circle tooltips" data-original-title="Isi pesan sms, tambahkan text replacer bila perlu" data-container="body"></i>
-								</label>
-							</div>
-							<div class="col-md-9">
-								<textarea name="autocrm_sms_content" id="autocrm_sms_content" class="form-control" placeholder="SMS Content @if($subject == 'pin-sent') maximum 120 character @endif" @if($subject == 'pin-sent') maxlength="120" @endif><?php echo $data['autocrm_sms_content'];?></textarea>
-								<br>
-								You can use this variables to display user personalized information:
-								<br><br>
-								<div class="row">
-									@foreach($textreplaces as $key=>$row)
-										<div class="col-md-3" style="margin-bottom:5px;">
-											<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addSmsContent('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-										</div>
-									@endforeach
-									@if (isset($custom))
-										@foreach($custom as $key=>$row)
-											<div class="col-md-3" style="margin-bottom:5px;">
-												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addSmsContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
-											</div>
-										@endforeach
-									@endif
-								</div>
-							</div>
-						</div>
+					@if($subject != 'email-verify')
 						<hr>
-					@else
-						<input hidden name="autocrm_sms_toogle" value="0">
-					@endif
-					@if(MyHelper::hasAccess([36], $configs))
-						<h4>Push Notification</h4>
-						<div class="form-group">
-							<div class="input-icon right">
-								<label class="col-md-3 control-label">
-								Status
-								<span class="required" aria-required="true"> * </span>
-								<i class="fa fa-question-circle tooltips" data-original-title="Pilih enabled untuk mengedit template push notification ketika {{strtolower(str_replace('-',' ',$subject))}}" data-container="body"></i>
-								</label>
-							</div>
-							<div class="col-md-9">
-								<select name="autocrm_push_toogle" id="autocrm_push_toogle" class="form-control select2" id="push_toogle" onChange="visibleDiv('push',this.value)">
-									<option value="0" @if($data['autocrm_push_toogle'] == 0) selected @endif>Disabled</option>
-									<option value="1" @if($data['autocrm_push_toogle'] == 1) selected @endif>Enabled</option>
-								</select>
+						@if(MyHelper::hasAccess([39], $configs))
+							<h4>SMS</h4>
+							<div class="form-group" >
+								<div class="input-icon right">
+									<label class="col-md-3 control-label">
+									Status
+									<span class="required" aria-required="true"> * </span>
+									<i class="fa fa-question-circle tooltips" data-original-title="Pilih enabled untuk mengedit template sms auto response ketika {{strtolower(str_replace('-',' ',$subject))}}" data-container="body"></i>
+									</label>
+								</div>
+								<div class="col-md-9">
+									<select name="autocrm_sms_toogle" id="autocrm_sms_toogle" class="form-control select2" id="sms_toogle" onChange="visibleDiv('sms',this.value)">
+										<option value="0" @if($data['autocrm_sms_toogle'] == 0) selected @endif>Disabled</option>
+										<option value="1" @if($data['autocrm_sms_toogle'] == 1) selected @endif>Enabled</option>
+									</select>
 
-							</div>
-						</div>
-						<div class="form-group" id="div_push_subject" @if($data['autocrm_push_toogle'] == 0) style="display:none;" @endif>
-							<div class="input-icon right">
-								<label class="col-md-3 control-label">
-								Subject
-								<span class="required" aria-required="true"> * </span>
-								<i class="fa fa-question-circle tooltips" data-original-title="Subjek/ judul push notification, tambahkan text replacer bila perlu" data-container="body"></i>
-								</label>
-							</div>
-							<div class="col-md-9" >
-								<input type="text" placeholder="Push Notification Subject" class="form-control" name="autocrm_push_subject" id="autocrm_push_subject" value="{{$data['autocrm_push_subject']}}">
-								<br>
-								You can use this variables to display user personalized information:
-								<br><br>
-								<div class="row">
-									@foreach($textreplaces as $key=>$row)
-										<div class="col-md-3" style="margin-bottom:5px;">
-											<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addPushSubject('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-										</div>
-									@endforeach
-									@if (isset($custom))
-										@foreach($custom as $key=>$row)
-											<div class="col-md-3" style="margin-bottom:5px;">
-												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addPushSubject('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
-											</div>
-										@endforeach
-									@endif
-								</div>
-								<input type="hidden" id="id_autocrm_push" name="id_autocrm">
-							</div>
-						</div>
-						<div class="form-group" id="div_push_content" @if($data['autocrm_push_toogle'] == 0) style="display:none;" @endif>
-							<div class="input-icon right">
-								<label class="col-md-3 control-label">
-								Content
-								<span class="required" aria-required="true"> * </span>
-								<i class="fa fa-question-circle tooltips" data-original-title="Konten push notification, tambahkan text replacer bila perlu" data-container="body"></i>
-								</label>
-							</div>
-							<div class="col-md-9">
-								<textarea name="autocrm_push_content" id="autocrm_push_content" class="form-control" placeholder="Push Notification Content"><?php echo $data['autocrm_push_content'];?></textarea>
-								<br>
-								You can use this variables to display user personalized information:
-								<br><br>
-								<div class="row">
-									@foreach($textreplaces as $key=>$row)
-										<div class="col-md-3" style="margin-bottom:5px;">
-											<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addPushContent('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-										</div>
-									@endforeach
-									@if (isset($custom))
-										@foreach($custom as $key=>$row)
-											<div class="col-md-3" style="margin-bottom:5px;">
-												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addPushContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
-											</div>
-										@endforeach
-									@endif
 								</div>
 							</div>
-						</div>
-						<div class="form-group" id="div_push_image" @if($data['autocrm_push_toogle'] == 0) style="display:none;" @endif>
-							<div class="input-icon right">
-								<label class="col-md-3 control-label">
-								Gambar
-								<i class="fa fa-question-circle tooltips" data-original-title="Sertakan gambar jika ada" data-container="body"></i>
-								</label>
-							</div>
-							<div class="col-md-9">
-								<div class="fileinput fileinput-new" data-provides="fileinput">
-									<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-										@if($data['autocrm_push_image'] == null)
-										<img src="https://vignette.wikia.nocookie.net/simpsons/images/6/60/No_Image_Available.png/revision/latest?cb=20170219125728" id="autocrm_push_image" />
-										@else
-										<img src="{{ env('S3_URL_API')}}{{$data['autocrm_push_image']}}" id="autocrm_push_image" />
+							<div class="form-group" id="div_sms_content" @if($data['autocrm_sms_toogle'] == 0) style="display:none;" @endif>
+								<div class="input-icon right">
+									<label class="col-md-3 control-label">
+									Description
+									<span class="required" aria-required="true"> * </span>
+									<i class="fa fa-question-circle tooltips" data-original-title="Isi pesan sms, tambahkan text replacer bila perlu" data-container="body"></i>
+									</label>
+								</div>
+								<div class="col-md-9">
+									<textarea name="autocrm_sms_content" id="autocrm_sms_content" class="form-control" placeholder="SMS Content @if($subject == 'pin-sent') maximum 120 character @endif" @if($subject == 'pin-sent') maxlength="120" @endif><?php echo $data['autocrm_sms_content'];?></textarea>
+									<br>
+									You can use this variables to display user personalized information:
+									<br><br>
+									<div class="row">
+										@foreach($textreplaces as $key=>$row)
+											<div class="col-md-3" style="margin-bottom:5px;">
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addSmsContent('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+											</div>
+										@endforeach
+										@if (isset($custom))
+											@foreach($custom as $key=>$row)
+												<div class="col-md-3" style="margin-bottom:5px;">
+													<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addSmsContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
+												</div>
+											@endforeach
 										@endif
 									</div>
+								</div>
+							</div>
+							<hr>
+						@else
+							<input hidden name="autocrm_sms_toogle" value="0">
+						@endif
+						@if(MyHelper::hasAccess([36], $configs))
+							<h4>Push Notification</h4>
+							<div class="form-group">
+								<div class="input-icon right">
+									<label class="col-md-3 control-label">
+									Status
+									<span class="required" aria-required="true"> * </span>
+									<i class="fa fa-question-circle tooltips" data-original-title="Pilih enabled untuk mengedit template push notification ketika {{strtolower(str_replace('-',' ',$subject))}}" data-container="body"></i>
+									</label>
+								</div>
+								<div class="col-md-9">
+									<select name="autocrm_push_toogle" id="autocrm_push_toogle" class="form-control select2" id="push_toogle" onChange="visibleDiv('push',this.value)">
+										<option value="0" @if($data['autocrm_push_toogle'] == 0) selected @endif>Disabled</option>
+										<option value="1" @if($data['autocrm_push_toogle'] == 1) selected @endif>Enabled</option>
+									</select>
 
-									<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
-									<div>
-										<span class="btn default btn-file">
-											<span class="fileinput-new"> Select image </span>
-											<span class="fileinput-exists"> Change </span>
-											<input type="file"  accept="image/*" name="autocrm_push_image"> </span>
-										<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
+								</div>
+							</div>
+							<div class="form-group" id="div_push_subject" @if($data['autocrm_push_toogle'] == 0) style="display:none;" @endif>
+								<div class="input-icon right">
+									<label class="col-md-3 control-label">
+									Subject
+									<span class="required" aria-required="true"> * </span>
+									<i class="fa fa-question-circle tooltips" data-original-title="Subjek/ judul push notification, tambahkan text replacer bila perlu" data-container="body"></i>
+									</label>
+								</div>
+								<div class="col-md-9" >
+									<input type="text" placeholder="Push Notification Subject" class="form-control" name="autocrm_push_subject" id="autocrm_push_subject" value="{{$data['autocrm_push_subject']}}">
+									<br>
+									You can use this variables to display user personalized information:
+									<br><br>
+									<div class="row">
+										@foreach($textreplaces as $key=>$row)
+											<div class="col-md-3" style="margin-bottom:5px;">
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addPushSubject('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+											</div>
+										@endforeach
+										@if (isset($custom))
+											@foreach($custom as $key=>$row)
+												<div class="col-md-3" style="margin-bottom:5px;">
+													<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addPushSubject('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
+												</div>
+											@endforeach
+										@endif
+									</div>
+									<input type="hidden" id="id_autocrm_push" name="id_autocrm">
+								</div>
+							</div>
+							<div class="form-group" id="div_push_content" @if($data['autocrm_push_toogle'] == 0) style="display:none;" @endif>
+								<div class="input-icon right">
+									<label class="col-md-3 control-label">
+									Content
+									<span class="required" aria-required="true"> * </span>
+									<i class="fa fa-question-circle tooltips" data-original-title="Konten push notification, tambahkan text replacer bila perlu" data-container="body"></i>
+									</label>
+								</div>
+								<div class="col-md-9">
+									<textarea name="autocrm_push_content" id="autocrm_push_content" class="form-control" placeholder="Push Notification Content"><?php echo $data['autocrm_push_content'];?></textarea>
+									<br>
+									You can use this variables to display user personalized information:
+									<br><br>
+									<div class="row">
+										@foreach($textreplaces as $key=>$row)
+											<div class="col-md-3" style="margin-bottom:5px;">
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addPushContent('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+											</div>
+										@endforeach
+										@if (isset($custom))
+											@foreach($custom as $key=>$row)
+												<div class="col-md-3" style="margin-bottom:5px;">
+													<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addPushContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
+												</div>
+											@endforeach
+										@endif
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="form-group" id="div_push_clickto" @if($data['autocrm_push_toogle'] == 0) style="display:none;" @endif>
-							<div class="input-icon right">
-								<label class="col-md-3 control-label">
-								Click Action
-								<span class="required" aria-required="true"> * </span>
-								<i class="fa fa-question-circle tooltips" data-original-title="Action/ menu yang terbuka saat user membuka push notification" data-container="body"></i>
-								</label>
-							</div>
-							<div class="col-md-9">
-								<select name="autocrm_push_clickto" id="autocrm_push_clickto" class="form-control select2" onChange="fetchDetail(this.value, 'push')">
-									<option value="Home" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Home") selected @endif>Home</option>
-									<option value="Deals" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Deals") selected @endif>Deals</option>
-									@if(isset($deals))
-									<option value="Voucher" @if($data['autocrm_push_clickto'] == 'Voucher') selected @endif>Voucher</option>
-									<option value="Voucher Detail" @if($data['autocrm_push_clickto'] == 'Voucher Detail') selected @endif>Voucher Detail</option>
-									@endif
-									@if(isset($type) && $type == 'trx')
-									<option value="Transaction Detail" @if(isset($data['autocrm_push_clickto']) && $data['autocrm_inbox_clickto'] == 'Transaction Detail') selected @endif>Transaction Detail</option>
-									@endif
-									<option value="Voucher" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Voucher") selected @endif>My Voucher</option>
-									<option value="Order" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Order") selected @endif>Order</option>
-									<option value="History Transaction" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "History Transaction") selected @endif>History Transaction</option>
-									<option value="History On Going" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "History On Going") selected @endif>History On Going</option>
-									<option value="History Point" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "History Point") selected @endif>History Point</option>
-									<option value="Membership" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Membership") selected @endif>Membership</option>
-									<option value="Profil" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Profil") selected @endif>Profile</option>
-									<option value="News" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "News") selected @endif>News</option>
-									<option value="Outlet" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Outlet") selected @endif>Outlet</option>
-									<option value="Referral" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Referral") selected @endif>Referral</option>
-									<option value="About" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "About") selected @endif>About</option>
-									<option value="FAQ" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "FAQ") selected @endif>FAQ</option>
-									<option value="TOS" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "TOS") selected @endif>Term Of Services</option>
-									<option value="Contact Us" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Contact Us") selected @endif>Contact Us</option>
-									<option value="Inbox" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Inbox") selected @endif>Inbox</option>
-									<option value="Link" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Link") selected @endif>Link</option>
-									<option value="Logout" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Logout") selected @endif>Logout</option>
-									<!-- <option value="Product" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Product") selected @endif>Product</option> -->
-									<!-- <option value="Transaction" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Transaction") selected @endif>History</option> -->
-									<!-- <option value="Voucher Detail" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Voucher Detail") selected @endif>Voucher Detail</option> -->
-								</select>
-							</div>
-						</div>
-						<div class="form-group" id="atd_push" style="display:none;">
-							<div class="input-icon right">
-								<label class="col-md-3 control-label">
-								Action to Detail
-								<i class="fa fa-question-circle tooltips" data-original-title="Detail action/ menu yang akan terbuka saat user membuka push notification" data-container="body"></i>
-								</label>
-							</div>
-							<div class="col-md-9">
-								<select name="autocrm_push_id_reference" id="autocrm_push_id_reference" class="form-control select2">
-								</select>
-							</div>
-						</div>
-						<div class="form-group" id="link_push" style="display:none;">
-							<div class="input-icon right">
-								<label class="col-md-3 control-label">
-								Link
-								<i class="fa fa-question-circle tooltips" data-original-title="Jika action berupa link, masukkan alamat link nya disini" data-container="body"></i>
-								</label>
-							</div>
-							<div class="col-md-9">
-								<input type="text" placeholder="https://" class="form-control" name="autocrm_push_link" value="{{$data['autocrm_push_link']}}">
-							</div>
-						</div>
-					<hr>
-					@else
-						<input hidden name="autocrm_push_toogle" value="0">
-					@endif
-					@if(MyHelper::hasAccess([37], $configs))
-						<h4>Inbox</h4>
-						<div class="form-group">
-							<div class="input-icon right">
-								<label class="col-md-3 control-label">
-								Status
-								<span class="required" aria-required="true"> * </span>
-								<i class="fa fa-question-circle tooltips" data-original-title="Pilih enabled untuk mengedit template inbox ketika {{strtolower(str_replace('-',' ',$subject))}}" data-container="body"></i>
-								</label>
-							</div>
-							<div class="col-md-9">
-								<select name="autocrm_inbox_toogle" id="autocrm_inbox_toogle" class="form-control select2" id="autocrm_inbox_toogle" class="form-control select2" id="inbox_toogle" onChange="visibleDiv('inbox',this.value)">
-									<option value="0" @if($data['autocrm_inbox_toogle'] == 0) selected @endif>Disabled</option>
-									<option value="1" @if($data['autocrm_inbox_toogle'] == 1) selected @endif>Enabled</option>
-								</select>
-
-							</div>
-						</div>
-						<div class="form-group" id="div_inbox_subject" @if($data['autocrm_inbox_toogle'] == 0) style="display:none;" @endif>
-							<div class="input-icon right">
-								<label class="col-md-3 control-label">
-								Subject
-								<span class="required" aria-required="true"> * </span>
-								<i class="fa fa-question-circle tooltips" data-original-title="Subjek/ judul pesan inbox, tambahkan text replacer bila perlu" data-container="body"></i>
-								</label>
-							</div>
-							<div class="col-md-9">
-								<input type="text" placeholder="Inbox Subject" class="form-control" name="autocrm_inbox_subject" id="autocrm_inbox_subject" value="{{$data['autocrm_inbox_subject']}}">
-								<br>
-								You can use this variables to display user personalized information:
-								<br><br>
-								<div class="row">
-									@foreach($textreplaces as $key=>$row)
-										<div class="col-md-3" style="margin-bottom:5px;">
-											<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addInboxSubject('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-										</div>
-									@endforeach
-									@if (isset($custom))
-										@foreach($custom as $key=>$row)
-											<div class="col-md-3" style="margin-bottom:5px;">
-												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addInboxSubject('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
-											</div>
-										@endforeach
-									@endif
+							<div class="form-group" id="div_push_image" @if($data['autocrm_push_toogle'] == 0) style="display:none;" @endif>
+								<div class="input-icon right">
+									<label class="col-md-3 control-label">
+									Gambar
+									<i class="fa fa-question-circle tooltips" data-original-title="Sertakan gambar jika ada" data-container="body"></i>
+									</label>
 								</div>
-								<input type="hidden" id="id_autocrm_inbox" name="id_autocrm">
-							</div>
-						</div>
-						<div class="form-group" id="div_inbox_clickto" @if($data['autocrm_inbox_toogle'] == 0) style="display:none;" @endif>
-							<label for="autocrm_inbox_clickto" class="control-label col-md-3">Click Action</label>
-							<div class="col-md-9">
-								<select name="autocrm_inbox_clickto" id="autocrm_inbox_clickto" class="form-control select2" onChange="fetchDetail(this.value, 'inbox')">
-									<option value="Home" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Home") selected @endif>Home</option>
-									<option value="Deals" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Deals") selected @endif>Deals</option>
-									@if(isset($deals))
-									<option value="Voucher" @if($data['autocrm_inbox_clickto'] == 'Voucher') selected @endif>Voucher</option>
-									<option value="Voucher Detail" @if($data['autocrm_inbox_clickto'] == 'Voucher Detail') selected @endif>Voucher Detail</option>
-									@endif
-									@if(isset($type) && $type == 'trx')
-									<option value="Transaction Detail" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == 'Transaction Detail') selected @endif>Transaction Detail</option>
-									@endif
-									<option value="Voucher" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Voucher") selected @endif>My Voucher</option>
-									<option value="Order" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Order") selected @endif>Order</option>
-									<option value="History Transaction" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "History Transaction") selected @endif>History Transaction</option>
-									<option value="History On Going" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "History On Going") selected @endif>History On Going</option>
-									<option value="History Point" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "History Point") selected @endif>History Point</option>
-									<option value="Membership" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Membership") selected @endif>Membership</option>
-									<option value="Profil" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Profil") selected @endif>Profile</option>
-									<option value="News" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "News") selected @endif>News</option>
-									<option value="Outlet" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Outlet") selected @endif>Outlet</option>
-									<option value="Referral" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Referral") selected @endif>Referral</option>
-									<option value="About" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "About") selected @endif>About</option>
-									<option value="FAQ" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "FAQ") selected @endif>FAQ</option>
-									<option value="TOS" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "TOS") selected @endif>Term Of Services</option>
-									<option value="Contact Us" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Contact Us") selected @endif>Contact Us</option>
-									<option value="Link" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Link") selected @endif>Link</option>
-									<option value="Logout" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Logout") selected @endif>Logout</option>
-									<!-- <option value="Product" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Product") selected @endif>Product</option> -->
-									<!-- <option value="Transaction" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Transaction") selected @endif>History</option> -->
-									<!-- <option value="Voucher Detail" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Voucher Detail") selected @endif>Voucher Detail</option> -->
-
-								</select>
-							</div>
-						</div>
-						<div class="form-group" id="atd_inbox" style="display:none;">
-							<label for="autocrm_inbox_id_reference" class="control-label col-md-3">Action to Detail</label>
-							<div class="col-md-9">
-								<select name="autocrm_inbox_id_reference" id="autocrm_inbox_id_reference" class="form-control select2">
-								</select>
-							</div>
-						</div>
-						<div class="form-group" id="link_inbox" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "Link") style="display:block;" @else style="display:none;" @endif>
-							<label for="autocrm_inbox_link" class="control-label col-md-3">Link</label>
-							<div class="col-md-9" >
-								<input type="text" placeholder="https://" class="form-control" name="autocrm_inbox_link" id="autocrm_inbox_link" @if(isset($data['autocrm_inbox_link'])) value="{{$data['autocrm_inbox_link']}}" @endif>
-							</div>
-						</div>
-						<div class="form-group" id="div_inbox_content" style="margin-bottom:30px; display:none">
-							<label for="multiple" class="control-label col-md-3">Content</label>
-							<div class="col-md-9">
-								<textarea name="autocrm_inbox_content" id="autocrm_inbox_content" class="form-control summernote">@if(isset($data['autocrm_inbox_content']) && $data['autocrm_inbox_content'] != ""){{$data['autocrm_inbox_content']}}@endif</textarea>
-								You can use this variables to display user personalized information:
-								<br><br>
-								<div class="row">
-									@foreach($textreplaces as $key=>$row)
-										<div class="col-md-3" style="margin-bottom:5px;">
-											<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addInboxContent('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+								<div class="col-md-9">
+									<div class="fileinput fileinput-new" data-provides="fileinput">
+										<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+											@if($data['autocrm_push_image'] == null)
+											<img src="https://vignette.wikia.nocookie.net/simpsons/images/6/60/No_Image_Available.png/revision/latest?cb=20170219125728" id="autocrm_push_image" />
+											@else
+											<img src="{{ env('S3_URL_API')}}{{$data['autocrm_push_image']}}" id="autocrm_push_image" />
+											@endif
 										</div>
-									@endforeach
-									@if (isset($custom))
-										@foreach($custom as $key=>$row)
-											<div class="col-md-3" style="margin-bottom:5px;">
-												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addInboxContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
-											</div>
-										@endforeach
-									@endif
+
+										<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
+										<div>
+											<span class="btn default btn-file">
+												<span class="fileinput-new"> Select image </span>
+												<span class="fileinput-exists"> Change </span>
+												<input type="file"  accept="image/*" name="autocrm_push_image"> </span>
+											<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
+							<div class="form-group" id="div_push_clickto" @if($data['autocrm_push_toogle'] == 0) style="display:none;" @endif>
+								<div class="input-icon right">
+									<label class="col-md-3 control-label">
+									Click Action
+									<span class="required" aria-required="true"> * </span>
+									<i class="fa fa-question-circle tooltips" data-original-title="Action/ menu yang terbuka saat user membuka push notification" data-container="body"></i>
+									</label>
+								</div>
+								<div class="col-md-9">
+									<select name="autocrm_push_clickto" id="autocrm_push_clickto" class="form-control select2" onChange="fetchDetail(this.value, 'push')">
+										<option value="Home" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Home") selected @endif>Home</option>
+										<option value="Deals" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Deals") selected @endif>Deals</option>
+										@if(isset($deals))
+										<option value="Voucher" @if($data['autocrm_push_clickto'] == 'Voucher') selected @endif>Voucher</option>
+										<option value="Voucher Detail" @if($data['autocrm_push_clickto'] == 'Voucher Detail') selected @endif>Voucher Detail</option>
+										@endif
+										@if(isset($type) && $type == 'trx')
+										<option value="Transaction Detail" @if(isset($data['autocrm_push_clickto']) && $data['autocrm_inbox_clickto'] == 'Transaction Detail') selected @endif>Transaction Detail</option>
+										@endif
+										<option value="Voucher" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Voucher") selected @endif>My Voucher</option>
+										<option value="Order" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Order") selected @endif>Order</option>
+										<option value="History Transaction" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "History Transaction") selected @endif>History Transaction</option>
+										<option value="History On Going" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "History On Going") selected @endif>History On Going</option>
+										<option value="History Point" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "History Point") selected @endif>History Point</option>
+										<option value="Membership" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Membership") selected @endif>Membership</option>
+										<option value="Profil" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Profil") selected @endif>Profile</option>
+										<option value="News" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "News") selected @endif>News</option>
+										<option value="Outlet" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Outlet") selected @endif>Outlet</option>
+										<option value="Referral" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Referral") selected @endif>Referral</option>
+										<option value="About" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "About") selected @endif>About</option>
+										<option value="FAQ" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "FAQ") selected @endif>FAQ</option>
+										<option value="TOS" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "TOS") selected @endif>Term Of Services</option>
+										<option value="Contact Us" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Contact Us") selected @endif>Contact Us</option>
+										<option value="Inbox" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Inbox") selected @endif>Inbox</option>
+										<option value="Link" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Link") selected @endif>Link</option>
+										<option value="Logout" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Logout") selected @endif>Logout</option>
+										<!-- <option value="Product" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Product") selected @endif>Product</option> -->
+										<!-- <option value="Transaction" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Transaction") selected @endif>History</option> -->
+										<!-- <option value="Voucher Detail" @if(isset($result['autocrm_push_clickto']) && $result['autocrm_push_clickto'] == "Voucher Detail") selected @endif>Voucher Detail</option> -->
+									</select>
+								</div>
+							</div>
+							<div class="form-group" id="atd_push" style="display:none;">
+								<div class="input-icon right">
+									<label class="col-md-3 control-label">
+									Action to Detail
+									<i class="fa fa-question-circle tooltips" data-original-title="Detail action/ menu yang akan terbuka saat user membuka push notification" data-container="body"></i>
+									</label>
+								</div>
+								<div class="col-md-9">
+									<select name="autocrm_push_id_reference" id="autocrm_push_id_reference" class="form-control select2">
+									</select>
+								</div>
+							</div>
+							<div class="form-group" id="link_push" style="display:none;">
+								<div class="input-icon right">
+									<label class="col-md-3 control-label">
+									Link
+									<i class="fa fa-question-circle tooltips" data-original-title="Jika action berupa link, masukkan alamat link nya disini" data-container="body"></i>
+									</label>
+								</div>
+								<div class="col-md-9">
+									<input type="text" placeholder="https://" class="form-control" name="autocrm_push_link" value="{{$data['autocrm_push_link']}}">
+								</div>
+							</div>
 						<hr>
-					@else
-						<input hidden name="autocrm_inbox_toogle" value="0">
-					@endif
+						@else
+							<input hidden name="autocrm_push_toogle" value="0">
+						@endif
+						@if(MyHelper::hasAccess([37], $configs))
+							<h4>Inbox</h4>
+							<div class="form-group">
+								<div class="input-icon right">
+									<label class="col-md-3 control-label">
+									Status
+									<span class="required" aria-required="true"> * </span>
+									<i class="fa fa-question-circle tooltips" data-original-title="Pilih enabled untuk mengedit template inbox ketika {{strtolower(str_replace('-',' ',$subject))}}" data-container="body"></i>
+									</label>
+								</div>
+								<div class="col-md-9">
+									<select name="autocrm_inbox_toogle" id="autocrm_inbox_toogle" class="form-control select2" id="autocrm_inbox_toogle" class="form-control select2" id="inbox_toogle" onChange="visibleDiv('inbox',this.value)">
+										<option value="0" @if($data['autocrm_inbox_toogle'] == 0) selected @endif>Disabled</option>
+										<option value="1" @if($data['autocrm_inbox_toogle'] == 1) selected @endif>Enabled</option>
+									</select>
 
-					@if(MyHelper::hasAccess([74], $configs))
-
-						@if(!$api_key_whatsapp)
-							<div class="alert alert-warning deteksi-trigger">
-								<p> To use WhatsApp channel you have to set the api key in <a href="{{url('setting/whatsapp')}}">WhatsApp Setting</a>. </p>
+								</div>
 							</div>
+							<div class="form-group" id="div_inbox_subject" @if($data['autocrm_inbox_toogle'] == 0) style="display:none;" @endif>
+								<div class="input-icon right">
+									<label class="col-md-3 control-label">
+									Subject
+									<span class="required" aria-required="true"> * </span>
+									<i class="fa fa-question-circle tooltips" data-original-title="Subjek/ judul pesan inbox, tambahkan text replacer bila perlu" data-container="body"></i>
+									</label>
+								</div>
+								<div class="col-md-9">
+									<input type="text" placeholder="Inbox Subject" class="form-control" name="autocrm_inbox_subject" id="autocrm_inbox_subject" value="{{$data['autocrm_inbox_subject']}}">
+									<br>
+									You can use this variables to display user personalized information:
+									<br><br>
+									<div class="row">
+										@foreach($textreplaces as $key=>$row)
+											<div class="col-md-3" style="margin-bottom:5px;">
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addInboxSubject('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+											</div>
+										@endforeach
+										@if (isset($custom))
+											@foreach($custom as $key=>$row)
+												<div class="col-md-3" style="margin-bottom:5px;">
+													<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addInboxSubject('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
+												</div>
+											@endforeach
+										@endif
+									</div>
+									<input type="hidden" id="id_autocrm_inbox" name="id_autocrm">
+								</div>
+							</div>
+							<div class="form-group" id="div_inbox_clickto" @if($data['autocrm_inbox_toogle'] == 0) style="display:none;" @endif>
+								<label for="autocrm_inbox_clickto" class="control-label col-md-3">Click Action</label>
+								<div class="col-md-9">
+									<select name="autocrm_inbox_clickto" id="autocrm_inbox_clickto" class="form-control select2" onChange="fetchDetail(this.value, 'inbox')">
+										<option value="Home" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Home") selected @endif>Home</option>
+										<option value="Deals" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Deals") selected @endif>Deals</option>
+										@if(isset($deals))
+										<option value="Voucher" @if($data['autocrm_inbox_clickto'] == 'Voucher') selected @endif>Voucher</option>
+										<option value="Voucher Detail" @if($data['autocrm_inbox_clickto'] == 'Voucher Detail') selected @endif>Voucher Detail</option>
+										@endif
+										@if(isset($type) && $type == 'trx')
+										<option value="Transaction Detail" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == 'Transaction Detail') selected @endif>Transaction Detail</option>
+										@endif
+										<option value="Voucher" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Voucher") selected @endif>My Voucher</option>
+										<option value="Order" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Order") selected @endif>Order</option>
+										<option value="History Transaction" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "History Transaction") selected @endif>History Transaction</option>
+										<option value="History On Going" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "History On Going") selected @endif>History On Going</option>
+										<option value="History Point" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "History Point") selected @endif>History Point</option>
+										<option value="Membership" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Membership") selected @endif>Membership</option>
+										<option value="Profil" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Profil") selected @endif>Profile</option>
+										<option value="News" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "News") selected @endif>News</option>
+										<option value="Outlet" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Outlet") selected @endif>Outlet</option>
+										<option value="Referral" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Referral") selected @endif>Referral</option>
+										<option value="About" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "About") selected @endif>About</option>
+										<option value="FAQ" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "FAQ") selected @endif>FAQ</option>
+										<option value="TOS" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "TOS") selected @endif>Term Of Services</option>
+										<option value="Contact Us" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Contact Us") selected @endif>Contact Us</option>
+										<option value="Link" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Link") selected @endif>Link</option>
+										<option value="Logout" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Logout") selected @endif>Logout</option>
+										<!-- <option value="Product" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Product") selected @endif>Product</option> -->
+										<!-- <option value="Transaction" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Transaction") selected @endif>History</option> -->
+										<!-- <option value="Voucher Detail" @if(isset($result['autocrm_inbox_clickto']) && $result['autocrm_inbox_clickto'] == "Voucher Detail") selected @endif>Voucher Detail</option> -->
+
+									</select>
+								</div>
+							</div>
+							<div class="form-group" id="atd_inbox" style="display:none;">
+								<label for="autocrm_inbox_id_reference" class="control-label col-md-3">Action to Detail</label>
+								<div class="col-md-9">
+									<select name="autocrm_inbox_id_reference" id="autocrm_inbox_id_reference" class="form-control select2">
+									</select>
+								</div>
+							</div>
+							<div class="form-group" id="link_inbox" @if(isset($data['autocrm_inbox_clickto']) && $data['autocrm_inbox_clickto'] == "Link") style="display:block;" @else style="display:none;" @endif>
+								<label for="autocrm_inbox_link" class="control-label col-md-3">Link</label>
+								<div class="col-md-9" >
+									<input type="text" placeholder="https://" class="form-control" name="autocrm_inbox_link" id="autocrm_inbox_link" @if(isset($data['autocrm_inbox_link'])) value="{{$data['autocrm_inbox_link']}}" @endif>
+								</div>
+							</div>
+							<div class="form-group" id="div_inbox_content" style="margin-bottom:30px; display:none">
+								<label for="multiple" class="control-label col-md-3">Content</label>
+								<div class="col-md-9">
+									<textarea name="autocrm_inbox_content" id="autocrm_inbox_content" class="form-control summernote">@if(isset($data['autocrm_inbox_content']) && $data['autocrm_inbox_content'] != ""){{$data['autocrm_inbox_content']}}@endif</textarea>
+									You can use this variables to display user personalized information:
+									<br><br>
+									<div class="row">
+										@foreach($textreplaces as $key=>$row)
+											<div class="col-md-3" style="margin-bottom:5px;">
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addInboxContent('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+											</div>
+										@endforeach
+										@if (isset($custom))
+											@foreach($custom as $key=>$row)
+												<div class="col-md-3" style="margin-bottom:5px;">
+													<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addInboxContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
+												</div>
+											@endforeach
+										@endif
+									</div>
+								</div>
+							</div>
+							<hr>
+						@else
+							<input hidden name="autocrm_inbox_toogle" value="0">
 						@endif
 
-						<h4>WhatsApp</h4>
-						<div class="form-group">
-							<div class="input-icon right">
-								<label class="col-md-3 control-label">
-									Status
-									<i class="fa fa-question-circle tooltips" data-original-title="pilih enabled untuk mengaktifkan whatsApp sebagai media pengiriman auto crm ini" data-container="body"></i>
-								</label>
+						@if(MyHelper::hasAccess([74], $configs))
+
+							@if(!$api_key_whatsapp)
+								<div class="alert alert-warning deteksi-trigger">
+									<p> To use WhatsApp channel you have to set the api key in <a href="{{url('setting/whatsapp')}}">WhatsApp Setting</a>. </p>
+								</div>
+							@endif
+
+							<h4>WhatsApp</h4>
+							<div class="form-group">
+								<div class="input-icon right">
+									<label class="col-md-3 control-label">
+										Status
+										<i class="fa fa-question-circle tooltips" data-original-title="pilih enabled untuk mengaktifkan whatsApp sebagai media pengiriman auto crm ini" data-container="body"></i>
+									</label>
+								</div>
+								<div class="col-md-9">
+									<select name="autocrm_whatsapp_toogle" id="autocrm_whatsapp_toogle" class="form-control select2 field_whatsapp" onChange="visibleDiv('whatsapp',this.value)" @if(!$api_key_whatsapp) disabled @endif>
+										<option value="0" @if(old('autocrm_whatsapp_toogle') == '0') selected @else @if(isset($dataf['autocrm_whatsapp_toogle']) && $data['autocrm_whatsapp_toogle'] == "0") selected @endif @endif>Disabled</option>
+										<option value="1" @if($api_key_whatsapp) @if(old('autocrm_whatsapp_toogle') == '1') selected @else @if(isset($data['autocrm_whatsapp_toogle']) && $data['autocrm_whatsapp_toogle'] == "1") selected @endif @endif @endif>Enabled</option>
+									</select>
+								</div>
 							</div>
-							<div class="col-md-9">
-								<select name="autocrm_whatsapp_toogle" id="autocrm_whatsapp_toogle" class="form-control select2 field_whatsapp" onChange="visibleDiv('whatsapp',this.value)" @if(!$api_key_whatsapp) disabled @endif>
-									<option value="0" @if(old('autocrm_whatsapp_toogle') == '0') selected @else @if(isset($dataf['autocrm_whatsapp_toogle']) && $data['autocrm_whatsapp_toogle'] == "0") selected @endif @endif>Disabled</option>
-									<option value="1" @if($api_key_whatsapp) @if(old('autocrm_whatsapp_toogle') == '1') selected @else @if(isset($data['autocrm_whatsapp_toogle']) && $data['autocrm_whatsapp_toogle'] == "1") selected @endif @endif @endif>Enabled</option>
-								</select>
-							</div>
-						</div>
-						@if($api_key_whatsapp)
-							<div class="form-group" id="div_whatsapp_content" @if($data['autocrm_whatsapp_toogle'] == 0) style="display:none" @endif>
-								<div class="repeat">
-									<div data-repeater-list="whatsapp_content">
-										@if(isset($data['whatsapp_content']) && count($data['whatsapp_content']) > 0)
-											@foreach($data['whatsapp_content'] as $content)
+							@if($api_key_whatsapp)
+								<div class="form-group" id="div_whatsapp_content" @if($data['autocrm_whatsapp_toogle'] == 0) style="display:none" @endif>
+									<div class="repeat">
+										<div data-repeater-list="whatsapp_content">
+											@if(isset($data['whatsapp_content']) && count($data['whatsapp_content']) > 0)
+												@foreach($data['whatsapp_content'] as $content)
+													<div data-repeater-item="" class="item-repeat portlet light bordered" style="margin:15px">
+														<input type="hidden" name="id_whatsapp_content" value="{{$content['id_whatsapp_content']}}">
+														<div class="form-group row" style="">
+															<div class="input-icon right">
+																<label for="multiple" class="control-label col-md-3" style="padding-right:25px">
+																	Content Type
+																	<i class="fa fa-question-circle tooltips" data-original-title="Tipe konten pesan untuk media whatsapp" data-container="body"></i>
+																</label>
+															</div>
+															<div class="col-md-4" style="padding-left:5px">
+																<select name="content_type" class="form-control select content-type field_whatsapp" style="width:100%">
+																	<option value="" disabled>Select Content Type</option>
+																	<option value="text" @if($content['content_type'] == 'text') selected @endif>Text</option>
+																	<option value="image" @if($content['content_type'] == 'image') selected @endif>Image</option>
+																	<option value="file" @if($content['content_type'] == 'file') selected @endif>File PDF</option>
+																</select>
+															</div>
+															<div class="col-md-1" style="float:right">
+																<a href="javascript:;" data-repeater-delete="" class="btn btn-danger">
+																	<i class="fa fa-close"></i>
+																</a>
+															</div>
+														</div>
+														<div class="form-group type_text row" @if($content['content_type'] != 'text') style="display:none" @endif>
+															<div class="input-icon right">
+																<label for="multiple" class="control-label col-md-3" style="padding-right:25px">
+																	Content
+																	<i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten whatsapp, tambahkan text replacer bila perlu" data-container="body"></i>
+																</label>
+															</div>
+															<div class="col-md-8" style="padding-left:5px">
+																<textarea name="content" rows="3" style="white-space: normal" class="form-control whatsapp-content" placeholder="WhatsApp Content">@if($content['content_type'] == 'text') {{$content['content']}} @endif</textarea>
+																<br>
+																You can use this variables to display user personalized information:
+																<br><br>
+																<div class="row">
+																	@foreach($textreplaces as $key=>$row)
+																		<div class="col-md-3" style="margin-bottom:5px;">
+																			<span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addWhatsappContent('{{ $row['keyword'] }}', this);">{{ str_replace('_',' ',$row['keyword']) }}</span>
+																		</div>
+																	@endforeach
+																</div>
+															</div>
+														</div>
+														<div class="form-group type_file row" @if($content['content_type'] != 'file') style="display:none" @endif>
+															<div class="input-icon right">
+																<label for="multiple" class="control-label col-md-3" style="padding-right:25px">
+																	Content File
+																	<i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten whatsapp berupa gambar" data-container="body"></i>
+																</label>
+															</div>
+															<div class="col-md-8" style="padding-left:5px">
+																@if($content['content_type'] == 'file')
+																	<div class="form-group filename">
+																	@php $file = explode('/', $content['content']) @endphp
+																	<label class="control-label" style="padding-left:15px"><a href= "{{$content['content']}}"> <i class="fa fa-file-pdf-o"></i> {{end($file)}} </a> </label>
+																	</div>
+																@endif
+																<div class="fileinput fileinput-new" data-provides="fileinput">
+																	<div class="input-group input-large">
+																		<div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
+																			<i class="fa fa-file fileinput-exists"></i>&nbsp;
+																			<span class="fileinput-filename"> </span>
+																		</div>
+																		<span class="input-group-addon btn default btn-file">
+																			<span class="fileinput-new"> Select file </span>
+																			<span class="fileinput-exists"> Change </span>
+																			<input type="file" class="file whatsapp-content" accept="application/pdf" name="content_file">
+																			</span>
+																		<a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="form-group type_image row" @if($content['content_type'] != 'image') style="display:none" @endif>
+															<div class="input-icon right">
+																<label for="multiple" class="control-label col-md-3" style="padding-right:25px">
+																	Content Image
+																	<i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten whatsapp berupa gambar" data-container="body"></i>
+																</label>
+															</div>
+															<div class="col-md-8" style="padding-left:5px">
+																<div class="fileinput fileinput-new" data-provides="fileinput">
+																	<div class="fileinput-new thumbnail" style="width: auto; height: auto;">
+																	@if($content['content_type'] == 'image')
+																		<img src="{{$content['content']}}" alt="Whatsapp content image" style="max-width: 190px; max-height:190px">
+																	@else
+																		<img src="https://www.placehold.it/500x500/EFEFEF/AAAAAA&amp;text=no+image" alt="">
+																	@endif
+																	</div>
+																	<div class="fileinput-preview fileinput-exists thumbnail" id="image_square" style="max-width: 200px; max-height: 200px;"></div>
+																	<div>
+																		<span class="btn default btn-file">
+																		<span class="fileinput-new"> Select image </span>
+																		<span class="fileinput-exists"> Change </span>
+																		<input type="file" class="file whatsapp-content" accept="image/*" name="content">
+
+																		</span>
+
+																		<a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												@endforeach
+											@else
 												<div data-repeater-item="" class="item-repeat portlet light bordered" style="margin:15px">
-													<input type="hidden" name="id_whatsapp_content" value="{{$content['id_whatsapp_content']}}">
-													<div class="form-group row" style="">
+													<input type="hidden" name="id_whatsapp_content" value="">
+													<div class="form-group row">
 														<div class="input-icon right">
 															<label for="multiple" class="control-label col-md-3" style="padding-right:25px">
 																Content Type
-																<i class="fa fa-question-circle tooltips" data-original-title="Tipe konten pesan untuk media whatsapp" data-container="body"></i>
+																<i class="fa fa-question-circle tooltips" data-original-title="Pilih salah satu tipe konten untuk whatsApp" data-container="body"></i>
 															</label>
 														</div>
 														<div class="col-md-4" style="padding-left:5px">
-															<select name="content_type" class="form-control select content-type field_whatsapp" style="width:100%">
-																<option value="" disabled>Select Content Type</option>
-																<option value="text" @if($content['content_type'] == 'text') selected @endif>Text</option>
-																<option value="image" @if($content['content_type'] == 'image') selected @endif>Image</option>
-																<option value="file" @if($content['content_type'] == 'file') selected @endif>File PDF</option>
+															<select name="content_type" class="form-control select content-type" style="width:100%">
+																<option value="" disabled selected>Select Content Type</option>
+																<option value="text">Text</option>
+																<option value="image">Image</option>
+																<option value="file">File PDF</option>
 															</select>
 														</div>
 														<div class="col-md-1" style="float:right">
@@ -1045,7 +1154,7 @@ $configs = session('configs');
 															</a>
 														</div>
 													</div>
-													<div class="form-group type_text row" @if($content['content_type'] != 'text') style="display:none" @endif>
+													<div class="form-group type_text row" style="display:none">
 														<div class="input-icon right">
 															<label for="multiple" class="control-label col-md-3" style="padding-right:25px">
 																Content
@@ -1053,33 +1162,27 @@ $configs = session('configs');
 															</label>
 														</div>
 														<div class="col-md-8" style="padding-left:5px">
-															<textarea name="content" rows="3" style="white-space: normal" class="form-control whatsapp-content" placeholder="WhatsApp Content">@if($content['content_type'] == 'text') {{$content['content']}} @endif</textarea>
+															<textarea name="content" rows="3" class="form-control whatsapp-content" placeholder="WhatsApp Content">@if(isset($data['campaign_whatsapp_content']) && $data['campaign_whatsapp_content'] != ""){{$data['campaign_whatsapp_content']}}@endif</textarea>
 															<br>
 															You can use this variables to display user personalized information:
 															<br><br>
 															<div class="row">
 																@foreach($textreplaces as $key=>$row)
 																	<div class="col-md-3" style="margin-bottom:5px;">
-																		<span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addWhatsappContent('{{ $row['keyword'] }}', this);">{{ str_replace('_',' ',$row['keyword']) }}</span>
+																		<span class="btn dark btn-xs btn-block btn-outline var" style="white-space: normal" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addWhatsappContent('{{ $row['keyword'] }}', this);">{{ str_replace('_',' ',$row['keyword']) }}</span>
 																	</div>
 																@endforeach
 															</div>
 														</div>
 													</div>
-													<div class="form-group type_file row" @if($content['content_type'] != 'file') style="display:none" @endif>
+													<div class="form-group type_file row" style="display:none">
 														<div class="input-icon right">
 															<label for="multiple" class="control-label col-md-3" style="padding-right:25px">
 																Content File
-																<i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten whatsapp berupa gambar" data-container="body"></i>
+																<i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten whatsapp berupa file pdf" data-container="body"></i>
 															</label>
 														</div>
 														<div class="col-md-8" style="padding-left:5px">
-															@if($content['content_type'] == 'file')
-																<div class="form-group filename">
-																@php $file = explode('/', $content['content']) @endphp
-																<label class="control-label" style="padding-left:15px"><a href= "{{$content['content']}}"> <i class="fa fa-file-pdf-o"></i> {{end($file)}} </a> </label>
-																</div>
-															@endif
 															<div class="fileinput fileinput-new" data-provides="fileinput">
 																<div class="input-group input-large">
 																	<div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
@@ -1096,7 +1199,7 @@ $configs = session('configs');
 															</div>
 														</div>
 													</div>
-													<div class="form-group type_image row" @if($content['content_type'] != 'image') style="display:none" @endif>
+													<div class="form-group type_image row" style="display:none">
 														<div class="input-icon right">
 															<label for="multiple" class="control-label col-md-3" style="padding-right:25px">
 																Content Image
@@ -1105,12 +1208,8 @@ $configs = session('configs');
 														</div>
 														<div class="col-md-8" style="padding-left:5px">
 															<div class="fileinput fileinput-new" data-provides="fileinput">
-																<div class="fileinput-new thumbnail" style="width: auto; height: auto;">
-																@if($content['content_type'] == 'image')
-																	<img src="{{$content['content']}}" alt="Whatsapp content image" style="max-width: 190px; max-height:190px">
-																@else
-																	<img src="https://www.placehold.it/500x500/EFEFEF/AAAAAA&amp;text=no+image" alt="">
-																@endif
+																<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
+																<img src="https://www.placehold.it/500x500/EFEFEF/AAAAAA&amp;text=no+image" alt="">
 																</div>
 																<div class="fileinput-preview fileinput-exists thumbnail" id="image_square" style="max-width: 200px; max-height: 200px;"></div>
 																<div>
@@ -1127,225 +1226,132 @@ $configs = session('configs');
 														</div>
 													</div>
 												</div>
-											@endforeach
-										@else
-											<div data-repeater-item="" class="item-repeat portlet light bordered" style="margin:15px">
-												<input type="hidden" name="id_whatsapp_content" value="">
-												<div class="form-group row">
-													<div class="input-icon right">
-														<label for="multiple" class="control-label col-md-3" style="padding-right:25px">
-															Content Type
-															<i class="fa fa-question-circle tooltips" data-original-title="Pilih salah satu tipe konten untuk whatsApp" data-container="body"></i>
-														</label>
-													</div>
-													<div class="col-md-4" style="padding-left:5px">
-														<select name="content_type" class="form-control select content-type" style="width:100%">
-															<option value="" disabled selected>Select Content Type</option>
-															<option value="text">Text</option>
-															<option value="image">Image</option>
-															<option value="file">File PDF</option>
-														</select>
-													</div>
-													<div class="col-md-1" style="float:right">
-														<a href="javascript:;" data-repeater-delete="" class="btn btn-danger">
-															<i class="fa fa-close"></i>
-														</a>
-													</div>
-												</div>
-												<div class="form-group type_text row" style="display:none">
-													<div class="input-icon right">
-														<label for="multiple" class="control-label col-md-3" style="padding-right:25px">
-															Content
-															<i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten whatsapp, tambahkan text replacer bila perlu" data-container="body"></i>
-														</label>
-													</div>
-													<div class="col-md-8" style="padding-left:5px">
-														<textarea name="content" rows="3" class="form-control whatsapp-content" placeholder="WhatsApp Content">@if(isset($data['campaign_whatsapp_content']) && $data['campaign_whatsapp_content'] != ""){{$data['campaign_whatsapp_content']}}@endif</textarea>
-														<br>
-														You can use this variables to display user personalized information:
-														<br><br>
-														<div class="row">
-															@foreach($textreplaces as $key=>$row)
-																<div class="col-md-3" style="margin-bottom:5px;">
-																	<span class="btn dark btn-xs btn-block btn-outline var" style="white-space: normal" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addWhatsappContent('{{ $row['keyword'] }}', this);">{{ str_replace('_',' ',$row['keyword']) }}</span>
-																</div>
-															@endforeach
-														</div>
-													</div>
-												</div>
-												<div class="form-group type_file row" style="display:none">
-													<div class="input-icon right">
-														<label for="multiple" class="control-label col-md-3" style="padding-right:25px">
-															Content File
-															<i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten whatsapp berupa file pdf" data-container="body"></i>
-														</label>
-													</div>
-													<div class="col-md-8" style="padding-left:5px">
-														<div class="fileinput fileinput-new" data-provides="fileinput">
-															<div class="input-group input-large">
-																<div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
-																	<i class="fa fa-file fileinput-exists"></i>&nbsp;
-																	<span class="fileinput-filename"> </span>
-																</div>
-																<span class="input-group-addon btn default btn-file">
-																	<span class="fileinput-new"> Select file </span>
-																	<span class="fileinput-exists"> Change </span>
-																	<input type="file" class="file whatsapp-content" accept="application/pdf" name="content_file">
-																	</span>
-																<a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="form-group type_image row" style="display:none">
-													<div class="input-icon right">
-														<label for="multiple" class="control-label col-md-3" style="padding-right:25px">
-															Content Image
-															<i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten whatsapp berupa gambar" data-container="body"></i>
-														</label>
-													</div>
-													<div class="col-md-8" style="padding-left:5px">
-														<div class="fileinput fileinput-new" data-provides="fileinput">
-															<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
-															<img src="https://www.placehold.it/500x500/EFEFEF/AAAAAA&amp;text=no+image" alt="">
-															</div>
-															<div class="fileinput-preview fileinput-exists thumbnail" id="image_square" style="max-width: 200px; max-height: 200px;"></div>
-															<div>
-																<span class="btn default btn-file">
-																<span class="fileinput-new"> Select image </span>
-																<span class="fileinput-exists"> Change </span>
-																<input type="file" class="file whatsapp-content" accept="image/*" name="content">
-
-																</span>
-
-																<a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										@endif
+											@endif
+										</div>
+										<hr>
+										<label class="col-md-3 control-label" style="margin-left:15px"></label>
+										<a href="javascript:;" data-repeater-create="" class="btn btn-info mt-repeater-add">
+											<i class="fa fa-plus"></i> Add Content</a>
+										<br>
+										<br>
 									</div>
-									<hr>
-									<label class="col-md-3 control-label" style="margin-left:15px"></label>
-									<a href="javascript:;" data-repeater-create="" class="btn btn-info mt-repeater-add">
-										<i class="fa fa-plus"></i> Add Content</a>
-									<br>
-									<br>
 								</div>
-							</div>
+							@endif
+							<hr>
 						@endif
-						<hr>
 					@endif
 				@endif
 
-				<h4>Forward</h4>
-				<div class="form-group">
-					<div class="input-icon right">
-					    <label class="col-md-3 control-label">
-					    Status
-					    <span class="required" aria-required="true"> * </span>
-					    <i class="fa fa-question-circle tooltips" data-original-title="Pilih enabled untuk mengedit auto response forward ketika {{strtolower(str_replace('-',' ',$subject))}}" data-container="body"></i>
-					    </label>
-					</div>
-					<div class="col-md-9">
-						<select name="autocrm_forward_toogle" id="autocrm_forward_toogle" class="form-control select2" class="form-control select2" onChange="visibleDiv('forward',this.value)">
-							<option value="0" @if($data['autocrm_forward_toogle'] == 0) selected @endif>Disabled</option>
-							<option value="1" @if($data['autocrm_forward_toogle'] == 1) selected @endif>Enabled</option>
-						</select>
+				@if($subject != 'email-verify')
+					<h4>Forward</h4>
+					<div class="form-group">
+						<div class="input-icon right">
+							<label class="col-md-3 control-label">
+								Status
+								<span class="required" aria-required="true"> * </span>
+								<i class="fa fa-question-circle tooltips" data-original-title="Pilih enabled untuk mengedit auto response forward ketika {{strtolower(str_replace('-',' ',$subject))}}" data-container="body"></i>
+							</label>
+						</div>
+						<div class="col-md-9">
+							<select name="autocrm_forward_toogle" id="autocrm_forward_toogle" class="form-control select2" class="form-control select2" onChange="visibleDiv('forward',this.value)">
+								<option value="0" @if($data['autocrm_forward_toogle'] == 0) selected @endif>Disabled</option>
+								<option value="1" @if($data['autocrm_forward_toogle'] == 1) selected @endif>Enabled</option>
+							</select>
 
+						</div>
 					</div>
-				</div>
-				<div class="form-group" id="div_forward_address" @if($data['autocrm_forward_toogle'] == 0) style="display:none;" @endif>
-					<div class="input-icon right">
-					    <label class="col-md-3 control-label">
-					    Forward Address
-					    <span class="required" aria-required="true"> * </span>
-					    <i class="fa fa-question-circle tooltips" data-original-title="Masukkan alamat email tujuan forward untuk setiap auto response sistem" data-container="body"></i>
-					    </label>
+					<div class="form-group" id="div_forward_address" @if($data['autocrm_forward_toogle'] == 0) style="display:none;" @endif>
+						<div class="input-icon right">
+							<label class="col-md-3 control-label">
+								Forward Address
+								<span class="required" aria-required="true"> * </span>
+								<i class="fa fa-question-circle tooltips" data-original-title="Masukkan alamat email tujuan forward untuk setiap auto response sistem" data-container="body"></i>
+							</label>
+						</div>
+						<div class="col-md-9">
+							<textarea name="autocrm_forward_email" id="autocrm_forward_email" class="form-control" placeholder="Forward Email Address, Example:admin1@mail.com;admin2@mail.com"><?php echo $data['autocrm_forward_email']; ?></textarea>
+						</div>
 					</div>
-					<div class="col-md-9">
-						<textarea name="autocrm_forward_email" id="autocrm_forward_email" class="form-control" placeholder="Forward Email Address, Example:admin1@mail.com;admin2@mail.com"><?php echo $data['autocrm_forward_email']; ?></textarea>
-					</div>
-				</div>
-				<div class="form-group" id="div_forward_subject" @if($data['autocrm_forward_toogle'] == 0) style="display:none;" @endif>
-					<div class="input-icon right">
-					    <label class="col-md-3 control-label">
-					    Subject
-					    <span class="required" aria-required="true"> * </span>
-					    <i class="fa fa-question-circle tooltips" data-original-title="Subjek pesan yang akan diforward, tambahkan text replacer bila perlu" data-container="body"></i>
-					    </label>
-					</div>
-					<div class="col-md-9">
-						<input type="text" placeholder="Forward Subject" class="form-control" name="autocrm_forward_email_subject" id="autocrm_forward_email_subject" value="{{$data['autocrm_forward_email_subject']}}">
-						<br>
-						@if ($subject != 'cron-transaction')
-							You can use this variables to display user personalized information:
-							<br><br>
-							<div class="row">
-								@foreach($textreplaces as $key=>$row)
-									<div class="col-md-3" style="margin-bottom:5px;">
-										<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addForwardSubject('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-									</div>
-								@endforeach
-								@if (isset($custom))
+					<div class="form-group" id="div_forward_subject" @if($data['autocrm_forward_toogle'] == 0) style="display:none;" @endif>
+						<div class="input-icon right">
+							<label class="col-md-3 control-label">
+								Subject
+								<span class="required" aria-required="true"> * </span>
+								<i class="fa fa-question-circle tooltips" data-original-title="Subjek pesan yang akan diforward, tambahkan text replacer bila perlu" data-container="body"></i>
+							</label>
+						</div>
+						<div class="col-md-9">
+							<input type="text" placeholder="Forward Subject" class="form-control" name="autocrm_forward_email_subject" id="autocrm_forward_email_subject" value="{{$data['autocrm_forward_email_subject']}}">
+							<br>
+							@if ($subject != 'cron-transaction')
+								You can use this variables to display user personalized information:
+								<br><br>
+								<div class="row">
+									@foreach($textreplaces as $key=>$row)
+										<div class="col-md-3" style="margin-bottom:5px;">
+											<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addForwardSubject('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+										</div>
+									@endforeach
+									@if (isset($custom))
 										@foreach($custom as $key=>$row)
 											<div class="col-md-3" style="margin-bottom:5px;">
 												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addForwardSubject('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
 											</div>
 										@endforeach
 									@endif
+								</div>
+							@endif
+						</div>
+					</div>
+					<div class="form-group" id="div_forward_content" @if($data['autocrm_forward_toogle'] == 0) style="display:none;" @endif>
+						@if(isset($attachment))
+							<label class="col-md-3 control-label">
+								Send Attachment
+								<i class="fa fa-question-circle tooltips" data-original-title="Jika diaktifkan maka email akan melampirkan lampiran enquiry" data-container="body"></i>
+							</label>
+							<div class="col-md-9" style="margin-bottom: 10px">
+								<input type="checkbox" name="attachment_forward" class="make-switch" data-size="small" data-on-color="info" data-on-text="Active" data-off-color="default" data-off-text="Inactive" @if($data['attachment_forward']) checked @endif >
 							</div>
 						@endif
-					</div>
-				</div>
-				<div class="form-group" id="div_forward_content" @if($data['autocrm_forward_toogle'] == 0) style="display:none;" @endif>
-					@if(isset($attachment))
-						<label class="col-md-3 control-label">
-						Send Attachment
-						<i class="fa fa-question-circle tooltips" data-original-title="Jika diaktifkan maka email akan melampirkan lampiran enquiry" data-container="body"></i>
-						</label>
-						<div class="col-md-9" style="margin-bottom: 10px">
-							<input type="checkbox" name="attachment_forward" class="make-switch" data-size="small" data-on-color="info" data-on-text="Active" data-off-color="default" data-off-text="Inactive" @if($data['attachment_forward']) checked @endif >
+						<div class="input-icon right">
+							<label class="col-md-3 control-label">
+								Content
+								<span class="required" aria-required="true"> * </span>
+								<i class="fa fa-question-circle tooltips" data-original-title="Konten pesan, tambahkan text replacer bila perlu" data-container="body"></i>
+							</label>
 						</div>
-					@endif
-					<div class="input-icon right">
-					    <label class="col-md-3 control-label">
-					    Content
-					    <span class="required" aria-required="true"> * </span>
-					    <i class="fa fa-question-circle tooltips" data-original-title="Konten pesan, tambahkan text replacer bila perlu" data-container="body"></i>
-					    </label>
-					</div>
-					<div class="col-md-9">
-						<textarea name="autocrm_forward_email_content" id="autocrm_forward_email_content" class="form-control summernote"><?php echo $data['autocrm_forward_email_content']; ?></textarea>
-						@if ($subject != 'cron-transaction')
-							You can use this variables to display user personalized information:
-							<br><br>
-							<div class="row">
-								@foreach($textreplaces as $key=>$row)
-									<div class="col-md-3" style="margin-bottom:5px;">
-										<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addForwardContent('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
-									</div>
-								@endforeach
-								@if (isset($custom))
+						<div class="col-md-9">
+							<textarea name="autocrm_forward_email_content" id="autocrm_forward_email_content" class="form-control summernote"><?php echo $data['autocrm_forward_email_content']; ?></textarea>
+							@if ($subject != 'cron-transaction')
+								You can use this variables to display user personalized information:
+								<br><br>
+								<div class="row">
+									@foreach($textreplaces as $key=>$row)
+										<div class="col-md-3" style="margin-bottom:5px;">
+											<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addForwardContent('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+										</div>
+									@endforeach
+									@if (isset($custom))
 										@foreach($custom as $key=>$row)
 											<div class="col-md-3" style="margin-bottom:5px;">
 												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $custom[$key] }}' with {{ $type }}{{ str_replace('%', '', $custom[$key]) }}" onClick="addForwardContent('{{ $custom[$key] }}');">{{ str_replace('_',' ',$custom[$key]) }}</span>
 											</div>
 										@endforeach
 									@endif
-							</div>
-						@else
-							You can use this variables to display user personalized information:
-							<br><br>
-							<div class="row">
-								<div class="col-md-3" style="margin-bottom:5px;">
-									<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '%table_trx%'" onClick="addForwardContent('%table_trx%');">{{ str_replace('_',' ','%table_trx%') }}</span>
 								</div>
-							</div>
-						@endif
+							@else
+								You can use this variables to display user personalized information:
+								<br><br>
+								<div class="row">
+									<div class="col-md-3" style="margin-bottom:5px;">
+										<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '%table_trx%'" onClick="addForwardContent('%table_trx%');">{{ str_replace('_',' ','%table_trx%') }}</span>
+									</div>
+								</div>
+							@endif
+						</div>
 					</div>
-				</div>
+				@endif
+
 				<div class="form-actions">
 					{{ csrf_field() }}
 					<div class="row">
