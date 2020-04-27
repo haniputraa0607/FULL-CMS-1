@@ -1378,4 +1378,33 @@ class TransactionController extends Controller
         }
     }
     /*================ End POS Transaction online failed ================*/
+
+    /*================ Start Setting Timer OVO ================*/
+    function timerOvo(Request $request){
+        $post = $request->except('_token');
+        $data = [
+            'title'          => 'Transaction',
+            'menu_active'    => 'order',
+            'sub_title'      => 'Setting Timer OVO',
+            'submenu_active' => 'setting-timer-ovo'
+        ];
+
+        if($post){
+            $update = MyHelper::post('transaction/setting/timer-ovo',$post);
+            if(isset($update['status']) && $update['status'] == 'success'){
+                return redirect('transaction/setting/timer-ovo')->withSuccess(['Success update timer ovo']);
+            }else{
+                return redirect('transaction/setting/timer-ovo')->withErrors(['Failed update timer ovo']);
+            }
+        }else{
+            $get = MyHelper::get('transaction/setting/timer-ovo');
+            if(isset($get['status']) && $get['status'] == 'success'){
+                $data['result'] = $get['result'];
+            }else{
+                $data['result'] = [];
+            }
+            return view('transaction::setting.timer_ovo', $data);
+        }
+    }
+    /*================ End Setting Timer OVO ================*/
 }

@@ -800,7 +800,7 @@
 				@endif
 			@endif
 
-			@if(MyHelper::hasAccess([58,59,60,61,62,63], $grantedFeature))
+			@if(MyHelper::hasAccess([58,59,60,61,62,63,247], $grantedFeature))
 			<li class="nav-item {{($menu_active == 'order') ? 'active' : ''}}">
 				<a href="javascript:;" class="nav-link nav-toggle">
 					<i class="fa fa-cogs"></i>
@@ -855,6 +855,13 @@
 							<span class="title">Setting GO-SEND Package Detail</span>
 						</a>
 					</li>
+					@endif
+					@if(MyHelper::hasAccess([247], $grantedFeature))
+						<li class="nav-item {{($submenu_active == 'setting-timer-ovo') ? 'active open' : ''}}">
+							<a href="{{url('transaction/setting/timer-ovo')}}" class="nav-link ">
+								<span class="title">Setting Timer OVO</span>
+							</a>
+						</li>
 					@endif
 				</ul>
 			</li>
