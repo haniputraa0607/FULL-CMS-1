@@ -1,3 +1,10 @@
+<?php
+    if(isset($deals['is_all_outlet'])){
+        $is_all_outlet = $deals['is_all_outlet'];
+    }else{
+        $is_all_outlet = 0;
+    }
+?>
 @extends('layouts.main')
 
 @section('page-style')
@@ -164,7 +171,8 @@
             });
             $('select[name="id_outlet[]"]').html(html);
             $('select[name="id_outlet[]"]').val(selected);
-            if( convertAll && $('select[name="id_outlet[]"]').val() != null && $('select[name="id_outlet[]"]').val().length==list.length){
+            var isAllOutlet = "{{$is_all_outlet}}";
+            if(isAllOutlet == 1){
                 $('select[name="id_outlet[]"]').val(['all']);
             }
             oldOutlet=list;

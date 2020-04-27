@@ -164,7 +164,8 @@ $configs    		= session('configs');
             });
             $('select[name="id_outlet[]"]').html(html);
             $('select[name="id_outlet[]"]').val(selected);
-            if(convertAll&&$('select[name="id_outlet[]"]').val().length==list.length){
+            var isAllOutlet = "{{$deals[0]['is_all_outlet']}}";
+            if(isAllOutlet == 1){
                 $('select[name="id_outlet[]"]').val(['all']);
             }
             oldOutlet=list;
