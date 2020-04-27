@@ -680,32 +680,38 @@
                 			@yield('detail-info-content')
                         </div>
                         <div class="tab-pane" id="outlet">
-                            <!-- BEGIN: Comments -->
-                            <div class="mt-comments">
-                                <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_2">
-                                    <thead>
-                                        <tr>
-                                            <th>Code</th>
-                                            <th>Name</th>
-                                            <th>Address</th>
-                                            <th>Phone</th>
-                                            <th>Email</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach(($promotion_outlets??$deals['outlets']) as $res)
+                            @if($deals['is_all_outlet'] == 1)
+                                <div class="alert alert-warning">
+                                    This deals applied to <strong>All Outlet</strong>.
+                                </div>
+                            @else
+                                <!-- BEGIN: Comments -->
+                                <div class="mt-comments">
+                                    <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_2">
+                                        <thead>
                                             <tr>
-                                                <td>{{ $res['outlet_code'] }}</td>
-                                                <td>{{ $res['outlet_name'] }}</td>
-                                                <td>{{ $res['outlet_address'] }}</td>
-                                                <td>{{ $res['outlet_phone'] }}</td>
-                                                <td>{{ $res['outlet_email'] }}</td>
+                                                <th>Code</th>
+                                                <th>Name</th>
+                                                <th>Address</th>
+                                                <th>Phone</th>
+                                                <th>Email</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- END: Comments -->
+                                        </thead>
+                                        <tbody>
+                                            @foreach(($promotion_outlets??$deals['outlets']) as $res)
+                                                <tr>
+                                                    <td>{{ $res['outlet_code'] }}</td>
+                                                    <td>{{ $res['outlet_name'] }}</td>
+                                                    <td>{{ $res['outlet_address'] }}</td>
+                                                    <td>{{ $res['outlet_phone'] }}</td>
+                                                    <td>{{ $res['outlet_email'] }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- END: Comments -->
+                            @endif
                         </div>
                     </div>
                 </div>

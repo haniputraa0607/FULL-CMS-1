@@ -94,13 +94,6 @@
 		$is_all_outlet 		= null;
 		$outlet			 	= null;
 
-		if (isset($result['is_all_outlet']) && $result['is_all_outlet'] == "0") {
-			$is_all_outlet = $result['is_all_outlet'];
-			$outlet = [];
-			for ($i=0; $i < count($result['outlets']); $i++) { 
-				$outlet[] = $result['outlets'][$i]['id_outlet'];
-			}
-		}
 		if (isset($result['deals_product_discount_rules']['is_all_product']) && $result['deals_product_discount_rules']['is_all_product'] == "0") {
 			$is_all_product = $result['deals_product_discount_rules']['is_all_product'];
 			$product = [];
