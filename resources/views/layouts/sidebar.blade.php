@@ -231,6 +231,12 @@
 					<span class="title">Setting {{env('POINT_NAME', 'Points')}} Reset</span>
 				</a>
 			</li>
+			<li class="nav-item {{($menu_active == 'balance-resets') ? 'active' : ''}}">
+				<a href="{{url('autoresponse/balance-resets/report-point-reset')}}" class="nav-link">
+					<i class="fa fa-envelope"></i>
+					<span class="title">[Email] {{env('POINT_NAME', 'Points')}} Reset</span>
+				</a>
+			</li>
 			@endif
 		@endif
 
