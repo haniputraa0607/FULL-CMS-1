@@ -59,8 +59,11 @@
                             <i class="fa fa-question-circle tooltips" data-original-title="This value for setting start timer for payment OVO" data-container="body"></i>
                         </label>
                     </div>
-                    <div class="col-md-8">
-                        <input type="text" placeholder="Maximal time is 60" maxlength="2" class="form-control price" name="value" value="@if(isset($result['value'])){{$result['value']}}@endif" required>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input type="text" placeholder="Maximal time is 60" maxlength="2" class="form-control price" name="value" value="@if(isset($result['value'])){{$result['value']}}@endif" required>
+                            <span class="input-group-addon">seconds</span>
+                        </div>
                     </div>
                 </div>
             </div>
