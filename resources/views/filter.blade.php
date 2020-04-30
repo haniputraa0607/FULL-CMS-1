@@ -65,7 +65,7 @@ $configs = session('configs');
 				'<option value="birthday_year">Birthday Year</option>'+
 				'<option value="birthday_today">Birthday Today</option>'+
 				'<option value="phone_verified">Phone Verified</option>'+
-				// '<option value="email_verified">Email Verified</option>'+
+				'<option value="email_verified">Email Verified</option>'+
 				// '<option value="email_unsubscribed">Email Unsubscribed</option>'+
 				'<option value="level">Level</option>'+
 				'@if(MyHelper::hasAccess([18], $configs))'+
@@ -257,7 +257,7 @@ $configs = session('configs');
 				'<option value="birthday_year">Birthday Year</option>'+
 				'<option value="birthday_today">Birthday Today</option>'+
 				'<option value="phone_verified">Phone Verified</option>'+
-				// '<option value="email_verified">Email Verified</option>'+
+				'<option value="email_verified">Email Verified</option>'+
 				// '<option value="email_unsubscribed">Email Unsubscribed</option>'+
 				'<option value="level">Level</option>'+
 				'@if(MyHelper::hasAccess([18], $configs))'+
@@ -1080,7 +1080,7 @@ $configs = session('configs');
 														<option value="birthday_year">Birthday Year</option>
 														<option value="birthday_today">Birthday Today</option>
 														<option value="phone_verified">Phone Verified</option>
-{{--														<option value="email_verified">Email Verified</option>--}}
+														<option value="email_verified">Email Verified</option>
 {{--														<option value="email_unsubscribed">Email Unsubscribed</option>--}}
 														<option value="level">Level</option>
 														@if(MyHelper::hasAccess([20], $configs))
@@ -1309,7 +1309,7 @@ $configs = session('configs');
 																	<option value="birthday_year" @if($row['subject'] == 'birthday_year') selected @endif>Birthday Year</option>
 																	<option value="birthday_today" @if($row['subject'] == 'birthday_today') selected @endif>Birthday Today</option>
 																	<option value="phone_verified" @if($row['subject'] == 'phone_verified') selected @endif>Phone Verified</option>
-{{--																	<option value="email_verified" @if($row['subject'] == 'email_verified') selected @endif>Email Verified</option>--}}
+																	<option value="email_verified" @if($row['subject'] == 'email_verified') selected @endif>Email Verified</option>
 {{--																	<option value="email_unsubscribed" @if($row['subject'] == 'email_unsubscribed') selected @endif>Email Unsubscribed</option>--}}
 																	<option value="level" @if($row['subject'] == 'level') selected @endif>Level</option>
 																	<option value="membership" @if($row['subject'] == 'membership') selected @endif>Membership</option>
