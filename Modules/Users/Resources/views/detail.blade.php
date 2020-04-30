@@ -1211,13 +1211,13 @@
 													<option value="Customer" @if($profile['level'] == 'Customer') selected @endif>Customer</option>
 												</select>
 											</div>
-											<div class="form-group">-
+											<div class="form-group">
 												<label class="control-label">Phone Verified</label>
 												<div class="mt-radio-inline">
 													<label class="mt-radio">
 														<input type="radio" name="phone_verified" id="optionsRadios1" value="1" @if($profile['phone_verified'] == '1') checked @endif > Verified
 														<span></span>
-													</label>--}}
+													</label>
 													<label class="mt-radio">
 														<input type="radio" name="phone_verified" id="optionsRadios2" value="0" @if($profile['phone_verified'] == '0') checked @endif> Not Verified
 														<span></span>
