@@ -11,11 +11,11 @@ $configs = session('configs');
         </div>
     </div>
     <div class="portlet-body">
-        <p>Admin dapat mengatur waktu untuk user dalam melakukan pengecekan kode promo.</p>
-        <p>Anda bisa memberikan action untuk setiap tipe, action dibagi menjadi 2 yaitu :</p>
+        <p>Admin can set the time for the user to check promo code.</p>
+        <p>You can provide actions for each type, actions are divided into 2 :</p>
         <ul>
-            <li>Auto Suspend : jika user melakukan pelanggaran sesuai dengan aturan yang ada maka account tersebut akan secara otomatis disuspend</li>
-            <li>Forward Admin : jika user melakukan pelanggaran sesuai dengan aturan yang ada maka akan mengirimkan notifikasi keadmin  </li>
+            <li>Auto Suspend : if the user violates the rules, the account will be automatically suspended </li>
+            <li>Forward Admin : send notification to admin if user is exposed to fraud </li>
         </ul>
     </div>
 </div>
