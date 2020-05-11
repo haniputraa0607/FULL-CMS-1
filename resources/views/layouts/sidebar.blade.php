@@ -1027,6 +1027,13 @@
 								</li>
 								@endif
 							@endif
+							@if(MyHelper::hasAccess([248], $grantedFeature))
+							<li class="nav-item {{($submenu_active == 'deals-import') ? 'active open' : ''}}">
+								<a href="{{url('deals/import')}}" class="nav-link ">
+									<span class="title">Deals Import Config</span>
+								</a>
+							</li>
+							@endif
 							@if(MyHelper::hasAccess([49], $configs))
 							@if(MyHelper::hasAccess([95], $grantedFeature))
 								<li class="nav-item {{($submenu_active == 'deals-autoresponse-claim-free-deals-success') ? 'active open' : ''}}">
@@ -1114,6 +1121,13 @@
 								</a>
 							</li>
 							@endif
+							@if(MyHelper::hasAccess([248], $grantedFeature))
+							<li class="nav-item {{($submenu_active == 'inject-voucher-import') ? 'active open' : ''}}">
+								<a href="{{url('inject-voucher/import')}}" class="nav-link ">
+									<span class="title">Inject Voucher Import Config</span>
+								</a>
+							</li>
+							@endif
 							@if(MyHelper::hasAccess([49], $configs))
 							@if(MyHelper::hasAccess([95], $grantedFeature))
 								<li class="nav-item {{($submenu_active == 'inject-voucher-autoresponse-receive-inject-voucher') ? 'active open' : ''}}">
@@ -1168,6 +1182,13 @@
 										<span class="title">Welcome Voucher Setting</span>
 									</a>
 								</li>
+							@endif
+							@if(MyHelper::hasAccess([248], $grantedFeature))
+							<li class="nav-item {{($submenu_active == 'welcome-voucher-import') ? 'active open' : ''}}">
+								<a href="{{url('welcome-voucher/import')}}" class="nav-link ">
+									<span class="title">Welcome Voucher Import Config</span>
+								</a>
+							</li>
 							@endif
 							<li class="nav-item {{($submenu_active == 'welcome-voucher-autoresponse-receive-welcome-voucher') ? 'active open' : ''}}">
 								<a href="{{url('autoresponse/welcome-voucher/receive-welcome-voucher')}}" class="nav-link ">

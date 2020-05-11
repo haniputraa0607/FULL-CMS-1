@@ -1,4 +1,7 @@
 @php
+use App\Lib\MyHelper;
+$configs    		= session('configs');
+$grantedFeature     = session('granted_features');
 	if($deals_type == 'Promotion'){
         $rpage = 'promotion/deals';
 	}elseif($deals_type == 'WelcomeVoucher'){
@@ -658,8 +661,14 @@
 
             <div class="tab-content">
                 <div class="tab-pane active" id="info">
+                	<form action="{{ url('deals/export') }}" method="post" style="display: inline;">
+                		{{ csrf_field() }}
+					    <input type="hidden" value="{{ $deals['id_deals'] }}" name="id_deals" />
+					    <input type="hidden" value="{{ $deals_type }}"  name="deals_type" />
+					    <button type="submit" class="btn green-jungle" style="float: right;"><i class="fa fa-download"></i> Export</button>
+					</form>
                 	@if ($deals['step_complete'] != 1)
-                    <a data-toggle="modal" href="#small" class="btn btn-primary" style="float: right; ">Mark as Complete</a>
+                    <a data-toggle="modal" href="#small" class="btn btn-primary" style="float: right; margin-right: 5px">Mark as Complete</a>
                     @endif
                 	<ul class="nav nav-tabs" id="tab-header">
                         <li class="active" id="infoOutlet">

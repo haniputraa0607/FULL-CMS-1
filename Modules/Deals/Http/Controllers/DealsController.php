@@ -12,6 +12,12 @@ use Session;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Deals\Http\Requests\Create;
 
+use App\Exports\DealsExport;
+use App\Imports\DealsImport;
+use App\Imports\PromoWithHeadingImport;
+use App\Imports\PromoWithoutHeadingImport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class DealsController extends Controller
 {
     function __construct() {
@@ -183,6 +189,14 @@ class DealsController extends Controller
                         'submenu_active' => 'deals-list'
                     ];
                 }
+                elseif ($type == "import") {
+                    $data = [
+                        'title'          => 'Deals',
+                        'sub_title'      => 'Deals Import',
+                        'menu_active'    => 'deals',
+                        'submenu_active' => 'deals-import'
+                    ];
+                }
                 elseif ($type == "") {
                     $data = [
                         'title'          => 'Deals',
@@ -213,7 +227,16 @@ class DealsController extends Controller
                         'menu_active'    => 'inject-voucher',
                         'submenu_active' => 'inject-voucher-list'
                     ];
-                }elseif ($type == "") {
+                }
+                elseif ($type == "import") {
+                    $data = [
+                        'title'          => 'Inject Voucher',
+                        'sub_title'      => 'Inject Voucher Import',
+                        'menu_active'    => 'inject-voucher',
+                        'submenu_active' => 'inject-voucher-import'
+                    ];
+                }
+                elseif ($type == "") {
                     $data = [
                         'title'          => 'Inject Voucher',
                         'sub_title'      => 'Inject Voucher List',
@@ -278,6 +301,13 @@ class DealsController extends Controller
                         'sub_title'      => 'Welcome Voucher Detail',
                         'menu_active'    => 'welcome-voucher',
                         'submenu_active' => 'welcome-voucher-list'
+                    ];
+                }elseif ($type == "import") {
+                    $data = [
+                        'title'          => 'Welcome Voucher',
+                        'sub_title'      => 'Welcome Voucher Import',
+                        'menu_active'    => 'welcome-voucher',
+                        'submenu_active' => 'welcome-voucher-import'
                     ];
                 }else {
                     $data = [
@@ -1433,5 +1463,93 @@ class DealsController extends Controller
             $data = [];
         }
 		return response()->json($data);
+    }
+
+    public function exportDeals(Request $request)
+    {
+    	$post = $request->except('_token');
+    	$slug = $post['id_deals'];
+        $post['id_deals'] = MyHelper::explodeSlug($post['id_deals'])[0]??'';
+        $post['step'] = 'all';
+
+        $deals = MyHelper::post('deals/export',$post);
+    	
+        $data = new DealsExport($deals['result']);
+
+        if(!$data){
+            return back()->withErrors(['Something went wrong']);
+        }
+
+        return Excel::download($data,'Config_Deals_'.($deals['result']['rule'][4][1]??'').'_'.date('Ymdhis').'.xls');
+    }
+
+    public function importDeals(Request $request)
+    {
+    	$post = $request->except('_token');
+    	$identifier     = $this->identifier();
+        $dataDeals      = $this->dataDeals($identifier, 'import');
+
+    	if (empty($post)) {
+        	$data = $dataDeals['data'];
+            
+            return view('deals::deals.import', $data);
+        }
+
+        if ($request->hasFile('import_file')) {
+            $path = $request->file('import_file')->getRealPath();
+            $import = new PromoWithoutHeadingImport();
+            $data1 = \Excel::import($import,$request->file('import_file'))??[];
+            $data2 = \Excel::toArray(new PromoWithHeadingImport(),$request->file('import_file'))??[];
+
+            $data = [];
+			foreach ($import->sheetNames as $key => $value) {
+				$data[$value] = $data2[$key];
+			}
+
+			$rule = [];
+			foreach ($import->sheetData[0]??[] as $key => $value) {
+				$rule[$value[0]] = $value[1];
+			}
+			$data['rule'] = $rule;
+
+            if(!empty($data)){
+
+            	$postData = [
+                    'deals_type' => $dataDeals['data']['deals_type'],
+                    'data' => $data,
+                    'deals_start' => $post['deals_start']??null,
+                    'deals_end' => $post['deals_end']??null,
+                    'deals_publish_start' => $post['deals_publish_start']??null,
+                    'deals_publish_end' => $post['deals_publish_end']??null,
+                    'deals_voucher_start' => $post['deals_voucher_start'],
+                    'deals_voucher_expired' => $post['deals_voucher_expired'],
+                    'deals_voucher_duration' => $post['deals_voucher_duration']
+                ];
+                $import = MyHelper::post('deals/import', $postData);
+
+                if($dataDeals['data']['deals_type'] == 'Promotion'){
+	                $rpage = 'promotion/deals';
+	        	}elseif($dataDeals['data']['deals_type'] == 'WelcomeVoucher'){
+	                $rpage = 'welcome-voucher';
+	            }else{
+	                $rpage = $dataDeals['data']['deals_type']=='Deals'?'deals':'inject-voucher';
+	            }
+				if (($import['status']??false) == 'success') {
+					return redirect($rpage)->withSuccess($import['messages']);
+				}else{
+					return redirect($rpage.'/import')->withErrors($import['messages']??['Import failed - Something went wrong'])->withInput();
+				}
+            }else{
+                return [
+                    'status'=>'fail',
+                    'messages'=>['File empty']
+                ];
+            }
+        }
+
+        return [
+            'status'=>'fail',
+            'messages'=>['Something went wrong']
+        ];
     }
 }
