@@ -35,7 +35,8 @@
           });
           const template = `
             <div class="input-group append-child" style="margin: 0 0 10px 0;">
-                <select type="text" placeholder="Category Name" class="form-control select2a" name="id_product_group[]" data-placeholder="Select Product">
+                <div class="input-group-addon handle"><i class="sort-icon fa fa-arrows"></i></div>
+                <select type="text" placeholder="Category Name" class="form-control select2a" name="id_product_group[]" data-placeholder="Select Product" required>
                     <option></option>
                     @foreach($products as $product)
                     <option value="{{$product['id_product_group']}}">{{$product['product_group_code']}} - {{$product['product_group_name']}}</option>
