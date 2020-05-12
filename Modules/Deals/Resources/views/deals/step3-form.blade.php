@@ -32,7 +32,7 @@ $configs = session('configs');
                                         <div id="accordion1">
                                             <div class="col-md-6 content-title">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" name="content_title[]"  placeholder="Content Title" required maxlength="20" value="{{ $deals['deals_promotion_content'][0]['title']??$deals['deals_content'][0]['title']??'Ketentuan' }}">
+                                                    <input type="text" class="form-control" name="content_title[]"  placeholder="Content Title" required maxlength="20" value="{{ $deals['deals_promotion_content'][0]['title']??$deals['deals_content'][0]['title']??'Terms and Conditions' }}">
                                                     <input type="hidden" name="id_deals_content[]" value="{{ $deals['deals_content'][0]['id_deals_content']??0 }}" >
                                                     <input type="hidden" name="content_order[]" value="0">
                                                     <span class="input-group-addon">
@@ -88,7 +88,7 @@ $configs = session('configs');
                                         <div id="accordion2">
                                             <div class="col-md-6 content-title">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" name="content_title[]"  placeholder="Content Title" required maxlength="20" value="{{ $deals['deals_promotion_content'][1]['title']??$deals['deals_content'][1]['title']??'Cara Pakai' }}">
+                                                    <input type="text" class="form-control" name="content_title[]"  placeholder="Content Title" required maxlength="20" value="{{ $deals['deals_promotion_content'][1]['title']??$deals['deals_content'][1]['title']??'How to Use' }}">
                                                     <input type="hidden" name="id_deals_content[]" value="{{ $deals['deals_content'][1]['id_deals_content']??$deals['deals_promotion_content'][1]['id_deals_content']??0 }}">
                                                     <input type="hidden" name="content_order[]" value="0">
                                                     <span class="input-group-addon">
