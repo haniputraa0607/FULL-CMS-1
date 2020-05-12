@@ -338,6 +338,7 @@
     }
 
 	$('[data-toggle=confirmation]').confirmation({ btnOkClass: 'btn btn-sm btn-success submit', btnCancelClass: 'btn btn-sm btn-danger'});
+    $('[data-toggle=confirmationx]').confirmation({ btnOkClass: 'btn btn-sm btn-success', btnCancelClass: 'btn btn-sm btn-danger'});
 
 	$(document).on('click', '.submit', function() {
 		if ($('#pinUser').val() == ''){
@@ -843,7 +844,7 @@
                                                                     {{csrf_field()}}
                                                                     <input type="hidden" name="action" value="delete_inbox">
                                                                     <input type="hidden" name="id_inbox" value="{{$it['id_inbox']}}">
-                                                                    <button class="btn btn-sm btn-danger" data-toggle="confirmation"
+                                                                    <button class="btn btn-sm btn-danger" data-toggle="confirmationx"
                                                                     data-btn-ok-label="Delete" data-btn-ok-class="btn btn-danger"
                                                                     data-btn-ok-icon-class="material-icons" data-btn-ok-icon-content="check"
                                                                     data-btn-cancel-label="No" data-btn-cancel-class="btn-info"
