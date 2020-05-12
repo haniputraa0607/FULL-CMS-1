@@ -113,7 +113,7 @@ $grantedFeature     = session('granted_features');
 						<div class="fileinput fileinput-new col-md-4" data-provides="fileinput">
 							<div class="fileinput-new thumbnail">
 								@if(isset($warning_image))
-									<img src="{{ env('S3_URL_API').$warning_image}}" alt="">
+									<img src="{{ env('S3_URL_VIEW').$warning_image}}" alt="">
 								@else
 									<img src="https://www.placehold.it/100x100/EFEFEF/AAAAAA&amp;text=no+image" alt="">
 								@endif

@@ -36,14 +36,18 @@
 				@endif
 				    <div class="col-md-4">
 				        <div class="portlet portlet light bordered">
-				        	<div class="portlet-title"> 
-					        <span class="caption font-blue sbold uppercase">{{$content['title']}}</span>
-					        @if ($content['is_active'] == 1)
-					        	<span class="sale-num sbold badge badge-pill" style="font-size: 20px!important;height: 30px!important;background-color: #26C281;padding: 5px 12px;color: #fff;float: right;">Visible</span>
-					        @else
-					        	<span class="sale-num sbold badge badge-pill" style="font-size: 20px!important;height: 30px!important;background-color: #ACB5C3;padding: 5px 12px;color: #fff;float: right;">Hidden</span>
-					        @endif
-					        </div>
+				        	<div class="portlet-title row"> 
+				        		<div class="col-md-8">
+					        		<span class="caption font-blue sbold uppercase">{{$content['title']}}</span>
+				        		</div>
+				        		<div class="col-md-4">	
+						        @if ($content['is_active'] == 1)
+						        	<span class="sale-num sbold badge badge-pill" style="background-color: #26C281;color: #fff;font-size: 14px!important;padding: 5px 12px;height: 25px!important;">Visible</span>
+						        @else
+						        	<span class="sale-num sbold badge badge-pill" style="background-color: #ACB5C3;color: #fff;font-size: 14px!important;padding: 5px 12px;height: 25px!important;">Hidden</span>
+						        @endif
+						        </div>
+				        		</div>
 				            <div class="portlet-body">
 				            	@foreach (($content['deals_content_details']??$content['deals_promotion_content_details']) as $content_detail)
 					                <div class="row static-info">
