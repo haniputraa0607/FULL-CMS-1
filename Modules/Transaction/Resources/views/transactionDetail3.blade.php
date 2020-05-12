@@ -466,9 +466,9 @@
                             <div class="col-12">
                                 <div id="content-taken" class="seravek-medium-font">
                                     @if($data['status'] == "Taken")
-                                        Order sudah selesai <br/>dan sudah diambil
+                                        Order completed <br/>and taken
                                     @else
-                                        Order di reject <br/> {{ $data['detail']['reject_reason'] }}
+                                        Order reject <br/> {{ $data['detail']['reject_reason'] }}
                                     @endif
                                 </div>
                             </div>
@@ -566,7 +566,7 @@
                     <div class="row space-text">
                         <div class="col-2 Ubuntu text-left" style="color: #8fd6bd;">{{$item['transaction_product_qty']}}x</div>
                         <div class="col-7 Ubuntu-Medium text-black">{{$item['product']['product_name']}}</div>
-                        <div class="col-3 text-right Ubuntu-Medium text-black">{{ MyHelper::requestNumber(explode('.',$item['transaction_product_price'])[0], '_CURRENCY') }}</div>
+                        <div class="col-3 text-right Ubuntu-Medium text-black">{{ number_format($item['transaction_product_price'])}}</div>
                     </div>
 
                     <div class="row space-text">
@@ -587,7 +587,7 @@
                         <div class="row space-text">
                             <div class="col-2 Ubuntu text-black">{{$item['transaction_product_qty']}}x</div>
                             <div class="col-7 Ubuntu text-black" style="margin-left: -20px;">{{$item['product']['product_name']}}</div>
-                            <div class="col-3 text-right Ubuntu-Medium text-black" style="padding-right: 0px;">{{ MyHelper::requestNumber($data['transaction_subtotal'], '_CURRENCY') }}</div>
+                            <div class="col-3 text-right Ubuntu-Medium text-black" style="padding-right: 0px;">{{ number_format($data['transaction_subtotal']) }}</div>
                         </div>
                     @endif
                     <div class="col-12">
@@ -602,11 +602,11 @@
                 </div>
                 <div class="row space-bottom">
                     <div class="col-6 text-13-3px Ubuntu-Medium text-black ">Subtotal</div>
-                    <div class="col-6 text-13-3px text-right Ubuntu text-black">{{ MyHelper::requestNumber($data['transaction_subtotal'], '_CURRENCY') }}</div>
+                    <div class="col-6 text-13-3px text-right Ubuntu text-black">{{ number_format($data['transaction_subtotal']) }}</div>
                 </div>
                 <div class="row" style="background-color: #f0f3f7;border-radius: 5px;">
                     <div class="col-6 text-13-3px Ubuntu-Medium text-black" style="padding-top: 4px;padding-bottom: 4px;">Grand Total</div>
-                    <div class="col-6 text-13-3px text-right Ubuntu-Bold text-black" style="padding-top: 4px;padding-bottom: 4px;">{{ MyHelper::requestNumber($data['transaction_grandtotal'], '_CURRENCY') }}</div>
+                    <div class="col-6 text-13-3px text-right Ubuntu-Bold text-black" style="padding-top: 4px;padding-bottom: 4px;">{{ number_format($data['transaction_grandtotal']) }}</div>
                 </div>
             </div>
 
@@ -618,10 +618,10 @@
                     @foreach($data['data_payment'] as $dp)
                         @if(isset($dp['payment_method']))
                                 <div class="col-6 text-13-3px Ubuntu text-black ">{{strtoupper($dp['payment_method'])}}</div>
-                                <div class="col-6 text-13-3px text-right Ubuntu-Medium text-black">{{ MyHelper::requestNumber($dp['nominal'], '_CURRENCY') }}</div>
+                                <div class="col-6 text-13-3px text-right Ubuntu-Medium text-black">{{ number_format($dp['nominal'])}}</div>
                         @else
                                 <div class="col-6 text-13-3px Ubuntu text-black ">{{strtoupper($dp['payment_type'])}}</div>
-                                <div class="col-6 text-13-3px text-right Ubuntu-Medium text-black">{{ MyHelper::requestNumber($dp['payment_amount'], '_CURRENCY') }}</div>
+                                <div class="col-6 text-13-3px text-right Ubuntu-Medium text-black">{{ number_format($dp['payment_amount']) }}</div>
                         @endif
 
                     @endforeach
