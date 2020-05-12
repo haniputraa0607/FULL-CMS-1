@@ -1256,7 +1256,7 @@
 										{{ csrf_field() }}
 											<div class="form-group">
 												<label class="control-label">New PIN</label>
-												<input type="password" class="form-control" name="password_new" maxLength="6" minLength="6" onkeypress="return isNumberKey(event)"/> </div>
+												<input type="password" class="form-control" name="password_new" maxLength="6" minLength="6" onkeypress="return isNumberKey(event)" autocomplete="new-password" /> </div>
 											<div class="form-group">
 												<label class="control-label">Re-type New PIN</label>
 												<input type="password" class="form-control" name="password_new_confirmation" maxLength="6" minLength="6" onkeypress="return isNumberKey(event)"/> </div>
