@@ -719,6 +719,8 @@ class UsersController extends Controller
 			if(isset($post['take'])) $takes = $post['take'];
 			if(isset($post['order_field'])) $order_fields = $post['order_field'];
 			if(isset($post['order_method'])) $order_methods = $post['order_method'];
+            if(isset($post['conditions'])) $conditions = $post['conditions'];
+            if(isset($post['rule'])) $rule = $post['rule'];
 			$post = Session::get('form-log');
 
 			if(isset($takes) && isset($order_fields) && isset ($order_methods)){
@@ -726,6 +728,11 @@ class UsersController extends Controller
 				$post['order_field'] = $order_fields;
 				$post['order_method'] = $order_methods;
 			}
+
+			if(isset ($conditions) && isset ($rule)){
+                $post['conditions'] = $conditions;
+                $post['rule'] = $rule;
+            }
 		}
 
 		if(!empty($post)){
