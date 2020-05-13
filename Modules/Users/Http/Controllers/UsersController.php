@@ -474,13 +474,13 @@ class UsersController extends Controller
 			// print_r($post);exit;
 			$update = MyHelper::post('users/update/level', $post);
 			// print_r($update);exit;
-			return parent::redirect($update, 'Account Level has been changed.');
+			return parent::redirect($update, 'Account Level has been changed.',url()->current().'#permission');
         }
 
 		if (isset($post['password_permission'])) {
 			$post['phone'] = $phone;
 			$update = MyHelper::post('users/update/permission', $post);
-			return parent::redirect($update, 'Account Permission has been changed.');
+			return parent::redirect($update, 'Account Permission has been changed.',url()->current().'#permission');
 		}
 		if (isset($post['is_suspended'])) {
 			$post['phone'] = $phone;
