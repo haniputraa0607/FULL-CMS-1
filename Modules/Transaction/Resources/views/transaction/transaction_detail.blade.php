@@ -2,10 +2,399 @@
     use App\Lib\MyHelper;
     $configs = session('configs');
  ?>
-@include('transaction::transaction.transaction_detail')
-@extends('layouts.main')
-@section('page-style')
-@yield('sub-page-style')
+@section('sub-page-style')
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <style type="text/css">
+        @font-face {
+            font-family: 'Seravek';
+            font-style: normal;
+            font-weight: 400;
+            src: url('{{env("S3_URL_VIEW") }}{{("assets/fonts/Seravek.ttf")}}') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Seravek Light';
+            font-style: normal;
+            font-weight: 400;
+            src: url('{{env("S3_URL_VIEW") }}{{("assets/fonts/Seravek-Light.ttf")}}') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Seravek Medium';
+            font-style: normal;
+            font-weight: 400;
+            src: url('{{env("S3_URL_VIEW") }}{{("assets/fonts/Seravek-Medium.ttf")}}') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Seravek Italic';
+            font-style: normal;
+            font-weight: 400;
+            src: url('{{env("S3_URL_VIEW") }}{{("assets/fonts/Seravek-Italic.ttf")}}') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Roboto Regular';
+            font-style: normal;
+            font-weight: 400;
+            src: url('{{env("S3_URL_VIEW") }}{{("assets/fonts/Roboto-Regular.ttf")}}') format('truetype');
+        }
+
+        .swal-text {
+            text-align: center;
+        }
+
+        .kotak {
+            margin : 10px;
+            padding: 10px;
+            /*margin-right: 15px;*/
+            -webkit-box-shadow: 0px 1px 3.3px 0px rgba(168,168,168,1);
+            -moz-box-shadow: 0px 1px 3.3px 0px rgba(168,168,168,1);
+            box-shadow: 0px 1px 3.3px 0px rgba(168,168,168,1);
+            /* border-radius: 3px; */
+            background: #fff;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .kotak-qr {
+            -webkit-box-shadow: 0px 0px 5px 0px rgba(214,214,214,1);
+            -moz-box-shadow: 0px 0px 5px 0px rgba(214,214,214,1);
+            box-shadow: 0px 0px 5px 0px rgba(214,214,214,1);
+            background: #fff;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto;
+            border-radius: 20px;
+            padding: 10px;
+        }
+
+        .kotak-full {
+            margin-bottom : 15px;
+            padding: 10px;
+            background: #fff;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .kotak-inside {
+            padding-left: 25px;
+            padding-right: 25px
+        }
+
+        body {
+            background: #fafafa;
+        }
+
+        .bg-green2{
+            background: #a6ba35;
+        }
+
+        .bg-black{
+            background: #aaaaaa;
+        }
+
+        .round-green{
+            border: 1px solid #a6ba35;
+            border-radius: 50% !important;
+            width: 10px;
+            height: 10px;
+            display: inline-block;
+            margin-right:3px;
+        }
+
+        .round-black{
+            border: 1px solid #aaaaaa;
+            border-radius: 50% !important;
+            width: 10px;
+            height: 10px;
+            display: inline-block;
+            margin-right:3px;
+        }
+
+        .completed {
+            color: green;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .space-bottom {
+            padding-bottom: 15px;
+        }
+
+        .space-top-all {
+            padding-top: 15px;
+        }
+
+        .space-text {
+            padding-bottom: 10px;
+        }
+
+        .space-nice {
+            padding-bottom: 20px;
+        }
+
+        .space-bottom-big {
+            padding-bottom: 25px;
+        }
+
+        .space-top {
+            padding-top: 5px;
+        }
+
+        .line-bottom {
+            border-bottom: 1px solid rgba(0,0,0,.1);
+            margin-bottom: 15px;
+        }
+
+        .text-grey {
+            color: #aaaaaa;
+        }
+
+        .text-much-grey {
+            color: #bfbfbf;
+        }
+
+        .text-black {
+            color: #000000;
+        }
+
+        .text-medium-grey {
+            color: #806e6e6e;
+        }
+
+        .text-grey-white {
+            color: #666;
+        }
+
+        .text-grey-light {
+            color: #b6b6b6;
+        }
+
+        .text-grey-medium-light{
+            color: #a9a9a9;
+        }
+
+        .text-black-grey-light{
+            color: #5f5f5f;
+        }
+
+
+        .text-medium-grey-black{
+            color: #424242;
+        }
+
+        .text-grey-black {
+            color: #4c4c4c;
+        }
+
+        .text-grey-red {
+            color: #9a0404;
+        }
+
+        .text-grey-red-cancel {
+            color: rgba(154,4,4,1);
+        }
+
+        .text-grey-blue {
+            color: rgba(0,140,203,1);
+        }
+
+        .text-grey-yellow {
+            color: rgba(227,159,0,1);
+        }
+
+        .text-grey-green {
+            color: rgba(4,154,74,1);
+        }
+
+        .text-grey-white-light {
+            color: #b8b8b8;
+        }
+
+        .text-greyish-brown{
+            color: #6c5648;
+        }
+
+        .open-sans-font {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .questrial-font {
+            font-family: 'Questrial', sans-serif;
+        }
+
+        .seravek-font {
+            font-family: 'Seravek';
+        }
+
+        .seravek-light-font {
+            font-family: 'Seravek Light';
+        }
+
+        .seravek-medium-font {
+            font-family: 'Seravek Medium';
+        }
+
+        .seravek-italic-font {
+            font-family: 'Seravek Italic';
+        }
+
+        .roboto-regular-font {
+            font-family: 'Roboto Regular';
+        }
+
+        .text-21-7px {
+            font-size: 21.7px;
+        }
+
+        .text-16-7px {
+            font-size: 16.7px;
+        }
+
+        .text-15px {
+            font-size: 15px;
+        }
+
+        .text-14-3px {
+            font-size: 14.3px;
+        }
+
+        .text-14px {
+            font-size: 14px;
+        }
+
+        .text-13-3px {
+            font-size: 13.3px;
+        }
+
+        .text-12-7px {
+            font-size: 12.7px;
+        }
+
+        .text-12px {
+            font-size: 12px;
+        }
+
+        .text-11-7px {
+            font-size: 11.7px;
+        }
+
+        .round-greyish-brown{
+            border: 1px solid #6c5648;
+            border-radius: 50% !important;
+            width: 10px;
+            height: 10px;
+            display: inline-block;
+            margin-right:3px;
+        }
+
+        .bg-greyish-brown{
+            background: #6c5648;
+        }
+
+        .round-white{
+            width: 10px;
+            height: 10px;
+            display: inline-block;
+            margin-right:3px;
+        }
+
+        .line-vertical{
+            font-size: 5px;
+            width:10px;
+            margin-right: 3px;
+        }
+
+        .inline{
+            display: inline-block;
+        }
+
+        .vertical-top{
+            vertical-align: top;
+            padding-top: 5px;
+        }
+
+        #modal-usaha {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(0,0,0, 0.5);
+            width: 100%;
+            display: none;
+            height: 100vh;
+            z-index: 999;
+        }
+
+        .modal-usaha-content {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -125px;
+            margin-top: -125px;
+        }
+
+        .kotak-full.pending{
+            padding-top:15px;
+            padding-bottom:15px;
+            background-color:#aaa;
+        }
+
+        .kotak-full.on_going{
+            padding-top:15px;
+            padding-bottom:15px;
+            background-color:#ef9219;
+        }
+
+        .kotak-full.complated{
+            padding-top:15px;
+            padding-bottom:15px;
+            background-color:#fff;
+        }
+
+        .kotak-full.ready{
+            padding-top:15px;
+            padding-bottom:15px;
+            background-color:#15977b;
+        }
+
+        .kotak-full.pending .text-greyish-brown,
+        .kotak-full.on_going .text-greyish-brown,
+        .kotak-full.ready .text-greyish-brown,
+
+        .kotak-full.pending .text-grey-white-light,
+        .kotak-full.on_going .text-grey-white-light,
+        .kotak-full.ready .text-grey-white-light
+        {
+            color:#fff;
+        }
+
+        .kotak-full.redbg{
+            margin-top:-10px;
+            background-color:#c10100;
+        }
+
+        .kotak-full.redbg #content-taken{
+            text-transform : uppercase;
+            color:#fff;
+            text-align:center;
+            padding:10px;
+        }
+
+        @media (min-width: 1200px) {
+        .container {
+        max-width: 1170px; } }
+
+        .page-header{
+            position: fixed;
+        }
+
+        .page-logo {
+            margin-right:auto;
+        }
+
+    </style>
 @endsection
 
 @section('page-script')
@@ -15,29 +404,7 @@
 </script>
 @endsection
 
-@section('content')
-    <div class="page-bar">
-        <ul class="page-breadcrumb">
-            <li>
-                <a href="/">Home</a>
-                <i class="fa fa-circle"></i>
-            </li>
-            <li>
-                <span>{{ $title }}</span>
-                @if (!empty($sub_title))
-                    <i class="fa fa-circle"></i>
-                @endif
-            </li>
-            @if (!empty($sub_title))
-            <li>
-                <span>{{ $sub_title }}</span>
-            </li>
-            @endif
-        </ul>
-    </div><br>
-
-    @include('layouts.notifications')
-
+@section('sub-content')
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content" style="border-radius: 42.3px; border: 0;">
