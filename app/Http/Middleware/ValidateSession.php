@@ -15,7 +15,12 @@ class ValidateSession
      */
     public function handle($request, Closure $next)
     {
-        if(session()->has('phone')) return $next($request);
-        else return redirect('login')->withErrors(['e' => 'Please login.']);
+        if(session()->has('phone')){
+            if(!strpos(url()->current(),'user/detail')){
+                session(['secure' => false]);
+            };
+            return $next($request);
+        }
+        else{ return redirect('login')->withErrors(['e' => 'Please login.']);}
     }
 }
