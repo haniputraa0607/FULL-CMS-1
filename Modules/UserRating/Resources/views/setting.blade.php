@@ -268,7 +268,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <input type="number" min="1" class="form-control" name="popup_max_days" required value="{{old('popup_max_days',$setting['popup_max_days']['value']??3)}}" /><br/>
+                                    <input type="number" min="0" class="form-control" name="popup_max_days" required value="{{old('popup_max_days',$setting['popup_max_days']['value']??3)}}" /><br/>
                                     <span class="input-group-addon">
                                         days before
                                     </span>
