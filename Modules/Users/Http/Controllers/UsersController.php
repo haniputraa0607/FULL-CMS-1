@@ -443,7 +443,7 @@ class UsersController extends Controller
 			if($checkpin['status'] != "success")
 				return back()->withErrors(['invalid_credentials' => 'Invalid PIN'])->withInput();
 			else
-				Session::put('secure','yes');
+				Session::put('secure','yes');Session::put('secure_last_activity',time());
 		}
 
 		if(isset($post['phone'])){
@@ -488,7 +488,7 @@ class UsersController extends Controller
 			return parent::redirect($update, 'Suspend Status has been changed.');
         }
 
-		if(empty(Session::get('secure'))){
+		if(empty(Session::get('secure')) || Session::get('secure_last_activity') < (time() - 900)){
 			$data = [ 'title'             => 'User',
 					  'menu_active'       => 'user',
 					  'submenu_active'    => 'user-list',
@@ -793,9 +793,9 @@ class UsersController extends Controller
 			if($checkpin['status'] != "success")
 				return back()->withErrors(['invalid_credentials' => 'Invalid PIN'])->withInput();
 			else
-				Session::put('secure','yes');
+				Session::put('secure','yes');Session::put('secure_last_activity',time());
 		}
-		if(empty(Session::get('secure'))){
+		if(empty(Session::get('secure')) || Session::get('secure_last_activity') < (time() - 900)){
 			$data = [ 'title'             => 'User',
 					  'menu_active'       => 'user',
 					  'submenu_active'    => 'user-list',
