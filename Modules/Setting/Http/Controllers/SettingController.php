@@ -71,6 +71,12 @@ class SettingController extends Controller
         return parent::redirect($result, 'Application Top Navigation Text has been updated.');
     }
 
+    public function userInboxSave(Request $request){
+        $post = $request->except('_token');
+        $result = MyHelper::post('setting/update2', ['update'=>['inbox_max_days' => ['value',$post['inbox_max_days']]]]);
+        return parent::redirect($result, 'User Inbox setting has been updated.','setting/home#user_inbox');
+    }
+
     public function settingList($key)
     {
         $data = [];
@@ -625,6 +631,7 @@ class SettingController extends Controller
         $data['app_logo'] = parent::getData(MyHelper::get('setting/app_logo'));
         $data['app_sidebar'] = parent::getData(MyHelper::get('setting/app_sidebar'));
         $data['app_navbar'] = parent::getData(MyHelper::get('setting/app_navbar'));
+        $data['inbox_max_days'] = parent::getData(MyHelper::post('setting',['key'=>'inbox_max_days']))['value']??30;
 		return view('setting::home', $data);
 	}
 
