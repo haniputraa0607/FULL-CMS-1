@@ -20,7 +20,7 @@
                                 </label>
                                 <div class="col-md-3">
                                 	<div class="input-group">
-	                                    <input class="form-control" min="0" name="inbox_max_days" type="number" value="{{$inbox_max_days}}">
+	                                    <input class="form-control" min="1" name="inbox_max_days" type="number" value="{{$inbox_max_days}}">
                                 		<span class="input-group-addon">Days</span>
                                 	</div>
                                 </div>
