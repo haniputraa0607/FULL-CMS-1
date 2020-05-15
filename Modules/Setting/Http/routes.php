@@ -5,6 +5,7 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'setting'
 	Route::post('app_logo', 'SettingController@appLogoSave');
     Route::post('app_sidebar', 'SettingController@appSidebarSave');
     Route::post('app_navbar', 'SettingController@appNavbarSave');
+    Route::post('user_inbox', 'SettingController@userInboxSave');
     Route::get('faq', 'SettingController@faqList');
     Route::get('faq/create', 'SettingController@faqCreate');
     Route::post('faq/save', 'SettingController@faqStore');
