@@ -342,6 +342,7 @@ $grantedFeature     = session('granted_features');
 									</div>
 								</div>
 							</div>
+							<input type="hidden" name="deals_type" value="{{ $deals['deals_type']??$deals_type??'' }}">
 							<div class="form-actions" style="padding-bottom: 5px">
 								{{ csrf_field() }}
 								<div class="row">

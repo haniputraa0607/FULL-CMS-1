@@ -1471,7 +1471,7 @@ class DealsController extends Controller
     	$slug = $post['id_deals'];
         $post['id_deals'] = MyHelper::explodeSlug($post['id_deals'])[0]??'';
         $post['step'] = 'all';
-
+        
         $deals = MyHelper::post('deals/export',$post);
     	
         $data = new DealsExport($deals['result']);
@@ -1480,7 +1480,7 @@ class DealsController extends Controller
             return back()->withErrors(['Something went wrong']);
         }
 
-        return Excel::download($data,'Config_Deals_'.($deals['result']['rule'][4][1]??'').'_'.date('Ymdhis').'.xls');
+        return Excel::download($data,'Config_Deals_'.($deals['result']['rule'][3][1]??'').'_'.date('Ymdhis').'.xls');
     }
 
     public function importDeals(Request $request)
@@ -1494,7 +1494,6 @@ class DealsController extends Controller
             
             return view('deals::deals.import', $data);
         }
-
         if ($request->hasFile('import_file')) {
             $path = $request->file('import_file')->getRealPath();
             $import = new PromoWithoutHeadingImport();
@@ -1513,33 +1512,38 @@ class DealsController extends Controller
 			$data['rule'] = $rule;
 
             if(!empty($data)){
+            	unset($post['import_file']);
+            	$post['data'] = $data;
 
-            	$postData = [
-                    'deals_type' => $dataDeals['data']['deals_type'],
-                    'data' => $data,
-                    'deals_start' => $post['deals_start']??null,
-                    'deals_end' => $post['deals_end']??null,
-                    'deals_publish_start' => $post['deals_publish_start']??null,
-                    'deals_publish_end' => $post['deals_publish_end']??null,
-                    'deals_voucher_start' => $post['deals_voucher_start'],
-                    'deals_voucher_expired' => $post['deals_voucher_expired'],
-                    'deals_voucher_duration' => $post['deals_voucher_duration']
-                ];
-                $import = MyHelper::post('deals/import', $postData);
+                $import = MyHelper::post('deals/import', $post);
 
                 if($dataDeals['data']['deals_type'] == 'Promotion'){
 	                $rpage = 'promotion/deals';
 	        	}elseif($dataDeals['data']['deals_type'] == 'WelcomeVoucher'){
 	                $rpage = 'welcome-voucher';
 	            }else{
-	                $rpage = $dataDeals['data']['deals_type']=='Deals'?'deals':'inject-voucher';
+	                $rpage = $dataDeals['data']['deals_type']=='Deals'?'deals' : 'inject-voucher';
 	            }
-				if (($import['status']??false) == 'success') {
-					return redirect($rpage)->withSuccess($import['messages']);
-				}else{
+
+				if (($import['status']??false) == 'success') 
+				{
+					$slug = MyHelper::createSlug($import['deals']['id_deals'], $import['deals']['created_at']);
+
+					$rpage = $rpage.'/detail/'.$slug;
+
+					$redirect = redirect($rpage)->withSuccess($import['messages']);
+					if (!empty($import['warning'])) {
+						$redirect->withWarning($import['warning']??[]);
+					}
+					return $redirect;
+				}
+				else
+				{
 					return redirect($rpage.'/import')->withErrors($import['messages']??['Import failed - Something went wrong'])->withInput();
 				}
-            }else{
+            }
+            else
+            {
                 return [
                     'status'=>'fail',
                     'messages'=>['File empty']

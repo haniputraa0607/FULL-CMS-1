@@ -1030,7 +1030,7 @@
 							@if(MyHelper::hasAccess([248], $grantedFeature))
 							<li class="nav-item {{($submenu_active == 'deals-import') ? 'active open' : ''}}">
 								<a href="{{url('deals/import')}}" class="nav-link ">
-									<span class="title">Deals Import Config</span>
+									<span class="title">Import Deals</span>
 								</a>
 							</li>
 							@endif
@@ -1124,7 +1124,7 @@
 							@if(MyHelper::hasAccess([248], $grantedFeature))
 							<li class="nav-item {{($submenu_active == 'inject-voucher-import') ? 'active open' : ''}}">
 								<a href="{{url('inject-voucher/import')}}" class="nav-link ">
-									<span class="title">Inject Voucher Import Config</span>
+									<span class="title">Import Inject Voucher</span>
 								</a>
 							</li>
 							@endif
@@ -1186,7 +1186,7 @@
 							@if(MyHelper::hasAccess([248], $grantedFeature))
 							<li class="nav-item {{($submenu_active == 'welcome-voucher-import') ? 'active open' : ''}}">
 								<a href="{{url('welcome-voucher/import')}}" class="nav-link ">
-									<span class="title">Welcome Voucher Import Config</span>
+									<span class="title">Import Welcome Voucher</span>
 								</a>
 							</li>
 							@endif
