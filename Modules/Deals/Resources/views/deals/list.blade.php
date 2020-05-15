@@ -275,7 +275,7 @@ $grantedFeature     = session('granted_features');
 									    <button type="submit" class="btn btn-sm green-jungle"><i class="fa fa-download"></i></button>
 									</form>
 									@else
-									<a data-toggle="modal" href="#small" class="btn btn-sm green-jungle list-deals" data-deals="{{ $value['id_deals'] }}"><i class="fa fa-download">export</i></a>
+									<a data-toggle="modal" href="#small" class="btn btn-sm green-jungle list-deals" data-deals="{{ $value['id_deals'] }}"><i class="fa fa-download"></i></a>
                                     @endif
                                     @if($deals_type == "Deals" && MyHelper::hasAccess([76], $grantedFeature) && $value['deals_total_claimed'] == 0)
                                         <a data-toggle="confirmation" data-popout="true" class="btn btn-sm red delete" data-id="{{ $value['id_deals'] }}"><i class="fa fa-trash-o"></i></a>
