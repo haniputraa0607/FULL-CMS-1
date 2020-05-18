@@ -1339,7 +1339,7 @@ $configs = session('configs');
 										@endforeach
 									@endif
 								</div>
-							@elseif(!$forwardOnly)
+							@elseif(!($forwardOnly??false))
 								You can use this variables to display user personalized information:
 								<br><br>
 								<div class="row">
