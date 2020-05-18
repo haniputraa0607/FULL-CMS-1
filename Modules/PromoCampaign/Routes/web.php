@@ -30,6 +30,9 @@ Route::group(['middleware' => ['web', 'validate_session', 'config_control:95'], 
     Route::any('step1/{slug}', 'PromoCampaignController@step1');
     Route::any('step2/{slug}', 'PromoCampaignController@step2');
 
+    Route::post('export', ['middleware' => ['feature_control:252'], 'uses' => 'PromoCampaignController@export']);
+    Route::any('import', ['middleware' => ['feature_control:251'], 'uses' => 'PromoCampaignController@import']);
+
 });
 
 Route::group(['middleware' => ['web', 'validate_session', 'config_control:92'], 'prefix' => 'referral'], function () {

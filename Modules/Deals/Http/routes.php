@@ -13,8 +13,8 @@ Route::group(['middleware' => ['web', 'validate_session', 'config_control:25,26,
     Route::any('update', ['middleware' => ['feature_control:75'], 'uses' => 'DealsController@updateReq']);
     Route::any('delete', ['middleware' => 'feature_control:76', 'uses' => 'DealsController@deleteDeal']);
     Route::any('voucher/delete', 'DealsController@deleteVoucher');
-    Route::post('export', ['middleware' => [], 'uses' => 'DealsController@exportDeals']);
-    Route::any('import', ['middleware' => [], 'uses' => 'DealsController@importDeals']);
+    Route::post('export', ['middleware' => ['feature_control:250'], 'uses' => 'DealsController@exportDeals']);
+    Route::any('import', ['middleware' => ['feature_control:249'], 'uses' => 'DealsController@importDeals']);
 
     /* TRANSACTION */
     Route::any('transaction', 'DealsController@transaction');
@@ -48,7 +48,7 @@ Route::group(['middleware' => ['web', 'validate_session', 'config_control:26'], 
     Route::any('update', ['middleware' => 'feature_control:80', 'uses' => 'DealsController@updateReq']);
     Route::any('delete', ['middleware' => 'feature_control:81', 'uses' => 'DealsController@deleteDeal']);
     Route::any('voucher/delete', 'DealsController@deleteVoucher');
-    Route::any('import', ['middleware' => [], 'uses' => 'DealsController@importDeals']);
+    Route::any('import', ['middleware' => ['feature_control:249'], 'uses' => 'DealsController@importDeals']);
 });
 
 Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'deals', 'namespace' => 'Modules\Advert\Http\Controllers'], function () {
@@ -85,7 +85,7 @@ Route::group(['middleware' => ['web', 'validate_session', 'config_control:26'], 
     Route::any('update', ['middleware' => 'feature_control:80', 'uses' => 'DealsController@updateReq']);
     Route::any('setting', 'DealsController@welcomeVoucherSetting');
     Route::any('update/status', 'DealsController@welcomeVoucherUpdateStatus');
-    Route::any('import', ['middleware' => [], 'uses' => 'DealsController@importDeals']);
+    Route::any('import', ['middleware' => ['feature_control:249'], 'uses' => 'DealsController@importDeals']);
 });
 
 /* Promotion Deals */

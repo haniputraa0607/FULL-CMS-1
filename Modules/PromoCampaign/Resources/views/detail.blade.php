@@ -285,6 +285,11 @@
                     <li class="">
                         <a href="#detail-information" data-toggle="tab"> Detail Information </a>
                     </li>
+                	<form action="{{ url('promo-campaign/export') }}" method="post" style="display: inline;">
+                		{{ csrf_field() }}
+					    <input type="hidden" value="{{ $result['id_promo_campaign'] }}" name="id_promo_campaign" />
+					    <button type="submit" class="btn green-jungle" style="float: right;"><i class="fa fa-download"></i> Export</button>
+					</form>
                 </ul>
             </div>
 
@@ -444,7 +449,7 @@
 						                    </div>
 						                </div>
 					                @endif
-                                @if( empty($result['promo_campaign_reports']) || empty($result['step_complete']))
+                                @if( empty($result['used_code']) || empty($result['step_complete']))
                                 <div class="row static-info">
                                     <div class="col-md-11 value">
                                         <a class="btn blue" href="{{ url('/')}}/promo-campaign/step1/{{$result['id_promo_campaign']}}">Edit Detail</a>
@@ -622,7 +627,7 @@
                                         </div>
                                         @endif
                                     @endif
-                                    @if( empty($result['promo_campaign_reports']) || empty($result['step_complete']))
+                                    @if( empty($result['used_code']) || empty($result['step_complete']))
                                     <div class="row static-info">
                                         <div class="col-md-11 value">
                                             <a class="btn blue" href="{{ url('/')}}/promo-campaign/step2/{{$result['id_promo_campaign']}}">Edit Rule</a>
