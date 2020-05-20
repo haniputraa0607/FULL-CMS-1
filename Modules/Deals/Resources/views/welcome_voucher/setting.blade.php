@@ -591,7 +591,7 @@ $configs    		= session('configs');
                             @if(MyHelper::hasAccess([95], $configs))
                                 <select id="id_all_deals" class="form-control select2" placeholder="Search Deals">
                                     @foreach($all_deals as $val)
-                                        <option id="{{$val['id_deals']}}" value="{{$val['id_deals']}}">{{$val['name_brand']}} - {{$val['deals_title']}}</option>
+                                        <option id="{{$val['id_deals']}}" value="{{$val['id_deals']}}">{{$val['deals_title']}}</option>
                                     @endforeach
                                 </select>
                             @else
@@ -619,7 +619,7 @@ $configs    		= session('configs');
                                             </a>
                                         </div>
                                         <div class="col-md-6">
-                                            <textarea class="form-control" type="text" rows="2" disabled>{{$val['name_brand']}} - {{$val['deals_title']}}</textarea>
+                                            <textarea class="form-control" type="text" rows="2" disabled>{{$val['deals_title']}}</textarea>
                                         </div>
                                         <div class="col-md-2">
                                             <input class="form-control price input-required" placeholder="Total" name="list_deals_total[]" type="text" value="{{$val['deals_total']}}" required>
