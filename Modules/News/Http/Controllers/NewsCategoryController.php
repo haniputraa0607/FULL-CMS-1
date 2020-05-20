@@ -24,7 +24,7 @@ class NewsCategoryController extends Controller
         ];
 
         // get category
-        $data['categories']    = $this->getData(MyHelper::post('news/be/category',['all'=>1]));
+        $data['categories']    = $this->getData(MyHelper::post('news/be/category',['all'=>1, 'admin' => '1']));
         return view('news::category.index',$data);
     }
 
