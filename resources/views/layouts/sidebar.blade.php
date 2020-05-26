@@ -1033,6 +1033,13 @@
 								</li>
 								@endif
 							@endif
+							@if(MyHelper::hasAccess([249], $grantedFeature))
+							<li class="nav-item {{($submenu_active == 'deals-import') ? 'active open' : ''}}">
+								<a href="{{url('deals/import')}}" class="nav-link ">
+									<span class="title">Import Deals</span>
+								</a>
+							</li>
+							@endif
 							@if(MyHelper::hasAccess([49], $configs))
 							@if(MyHelper::hasAccess([95], $grantedFeature))
 								<li class="nav-item {{($submenu_active == 'deals-autoresponse-claim-free-deals-success') ? 'active open' : ''}}">
@@ -1120,6 +1127,13 @@
 								</a>
 							</li>
 							@endif
+							@if(MyHelper::hasAccess([249], $grantedFeature))
+							<li class="nav-item {{($submenu_active == 'inject-voucher-import') ? 'active open' : ''}}">
+								<a href="{{url('inject-voucher/import')}}" class="nav-link ">
+									<span class="title">Import Inject Voucher</span>
+								</a>
+							</li>
+							@endif
 							@if(MyHelper::hasAccess([49], $configs))
 							@if(MyHelper::hasAccess([95], $grantedFeature))
 								<li class="nav-item {{($submenu_active == 'inject-voucher-autoresponse-receive-inject-voucher') ? 'active open' : ''}}">
@@ -1175,6 +1189,13 @@
 									</a>
 								</li>
 							@endif
+							@if(MyHelper::hasAccess([249], $grantedFeature))
+							<li class="nav-item {{($submenu_active == 'welcome-voucher-import') ? 'active open' : ''}}">
+								<a href="{{url('welcome-voucher/import')}}" class="nav-link ">
+									<span class="title">Import Welcome Voucher</span>
+								</a>
+							</li>
+							@endif
 							<li class="nav-item {{($submenu_active == 'welcome-voucher-autoresponse-receive-welcome-voucher') ? 'active open' : ''}}">
 								<a href="{{url('autoresponse/welcome-voucher/receive-welcome-voucher')}}" class="nav-link ">
 									<span class="title">[Response] Welcome Voucher</span>
@@ -1226,6 +1247,13 @@
 						<li class="nav-item {{($submenu_active == 'promo-campaign-list') ? 'active open' : ''}}">
 							<a href="{{url('promo-campaign')}}" class="nav-link ">
 								<span class="title">Promo Campaign List</span>
+							</a>
+						</li>
+						@endif
+						@if(MyHelper::hasAccess([251], $grantedFeature))
+						<li class="nav-item {{($submenu_active == 'promo-campaign-import') ? 'active open' : ''}}">
+							<a href="{{url('promo-campaign/import')}}" class="nav-link ">
+								<span class="title">Import Promo Campaign</span>
 							</a>
 						</li>
 						@endif

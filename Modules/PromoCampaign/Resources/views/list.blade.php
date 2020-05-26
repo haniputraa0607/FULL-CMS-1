@@ -45,6 +45,10 @@
             display: flex;
             justify-content: flex-end;
         }
+        .middle-left {
+            vertical-align: middle!important;
+            text-align: left;
+        }
     </style>
 @endsection
 
@@ -140,6 +144,7 @@
                         target: "tr"
                     }
                 },
+                ordering: false,
                 order: [0, "asc"],
                 paging: false,
                 lengthMenu: [
@@ -231,7 +236,6 @@
             <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_1">
             <thead>
               <tr class="header-table">
-                  <th>No</th>
                   <th>Name</th>
                   <th>Creator</th>
                   <th>Periode</th>
@@ -257,7 +261,6 @@
                             }
                         @endphp
                         <tr class="content-middle-center">
-                        	<td>{{ $i++ }}</td>
                             <td>{{ $res['campaign_name'] }}</td>
                             <td>{{ $res['user']['name'] }}</td>
                             <td>
@@ -265,7 +268,7 @@
                                 End&nbsp;&nbsp;&nbsp;: {{ date("d F Y", strtotime($date_end)) }}&nbsp;{{ date("H:i", strtotime($date_end)) }}
                             </td>
                             <td>{{$res['code_type']}}</td>
-                            <td class="nowrap">{{ $res['promo_type'] }}</td>
+                            <td>{{ $res['promo_type'] }}</td>
                             <td class="nowrap">{{ $res['product_type'] }}</td>
                             <td class="middle-center">
                                 @if ( empty($res['step_complete']) )
@@ -278,15 +281,20 @@
                                     <span class="sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #E7505A;padding: 5px 12px;color: #fff;">Not Started</span>
                                 @endif
                             </td>
-                            <td>
+                            <td class="nowrap middle-left">
                                 @if(MyHelper::hasAccess([201], $grantedFeature))
-                                    <a style="margin-bottom: 3px" class="btn btn-sm blue" href="{{ url('promo-campaign/detail', $res['id_promo_campaign']) }}"><i class="fa fa-search"></i></a>
+                                    <a class="btn btn-sm blue" href="{{ url('promo-campaign/detail', $res['id_promo_campaign']) }}"><i class="fa fa-search"></i></a>
+                                @endif
+                                @if(MyHelper::hasAccess([252], $grantedFeature))
+                                <form action="{{ url('promo-campaign/export') }}" method="post" style="display: inline;">
+			                		{{ csrf_field() }}
+								    <input type="hidden" value="{{ $res['id_promo_campaign'] }}" name="id_promo_campaign" />
+								    <button type="submit" class="btn btn-sm green-jungle"><i class="fa fa-download"></i></button>
+								</form>
                                 @endif
                                 @if(MyHelper::hasAccess([204], $grantedFeature))
-                                    @if( isset($res['date_start']) )
-                                        @if ($res['date_start'] > date("Y-m-d H:i:s"))
-                                            <a style="margin-bottom: 3px" class="btn btn-sm red" href="#" data-id="{{ $res['id_promo_campaign'] }}" id="btn-delete"><i class="fa fa-trash-o"></i></a>
-                                        @endif
+                                    @if( empty($res['used_code']) || empty($res['step_complete']))
+                                        <a class="btn btn-sm red" href="#" data-id="{{ $res['id_promo_campaign'] }}" id="btn-delete"><i class="fa fa-trash-o"></i></a>
                                     @endif
                                 @endif
                             </td>

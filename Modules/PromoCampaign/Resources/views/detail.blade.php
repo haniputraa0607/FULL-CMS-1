@@ -240,7 +240,13 @@
                         </div>
                         <div class="details">
                             <div class="number">
-                                <span data-counter="counterup" data-value="3">{{ !empty($result['total_coupon']) ? number_format(($result['total_coupon']??0)-($result['total']??0)) : isset($result['total_coupon']) ? 'unlimited' : '' }}</span>
+                                <span data-counter="counterup" data-value="3">
+                                @if( !empty($result['total_coupon']) )
+                                	{{ number_format(($result['total_coupon']??0)-($result['total']??0)) }}
+                                @elseif( isset($result['total_coupon']) && $result['total_coupon']==0)
+                                	{{ 'unlimited' }}
+                                @endif
+                            	</span>
                             </div>
                             <div class="desc"> Available </div>
                         </div>
@@ -266,7 +272,13 @@
                         </div>
                         <div class="details">
                             <div class="number">
-                                <span data-counter="counterup" data-value="{{$result['total_coupon']??''}}">{{ !empty($result['total_coupon']) ? number_format($result['total_coupon']??0) : isset($result['total_coupon']) ? 'unlimited' : '' }}</span>
+                                <span data-counter="counterup" data-value="{{$result['total_coupon']??''}}">
+                                	@if( !empty($result['total_coupon']) )
+	                                	{{ number_format($result['total_coupon']??0) }}
+	                                @elseif( isset($result['total_coupon']) && $result['total_coupon']==0)
+	                                	{{ 'unlimited' }}
+	                                @endif
+                                </span>
                             </div>
                             <div class="desc"> Total {{ isset($result['total_coupon']) ? 'Coupon' : '' }} </div>
                         </div>
@@ -285,6 +297,11 @@
                     <li class="">
                         <a href="#detail-information" data-toggle="tab"> Detail Information </a>
                     </li>
+                	<form action="{{ url('promo-campaign/export') }}" method="post" style="display: inline;">
+                		{{ csrf_field() }}
+					    <input type="hidden" value="{{ $result['id_promo_campaign'] }}" name="id_promo_campaign" />
+					    <button type="submit" class="btn green-jungle" style="float: right;"><i class="fa fa-download"></i> Export</button>
+					</form>
                 </ul>
             </div>
 
@@ -444,7 +461,7 @@
 						                    </div>
 						                </div>
 					                @endif
-                                @if( empty($result['promo_campaign_reports']) || empty($result['step_complete']))
+                                @if( empty($result['used_code']) || empty($result['step_complete']))
                                 <div class="row static-info">
                                     <div class="col-md-11 value">
                                         <a class="btn blue" href="{{ url('/')}}/promo-campaign/step1/{{$result['id_promo_campaign']}}">Edit Detail</a>
@@ -622,7 +639,7 @@
                                         </div>
                                         @endif
                                     @endif
-                                    @if( empty($result['promo_campaign_reports']) || empty($result['step_complete']))
+                                    @if( empty($result['used_code']) || empty($result['step_complete']))
                                     <div class="row static-info">
                                         <div class="col-md-11 value">
                                             <a class="btn blue" href="{{ url('/')}}/promo-campaign/step2/{{$result['id_promo_campaign']}}">Edit Rule</a>

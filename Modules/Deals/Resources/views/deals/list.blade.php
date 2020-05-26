@@ -17,6 +17,10 @@ $grantedFeature     = session('granted_features');
             vertical-align: middle!important;
             text-align: center;
         }
+        .middle-left {
+            vertical-align: middle!important;
+            text-align: left;
+        }
     </style>
 @endsection
 
@@ -30,6 +34,12 @@ $grantedFeature     = session('granted_features');
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
+
+        $('.list-deals').on('click', function() {
+            id = $(this).data('deals');
+            $('#modal-id-deals').val(id);
+        });
+
         $('#sample_1').dataTable({
                 language: {
                     aria: {
@@ -117,6 +127,7 @@ $grantedFeature     = session('granted_features');
                 }
             });
         });
+        
     </script>
     @yield('child-script')
 @endsection
@@ -167,8 +178,8 @@ $grantedFeature     = session('granted_features');
                         @if($deals_type !='WelcomeVoucher')
                             <th> Date Start </th>
                         @endif
-                        <th> Status </th>
-                        <th> Action </th>
+                        <th class="middle-center"> Status </th>
+                        <th class="middle-center"> Action </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -243,16 +254,7 @@ $grantedFeature     = session('granted_features');
 	                                    <span class="sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #E7505A;padding: 5px 12px;color: #fff;">Not Started</span>
 	                                @endif
 	                            </td>
-                                <td style="width: 80px;">
-                                    @if($deals_type == "Deals" && MyHelper::hasAccess([76], $grantedFeature) && $value['deals_total_claimed'] == 0)
-                                        <a data-toggle="confirmation" data-popout="true" class="btn btn-sm red delete" data-id="{{ $value['id_deals'] }}"><i class="fa fa-trash-o"></i></a>
-                                    @endif
-                                    @if($deals_type == "Hidden" && MyHelper::hasAccess([81], $grantedFeature) && $value['deals_total_claimed'] == 0)
-                                        <a data-toggle="confirmation" data-popout="true" class="btn btn-sm red delete" data-id="{{ $value['id_deals'] }}"><i class="fa fa-trash-o"></i></a>
-                                    @endif
-                                    @if($deals_type == "WelcomeVoucher" && MyHelper::hasAccess([183], $grantedFeature) && $value['deals_total_claimed'] == 0)
-                                        <a data-toggle="confirmation" data-popout="true" class="btn btn-sm red delete" data-id="{{ $value['id_deals'] }}"><i class="fa fa-trash-o"></i></a>
-                                    @endif
+                                <td nowrap class="middle-left">
                                     @if ($deals_type == "Deals" && MyHelper::hasAccess([73], $grantedFeature))
                                     <a href="{{ url('deals/detail') }}/{{ $value['id_deals'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
                                     @elseif ($deals_type == "Point" && MyHelper::hasAccess([73], $grantedFeature))
@@ -264,6 +266,26 @@ $grantedFeature     = session('granted_features');
                                             <a href="{{ url('inject-voucher/detail') }}/{{ $value['id_deals'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
                                         @endif
                                     @endif
+
+                                    @if ($value['deals_voucher_type']!='List Vouchers')
+                                	<form action="{{ url('deals/export') }}" method="post" style="display: inline;">
+                                		{{ csrf_field() }}
+									    <input type="hidden" value="{{ $value['id_deals'] }}" name="id_deals" />
+									    <input type="hidden" value="{{ $deals_type }}"  name="deals_type" />
+									    <button type="submit" class="btn btn-sm green-jungle"><i class="fa fa-download"></i></button>
+									</form>
+									@else
+									<a data-toggle="modal" href="#small" class="btn btn-sm green-jungle list-deals" data-deals="{{ $value['id_deals'] }}"><i class="fa fa-download"></i></a>
+                                    @endif
+                                    @if($deals_type == "Deals" && MyHelper::hasAccess([76], $grantedFeature) && $value['deals_total_claimed'] == 0)
+                                        <a data-toggle="confirmation" data-popout="true" class="btn btn-sm red delete" data-id="{{ $value['id_deals'] }}"><i class="fa fa-trash-o"></i></a>
+                                    @endif
+                                    @if($deals_type == "Hidden" && MyHelper::hasAccess([81], $grantedFeature) && $value['deals_total_claimed'] == 0)
+                                        <a data-toggle="confirmation" data-popout="true" class="btn btn-sm red delete" data-id="{{ $value['id_deals'] }}"><i class="fa fa-trash-o"></i></a>
+                                    @endif
+                                    @if($deals_type == "WelcomeVoucher" && MyHelper::hasAccess([183], $grantedFeature) && $value['deals_total_claimed'] == 0)
+                                        <a data-toggle="confirmation" data-popout="true" class="btn btn-sm red delete" data-id="{{ $value['id_deals'] }}"><i class="fa fa-trash-o"></i></a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -273,6 +295,27 @@ $grantedFeature     = session('granted_features');
         </div>
     </div>
 
+    <div class="modal fade bs-modal-sm" id="small" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Export List Voucher</h4>
+                </div>
+                <div class="modal-body row">
+	                <form action="{{url('deals/export')}}" method="post">
+	                	{{ csrf_field() }}
+					    <input type="hidden" value="" name="id_deals" id="modal-id-deals" />
+					    <input type="hidden" value="{{ $deals_type??'' }}"  name="deals_type" />
+			    		<button type="submit" class="btn green-jungle col-md-12" value="1" name="list_voucher"><i class="fa fa-download"></i> With Voucher</button>
+			    		<button type="submit" class="btn green-jungle col-md-12" value="0" name="list_voucher" style="margin-top: 15px"><i class="fa fa-download"></i> Without Voucher</button>
+	                </form>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 
 
 @endsection

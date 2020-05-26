@@ -7,6 +7,12 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Pagination\LengthAwarePaginator;
 
+use App\Exports\DealsExport;
+use App\Imports\DealsImport;
+use App\Imports\PromoWithHeadingImport;
+use App\Imports\PromoWithoutHeadingImport;
+use Maatwebsite\Excel\Facades\Excel;
+
 use App\Lib\MyHelper;
 use Session;
 
@@ -412,4 +418,87 @@ class PromoCampaignController extends Controller
         }
     }
 
+    public function export(Request $request)
+    {
+    	$post = $request->except('_token');
+    	
+        $post['step'] = 'all';
+        
+        $promo = MyHelper::post('promo-campaign/export',$post);
+
+        if( ($promo['status']??false) != 'success' ){
+            return back()->withErrors(['Something went wrong']);
+        }
+
+        $data = new DealsExport($promo['result']);
+
+        return Excel::download($data,'Config_Promo_Campaign_'.($promo['result']['rule'][0][1]??'').'_'.date('Ymdhis').'.xls');
+    }
+
+    public function import(Request $request)
+    {
+    	$post = $request->except('_token');
+
+    	if (empty($post)) {
+        	$data = [
+                'title'             => 'Promo Campaign',
+                'sub_title'         => 'Import',
+                'menu_active'       => 'promo-campaign',
+                'submenu_active'    => 'promo-campaign-import'
+            ];
+            
+            return view('promocampaign::import', $data);
+        }
+        if ($request->hasFile('import_file')) {
+            $path = $request->file('import_file')->getRealPath();
+            $import = new PromoWithoutHeadingImport();
+            $data1 = \Excel::import($import,$request->file('import_file'))??[];
+            $data2 = \Excel::toArray(new PromoWithHeadingImport(),$request->file('import_file'))??[];
+
+            $data = [];
+			foreach ($import->sheetNames as $key => $value) {
+				$data[$value] = $data2[$key];
+			}
+
+			$rule = [];
+			foreach ($import->sheetData[0]??[] as $key => $value) {
+				$rule[$value[0]] = $value[1];
+			}
+			$data['rule'] = $rule;
+
+            if(!empty($data)){
+            	unset($post['import_file']);
+            	$post['data'] = $data;
+
+                $import = MyHelper::post('promo-campaign/import', $post);
+
+				if (($import['status']??false) == 'success') 
+				{
+					$rpage = 'promo-campaign/detail/'.$import['promo']['id_promo_campaign'];
+
+					$redirect = redirect($rpage)->withSuccess($import['messages']);
+					if (!empty($import['warning'])) {
+						$redirect->withWarning($import['warning']??[]);
+					}
+					return $redirect;
+				}
+				else
+				{
+					return redirect('promo-campaign/import')->withErrors($import['messages']??['Import failed - Something went wrong'])->withInput();
+				}
+            }
+            else
+            {
+                return [
+                    'status'=>'fail',
+                    'messages'=>['File empty']
+                ];
+            }
+        }
+
+        return [
+            'status'=>'fail',
+            'messages'=>['Something went wrong']
+        ];
+    }
 }
