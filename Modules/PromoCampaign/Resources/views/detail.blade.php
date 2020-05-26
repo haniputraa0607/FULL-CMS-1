@@ -240,7 +240,13 @@
                         </div>
                         <div class="details">
                             <div class="number">
-                                <span data-counter="counterup" data-value="3">{{ !empty($result['total_coupon']) ? number_format(($result['total_coupon']??0)-($result['total']??0)) : isset($result['total_coupon']) ? 'unlimited' : '' }}</span>
+                                <span data-counter="counterup" data-value="3">
+                                @if( !empty($result['total_coupon']) )
+                                	{{ number_format(($result['total_coupon']??0)-($result['total']??0)) }}
+                                @elseif( isset($result['total_coupon']) && $result['total_coupon']==0)
+                                	{{ 'unlimited' }}
+                                @endif
+                            	</span>
                             </div>
                             <div class="desc"> Available </div>
                         </div>
@@ -266,7 +272,13 @@
                         </div>
                         <div class="details">
                             <div class="number">
-                                <span data-counter="counterup" data-value="{{$result['total_coupon']??''}}">{{ !empty($result['total_coupon']) ? number_format($result['total_coupon']??0) : isset($result['total_coupon']) ? 'unlimited' : '' }}</span>
+                                <span data-counter="counterup" data-value="{{$result['total_coupon']??''}}">
+                                	@if( !empty($result['total_coupon']) )
+	                                	{{ number_format($result['total_coupon']??0) }}
+	                                @elseif( isset($result['total_coupon']) && $result['total_coupon']==0)
+	                                	{{ 'unlimited' }}
+	                                @endif
+                                </span>
                             </div>
                             <div class="desc"> Total {{ isset($result['total_coupon']) ? 'Coupon' : '' }} </div>
                         </div>

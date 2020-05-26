@@ -426,11 +426,11 @@ class PromoCampaignController extends Controller
         
         $promo = MyHelper::post('promo-campaign/export',$post);
 
-        $data = new DealsExport($promo['result']);
-
-        if(!$data){
+        if( ($promo['status']??false) != 'success' ){
             return back()->withErrors(['Something went wrong']);
         }
+
+        $data = new DealsExport($promo['result']);
 
         return Excel::download($data,'Config_Promo_Campaign_'.($promo['result']['rule'][0][1]??'').'_'.date('Ymdhis').'.xls');
     }
