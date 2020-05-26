@@ -1045,7 +1045,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <div class="col-md-6">
-                                        <input type="text" id="field_event_latitude" class="form-control" name="news_event_latitude" value="{{ old('news_event_latitude') }}" id="lat" readonly>
+                                        <input type="text" class="form-control" name="news_event_latitude" value="{{ old('news_event_latitude') }}" id="lat" readonly>
                                     </div>
                                     <div class="col-md-6">
                                         <input type="text" class="form-control" name="news_event_longitude" value="{{ old('news_event_longitude') }}" id="lng" readonly>

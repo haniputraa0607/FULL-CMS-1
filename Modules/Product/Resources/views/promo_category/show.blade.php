@@ -35,7 +35,8 @@
           });
           const template = `
             <div class="input-group append-child" style="margin: 0 0 10px 0;">
-                <select type="text" placeholder="Category Name" class="form-control select2a" name="id_product_group[]" data-placeholder="Select Product">
+                <div class="input-group-addon handle"><i class="sort-icon fa fa-arrows"></i></div>
+                <select type="text" placeholder="Category Name" class="form-control select2a" name="id_product_group[]" data-placeholder="Select Product" required>
                     <option></option>
                     @foreach($products as $product)
                     <option value="{{$product['id_product_group']}}">{{$product['product_group_code']}} - {{$product['product_group_name']}}</option>
@@ -50,6 +51,7 @@
             $('#append-area').append(template);
             $('.select2a').select2();
           });
+          $('.sortable').sortable({handle:'.handle'});
         });
     </script>
 @endsection
@@ -172,9 +174,10 @@
                                     <i class="fa fa-question-circle tooltips" data-original-title="Produk dalam kategori" data-container="body"></i>
                                 </label>
                                 <div class="col-md-5">
-                                    <div id="append-area">
+                                    <div id="append-area" class="sortable">
                                         @foreach($promo_category['products'] as $selected_products)
                                         <div class="input-group append-child" style="margin: 0 0 10px 0;">
+                                            <div class="input-group-addon handle"><i class="sort-icon fa fa-arrows"></i></div>
                                             <select type="text" placeholder="Category Name" class="form-control select2" name="id_product_group[]" data-placeholder="Select Product">
                                                 <option></option>
                                                 @foreach($products as $product)

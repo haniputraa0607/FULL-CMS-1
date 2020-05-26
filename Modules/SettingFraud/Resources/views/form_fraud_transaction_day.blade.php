@@ -11,11 +11,11 @@ $configs = session('configs');
         </div>
     </div>
     <div class="portlet-body">
-        <p>Setting Fraud Detection transaction day adalah maksimal jumlah transaksi yang diperbolehkan dalam 1 hari untuk semua user.</p>
-        <p>Anda bisa memberikan action untuk setiap tipe, action dibagi menjadi 2 yaitu :</p>
+        <p>Setting Fraud Detection transaction day is the maximum number of transactions allowed in 1 day for all users.</p>
+        <p>You can provide actions for each type, actions are divided into 2 :</p>
         <ul>
-            <li>Auto Suspend : jika user melakukan pelanggaran sesuai dengan aturan yang ada maka account tersebut akan secara otomatis disuspend</li>
-            <li>Forward Admin : jika user melakukan pelanggaran sesuai dengan aturan yang ada maka akan mengirimkan notifikasi keadmin  </li>
+            <li>Auto Suspend : if the user violates the rules, the account will be automatically suspended </li>
+            <li>Forward Admin : send notification to admin if user is exposed to fraud </li>
         </ul>
     </div>
 </div>

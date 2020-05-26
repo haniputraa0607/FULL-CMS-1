@@ -4,7 +4,7 @@
  ?>
 @extends('layouts.main')
 
-@include('userrating::transactionDetail3')
+@include('transaction::transaction.transaction_detail')
 
 @section('page-style')
 @yield('sub-page-style')

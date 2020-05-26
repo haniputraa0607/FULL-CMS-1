@@ -433,6 +433,11 @@
         <!-- <li>
             <a href="#app-navigation" data-toggle="tab">App Navigation Text</a>
         </li> -->
+        @if(MyHelper::hasAccess([248], $grantedFeature))
+        <li>
+            <a href="#user_inbox" data-toggle="tab">User Inbox</a>
+        </li>
+		@endif
     </ul>
 </div>
 
@@ -787,6 +792,10 @@
     </div>
 	@endif
 	@include('setting::featured_deals')
+
+	@if(MyHelper::hasAccess([246], $grantedFeature))
+	@include('setting::user_inbox')
+	@endif
 
 	{{-- app logo --}}
     <div class="tab-pane" id="app-logo">

@@ -132,14 +132,14 @@
                     <div class="col-md-4 name">Image</div>
                     <div class="col-md-8 value">
                     	<span style="float: left;margin-right: 5px">:</span> 
-                    	<div>@if(empty($deals['deals_image'])) No Image @else <img src="{{ env('S3_URL_api').$deals['deals_image'] }}" style="width: 100px"> @endif</div>
+                    	<div><img src="{{ env('S3_URL_VIEW').$deals['deals_image'] }}" style="width: 100px"></div>
                     </div>
                 </div>
                 <div class="row static-info">
                     <div class="col-md-4 name">Warning Image</div>
                     <div class="col-md-8 value">
                     	<span style="float: left;margin-right: 5px">:</span> 
-                    	<div>@if(empty($deals['deals_warning_image'])) Use Global @else <img src="{{ env('S3_URL_api').$deals['deals_warning_image'] }}" style="width: 100px">@endif</div>
+                    	<div>@if(empty($deals['deals_warning_image'])) Use Global @else <img src="{{ env('S3_URL_VIEW').$deals['deals_warning_image'] }}" style="width: 100px">@endif</div>
                 	</div>
                 </div>
                 

@@ -115,6 +115,7 @@ class UserRatingController extends Controller
         $data = [
             'popup_min_interval' => ['value',$request->post('popup_min_interval')],
             'popup_max_refuse' => ['value',$request->post('popup_max_refuse')],
+            'popup_max_days' => ['value',$request->post('popup_max_days')],
             'rating_question_text' => ['value_text',substr($request->post('rating_question_text'),0,40)]
         ];
         $update = MyHelper::post('setting/update2',['update'=>$data]);

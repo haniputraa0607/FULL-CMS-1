@@ -443,7 +443,7 @@ class UsersController extends Controller
 			if($checkpin['status'] != "success")
 				return back()->withErrors(['invalid_credentials' => 'Invalid PIN'])->withInput();
 			else
-				Session::put('secure','yes');
+				Session::put('secure','yes');Session::put('secure_last_activity',time());
 		}
 
 		if(isset($post['phone'])){
@@ -474,13 +474,13 @@ class UsersController extends Controller
 			// print_r($post);exit;
 			$update = MyHelper::post('users/update/level', $post);
 			// print_r($update);exit;
-			return parent::redirect($update, 'Account Level has been changed.');
+			return parent::redirect($update, 'Account Level has been changed.',url()->current().'#permission');
         }
 
 		if (isset($post['password_permission'])) {
 			$post['phone'] = $phone;
 			$update = MyHelper::post('users/update/permission', $post);
-			return parent::redirect($update, 'Account Permission has been changed.');
+			return parent::redirect($update, 'Account Permission has been changed.',url()->current().'#permission');
 		}
 		if (isset($post['is_suspended'])) {
 			$post['phone'] = $phone;
@@ -488,7 +488,7 @@ class UsersController extends Controller
 			return parent::redirect($update, 'Suspend Status has been changed.');
         }
 
-		if(empty(Session::get('secure'))){
+		if(empty(Session::get('secure')) || Session::get('secure_last_activity') < (time() - 900)){
 			$data = [ 'title'             => 'User',
 					  'menu_active'       => 'user',
 					  'submenu_active'    => 'user-list',
@@ -719,6 +719,8 @@ class UsersController extends Controller
 			if(isset($post['take'])) $takes = $post['take'];
 			if(isset($post['order_field'])) $order_fields = $post['order_field'];
 			if(isset($post['order_method'])) $order_methods = $post['order_method'];
+            if(isset($post['conditions'])) $conditions = $post['conditions'];
+            if(isset($post['rule'])) $rule = $post['rule'];
 			$post = Session::get('form-log');
 
 			if(isset($takes) && isset($order_fields) && isset ($order_methods)){
@@ -726,6 +728,11 @@ class UsersController extends Controller
 				$post['order_field'] = $order_fields;
 				$post['order_method'] = $order_methods;
 			}
+
+			if(isset ($conditions) && isset ($rule)){
+                $post['conditions'] = $conditions;
+                $post['rule'] = $rule;
+            }
 		}
 
 		if(!empty($post)){
@@ -793,9 +800,9 @@ class UsersController extends Controller
 			if($checkpin['status'] != "success")
 				return back()->withErrors(['invalid_credentials' => 'Invalid PIN'])->withInput();
 			else
-				Session::put('secure','yes');
+				Session::put('secure','yes');Session::put('secure_last_activity',time());
 		}
-		if(empty(Session::get('secure'))){
+		if(empty(Session::get('secure')) || Session::get('secure_last_activity') < (time() - 900)){
 			$data = [ 'title'             => 'User',
 					  'menu_active'       => 'user',
 					  'submenu_active'    => 'user-list',

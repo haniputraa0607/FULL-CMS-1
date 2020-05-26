@@ -338,6 +338,7 @@
     }
 
 	$('[data-toggle=confirmation]').confirmation({ btnOkClass: 'btn btn-sm btn-success submit', btnCancelClass: 'btn btn-sm btn-danger'});
+    $('[data-toggle=confirmationx]').confirmation({ btnOkClass: 'btn btn-sm btn-success', btnCancelClass: 'btn btn-sm btn-danger'});
 
 	$(document).on('click', '.submit', function() {
 		if ($('#pinUser').val() == ''){
@@ -422,7 +423,7 @@
 															<span class="sale-num font-red">not verified</span>
 														@endif
 													</li>
-													<!-- <li>
+													<li>
 														<span class="sale-info"> Email
 															<i class="fa fa-img-down"></i>
 														</span>
@@ -431,7 +432,7 @@
 														@else
 															<span class="sale-num font-red">not verified</span>
 														@endif
-													</li> -->
+													</li>
 												</ul>
 											</div>
 										</div>
@@ -449,7 +450,7 @@
 {{--                                                <i class="fa fa-calendar-check-o"></i> {{$profile['celebrate']}} </li>--}}
 {{--                                            <li class="list-group-item" style="padding: 5px !important;" title="User's Job">--}}
 {{--                                                <i class="fa fa-black-tie"></i> {{$profile['job']}} </li>--}}
-                                            
+
 {{--                                            @if(MyHelper::hasAccess([96], $configs))--}}
 											<li class="list-group-item" style="padding: 5px !important;" title="User Province">
 												<i class="fa fa-map"></i> @if(isset($profile['province_name'])){{$profile['province_name']}} @endif</li>
@@ -843,7 +844,7 @@
                                                                     {{csrf_field()}}
                                                                     <input type="hidden" name="action" value="delete_inbox">
                                                                     <input type="hidden" name="id_inbox" value="{{$it['id_inbox']}}">
-                                                                    <button class="btn btn-sm btn-danger" data-toggle="confirmation"
+                                                                    <button class="btn btn-sm btn-danger" data-toggle="confirmationx"
                                                                     data-btn-ok-label="Delete" data-btn-ok-class="btn btn-danger"
                                                                     data-btn-ok-icon-class="material-icons" data-btn-ok-icon-content="check"
                                                                     data-btn-cancel-label="No" data-btn-cancel-class="btn-info"
@@ -1211,20 +1212,20 @@
 													<option value="Customer" @if($profile['level'] == 'Customer') selected @endif>Customer</option>
 												</select>
 											</div>
-{{--											<div class="form-group">--}}
-{{--												<label class="control-label">Phone Verified</label>--}}
-{{--												<div class="mt-radio-inline">--}}
-{{--													<label class="mt-radio">--}}
-{{--														<input type="radio" name="phone_verified" id="optionsRadios1" value="1" @if($profile['phone_verified'] == '1') checked @endif > Verified--}}
-{{--														<span></span>--}}
-{{--													</label>--}}
-{{--													<label class="mt-radio">--}}
-{{--														<input type="radio" name="phone_verified" id="optionsRadios2" value="0" @if($profile['phone_verified'] == '0') checked @endif> Not Verified--}}
-{{--														<span></span>--}}
-{{--													</label>--}}
-{{--												</div>--}}
-{{--											</div>--}}
-											<!-- <div class="form-group">
+											<div class="form-group">
+												<label class="control-label">Phone Verified</label>
+												<div class="mt-radio-inline">
+													<label class="mt-radio">
+														<input type="radio" name="phone_verified" id="optionsRadios1" value="1" @if($profile['phone_verified'] == '1') checked @endif > Verified
+														<span></span>
+													</label>
+													<label class="mt-radio">
+														<input type="radio" name="phone_verified" id="optionsRadios2" value="0" @if($profile['phone_verified'] == '0') checked @endif> Not Verified
+														<span></span>
+													</label>
+												</div>
+											</div>
+											<div class="form-group">
 												<label class="control-label">Email Verified</label>
 												<div class="mt-radio-inline">
 													<label class="mt-radio">
@@ -1236,7 +1237,7 @@
 														<span></span>
 													</label>
 												</div>
-											</div> -->
+											</div>
 											<div class="margiv-top-10">
 												<button class="btn green"> Save Changes </button>
 											</div>
@@ -1255,7 +1256,7 @@
 										{{ csrf_field() }}
 											<div class="form-group">
 												<label class="control-label">New PIN</label>
-												<input type="password" class="form-control" name="password_new" maxLength="6" minLength="6" onkeypress="return isNumberKey(event)"/> </div>
+												<input type="password" class="form-control" name="password_new" maxLength="6" minLength="6" onkeypress="return isNumberKey(event)" autocomplete="new-password" /> </div>
 											<div class="form-group">
 												<label class="control-label">Re-type New PIN</label>
 												<input type="password" class="form-control" name="password_new_confirmation" maxLength="6" minLength="6" onkeypress="return isNumberKey(event)"/> </div>
@@ -1288,7 +1289,7 @@
 												<div class="col-md-8"></div>
 											</div>
 											<div class="margin-top-10">
-												<a type="button" data-toggle="confirmation" data-original-title="Are you sure to change the suspend status of this user ?" data-placement="bottom" data-popout="true" class="btn green">Save Changes</a> 
+												<a type="button" data-toggle="confirmation" data-original-title="Are you sure to change the suspend status of this user ?" data-placement="bottom" data-popout="true" class="btn green">Save Changes</a>
 											</div>
 										</form>
 									</div>

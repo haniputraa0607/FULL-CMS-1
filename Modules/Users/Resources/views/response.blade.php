@@ -1283,7 +1283,7 @@ $configs = session('configs');
 						<div class="col-md-9">
 							<input type="text" placeholder="Forward Subject" class="form-control" name="autocrm_forward_email_subject" id="autocrm_forward_email_subject" value="{{$data['autocrm_forward_email_subject']}}">
 							<br>
-							@if ($subject != 'cron-transaction')
+							@if ($subject != 'cron-transaction' && !($noUser??false))
 								You can use this variables to display user personalized information:
 								<br><br>
 								<div class="row">
@@ -1322,7 +1322,7 @@ $configs = session('configs');
 						</div>
 						<div class="col-md-9">
 							<textarea name="autocrm_forward_email_content" id="autocrm_forward_email_content" class="form-control summernote"><?php echo $data['autocrm_forward_email_content']; ?></textarea>
-							@if ($subject != 'cron-transaction')
+							@if ($subject != 'cron-transaction' && !($noUser??false))
 								You can use this variables to display user personalized information:
 								<br><br>
 								<div class="row">
@@ -1339,7 +1339,7 @@ $configs = session('configs');
 										@endforeach
 									@endif
 								</div>
-							@else
+							@elseif(!($forwardOnly??false))
 								You can use this variables to display user personalized information:
 								<br><br>
 								<div class="row">
@@ -1347,6 +1347,9 @@ $configs = session('configs');
 										<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '%table_trx%'" onClick="addForwardContent('%table_trx%');">{{ str_replace('_',' ','%table_trx%') }}</span>
 									</div>
 								</div>
+							@endif
+							@if($customNotes??false)
+							<span class="help-block">{{$customNotes}}</span>
 							@endif
 						</div>
 					</div>

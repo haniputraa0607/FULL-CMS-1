@@ -264,6 +264,19 @@
                         </div>
                     </div>
                     <div class="row">
+                        <label class="col-md-3 control-label text-right">Transaction Date <i class="fa fa-question-circle tooltips" data-original-title="Rentang hari maksimal dari transaksi yang memungkinkan untuk ditampilkan di popup rating mobile apps" data-container="body"></i></label>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="number" min="0" class="form-control" name="popup_max_days" required value="{{old('popup_max_days',$setting['popup_max_days']['value']??3)}}" /><br/>
+                                    <span class="input-group-addon">
+                                        days before
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <label class="col-md-3 control-label text-right">Rating Question <i class="fa fa-question-circle tooltips" data-original-title="Teks yang akan ditampilkan di atas pilihan bintang. Klik ikon ini untuk melihat detail." data-container="body" data-toggle="modal" data-target="#modalInfo2"></i></label>
                         <div class="col-md-5">
                             <div class="form-group">
