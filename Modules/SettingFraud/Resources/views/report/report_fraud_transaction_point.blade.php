@@ -132,28 +132,18 @@
                         <td>{{$value['at_outlet']['outlet_name']}}</td>
                         <td>{{$value['most_outlet']['outlet_name']}}</td>
                         <td>
-                            <div class="form-group row">
-                                <label class="col-md-6">Detection Parameter</label>
-                                <div class="col-md-6"><input class="form-control" disabled value="(maximum) {{$value['fraud_setting_parameter_detail']}}"></div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-md-6">Auto Suspend</label>
-                                <div class="col-md-6"><input class="form-control" disabled value="@if($value['fraud_setting_auto_suspend_status'] == 1) Active @else Inactive @endif"></div>
-                            </div>
+                            <label>Detection Parameter</label>
+                            <div><input class="form-control" disabled value="(maximum) {{$value['fraud_setting_parameter_detail']}}"></div>
+                            <label>Auto Suspend</label>
+                            <div><input class="form-control" disabled value="@if($value['fraud_setting_auto_suspend_status'] == 1) Active @else Inactive @endif"></div>
                             @if($value['fraud_setting_auto_suspend_status'] == 1 )
-                                <div class="form-group row">
-                                    <label class="col-md-6">Auto Suspend Value</label>
-                                    <div class="col-md-6"><input class="form-control" disabled value="(maximum) {{$value['fraud_setting_auto_suspend_value']}}"></div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-6">Auto Suspend Time Period</label>
-                                    <div class="col-md-6"><input class="form-control" disabled value="{{$value['fraud_setting_auto_suspend_time_period']}} (day)"></div>
-                                </div>
+                                <label>Auto Suspend Value</label>
+                                <div><input class="form-control" disabled value="(maximum) {{$value['fraud_setting_auto_suspend_value']}}"></div>
+                                <label>Auto Suspend Time Period</label>
+                                <div><input class="form-control" disabled value="{{$value['fraud_setting_auto_suspend_time_period']}} (day)"></div>
                             @endif
-                            <div class="form-group row">
-                                <label class="col-md-6">Forward Admin</label>
-                                <div class="col-md-6"><input class="form-control" disabled value="@if($value['fraud_setting_forward_admin_status'] == 1) Active @else Inactive @endif"></div>
-                            </div>
+                            <label>Forward Admin</label>
+                            <div><input class="form-control" disabled value="@if($value['fraud_setting_forward_admin_status'] == 1) Active @else Inactive @endif"></div>
                         </td>
                     </tr>
                 @endforeach

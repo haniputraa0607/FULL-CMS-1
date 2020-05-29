@@ -92,7 +92,7 @@ $configs = session('configs');
                                             </label>
                                         </div>
                                         <div class="col-md-9">
-                                            <select name="email_toogle" id="email_toogle_check_referral_user" class="form-control select2" onChange="visibleDiv('email',this.value,'check_promo_code')">
+                                            <select name="email_toogle" id="email_toogle_check_referral_user" class="form-control select2" onChange="visibleDiv('email',this.value,'check_referral_user')">
                                                 <option value="0" @if(old('email_toogle') == '0') selected @else @if(isset($result[7]['email_toogle']) && $result[7]['email_toogle'] == "0") selected @endif @endif>Disabled</option>
                                                 <option value="1" @if(old('email_toogle') == '1') selected @else @if(isset($result[7]['email_toogle']) && $result[7]['email_toogle'] == "1") selected @endif @endif>Enabled</option>
                                             </select>
@@ -127,7 +127,7 @@ $configs = session('configs');
                                             <div class="row">
                                                 @foreach($textreplaces_between as $key=>$row)
                                                     <div class="col-md-3" style="margin-bottom:5px;">
-                                                        <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addEmailSubject('{{ $row['keyword'] }}','check_promo_code');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+                                                        <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addEmailSubject('{{ $row['keyword'] }}','check_referral_user');">{{ str_replace('_',' ',$row['keyword']) }}</span>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -147,7 +147,7 @@ $configs = session('configs');
                                             <div class="row" >
                                                 @foreach($textreplaces_between as $key=>$row)
                                                     <div class="col-md-3" style="margin-bottom:5px;">
-                                                        <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addEmailContent('{{ $row['keyword'] }}','check_promo_code');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+                                                        <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addEmailContent('{{ $row['keyword'] }}','check_referral_user');">{{ str_replace('_',' ',$row['keyword']) }}</span>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -165,7 +165,7 @@ $configs = session('configs');
                                             </label>
                                         </div>
                                         <div class="col-md-9">
-                                            <select name="sms_toogle" id="sms_toogle" class="form-control select2" onChange="visibleDiv('sms',this.value,'check_promo_code')">
+                                            <select name="sms_toogle" id="sms_toogle" class="form-control select2" onChange="visibleDiv('sms',this.value,'check_referral_user')">
                                                 <option value="0" @if(old('sms_toogle') == '0') selected @else @if(isset($result[7]['sms_toogle']) && $result[7]['sms_toogle'] == "0") selected @endif @endif>Disabled</option>
                                                 <option value="1" @if(old('sms_toogle') == '1') selected @else @if(isset($result[7]['sms_toogle']) && $result[7]['sms_toogle'] == "1") selected @endif @endif>Enabled</option>
                                             </select>
@@ -199,7 +199,7 @@ $configs = session('configs');
                                             <div class="row">
                                                 @foreach($textreplaces_between as $key=>$row)
                                                     <div class="col-md-3" style="margin-bottom:5px;">
-                                                        <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addSmsContent('{{ $row['keyword'] }}','check_promo_code');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+                                                        <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addSmsContent('{{ $row['keyword'] }}','check_referral_user');">{{ str_replace('_',' ',$row['keyword']) }}</span>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -223,7 +223,7 @@ $configs = session('configs');
                                             </label>
                                         </div>
                                         <div class="col-md-9">
-                                            <select name="whatsapp_toogle" id="whatsapp_toogle" class="form-control select2 field_whatsapp_check_referral_user" onChange="visibleDiv('whatsapp',this.value,'check_promo_code')" @if(!$api_key_whatsapp) disabled @endif>
+                                            <select name="whatsapp_toogle" id="whatsapp_toogle" class="form-control select2 field_whatsapp_check_referral_user" onChange="visibleDiv('whatsapp',this.value,'check_referral_user')" @if(!$api_key_whatsapp) disabled @endif>
                                                 <option value="0" @if(old('whatsapp_toogle') == '0') selected @else @if(isset($result[7]['whatsapp_toogle']) && $result[7]['whatsapp_toogle'] == "0") selected @endif @endif>Disabled</option>
                                                 <option value="1" @if($api_key_whatsapp) @if(old('whatsapp_toogle') == '1') selected @else @if(isset($result[7]['whatsapp_toogle']) && $result[7]['whatsapp_toogle'] == "1") selected @endif @endif @endif>Enabled</option>
                                             </select>
@@ -257,7 +257,7 @@ $configs = session('configs');
                                                 <div class="row">
                                                     @foreach($textreplaces_between as $key=>$row)
                                                         <div class="col-md-3" style="margin-bottom:5px;">
-                                                            <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal; height:40px" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addWhatsappContent('{{ $row['keyword'] }}','check_promo_code');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+                                                            <span class="btn dark btn-xs btn-block btn-outline var"  style="white-space: normal; height:40px" data-toogle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addWhatsappContent('{{ $row['keyword'] }}','check_referral_user');">{{ str_replace('_',' ',$row['keyword']) }}</span>
                                                         </div>
                                                     @endforeach
                                                 </div>

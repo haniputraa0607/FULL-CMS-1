@@ -92,7 +92,7 @@
 
     @if(!empty($result))
     <div style="text-align: right">
-        <a class="btn blue" href="{{url('fraud-detection/report/referral-user')}}?export-excel=1"><i class="fa fa-download"></i> Export to Excel</a>
+        <a class="btn blue" href="{{url('fraud-detection/report/referral')}}?export-excel=1"><i class="fa fa-download"></i> Export to Excel</a>
     </div>
     @endif
 
