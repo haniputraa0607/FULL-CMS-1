@@ -183,8 +183,10 @@
                         <div class="col-7 Ubuntu-Medium text-grey">
                             <?php
                             $topping = '';
-                            foreach ($data['modifiers'] as $mf){
-                                $topping .= $mf['text']. '('.$mf['qty'].'), ';
+                            if(isset($data['modifiers'])){
+                                foreach ($data['modifiers'] as $mf){
+                                    $topping .= $mf['text']. '('.$mf['qty'].'), ';
+                                }
                             }
                             echo '<div style="font-size: 11px;">'.substr($topping, 0, -2).'</div>';
                             ?>

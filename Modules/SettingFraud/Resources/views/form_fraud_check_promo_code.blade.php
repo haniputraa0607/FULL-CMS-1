@@ -37,7 +37,7 @@ $configs = session('configs');
             </div>
             <div class="portlet-body form">
                 <div class="form-group">
-                    <label class="col-md-4 control-label" >Fraud Detection Parameter <i class="fa fa-question-circle tooltips" data-original-title="Fraud terjadi ketika melakukan pengecekan kode promo dalam waktu berdekatan." data-container="body"></i></label>
+                    <label class="col-md-4 control-label" >Fraud Detection Parameter <i class="fa fa-question-circle tooltips" data-original-title="Fraud occurs when checking promo codes in close proximity." data-container="body"></i></label>
                     <div class="col-md-8">
                         <input type="text" class="form-control field_check_promo_code" name="parameter_detail" value="{{$result[5]['parameter']}}" disabled>
                     </div>
@@ -74,7 +74,7 @@ $configs = session('configs');
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" >Hold Time <i class="fa fa-question-circle tooltips" data-original-title="Waktu berhenti user ketika sudah melebihi batas melakukan pengecekan voucher." data-container="body"></i></label>
+                    <label class="col-md-4 control-label" >Hold Time <i class="fa fa-question-circle tooltips" data-original-title="The user stops when it exceeds the limit for checking vouchers." data-container="body"></i></label>
                     <div class="col-md-6">
                         <div class="input-group">
                             <input type="number" class="form-control field_check_promo_code price" min="1" max="59" name="hold_time" value="{{$result[5]['hold_time']}}">
@@ -86,7 +86,7 @@ $configs = session('configs');
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" >Return Message <i class="fa fa-question-circle tooltips" data-original-title="Pesan yang akan ditampilkan kepada user ketika user sudah melebihi batas pengecekan voucher." data-container="body"></i></label>
+                    <label class="col-md-4 control-label" >Return Message <i class="fa fa-question-circle tooltips" data-original-title="The message will be displayed to the user when the user has exceeded the voucher checking limit." data-container="body"></i></label>
                     <div class="col-md-6">
                         <textarea type="text" class="form-control field_check_promo_code" name="result_text">{{$result[5]['result_text']}}</textarea>
                     </div>
@@ -125,7 +125,7 @@ $configs = session('configs');
                                         <div class="input-icon right">
                                             <label class="col-md-3 control-label">
                                                 Status
-                                                <i class="fa fa-question-circle tooltips" data-original-title="pilih enabled untuk mengaktifkan email sebagai media pengiriman laporan fraud detection" data-container="body"></i>
+                                                <i class="fa fa-question-circle tooltips" data-original-title="select enabled to activate email as a media for sending fraud detection reports" data-container="body"></i>
                                             </label>
                                         </div>
                                         <div class="col-md-9">
@@ -140,7 +140,7 @@ $configs = session('configs');
                                         <div class="input-icon right">
                                             <label for="multiple" class="control-label col-md-3">
                                                 Email Recipient
-                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan alamat email admin yang akan menerima laporan fraud detection, jika lebih dari 1 pisahkan dengan tanda koma (,)" data-container="body"></i>
+                                                <i class="fa fa-question-circle tooltips" data-original-title="fill in the email address of the admin who will receive a report of fraud detection, if more than 1 separated by commas (,)" data-container="body"></i>
                                             </label>
                                         </div>
                                         <div class="col-md-9">
@@ -153,7 +153,7 @@ $configs = session('configs');
                                         <div class="input-icon right">
                                             <label class="col-md-3 control-label">
                                                 Subject
-                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan subjek email, tambahkan text replacer bila perlu" data-container="body"></i>
+                                                <i class="fa fa-question-circle tooltips" data-original-title="filled with email subject, add text replacer if necessary" data-container="body"></i>
                                             </label>
                                         </div>
                                         <div class="col-md-9">
@@ -174,7 +174,7 @@ $configs = session('configs');
                                         <div class="input-icon right">
                                             <label for="multiple" class="control-label col-md-3">
                                                 Content
-                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten email, tambahkan text replacer bila perlu" data-container="body"></i>
+                                                <i class="fa fa-question-circle tooltips" data-original-title="filled with email content, add text replacer if necessary" data-container="body"></i>
                                             </label>
                                         </div>
                                         <div class="col-md-9">
@@ -198,7 +198,7 @@ $configs = session('configs');
                                         <div class="input-icon right">
                                             <label class="col-md-3 control-label">
                                                 Status
-                                                <i class="fa fa-question-circle tooltips" data-original-title="pilih enabled untuk mengaktifkan sms sebagai media pengiriman auto crm ini" data-container="body"></i>
+                                                <i class="fa fa-question-circle tooltips" data-original-title="Select Enable to enable SMS as the delivery media for this Auto CRM" data-container="body"></i>
                                             </label>
                                         </div>
                                         <div class="col-md-9">
@@ -213,7 +213,7 @@ $configs = session('configs');
                                         <div class="input-icon right">
                                             <label for="multiple" class="control-label col-md-3">
                                                 SMS Recipient
-                                                <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan no handphone admin yang akan menerima laporan fraud detection, jika lebih dari 1 pisahkan dengan tanda koma (,)" data-container="body"></i>
+                                                <i class="fa fa-question-circle tooltips" data-original-title="filled with admin cellphone number that will receive a report of fraud detection, if more than 1 separated by commas (,)" data-container="body"></i>
                                             </label>
                                         </div>
                                         <div class="col-md-9">
@@ -225,7 +225,7 @@ $configs = session('configs');
                                         <div class="input-icon right">
                                             <label for="multiple" class="control-label col-md-3">
                                                 SMS Content
-                                                <i class="fa fa-question-circle tooltips" data-original-title="isi pesan sms, tambahkan text replacer bila perlu" data-container="body"></i>
+                                                <i class="fa fa-question-circle tooltips" data-original-title="Fill in the SMS message, add text replacer if necessary" data-container="body"></i>
                                             </label>
                                         </div>
                                         <div class="col-md-9">
@@ -256,7 +256,7 @@ $configs = session('configs');
                                         <div class="input-icon right">
                                             <label class="col-md-3 control-label">
                                                 Status
-                                                <i class="fa fa-question-circle tooltips" data-original-title="pilih enabled untuk mengaktifkan whatsApp sebagai media pengiriman auto crm ini" data-container="body"></i>
+                                                <i class="fa fa-question-circle tooltips" data-original-title="Select enabled to activate WhatsApp as the auto crm's delivery media" data-container="body"></i>
                                             </label>
                                         </div>
                                         <div class="col-md-9">
@@ -271,7 +271,7 @@ $configs = session('configs');
                                             <div class="input-icon right">
                                                 <label for="multiple" class="control-label col-md-3">
                                                     WhatsApp Recipient
-                                                    <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan no WhatsApp admin yang akan menerima laporan fraud detection, jika lebih dari 1 pisahkan dengan tanda koma (,)" data-container="body"></i>
+                                                    <i class="fa fa-question-circle tooltips" data-original-title="filled with WhatsApp admin no, which will receive a report of fraud detection, if more than 1 separated by commas (,)" data-container="body"></i>
                                                 </label>
                                             </div>
                                             <div class="col-md-9">
@@ -283,7 +283,7 @@ $configs = session('configs');
                                             <div class="input-icon right">
                                                 <label for="multiple" class="control-label col-md-3">
                                                     WhatsApp Content
-                                                    <i class="fa fa-question-circle tooltips" data-original-title="diisi dengan konten whatsapp, tambahkan text replacer bila perlu" data-container="body"></i>
+                                                    <i class="fa fa-question-circle tooltips" data-original-title="filled with whatsapp content, add text replacer if necessary" data-container="body"></i>
                                                 </label>
                                             </div>
                                             <div class="col-md-9">

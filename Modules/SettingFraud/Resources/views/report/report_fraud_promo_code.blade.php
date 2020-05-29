@@ -100,24 +100,35 @@
         <table class="table table-striped table-bordered table-hover">
             <thead>
             <tr>
-                <th width="5%"> Action </th>
                 <th width="5%"> User Name </th>
                 <th width="5%"> User Phone </th>
                 <th width="5%"> User Email </th>
                 <th width="5%"> Date Fraud </th>
                 <th width="8%"> Time Fraud </th>
+                <th width="8%"> Fraud Setting </th>
             </tr>
             </thead>
             <tbody>
             @if(!empty($result))
                 @foreach($result as $value)
                     <tr>
-                        <td><a href="{{ url('fraud-detection/report/detail/promo-code') }}/{{ $value['id_fraud_detection_log_check_promo_code'] }}" target="_blank" class="btn btn-block blue btn-xs"><i class="fa fa-edit"></i> Detail</a></td>
                         <td>{{$value['name']}}</td>
                         <td>{{$value['phone']}}</td>
                         <td>{{$value['email']}}</td>
                         <td>{{date("d F Y", strtotime($value['created_at']))}}</td>
                         <td>{{date("H:i", strtotime($value['created_at']))}}</td>
+                        <td>
+                            <label>Number of violation</label>
+                            <input class="form-control" disabled value="(maximum) {{$value['fraud_setting_parameter_detail']}} validation">
+                            <label>Parameter Time</label>
+                            <input class="form-control" disabled value="(below) {{$value['fraud_parameter_detail_time']}}">
+                            <label>Hold Time</label>
+                            <input class="form-control" disabled value="{{$value['fraud_hold_time']}} (minutes)">
+                            <label>Auto Suspend</label>
+                            <input class="form-control" disabled value="@if($value['fraud_setting_auto_suspend_status'] == 1) Active @else Inactive @endif">
+                            <label>Forward Admin</label>
+                            <input class="form-control" disabled value="@if($value['fraud_setting_forward_admin_status'] == 1) Active @else Inactive @endif">
+                        </td>
                     </tr>
                 @endforeach
             @else

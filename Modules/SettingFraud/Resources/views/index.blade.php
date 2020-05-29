@@ -647,6 +647,25 @@ $configs    		= session('configs');
             visibleDiv('whatsapp', "{{$result[5]['whatsapp_toogle']}}",'check_promo_code')
             @endif
 
+            //For check referral
+            divMain('referral','{{$result[6]['fraud_settings_status']}}')
+            @if (isset($result[6]['auto_suspend_status']))
+            checkboxAction('checkbox_auto_suspend-referral')
+            @endif
+            @if (isset($result[6]['forward_admin_status']))
+            checkboxAction('checkbox_forward_admin-referral')
+            @endif
+            @if (isset($result[6]['email_toogle']))
+            visibleDiv('email', "{{$result[6]['email_toogle']}}",'referral')
+            $('#email_toogle_transaction_in_between').val("{{$result[6]['email_toogle']}}")
+            @endif
+            @if (isset($result[6]['sms_toogle']))
+            visibleDiv('sms', "{{$result[6]['sms_toogle']}}",'referral')
+            @endif
+            @if (isset($result[6]['whatsapp_toogle']))
+            visibleDiv('whatsapp', "{{$result[6]['whatsapp_toogle']}}",'referral')
+            @endif
+
             //For check referral user
             divMain('check_referral_user','{{$result[7]['fraud_settings_status']}}')
 
