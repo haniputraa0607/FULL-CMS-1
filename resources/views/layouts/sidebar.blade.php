@@ -471,11 +471,11 @@
 					</li>
 					@endif
 					@if(MyHelper::hasAccess([48], $grantedFeature))
-					<li class="nav-item {{($submenu_active == 'product-list-image') ? 'active open' : ''}}">
+					<!-- <li class="nav-item {{($submenu_active == 'product-list-image') ? 'active open' : ''}}">
 						<a href="{{url('product/image')}}" class="nav-link ">
 							<span class="title">Image Product List</span>
 						</a>
-					</li>
+					</li> -->
 					@endif
 					@if(MyHelper::hasAccess([48], $grantedFeature))
 					<li class="nav-item {{($submenu_active == 'product-list-visible') ? 'active open' : ''}}">
@@ -880,12 +880,12 @@
 					<span class="title">Outlet Product Price</span>
 				</a>
 			</li>
-			<li class="nav-item {{($menu_active == 'outlet-different-price') ? 'active' : ''}}">
+			<!-- <li class="nav-item {{($menu_active == 'outlet-different-price') ? 'active' : ''}}">
 				<a href="{{url('outlet/different-price')}}" class="nav-link nav-toggle">
 					<i class="fa fa-check"></i>
 					<span class="title">Outlet Different Price</span>
 				</a>
-			</li>
+			</li> -->
 			@endif
 
 
