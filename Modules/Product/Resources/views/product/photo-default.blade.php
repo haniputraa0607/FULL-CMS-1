@@ -13,8 +13,8 @@
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         $(".file").change(function(e) {
-            var widthImg  = 300;
-            var heightImg = 300;
+            var widthImg  = 400;
+            var heightImg = 400;
 
             var _URL = window.URL || window.webkitURL;
             var image, file;
@@ -33,7 +33,7 @@
                         // image.src = _URL.createObjectURL();
 
                         $('#fieldphoto').val("");
-                        $('#imageproduct').children('img').attr('src', 'https://www.placehold.it/300x300/EFEFEF/AAAAAA&amp;text=no+image');
+                        $('#imageproduct').children('img').attr('src', 'https://www.placehold.it/400x400/EFEFEF/AAAAAA&amp;text=no+image');
                         console.log($(this).val())
                     }
                 };
@@ -80,7 +80,7 @@
                 <div class="form-body">
                     <div class="form-group">
                         <label class="col-md-3 control-label">
-                            Photo <span class="required" aria-required="true">* <br>(300*300) </span>
+                            Photo <span class="required" aria-required="true">* <br>(400*400) </span>
                             <i class="fa fa-question-circle tooltips" data-original-title="Gambar Produk" data-container="body"></i>
                         </label>
                         <div class="col-md-8">
@@ -89,7 +89,7 @@
                                 @if(isset($photo))
                                 <img src="{{$photo}}" alt="photo default">
                                 @else
-                                <img src="https://www.placehold.it/300x300/EFEFEF/AAAAAA&amp;text=no+image" alt="">
+                                <img src="https://www.placehold.it/400x400/EFEFEF/AAAAAA&amp;text=no+image" alt="">
                                 @endif
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" id="imageproduct" style="max-width: 200px; max-height: 200px;"></div>
