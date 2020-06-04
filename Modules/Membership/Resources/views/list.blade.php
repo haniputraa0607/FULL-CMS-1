@@ -6,18 +6,8 @@
 @extends('layouts.main')
 
 @section('page-style')
-	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
-	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-select/css/bootstrap-select.css') }}" rel="stylesheet" type="text/css" />
-	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-multi-select/css/multi-select.css') }}" rel="stylesheet" type="text/css" />
-	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css') }}" rel="stylesheet" type="text/css" />
-	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css" />
-	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}" rel="stylesheet" type="text/css" />
-	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css" />
-	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/clockface/css/clockface.css') }}" rel="stylesheet" type="text/css" />
 	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css') }}" rel="stylesheet" type="text/css" />
 	<link href="{{ env('S3_URL_VIEW') }}{{('assets/pages/css/profile-2.min.css') }}" rel="stylesheet" type="text/css" />
-	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-summernote/summernote.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
 
 	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css') }}" rel="stylesheet" type="text/css" />
@@ -25,31 +15,16 @@
 @endsection
 
 @section('page-plugin')
-	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
-	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/moment.min.js') }}" type="text/javascript"></script>
-	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js') }}" type="text/javascript"></script>
-	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
-	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
-	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/clockface/js/clockface.js') }}" type="text/javascript"></script>
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js') }}" type="text/javascript"></script>
-	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js') }}" type="text/javascript"></script>
-	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js') }}" type="text/javascript"></script>
-	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js') }}" type="text/javascript"></script>
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-repeater/jquery.repeater.js') }}" type="text/javascript"></script>
-	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-summernote/summernote.min.js') }}" type="text/javascript"></script>
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-minicolors/jquery.minicolors.min.js') }}" type="text/javascript"></script>
 @endsection
 
 @section('page-script')
-	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-select2.min.js') }}" type="text/javascript"></script>
-	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-multi-select.min.js') }}" type="text/javascript"></script>
-	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-date-time-pickers.min.js') }}" type="text/javascript"></script>
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/form-repeater.js') }}" type="text/javascript"></script>
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/ui-confirmations.min.js') }}" type="text/javascript"></script>
-	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-editors.min.js') }}" type="text/javascript"></script>
-	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-summernote/summernote.min.js') }}" type="text/javascript"></script>
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-color-pickers.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.js') }}" type="text/javascript"></script>
 	 <script src="{{ env('S3_URL_VIEW') }}{{('js/prices.js')}}"></script>
@@ -322,7 +297,7 @@
 								cancelBtn.click();
 							}
 						} else if (type == 'bg_image') {
-							if(this.width != 245 || this.height != 140){
+							if(this.width != 250 || this.height != 250){
 								toastr.warning("Please check dimension of your photo.");
 								$(this).val("");
 								// $('#remove_square').click()
@@ -514,34 +489,48 @@
 									<div class="col-md-12" style="margin-top:20px">
 										<div class="input-icon right">
 											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
-												Background Card Image
-												<i class="fa fa-question-circle tooltips" data-original-title="Background card membership untuk ditampilkan pada aplikasi ketika membuka halaman detail membership." data-container="body"></i>
+												Card Background Pattern
+												<i class="fa fa-question-circle tooltips" data-original-title="Background pattern membership untuk ditampilkan pada bagian card member di aplikasi ketika membuka halaman detail membership." data-container="body"></i>
 												<br>
-												<span class="required" aria-required="true"> (245 x 140, Max 50 KB, Only PNG) </span>
+												<span class="required" aria-required="true"> (250 x 250, Max 50 KB, Only PNG) </span>
 											</div>
 										</div>
 
 										<div class="col-md-4" >
 											<div class="input-icon right">
 												<div class="fileinput fileinput-new" data-provides="fileinput">
-													<div class="fileinput-new thumbnail" style="width: 245px;">
-														@if($membership['membership_bg_image'] != "")
-															<img src="{{env('S3_URL_API')}}{{$membership['membership_bg_image']}}" alt="" />
+													<div class="fileinput-new thumbnail" style="width: 250;">
+														@if($membership['membership_background_card_pattern'] != "")
+															<img src="{{env('S3_URL_API')}}{{$membership['membership_background_card_pattern']}}" alt="" />
 														@else
-															<img src="https://www.placehold.it/245x140/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
+															<img src="https://www.placehold.it/250x250/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
 														@endif
 													</div>
 
-													<div class="fileinput-preview fileinput-exists thumbnail" style="width: 245px;"> </div>
+													<div class="fileinput-preview fileinput-exists thumbnail" style="width: 250;"> </div>
 													<div class="aa" id="bg_image">
 														<span class="btn default btn-file">
 															<span class="fileinput-new"> Select image </span>
 															<span class="fileinput-exists"> Change </span>
-															<input class="file" accept="image/png" data-image="bg_image" type="file" name="membership_bg_image">
+															<input class="file" accept="image/png" data-image="bg_image" type="file" name="membership_background_card_pattern">
 														</span>
 														<a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
 													</div>
 												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-12" style="margin-top:20px">
+										<div class="input-icon right">
+											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
+												Card Background Color
+												<i class="fa fa-question-circle tooltips" data-original-title="Warna background untuk bagian header benefit membership di aplikasi" data-container="body"></i>
+											</div>
+										</div>
+										<div class="col-md-4" >
+											<div class="input-icon right">
+												<input type="text" name="membership_background_card_color" class="form-control colorpicker" value="{{$membership['membership_background_card_color']}}" data-format="rgb">
 											</div>
 										</div>
 									</div>
@@ -583,6 +572,34 @@
 											<img src="{{env('S3_URL_VIEW')}}img/membership/preview_next_level_image.jpg" class="img-responsive"></img>
 										</div>
 									</div> --}}
+
+									<div class="col-md-12" style="margin-top:20px">
+										<div class="input-icon right">
+											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
+												Benefit Background Color
+												<i class="fa fa-question-circle tooltips" data-original-title="Warna background untuk bagian header benefit membership di aplikasi" data-container="body"></i>
+											</div>
+										</div>
+										<div class="col-md-4" >
+											<div class="input-icon right">
+												<input type="text" name="membership_bg_color_benefit" class="form-control colorpicker" value="{{$membership['membership_bg_color_benefit']}}" data-format="rgb">
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-12" style="margin-top:20px">
+										<div class="input-icon right">
+											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
+												Benefit Text Color
+												<i class="fa fa-question-circle tooltips" data-original-title="Warna text untuk bagian header benefit membership di aplikasi" data-container="body"></i>
+											</div>
+										</div>
+										<div class="col-md-4" >
+											<div class="input-icon right">
+												<input type="text" name="membership_text_color_benefit" class="form-control colorpicker" value="{{$membership['membership_text_color_benefit']}}" data-format="rgb">
+											</div>
+										</div>
+									</div>
 
 									<div class="col-md-12" style="margin-top:20px">
 										<div class="input-icon right">
@@ -898,30 +915,44 @@
 									<div class="col-md-12" style="margin-top:20px">
 										<div class="input-icon right">
 											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
-												Background Card Image
-												<i class="fa fa-question-circle tooltips" data-original-title="Background card membership untuk ditampilkan pada aplikasi ketika membuka halaman detail membership." data-container="body"></i>
+												Card Background Pattern
+												<i class="fa fa-question-circle tooltips" data-original-title="Background pattern membership untuk ditampilkan pada bagian card member di aplikasi ketika membuka halaman detail membership." data-container="body"></i>
 												<br>
-												<span class="required" aria-required="true"> (245 x 140, Max 50 KB, Only PNG) </span>
+												<span class="required" aria-required="true"> (250 x 250, Max 50 KB, Only PNG) </span>
 											</div>
 										</div>
 
 										<div class="col-md-4" >
 											<div class="input-icon right">
 												<div class="fileinput fileinput-new" data-provides="fileinput">
-													<div class="fileinput-new thumbnail" style="width: 245px;">
-														<img src="https://www.placehold.it/245x140/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
+													<div class="fileinput-new thumbnail" style="width: 250px;">
+														<img src="https://www.placehold.it/250x250/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
 													</div>
 
-													<div class="fileinput-preview fileinput-exists thumbnail" style="width: 245px;"> </div>
+													<div class="fileinput-preview fileinput-exists thumbnail" style="width: 250px;"> </div>
 													<div class="aa" id="bg_image">
 														<span class="btn default btn-file">
 															<span class="fileinput-new"> Select image </span>
 															<span class="fileinput-exists"> Change </span>
-															<input class="file" accept="image/png" type="file" name="membership_bg_image">
+															<input class="file" accept="image/png" data-image="bg_image" type="file" name="membership_background_card_pattern">
 														</span>
 														<a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
 													</div>
 												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-12" style="margin-top:20px">
+										<div class="input-icon right">
+											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
+												Card Background Color
+												<i class="fa fa-question-circle tooltips" data-original-title="Warna background untuk bagian header benefit membership di aplikasi" data-container="body"></i>
+											</div>
+										</div>
+										<div class="col-md-4" >
+											<div class="input-icon right">
+												<input type="text" name="membership_background_card_color" class="form-control colorpicker" data-format="rgb">
 											</div>
 										</div>
 									</div>
@@ -940,11 +971,7 @@
 											<div class="input-icon right">
 												<div class="fileinput fileinput-new" data-provides="fileinput">
 													<div class="fileinput-new thumbnail" style="width: 75px;">
-														@if($membership['membership_next_image'] != "")
-															<img src="{{env('S3_URL_API')}}{{$membership['membership_next_image']}}" alt="" />
-														@else
-															<img src="https://www.placehold.it/75x75/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
-														@endif
+														<img src="https://www.placehold.it/75x75/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
 													</div>
 
 													<div class="fileinput-preview fileinput-exists thumbnail" style="width: 75px;"> </div>
@@ -963,6 +990,34 @@
 											<img src="{{env('S3_URL_VIEW')}}img/membership/preview_next_level_image.jpg" class="img-responsive"></img>
 										</div>
 									</div> --}}
+
+									<div class="col-md-12" style="margin-top:20px">
+										<div class="input-icon right">
+											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
+												Benefit Background Color
+												<i class="fa fa-question-circle tooltips" data-original-title="Warna background untuk bagian header benefit membership di aplikasi" data-container="body"></i>
+											</div>
+										</div>
+										<div class="col-md-4" >
+											<div class="input-icon right">
+												<input type="text" name="membership_bg_color_benefit" class="form-control colorpicker" data-format="rgb">
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-12" style="margin-top:20px">
+										<div class="input-icon right">
+											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
+												Benefit Text Color
+												<i class="fa fa-question-circle tooltips" data-original-title="Warna text untuk bagian header benefit membership di aplikasi" data-container="body"></i>
+											</div>
+										</div>
+										<div class="col-md-4" >
+											<div class="input-icon right">
+												<input type="text" name="membership_text_color_benefit" class="form-control colorpicker" data-format="rgb">
+											</div>
+										</div>
+									</div>
 
 									<div class="col-md-12" style="margin-top:20px">
 										<div class="input-icon right">
