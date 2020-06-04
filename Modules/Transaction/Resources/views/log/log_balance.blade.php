@@ -142,7 +142,7 @@
 	                            	)
 	                            		<a href="{{ url('transaction/detail/'.$res['id_reference'].'/'.($res['transaction']['trasaction_type']??'')) }}">{{ $res['transaction']['transaction_receipt_number']??'' }}</a>
 	                            	@elseif ($res['source'] == 'Point Injection')
-	                            		<a href="{{ url('point-injection/report/'.$res['id_reference']) }}">{{ $res['point_injection']['title'] }}</a>
+	                            		<a href="{{ url('point-injection/report/'.$res['id_reference']) }}">{{ $res['point_injection']['title']??'' }}</a>
 	                            	@endif
 	                            </td>
 	                            <td>{{ number_format($res['grand_total']) }}</td>
@@ -154,10 +154,10 @@
 	                @endif
 	            </tbody>
 	            </table>
-	            @if ($balancePaginator)
-	              {{ $balancePaginator->links() }}
-	            @endif
         	</div>
+            @if ($balancePaginator)
+              {{ $balancePaginator->links() }}
+            @endif
         </div>
     </div>
 @endsection
