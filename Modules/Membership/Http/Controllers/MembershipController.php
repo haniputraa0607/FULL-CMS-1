@@ -38,6 +38,11 @@ class MembershipController extends Controller
 				} else {
 					$post['membership'][$key]['membership_bg_image'] = "";
 				}
+				if (isset($membership['membership_background_card_pattern'])) {
+					$post['membership'][$key]['membership_background_card_pattern'] = MyHelper::encodeImage($membership['membership_background_card_pattern']);
+				} else {
+					$post['membership'][$key]['membership_background_card_pattern'] = "";
+				}
 			}
 			$action = MyHelper::post('membership/update', $post);
 			// dd($action);exit;
