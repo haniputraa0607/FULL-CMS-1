@@ -201,7 +201,7 @@
                                     <td>{{$val['outlet']['outlet_name']}}</td>
                                     <td>{{date("d F Y", strtotime($val['transaction_date']))}}</td>
                                     <td>{{date("H:i", strtotime($val['transaction_date']))}}</td>
-                                    <td>{{$val['transaction_cashback_earned']}}</td>
+                                    <td>{{$val['balance']}}</td>
                                     <td>{{ number_format($val['transaction_grandtotal'], 2) }}</td>
                                 </tr>
                             @endforeach
