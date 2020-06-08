@@ -176,6 +176,98 @@ class AutocrmController extends Controller
 				break;
 		}
 
+        switch ($type) {
+            case 'user': {
+                $data['click_inbox'] = [
+                    ['value' => "No Action",'title' => 'No Action']
+                ];
+                $data['click_notification'] = [
+                    ['value' => 'Home','title' => 'Home']
+                ];
+                break;
+            }
+            case 'news': {
+                $data['click_inbox'] = [
+                    ['value' => "News",'title' => 'News']
+                ];
+                $data['click_notification'] = [
+                    ['value' => 'News','title' => 'News']
+                ];
+                break;
+            }
+            case 'enquiries': {
+                $data['click_inbox'] = [
+                    ['value' => "No Action",'title' => 'No Action']
+                ];
+                $data['click_notification'] = [
+                    ['value' => 'Home','title' => 'Home']
+                ];
+                break;
+            }
+            case 'deals': {
+                $data['click_inbox'] = [
+                    ['value' => "Voucher",'title' => 'Voucher']
+                ];
+                $data['click_notification'] = [
+                    ['value' => 'Voucher','title' => 'Voucher']
+                ];
+                break;
+            }
+            case 'inject-voucher': {
+                $data['click_inbox'] = [
+                    ['value' => "Voucher",'title' => 'Voucher']
+                ];
+                $data['click_notification'] = [
+                    ['value' => 'Voucher','title' => 'Voucher']
+                ];
+                break;
+            }
+            case 'welcome-voucher': {
+                $data['click_inbox'] = [
+                    ['value' => "Voucher",'title' => 'Voucher']
+                ];
+                $data['click_notification'] = [
+                    ['value' => 'Voucher','title' => 'Voucher']
+                ];
+                break;
+            }
+            case 'transaction': {
+                if($subject == 'transaction-point-achievement'){
+                    $data['click_inbox'] = [
+                        ['value' => "Home",'title' => 'Home'],
+                        ['value' => "History Transaction",'title' => 'History Transaction'],
+                        ['value' => "History Point",'title' => 'History Point']
+                    ];
+                    $data['click_notification'] = [
+                        ['value' => "Home",'title' => 'Home'],
+                        ['value' => "History Transaction",'title' => 'History Transaction'],
+                        ['value' => "History Point",'title' => 'History Point']
+                    ];
+                }elseif($subject == 'transaction-failed-point-refund' || $subject == 'rejected-order-point-refund'){
+                    $data['click_inbox'] = [
+                        ['value' => "Home",'title' => 'Home'],
+                        ['value' => "History Transaction",'title' => 'History Transaction']
+                    ];
+                    $data['click_notification'] = [
+                        ['value' => "Home",'title' => 'Home'],
+                        ['value' => "History Transaction",'title' => 'History Transaction']
+                    ];
+                }else{
+                    $data['click_inbox'] = [
+                        ['value' => "History Transaction",'title' => 'History Transaction']
+                    ];
+                    $data['click_notification'] = [
+                        ['value' => 'History Transaction','title' => 'History Transaction']
+                    ];
+                }
+                break;
+            }
+            default:
+                $data['click_inbox'] = [];
+                $data['click_notification'] = [];
+                break;
+        }
+
 		$query = MyHelper::post('autocrm/list', ['autocrm_title' => ucwords(str_replace('-',' ',$subject))]);
 		if(!isset($query['result'])) return back()->withErrors(['No such response']);
 		$data['data'] = $query['result'];
