@@ -468,7 +468,6 @@ class SettingFraudController extends Controller
                         'Tanggal transaksi' => date('d F Y', strtotime($value['transaction_date'])),
                         'Jam transaksi' => date('H:i', strtotime($value['transaction_date'])),
                         'Lokasi transaksi' => $value['outlet_name'],
-                        'Point' => $value['transaction_cashback_earned'],
                         'Nominal transaksi' => number_format($value['transaction_grandtotal'], 2),
                     ];
                     $arr['All Type'][] = $dt;
