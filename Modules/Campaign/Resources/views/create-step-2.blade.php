@@ -782,13 +782,12 @@
 									<select name="campaign_push_clickto" id="campaign_push_clickto" class="form-control select2" onChange="fetchDetail(this.value, 'push')">
 										<option value="Home" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Home") selected @endif>Home</option>
 										<option value="Deals" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Deals") selected @endif>Deals</option>
-										<option value="Voucher" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Voucher") selected @endif>My Voucher</option>
+										<option value="Voucher" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Voucher") selected @endif>Voucher</option>
 										<option value="Order" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Order") selected @endif>Order</option>
 										<option value="History Transaction" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "History Transaction") selected @endif>History Transaction</option>
-										<option value="History On Going" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "History On Going") selected @endif>History On Going</option>
 										<option value="History Point" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "History Point") selected @endif>History Point</option>
-										<option value="Membership" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Membership") selected @endif>Membership</option>
 										<option value="Profil" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Profil") selected @endif>Profile</option>
+										<option value="Membership" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Membership") selected @endif>Membership</option>
 										<option value="News" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "News") selected @endif>News</option>
 										<option value="Outlet" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Outlet") selected @endif>Outlet</option>
 										<option value="Referral" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Referral") selected @endif>Referral</option>
@@ -796,13 +795,8 @@
 										<option value="FAQ" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "FAQ") selected @endif>FAQ</option>
 										<option value="TOS" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "TOS") selected @endif>Term Of Services</option>
 										<option value="Contact Us" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Contact Us") selected @endif>Contact Us</option>
-										<option value="Inbox" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Inbox") selected @endif>Inbox</option>
 										<option value="Link" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Link") selected @endif>Link</option>
 										<option value="Logout" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Logout") selected @endif>Logout</option>
-										<!-- <option value="Product" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Product") selected @endif>Product</option> -->
-										<!-- <option value="Transaction" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Transaction") selected @endif>History</option> -->
-										<!-- <option value="Voucher Detail" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Voucher Detail") selected @endif>Voucher Detail</option> -->
-
 									</select>
 								</div>
 							</div>
@@ -857,15 +851,14 @@
 								<label for="campaign_inbox_clickto" class="control-label col-md-2">Click Action</label>
 								<div class="col-md-10">
 									<select name="campaign_inbox_clickto" id="campaign_inbox_clickto" class="form-control select2" onChange="fetchDetail(this.value, 'inbox')">
-										<option value="Home" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Home") selected @endif>Home</option>
+										<option value="No Action" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "No Action") selected @endif>No Action</option>
 										<option value="Deals" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Deals") selected @endif>Deals</option>
-										<option value="Voucher" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Voucher") selected @endif>My Voucher</option>
+										<option value="Voucher" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Voucher") selected @endif>Voucher</option>
 										<option value="Order" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Order") selected @endif>Order</option>
 										<option value="History Transaction" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "History Transaction") selected @endif>History Transaction</option>
-										<option value="History On Going" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "History On Going") selected @endif>History On Going</option>
 										<option value="History Point" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "History Point") selected @endif>History Point</option>
-										<option value="Membership" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Membership") selected @endif>Membership</option>
 										<option value="Profil" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Profil") selected @endif>Profile</option>
+										<option value="Membership" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Membership") selected @endif>Membership</option>
 										<option value="News" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "News") selected @endif>News</option>
 										<option value="Outlet" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Outlet") selected @endif>Outlet</option>
 										<option value="Referral" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Referral") selected @endif>Referral</option>
@@ -875,10 +868,6 @@
 										<option value="Contact Us" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Contact Us") selected @endif>Contact Us</option>
 										<option value="Link" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Link") selected @endif>Link</option>
 										<option value="Logout" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Logout") selected @endif>Logout</option>
-										<!-- <option value="Product" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Product") selected @endif>Product</option> -->
-										<!-- <option value="Transaction" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Transaction") selected @endif>History</option> -->
-										<!-- <option value="Voucher Detail" @if(isset($result['campaign_inbox_clickto']) && $result['campaign_inbox_clickto'] == "Voucher Detail") selected @endif>Voucher Detail</option> -->
-
 									</select>
 								</div>
 							</div>
