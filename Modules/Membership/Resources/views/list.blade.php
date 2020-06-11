@@ -383,7 +383,7 @@
 					</div>
 				</div>
 				@if(MyHelper::hasAccess([81], $configs))
-				{{-- <div class="form-group">
+				 <div class="form-group">
 					<div class="input-icon right">
 						<label class="col-md-3 control-label">
 							Retain Level Evaluation
@@ -398,7 +398,7 @@
 							</span>
 						</div>
 					</div>
-				</div> --}}
+				</div> 
 				@endif
 				<div class="form-group">
 					<label class="col-md-3 control-label">
@@ -624,7 +624,7 @@
 										</div>
 									</div>
 									@if(MyHelper::hasAccess([81], $configs))
-									{{-- <div class="col-md-12" style="margin-top:20px">
+									 <div class="col-md-12" style="margin-top:20px">
 										<div class="input-icon right">
 											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
 												Retain Requirement
@@ -645,7 +645,7 @@
 												</span>
 											</div>
 										</div>
-									</div> --}}
+									</div> 
 									@endif
 									{{-- cek configs point --}}
 									@if(MyHelper::hasAccess([18], $configs))
@@ -1039,7 +1039,7 @@
 										</div>
 									</div>
 									@if(MyHelper::hasAccess([81], $configs))
-									{{-- <div class="col-md-12" style="margin-top:20px">
+									 <div class="col-md-12" style="margin-top:20px">
 										<div class="input-icon right">
 											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
 												Retain Requirement
@@ -1057,7 +1057,7 @@
 												</span>
 											</div>
 										</div>
-									</div> --}}
+									</div> 
 									@endif
 									{{-- cek configs point --}}
 									@if(MyHelper::hasAccess([18], $configs))
