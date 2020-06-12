@@ -1,10 +1,19 @@
+<?php
+    use App\Lib\MyHelper;
+    $grantedFeature     = session('granted_features');
+    $configs            = session('configs');
+    $level              = session('level');
+
+    (session('advert')) ? $advert = session('advert') : $advert = null;
+
+ ?>
 @extends('layouts.main')
 
 @section('page-script')
     <script src="{{ env('S3_URL_VIEW') }}{{('js/prices.js')}}"></script>
     <script>
         function submit(){
-            var value = $('input[name=value]').val();
+            var value = $('input[name=timer_ovo]').val();
 
             if(Number(value) > 60){
                 confirm('Maximal timer start is 60');
@@ -44,28 +53,47 @@
         <div class="portlet-title">
             <div class="caption">
                 <i class=" icon-layers font-green"></i>
-                <span class="caption-subject font-green bold uppercase">Setting Timer OVO</span>
+                <span class="caption-subject font-green bold uppercase">Setting Timer Payment Gateway</span>
             </div>
         </div>
         <div class="portlet-body form">
             <form class="form-horizontal" action="{{ url('transaction/setting/timer-ovo') }}" method="post" id="form">
             {{ csrf_field() }}
             <div class="form-body">
+                @if(MyHelper::hasAccess([247], $grantedFeature))
                 <div class="form-group">
                     <div class="input-icon right">
                         <label class="col-md-3 control-label">
-                            Timer Start
+                            Timer Ovo
                         <span class="required" aria-required="true"> * </span>  
                             <i class="fa fa-question-circle tooltips" data-original-title="This value for setting start timer for payment OVO" data-container="body"></i>
                         </label>
                     </div>
                     <div class="col-md-3">
                         <div class="input-group">
-                            <input type="text" placeholder="Maximal time is 60" maxlength="2" class="form-control price" name="value" value="@if(isset($result['value'])){{$result['value']}}@endif" required>
+                            <input type="text" placeholder="Maximal time is 60" maxlength="2" class="form-control price" name="timer_ovo" value="{{$timer_ovo}}" required>
                             <span class="input-group-addon">seconds</span>
                         </div>
                     </div>
                 </div>
+                @endif
+                @if((MyHelper::hasAccess([110], $configs) && MyHelper::hasAccess([253], $grantedFeature)))
+                <div class="form-group">
+                    <div class="input-icon right">
+                        <label class="col-md-3 control-label">
+                            Timer ShopeePay
+                        <span class="required" aria-required="true"> * </span>  
+                            <i class="fa fa-question-circle tooltips" data-original-title="This value for setting start timer for payment ShopeePay" data-container="body"></i>
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input type="text" placeholder="Insert maximal time here" class="form-control price" name="timer_shopeepay" value="{{$timer_shopeepay}}" required>
+                            <span class="input-group-addon">seconds</span>
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
             </form>
             <div class="form-actions">

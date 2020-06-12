@@ -1390,19 +1390,25 @@ class TransactionController extends Controller
         ];
 
         if($post){
-            $update = MyHelper::post('transaction/setting/timer-ovo',$post);
+            $dataUpdate = [];
+            if($post['timer_ovo'] ?? false){
+                $dataUpdate['setting_timer_ovo'] = ['value', $post['timer_ovo']];
+            }
+            if($post['timer_shopeepay'] ?? false){
+                $dataUpdate['shopeepay_validity_period'] = ['value', $post['timer_shopeepay']];
+            }
+            $update = MyHelper::post('setting/update2',[
+                'update' => $dataUpdate
+            ]);
             if(isset($update['status']) && $update['status'] == 'success'){
                 return redirect('transaction/setting/timer-ovo')->withSuccess(['Success update timer ovo']);
             }else{
                 return redirect('transaction/setting/timer-ovo')->withErrors(['Failed update timer ovo']);
             }
         }else{
-            $get = MyHelper::get('transaction/setting/timer-ovo');
-            if(isset($get['status']) && $get['status'] == 'success'){
-                $data['result'] = $get['result'];
-            }else{
-                $data['result'] = [];
-            }
+            // setting_timer_ovo
+            $data['timer_ovo'] = MyHelper::get('transaction/setting/timer-ovo')['result']['value']??'';
+            $data['timer_shopeepay'] = MyHelper::post('setting',['key'=>'shopeepay_validity_period'])['result']['value']??'';
             return view('transaction::setting.timer_ovo', $data);
         }
     }

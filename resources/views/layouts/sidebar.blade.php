@@ -862,10 +862,10 @@
 						</a>
 					</li>
 					@endif
-					@if(MyHelper::hasAccess([247], $grantedFeature))
+					@if(MyHelper::hasAccess([247], $grantedFeature) || (MyHelper::hasAccess([110], $configs) && MyHelper::hasAccess([253], $grantedFeature)))
 						<li class="nav-item {{($submenu_active == 'setting-timer-ovo') ? 'active open' : ''}}">
 							<a href="{{url('transaction/setting/timer-ovo')}}" class="nav-link ">
-								<span class="title">Setting Timer OVO</span>
+								<span class="title">Setting Timer Payment Gateway</span>
 							</a>
 						</li>
 					@endif
