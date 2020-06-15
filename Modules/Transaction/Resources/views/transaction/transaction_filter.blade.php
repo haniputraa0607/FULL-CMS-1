@@ -153,6 +153,8 @@
 												<option value="phone" @if ($con['subject'] == 'phone') selected @endif>Customer Phone</option>
 												<option value="email" @if ($con['subject'] == 'email') selected @endif>Customer Email</option>
 												<option value="gender" @if ($con['subject'] == 'gender') selected @endif>Customer Gender</option>
+												<option value="outlet_code" @if ($con['subject'] == 'outlet_code') selected @endif>Outlet Code</option>
+												<option value="outlet_name" @if ($con['subject'] == 'outlet_name') selected @endif>Outlet Name</option>
 												<option value="product_name" @if ($con['subject'] == 'product_name') selected @endif>Product Name</option>
 												<option value="product_code" @if ($con['subject'] == 'product_code') selected @endif>Product Code</option>
 												<option value="product_category" @if ($con['subject'] == 'product_category') selected @endif>Product Category</option>
@@ -239,6 +241,8 @@
 											<option value="phone">Customer Phone</option>
 											<option value="email">Customer Email</option>
 											<option value="gender">Customer Gender</option>
+											<option value="outlet_code">Outlet Code</option>
+											<option value="outlet_name">Outlet Name</option>
 											<option value="product_name">Product Name</option>
 											<option value="product_code">Product Code</option>
 											<option value="product_category">Product Category</option>
@@ -281,6 +285,8 @@
 											<option value="phone">Customer Phone</option>
 											<option value="email">Customer Email</option>
 											<option value="gender">Customer Gender</option>
+											<option value="outlet_code">Outlet Code</option>
+											<option value="outlet_name">Outlet Name</option>
 											<option value="product_name">Product Name</option>
 											<option value="product_code">Product Code</option>
 											<option value="product_category">Product Category</option>
