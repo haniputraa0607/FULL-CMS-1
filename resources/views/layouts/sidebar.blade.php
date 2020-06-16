@@ -1867,7 +1867,7 @@
 			</li>
 		@endif
 
-		@if(MyHelper::hasAccess([85,86,87,88,89,90,91,94], $grantedFeature))
+		@if(MyHelper::hasAccess([85,86,87,88,89,90,91,94,254], $grantedFeature))
 			<li class="heading" style="height: 50px;padding: 25px 15px 10px;">
 				<h3 class="uppercase" style="color: #10704e;font-weight: 600;">About</h3>
 			</li>
@@ -1920,6 +1920,14 @@
 					<span class="title">Term Of Services</span>
 				</a>
 			</li>
+			@endif
+			@if(MyHelper::hasAccess([254], $grantedFeature))
+				<li class="nav-item {{($menu_active == 'privacypolicy') ? 'active' : ''}}">
+					<a href="{{url('setting/privacypolicy')}}" class="nav-link nav-toggle">
+						<i class="fa fa-lock"></i>
+						<span class="title">Privacy Policy</span>
+					</a>
+				</li>
 			@endif
 			@if(MyHelper::hasAccess([98], $configs))
 			@if(MyHelper::hasAccess([154], $grantedFeature))

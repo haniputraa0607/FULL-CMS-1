@@ -95,6 +95,11 @@ class SettingController extends Controller
             $active = 'tos';
             $subTitle = 'Term Of Services';
             $label = 'Term Of Services';
+        } elseif($key == 'privacypolicy') {
+            $sub = 'about-privacypolicy';
+            $active = 'privacypolicy';
+            $subTitle = 'Privacy Policy';
+            $label = 'Privacy Policy';
         } elseif($key == 'tax') {
             $sub = 'about-tax';
             $active = 'tax';
