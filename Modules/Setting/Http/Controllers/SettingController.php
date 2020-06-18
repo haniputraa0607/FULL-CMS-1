@@ -1267,4 +1267,30 @@ class SettingController extends Controller
 
         return view('setting::maintenance-mode', $data);
     }
+
+    function timeExpired(Request $request){
+        $post = $request->except('_token');
+        $data = [
+            'title'   		=> 'Time Expired Setting',
+            'menu_active'    => 'time-expired',
+            'submenu_active' => 'time-expired'
+        ];
+        if($post){
+            $update= MyHelper::post('setting/time-expired/update', $post);
+            if(($update['status']??'')=='success'){
+                return redirect('setting/time-expired')->with('success',['Success update time expired']);
+            }else{
+                return redirect('setting/time-expired')->withErrors([$update['message']]);
+            }
+        }else{
+            $get = MyHelper::get('setting/time-expired');
+            if(isset($get['status']) &&  $get['status']=='success'){
+                $data['result'] = $get['result'];
+            }else{
+                return back()->withErrors(['Failed get data setting time expired']);
+            }
+        }
+
+        return view('setting::time-expired', $data);
+    }
 }
