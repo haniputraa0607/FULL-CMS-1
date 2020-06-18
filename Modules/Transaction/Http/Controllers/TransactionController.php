@@ -1414,4 +1414,30 @@ class TransactionController extends Controller
         }
     }
     /*================ End Setting Timer OVO ================*/
+    public function availablePayment(Request $request) {
+        $data = [
+            'title'          => 'Transaction',
+            'menu_active'    => 'order',
+            'sub_title'      => 'Setting Payment Method',
+            'submenu_active' => 'setting-payment-method'
+        ];
+        $data['payments'] = MyHelper::post('transaction/available-payment',['show_all' => 1])['result']??[];
+        return view('transaction::setting.available_payment', $data);
+    }
+    public function availablePaymentUpdate(Request $request) {
+        $post = $request->except('_token');
+        $payments = [];
+        foreach ($request->payments as $code => $payment) {
+            $payments[] = [
+                'code' => $code,
+                'status' => $payment['status']??0
+            ];
+        }
+        $data = MyHelper::post('transaction/available-payment/update',['payments' => $payments]);
+        if (($data['status']??false) == 'success') {
+            return back()->withSuccess(['Success update setting']);
+        } else {
+            return back()->withErrors(['Failed update setting']);
+        }
+    }
 }

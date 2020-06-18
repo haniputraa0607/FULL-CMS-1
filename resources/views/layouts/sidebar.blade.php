@@ -869,6 +869,13 @@
 							</a>
 						</li>
 					@endif
+					@if(MyHelper::hasAccess([255], $grantedFeature))
+						<li class="nav-item {{($submenu_active == 'setting-payment-method') ? 'active open' : ''}}">
+							<a href="{{url('transaction/setting/available-payment')}}" class="nav-link ">
+								<span class="title">Setting Payment Method</span>
+							</a>
+						</li>
+					@endif
 				</ul>
 			</li>
 			@endif
