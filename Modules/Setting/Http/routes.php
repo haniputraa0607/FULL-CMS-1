@@ -46,6 +46,9 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'setting'
     /*maintenance mode*/
     Route::any('maintenance-mode', 'SettingController@maintenanceMode');
 
+    /*Setting Expired time OTP and Email*/
+    Route::any('time-expired', 'SettingController@timeExpired');
+
     Route::any('home', 'SettingController@homeSetting');
 	Route::any('date', 'SettingController@dateSetting');
     Route::get('{key}', 'SettingController@settingList');
