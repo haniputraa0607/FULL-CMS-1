@@ -1866,7 +1866,7 @@
 				</a>
 			</li>
 		@endif
-		@if(MyHelper::hasAccess([255,256], $grantedFeature))
+		@if(MyHelper::hasAccess([256, 257], $grantedFeature))
 			<li class="nav-item {{($menu_active == 'time-expired') ? 'active' : ''}}">
 				<a href="{{url('setting/time-expired')}}" class="nav-link">
 					<i class="fa fa-envelope"></i>

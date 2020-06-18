@@ -43,7 +43,7 @@ $configs     		= session('configs');
 	<br>
 	<form role="form" class="form-horizontal" action="{{url('setting/time-expired')}}" method="POST" enctype="multipart/form-data">
 		<div class="form-body">
-			@if(MyHelper::hasAccess([255], $grantedFeature) && isset($result['expired_otp']))
+			@if(MyHelper::hasAccess([256], $grantedFeature) && isset($result['expired_otp']))
 			<div class="form-group">
 				<div class="input-icon right">
 					<label class="col-md-3 control-label">
@@ -60,7 +60,7 @@ $configs     		= session('configs');
 				</div>
 			</div>
 			@endif
-			@if(MyHelper::hasAccess([256], $grantedFeature) && isset($result['expired_time_email']))
+			@if(MyHelper::hasAccess([257], $grantedFeature) && isset($result['expired_time_email']))
 				<div class="form-group">
 					<div class="input-icon right">
 						<label class="col-md-3 control-label">
