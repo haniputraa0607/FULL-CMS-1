@@ -244,7 +244,7 @@
                             </label>
                         </div>
                         <div class="col-md-9">
-                            <select class="form-control select2-multiple" data-placeholder="Select Outlet" name="id_outlet[]" multiple data-value="{{json_encode(old('id_outlet')??$outletselected??[])}}" data-all-outlet="{{json_encode($outlets??[])}}">
+                            <select class="form-control select2-multiple" data-placeholder="Select Outlet" name="id_outlet[]" multiple data-value="{{json_encode(old('id_outlet')??$outletselected??[])}}" data-all-outlet="{{json_encode($outlets??[])}}" required>
                             	@if(!empty($outlets))
                                     <option value="all">All Outlets</option>
                                     @foreach($outlets as $row)
@@ -633,7 +633,7 @@
 
                         <div class="col-md-4">
                             <div class="input-icon right">
-                                <input type="text" class="form-control digit-mask" min="0" name="user_limit" value="{{ old('user_limit')??$deals['user_limit']??'' }}" placeholder="User limit" maxlength="30" autocomplete="off">
+                                <input type="text" class="form-control digit-mask" min="0" name="user_limit" value="{{ old('user_limit')??$deals['user_limit']??'' }}" placeholder="User limit" maxlength="30" autocomplete="off" required>
                             </div>
                         </div>
                     </div>

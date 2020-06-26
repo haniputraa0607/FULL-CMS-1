@@ -1,5 +1,6 @@
 @php
 use App\Lib\MyHelper;
+$id_decrypt 		= MyHelper::explodeSlug($deals['id_deals']);
 $configs    		= session('configs');
 $grantedFeature     = session('granted_features');
 	if($deals_type == 'Promotion'){
@@ -647,6 +648,7 @@ $grantedFeature     = session('granted_features');
 @endif
     <div class="portlet light bordered">
         <div class="portlet-title tabbable-line">
+            <span class="caption-subject font-black bold uppercase" style="font-size: 20px">{{ $id_decrypt[0]??'' }}</span><br>
             <div class="caption">
                 <span class="caption-subject font-blue bold uppercase">{{ $deals['deals_title'] }}</span>
             </div>
