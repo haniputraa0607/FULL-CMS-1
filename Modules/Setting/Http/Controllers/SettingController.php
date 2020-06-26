@@ -602,7 +602,7 @@ class SettingController extends Controller
             $data['featured_deals'] = [];
 
         // deals
-        $dp=['deals_type'=>'Deals','forSelect2'=>true];
+        $dp=['deals_type'=>'Deals','forSelect2'=>true,'featured'=>true];
         $request = MyHelper::post('deals/be/list',$dp);
         $data['deals'] = $request['result']??[];
 
