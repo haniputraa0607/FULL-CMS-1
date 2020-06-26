@@ -77,7 +77,7 @@
 								<select class="select2 form-control" name="id_deals" id="id_deals" style="width: 100%">
 									<option></option>
 									@foreach($deals as $deal)
-									<option value="{{$deal['id_deals']}}">{{$deal['deals_title']}}</option>
+									<option value="{{$deal['id_deals']}}">{{$deal['id_deals'].' - '.$deal['deals_title']}}</option>
 									@endforeach
 								</select>
 							</div>
@@ -133,7 +133,7 @@
 								<select class="select2 form-control" name="id_deals" style="width: 100%">
 									<option></option>
 									@foreach($deals as $deal)
-									<option value="{{$deal['id_deals']}}">{{$deal['deals_title']}}</option>
+									<option value="{{$deal['id_deals']}}">{{$deal['id_deals'].' - '.$deal['deals_title']}}</option>
 									@endforeach
 								</select>
 							</div>
