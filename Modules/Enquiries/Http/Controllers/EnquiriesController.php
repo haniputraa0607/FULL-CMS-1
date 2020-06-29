@@ -53,6 +53,22 @@ class EnquiriesController extends Controller
         // get api
         $data['enquiries']    = parent::getData(MyHelper::get('enquiries/list'));
 
+        $data['textreplaces'] = [
+            ['keyword' => '%phone%','reference' => 'user phone'],
+            ['keyword' => '%name%','reference' => 'user name'],
+            ['keyword' => '%email%','reference' => 'user email'],
+            ['keyword' => '%gender%','reference' => 'user gender'],
+            ['keyword' => '%city%','reference' => 'user city'],
+            ['keyword' => '%province%','reference' => 'user province'],
+            ['keyword' => '%birthday%','reference' => 'user birthday'],
+            ['keyword' => '%level%','reference' => 'user level'],
+            ['keyword' => '%points%','reference' => 'user points'],
+            ['keyword' => '%phone_verify_status%','reference' => 'user phone verify status'],
+            ['keyword' => '%email_verify_status%','reference' => 'user email verify status'],
+            ['keyword' => '%register_time%','reference' => 'user register time'],
+            ['keyword' => '%suspend_status%','reference' => 'user suspend status'],
+        ];
+
         return view('enquiries::index', $data);
     }
 
@@ -81,7 +97,7 @@ class EnquiriesController extends Controller
             return back();
         }
         else {
-            return "fail";
+            return redirect('enquiries')->withErrors(['Failed to reply']);
         } 
     }
 
