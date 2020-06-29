@@ -10,6 +10,7 @@
             <div class="col-md-9">
                   <textarea name="voucher_code" class="form-control listVoucher" rows="10">{{ old('voucher_code') }}</textarea>
             </div>
+            <input type="hidden" name="deals_type" value="{{$deals['deals_type']??$deals_type}}">
         </div>
      
   </div>

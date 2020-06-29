@@ -114,7 +114,20 @@ class DealsController extends Controller
             }
 
             if ($post['deals_voucher_type'] == "List Vouchers" && $post['deals_type'] != 'Promotion') {
-                return parent::redirect($this->saveVoucherList($id_deals, $post['voucher_code']), "Deals has been created.","$rpage/step2/{$save['result']['id_deals']}");
+
+            	$save_voucher_list = $this->saveVoucherList($id_deals, $post['voucher_code']);
+
+            	if (($save_voucher_list['status']??false) == 'success') {
+            		$redirect = redirect("$rpage/step2/{$save['result']['id_deals']}")->withSuccess(["Deals has been created."]);
+            	}else{
+            		$redirect = back()->withErrors($save['messages']??['Something went wrong'])->withInput();
+            	}
+
+        		if (!empty($save_voucher_list['warnings'])) {
+        			$redirect = $redirect->withWarning($save_voucher_list['warnings']);
+        		}
+
+                return $redirect;
             }
             return parent::redirect($save, 'Deals has been created.',"$rpage/step2/{$save['result']['id_deals']}");
         }else{
@@ -788,7 +801,14 @@ class DealsController extends Controller
     function updateReq(Create $request) {
         $post = $request->except('_token');
 
-            // dd($post);
+        if($post['deals_type'] == 'Promotion'){
+            $rpage = 'promotion/deals';
+    	}elseif($post['deals_type'] == 'WelcomeVoucher'){
+            $rpage = 'welcome-voucher';
+        }else{
+            $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
+        }
+
         if (empty($post['id_deals'])) {
             /* SAVE DEALS */
             return $this->saveDefaultDeals($post);
@@ -813,7 +833,21 @@ class DealsController extends Controller
         // ADD VOUCHER CODE
         if (isset($post['voucher_code']) && empty($post['deals_title'])) {
         	$post['id_deals'] = MyHelper::explodeSlug($post['id_deals'])[0];
-            return parent::redirect($this->saveVoucherList($post['id_deals'], $post['voucher_code'], 'add'), "Voucher has been added.");
+            // return parent::redirect($this->saveVoucherList($post['id_deals'], $post['voucher_code'], 'add'), "Voucher has been added.");
+            $save_voucher_list = $this->saveVoucherList($post['id_deals'], $post['voucher_code'], 'add');
+
+            if (($save_voucher_list['status']??false) == 'success') {
+        		$redirect = redirect("$rpage/detail/{$slug}")->withSuccess(["Deals has been added."]);
+        	}else{
+        		$redirect = redirect("$rpage/detail/{$slug}")->withErrors($save['messages']??['Something went wrong'])->withInput();
+        	}
+
+    		if (!empty($save_voucher_list['warnings'])) {
+    			$redirect = $redirect->withWarning($save_voucher_list['warnings']);
+    		}
+
+            return $redirect;
+
         }
 
         // ASSIGN USER TO VOUCHER
@@ -837,18 +871,23 @@ class DealsController extends Controller
         // SAVE
         $update = MyHelper::post('deals/update', $post);
 
-        if($post['deals_type'] == 'Promotion'){
-            $rpage = 'promotion/deals';
-    	}elseif($post['deals_type'] == 'WelcomeVoucher'){
-            $rpage = 'welcome-voucher';
-        }else{
-            $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
-        }
-
         if ( ($update['status']??false) == 'success') {
 
         	if ($post['deals_voucher_type'] == "List Vouchers" && $post['deals_type'] != 'Promotion') {
-                return parent::redirect($this->saveVoucherList($post['id_deals'], $post['voucher_code']), "Deals has been updated.","$rpage/step2/{$slug}");
+                // return parent::redirect($this->saveVoucherList($post['id_deals'], $post['voucher_code']), "Deals has been updated.","$rpage/step2/{$slug}");
+                $save_voucher_list = $this->saveVoucherList($post['id_deals'], $post['voucher_code']);
+
+            	if (($save_voucher_list['status']??false) == 'success') {
+            		$redirect = redirect("$rpage/step2/{$slug}")->withSuccess(["Deals has been updated."]);
+            	}else{
+            		$redirect = back()->withErrors($save['messages']??['Something went wrong'])->withInput();
+            	}
+
+        		if (!empty($save_voucher_list['warnings'])) {
+        			$redirect = $redirect->withWarning($save_voucher_list['warnings']);
+        		}
+
+                return $redirect;
             }
 
         	return redirect($rpage.'/step2/'.$slug)->withSuccess(['Deals has been updated']);
