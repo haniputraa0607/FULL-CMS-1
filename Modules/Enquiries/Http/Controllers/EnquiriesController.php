@@ -53,6 +53,18 @@ class EnquiriesController extends Controller
         // get api
         $data['enquiries']    = parent::getData(MyHelper::get('enquiries/list'));
 
+        $replace = MyHelper::get('autocrm/textreplace');
+        if($replace['status'] == 'success'){
+            $data['textreplaces'] = $replace['result'];
+        }
+
+        $data['textreplaces'][] = ['keyword' => '%enquiry_subject%','reference' => 'enquiry subject'];
+        $data['textreplaces'][] = ['keyword' => '%enquiry_message%','reference' => 'enquiry message'];
+        $data['textreplaces'][] = ['keyword' => '%enquiry_phone%','reference' => 'enquiry phone'];
+        $data['textreplaces'][] = ['keyword' => '%enquiry_name%','reference' => 'enquiry name'];
+        $data['textreplaces'][] = ['keyword' => '%enquiry_email%','reference' => 'enquiry email'];
+        $data['textreplaces'][] = ['keyword' => '%visiting_time%','reference' => 'enquiry visiting time'];
+
         return view('enquiries::index', $data);
     }
 
@@ -81,7 +93,7 @@ class EnquiriesController extends Controller
             return back();
         }
         else {
-            return "fail";
+            return redirect('enquiries')->withErrors(['Failed to reply']);
         } 
     }
 
