@@ -1128,7 +1128,7 @@ class DealsController extends Controller
         }
 
         $data['outlet']    = parent::getData(MyHelper::get('outlet/be/list?log_save=0'));
-        $data['dealsType'] = parent::getData(MyHelper::post('deals/be/list', ['deals_type' => ["Deals", "Hidden"], 'web' => 1]));
+        $data['dealsType'] = parent::getData(MyHelper::post('deals/be/list', ['deals_type_array' => ["Deals", "Hidden"], 'web' => 1]));
         // $data['dealsType'] = parent::getData(MyHelper::get('deals/be/list'));
 
 
