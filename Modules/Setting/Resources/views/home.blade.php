@@ -752,12 +752,12 @@
 					 			 	<div class="click-to">
 					 			 		@php
 					 			 			if ($banner['news_title'] != null) {
-					 			 				$click_to = str_limit($banner['news_title'], 20);
+					 			 				$click_to = str_limit($banner['news_title'], 18);
 					 			 			}elseif($banner['type'] == 'referral') {
 					 			 					$click_to = "Referral";
 											}elseif ($banner['url'] != null) {
 					 			 				if ($banner['type'] == 'general') {
-					 			 					$click_to = str_limit($banner['url'], 20);
+					 			 					$click_to = str_limit($banner['url'], 18);
 					 			 				} else {
 					 			 					$click_to = "GO-FOOD";
 					 			 				}
@@ -767,7 +767,7 @@
 					 			 			}
 					 			 		@endphp
 
-					 			 		<div>Click to:</div>
+					 			 		<div hei="10px">Click to:</div>
 										<div>{{ $click_to }}</div><br>
 										<div>Date Start:</div>
 										<div>{{ ($banner['banner_start']??false)?date("d M Y H:i", strtotime(implode(' ',[explode(' ', $banner['banner_start'])[0], explode(' ', $banner['banner_start'])[1]]))):'-' }}</div><br>
