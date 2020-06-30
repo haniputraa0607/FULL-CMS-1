@@ -1380,14 +1380,14 @@ class TransactionController extends Controller
     }
     /*================ End POS Transaction online failed ================*/
 
-    /*================ Start Setting Timer OVO ================*/
-    function timerOvo(Request $request){
+    /*================ Start Setting Timer Payment Gateway ================*/
+    function timerPaymentGateway(Request $request){
         $post = $request->except('_token');
         $data = [
             'title'          => 'Transaction',
             'menu_active'    => 'order',
-            'sub_title'      => 'Setting Timer OVO',
-            'submenu_active' => 'setting-timer-ovo'
+            'sub_title'      => 'Setting Timer Payment Gateway',
+            'submenu_active' => 'setting-timer-payment-gateway'
         ];
 
         if($post){
@@ -1402,9 +1402,9 @@ class TransactionController extends Controller
                 'update' => $dataUpdate
             ]);
             if(isset($update['status']) && $update['status'] == 'success'){
-                return redirect('transaction/setting/timer-ovo')->withSuccess(['Success update timer ovo']);
+                return redirect('transaction/setting/timer-payment-gateway')->withSuccess(['Success update']);
             }else{
-                return redirect('transaction/setting/timer-ovo')->withErrors(['Failed update timer ovo']);
+                return redirect('transaction/setting/timer-payment-gateway')->withErrors(['Failed update']);
             }
         }else{
             // setting_timer_ovo
@@ -1413,7 +1413,7 @@ class TransactionController extends Controller
             return view('transaction::setting.timer_ovo', $data);
         }
     }
-    /*================ End Setting Timer OVO ================*/
+    /*================ End Setting Timer Payment Gateway ================*/
     public function availablePayment(Request $request) {
         $data = [
             'title'          => 'Transaction',
