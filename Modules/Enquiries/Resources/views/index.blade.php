@@ -60,7 +60,6 @@ $configs = session('configs');
                     data: 'filename='+name+'&_token='+token,
                     url: "{{url('summernote/picture/delete/enquiry')}}",
                     success: function(data){
-                        // console.log(data);
                     }
                 });
             }
@@ -104,7 +103,6 @@ $configs = session('configs');
 				url : "{{ url('enquiries/ajax') }}",
 				data : "_token="+token+"&id_enquiry="+idnya,
 				success : function(result) {
-					console.log(result);
 					if(result[0]['reply_email_subject'] != "" && result[0]['reply_email_subject'] != null){
 						document.getElementById('reply_email_subject').value = result[0]['reply_email_subject'];
 
@@ -147,13 +145,14 @@ $configs = session('configs');
 						}
 
 						if(result[0]['reply_push_clickto'] != "" && result[0]['reply_push_clickto'] != null){
-							document.getElementById('reply_push_clickto').src = "{{ env('S3_URL_API') }}"+result[0]['reply_push_image'];
+							$('#reply_push_clickto').val(result[0]['reply_push_clickto']).trigger('change');
+							fetchDetail(result[0]['reply_push_clickto'], result[0]['reply_push_id_reference']);
 						}
 
 						/* document.getElementById('reply_push_subject').disabled  = true;
 						document.getElementById('reply_push_content').disabled  = true;
 						document.getElementById('reply_push_clickto').disabled  = true;
-						document.getElementById('autocrm_push_id_reference').disabled  = true;
+						document.getElementById('reply_push_id_reference').disabled  = true;
 						document.getElementById('autocrm_push_link').disabled  = true;
 						document.getElementById('reply_push_image_btn').disabled  = true; */
 
@@ -161,7 +160,7 @@ $configs = session('configs');
 						/* document.getElementById('reply_push_subject').disabled  = false;
 						document.getElementById('reply_push_content').disabled  = false;
 						document.getElementById('reply_push_clickto').disabled  = false;
-						document.getElementById('autocrm_push_id_reference').disabled  = false;
+						document.getElementById('reply_push_id_reference').disabled  = false;
 						document.getElementById('autocrm_push_link').disabled  = false;
 						document.getElementById('reply_push_image_btn').disabled  = false; */
 					}
@@ -263,7 +262,6 @@ $configs = session('configs');
         });
 
         $('.tablesData').on('switchChange.bootstrapSwitch', '.changeStatus', function(event, state) {
-			console.log('change')
 			var token    = "{{ csrf_token() }}";
 			var column   = $(this).parents('tr');
 			var id       = $(this).data('id');
@@ -292,7 +290,83 @@ $configs = session('configs');
             });
         });
 
-	function fetchDetail(det){
+	function addEmailContent(param){
+		var textvalue = $('#reply_email_content').val();
+
+		var textvaluebaru = textvalue+" "+param;
+		$('#reply_email_content').val(textvaluebaru);
+		$('#reply_email_content').summernote('editor.saveRange');
+		$('#reply_email_content').summernote('editor.restoreRange');
+		$('#reply_email_content').summernote('editor.focus');
+		$('#reply_email_content').summernote('editor.insertText', param);
+	}
+
+	function addEmailSubject(param){
+		var textvalue = $('#reply_email_subject').val();
+		var textvaluebaru = textvalue+" "+param;
+		$('#reply_email_subject').val(textvaluebaru);
+	}
+
+	function addSmsContent(param){
+		var textvalue = $('#reply_sms_content').val();
+		var textvaluebaru = textvalue+" "+param;
+		$('#reply_sms_content').val(textvaluebaru);
+	}
+
+	function addPushSubject(param){
+		var textvalue = $('#reply_push_subject').val();
+		var textvaluebaru = textvalue+" "+param;
+		$('#reply_push_subject').val(textvaluebaru);
+	}
+
+	function addPushContent(param){
+		var textvalue = $('#reply_push_content').val();
+		var textvaluebaru = textvalue+" "+param;
+		$('#reply_push_content').val(textvaluebaru);
+	}
+
+	function addInboxSubject(param){
+		var textvalue = $('#autocrm_inbox_subject').val();
+		var textvaluebaru = textvalue+" "+param;
+		$('#autocrm_inbox_subject').val(textvaluebaru);
+	}
+
+	function addInboxContent(param){
+		var textvalue = $('#autocrm_inbox_content').val();
+
+		var textvaluebaru = textvalue+" "+param;
+		$('#autocrm_inbox_content').val(textvaluebaru);
+		$('#autocrm_inbox_content').summernote('editor.saveRange');
+		$('#autocrm_inbox_content').summernote('editor.restoreRange');
+		$('#autocrm_inbox_content').summernote('editor.focus');
+		$('#autocrm_inbox_content').summernote('editor.insertText', param);
+	}
+
+	function addForwardSubject(param){
+		var textvalue = $('#autocrm_forward_email_subject').val();
+		var textvaluebaru = textvalue+" "+param;
+		$('#autocrm_forward_email_subject').val(textvaluebaru);
+	}
+
+	function addForwardContent(param){
+		var textvalue = $('#autocrm_forward_email_content').val();
+
+		var textvaluebaru = textvalue+" "+param;
+		$('#autocrm_forward_email_content').val(textvaluebaru);
+		$('#autocrm_forward_email_content').summernote('editor.saveRange');
+		$('#autocrm_forward_email_content').summernote('editor.restoreRange');
+		$('#autocrm_forward_email_content').summernote('editor.focus');
+		$('#autocrm_forward_email_content').summernote('editor.insertText', param);
+	}
+
+	function addWhatsappContent(param, element){
+		var textarea = $(element).closest('.col-md-3').closest('.row').closest('.col-md-8').find('.whatsapp-content')
+		var textvalue = $(textarea).val();
+		var textvaluebaru = textvalue+" "+param;
+		$(textarea).val(textvaluebaru);
+	}
+
+	function fetchDetail(det, id_ref = null){
 		let token  = "{{ csrf_token() }}";
 
 		if(det == 'Product'){
@@ -303,10 +377,13 @@ $configs = session('configs');
 				success : function(result) {
 					document.getElementById('atd').style.display = 'block';
 					var operator_value = document.getElementsByName('reply_push_id_reference')[0];
-					for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
+					for(var i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
 					operator_value.options[operator_value.options.length] = new Option("", "");
-					for(x=1;x <= result.length; x++){
+					for(var x=1;x < result.length; x++){
 						operator_value.options[operator_value.options.length] = new Option(result[x]['product_name'], result[x]['id_product']);
+						if((id_ref !== null || id_ref !== '') && id_ref == result[x]['id_product']){
+							$('#reply_push_id_reference').val(result[x]['id_product']).trigger('change');
+						}
 					}
 				}
 			});
@@ -320,11 +397,14 @@ $configs = session('configs');
 				data : "_token="+token,
 				success : function(result) {
 					document.getElementById('atd').style.display = 'block';
-					var operator_value = document.getElementsByName('autocrm_push_id_reference')[0];
-					for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
+					var operator_value = document.getElementsByName('reply_push_id_reference')[0];
+					for(var i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
 					operator_value.options[operator_value.options.length] = new Option("", "");
-					for(x=1;x <= result.length; x++){
+					for(var x=1;x < result.length; x++){
 						operator_value.options[operator_value.options.length] = new Option(result[x]['outlet_name'], result[x]['id_outlet']);
+						if((id_ref !== null || id_ref !== '') && id_ref == result[x]['id_outlet']){
+							$('#reply_push_id_reference').val(result[x]['id_outlet']).trigger('change');
+						}
 					}
 				}
 			});
@@ -338,11 +418,14 @@ $configs = session('configs');
 				data : "_token="+token,
 				success : function(result) {
 					document.getElementById('atd').style.display = 'block';
-					var operator_value = document.getElementsByName('autocrm_push_id_reference')[0];
-					for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
+					var operator_value = document.getElementsByName('reply_push_id_reference')[0];
+					for(var i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
 					operator_value.options[operator_value.options.length] = new Option("", "");
-					for(x=1;x <= result.length; x++){
+					for(var x=1;x < result.length; x++){
 						operator_value.options[operator_value.options.length] = new Option(result[x]['news_title'], result[x]['id_news']);
+						if((id_ref !== null || id_ref !== '') && id_ref == result[x]['id_news']){
+							$('#reply_push_id_reference').val(result[x]['id_news']).trigger('change');
+						}
 					}
 				}
 			});
@@ -351,49 +434,63 @@ $configs = session('configs');
 
 		if(det == 'Home'){
 			document.getElementById('atd').style.display = 'none';
-			var operator_value = document.getElementsByName('autocrm_push_id_reference')[0];
+			var operator_value = document.getElementsByName('reply_push_id_reference')[0];
 			for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
 			document.getElementById('link').style.display = 'none';
 		}
 
 		if(det == 'E-Magazine'){
 			document.getElementById('atd').style.display = 'none';
-			var operator_value = document.getElementsByName('autocrm_push_id_reference')[0];
+			var operator_value = document.getElementsByName('reply_push_id_reference')[0];
 			for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
 			document.getElementById('link').style.display = 'none';
 		}
 
 		if(det == 'Inbox'){
 			document.getElementById('atd').style.display = 'none';
-			var operator_value = document.getElementsByName('autocrm_push_id_reference')[0];
+			var operator_value = document.getElementsByName('reply_push_id_reference')[0];
 			for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
 			document.getElementById('link').style.display = 'none';
 		}
 
 		if(det == 'Deals'){
-			document.getElementById('atd').style.display = 'none';
-			var operator_value = document.getElementsByName('autocrm_push_id_reference')[0];
-			for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
+			$.ajax({
+				type : "GET",
+				url : "{{ url('deals/list/active') }}",
+				data : "_token="+token,
+				success : function(result) {
+					document.getElementById('atd').style.display = 'block';
+					var operator_value = document.getElementsByName('reply_push_id_reference')[0];
+					for(var i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
+					operator_value.options[operator_value.options.length] = new Option("", "");
+					for(var x=1;x < result.length; x++){
+						operator_value.options[operator_value.options.length] = new Option(result[x]['deals_title']+' '+result[x]['deals_second_title'], result[x]['id_deals']);
+						if((id_ref !== null || id_ref !== '') && id_ref == result[x]['id_deals']){
+							$('#reply_push_id_reference').val(result[x]['id_deals']).trigger('change');
+						}
+					}
+				}
+			});
 			document.getElementById('link').style.display = 'none';
 		}
 
 		if(det == 'Contact Us'){
 			document.getElementById('atd').style.display = 'none';
-			var operator_value = document.getElementsByName('autocrm_push_id_reference')[0];
+			var operator_value = document.getElementsByName('reply_push_id_reference')[0];
 			for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
 			document.getElementById('link').style.display = 'none';
 		}
 
 		if(det == 'Link'){
 			document.getElementById('atd').style.display = 'none';
-			var operator_value = document.getElementsByName('autocrm_push_id_reference')[0];
+			var operator_value = document.getElementsByName('reply_push_id_reference')[0];
 			for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
 			document.getElementById('link').style.display = 'block';
 		}
 
 		if(det == 'Logout'){
 			document.getElementById('atd').style.display = 'none';
-			var operator_value = document.getElementsByName('autocrm_push_id_reference')[0];
+			var operator_value = document.getElementsByName('reply_push_id_reference')[0];
 			for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
 			document.getElementById('link').style.display = 'none';
 		}
@@ -954,12 +1051,31 @@ $configs = session('configs');
 								<label class="col-md-3 control-label">Email Subject</label>
 								<div class="col-md-9">
 									<input type="text" placeholder="Email Subject" class="form-control" name="reply_email_subject" id="reply_email_subject">
+									<br>
+									You can use this variables to display user personalized information:
+									<br><br>
+									<div class="row">
+										@foreach($textreplaces as $key=>$row)
+											<div class="col-md-3" style="margin-bottom:5px;">
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addEmailSubject('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+											</div>
+										@endforeach
+									</div>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="multiple" class="control-label col-md-3">Email Content</label>
 								<div class="col-md-9">
 									<textarea name="reply_email_content" id="reply_email_content" class="form-control summernote"></textarea>
+									You can use this variables to display user personalized information:
+									<br><br>
+									<div class="row" >
+										@foreach($textreplaces as $key=>$row)
+											<div class="col-md-3" style="margin-bottom:5px;">
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addEmailContent('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+											</div>
+										@endforeach
+									</div>
 								</div>
 							</div>
 						@endif
@@ -970,6 +1086,16 @@ $configs = session('configs');
 							<label class="col-md-3 control-label">SMS Content</label>
 							<div class="col-md-9">
 								<textarea name="reply_sms_content" id="reply_sms_content" class="form-control" placeholder="SMS Content"></textarea>
+								<br>
+								You can use this variables to display user personalized information:
+								<br><br>
+								<div class="row">
+									@foreach($textreplaces as $key=>$row)
+										<div class="col-md-3" style="margin-bottom:5px;">
+											<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addSmsContent('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+										</div>
+									@endforeach
+								</div>
 							</div>
 						</div>
 						@endif
@@ -980,12 +1106,32 @@ $configs = session('configs');
 								<label for="reply_push_subject" class="col-md-3 control-label">Subject</label>
 								<div class="col-md-9">
 									<input type="text" placeholder="Push Notification Subject" class="form-control" name="reply_push_subject" id="reply_push_subject">
+									<br>
+									You can use this variables to display user personalized information:
+									<br><br>
+									<div class="row">
+										@foreach($textreplaces as $key=>$row)
+											<div class="col-md-3" style="margin-bottom:5px;">
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addPushSubject('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+											</div>
+										@endforeach
+									</div>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="reply_push_content" class="control-label col-md-3">Content</label>
 								<div class="col-md-9">
 									<textarea name="reply_push_content" id="reply_push_content" class="form-control"></textarea>
+									<br>
+									You can use this variables to display user personalized information:
+									<br><br>
+									<div class="row">
+										@foreach($textreplaces as $key=>$row)
+											<div class="col-md-3" style="margin-bottom:5px;">
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '{{ $row['keyword'] }}' with user's {{ $row['reference'] }}" onClick="addPushContent('{{ $row['keyword'] }}');">{{ str_replace('_',' ',$row['keyword']) }}</span>
+											</div>
+										@endforeach
+									</div>
 								</div>
 							</div>
 							<div class="form-group">
@@ -1012,11 +1158,19 @@ $configs = session('configs');
 								<div class="col-md-9">
 									<select name="reply_push_clickto" id="reply_push_clickto" class="form-control select2" onChange="fetchDetail(this.value)">
 										<option value="Home">Home</option>
-										<option value="News">News</option>
-										<option value="Product">Product</option>
-										<option value="Outlet">Outlet</option>
-										<option value="Inbox">Inbox</option>
 										<option value="Deals">Deals</option>
+										<option value="Voucher">Voucher</option>
+										<option value="Order">Order</option>
+										<option value="History Transaction">History Transaction</option>
+										<option value="History Point">History Point</option>
+										<option value="Profil">Profile</option>
+										<option value="Membership">Membership</option>
+										<option value="News">News</option>
+										<option value="Outlet">Outlet</option>
+										<option value="Referral">Referral</option>
+										<option value="About">About</option>
+										<option value="FAQ">FAQ</option>
+										<option value="TOS">Term Of Services</option>
 										<option value="Contact Us">Contact Us</option>
 										<option value="Link">Link</option>
 										<option value="Logout">Logout</option>
@@ -1026,7 +1180,7 @@ $configs = session('configs');
 							<div class="form-group" id="atd" style="display:none;">
 								<label for="autocrm_push_clickto" class="control-label col-md-3">Action to Detail</label>
 								<div class="col-md-9">
-									<select name="autocrm_push_id_reference" id="autocrm_push_id_reference" class="form-control select2">
+									<select name="reply_push_id_reference" id="reply_push_id_reference" class="form-control select2">
 									</select>
 								</div>
 							</div>
