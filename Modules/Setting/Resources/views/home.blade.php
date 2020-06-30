@@ -737,7 +737,7 @@
 											</div>
 											<div class="col-md-10 text-right">
 												@if(MyHelper::hasAccess([146], $grantedFeature))
-												<a class="btn blue btn-circle btn-edit" href="#modalBannerUpdate" data-toggle="modal" data-id="{{ $banner['id_banner'] }}" data-img="{{$banner['image_url']}}" data-news="{{$banner['id_news']}}" data-url="{{$banner['url']}}" data-type="{{ $banner['type'] }}" data-start="{{ ($banner['banner_start']??false)?date("d F Y - H:i", strtotime(implode(' ',[explode(' ', $banner['banner_start'])[0], explode(' ', $banner['banner_start'])[1]]))):'' }}" data-end="{{ ($banner['banner_end']??false)?date("d F Y - H:i", strtotime(implode(' ',[explode(' ', $banner['banner_end'])[0], explode(' ', $banner['banner_end'])[1]]))):''}}"><i class="fa fa-pencil"></i> </a>
+												<a class="btn blue btn-circle btn-edit" href="#modalBannerUpdate" data-toggle="modal" data-id="{{ $banner['id_banner'] }}" data-img="{{$banner['image_url']}}" data-news="{{$banner['id_news']}}" data-url="{{$banner['url']}}" data-type="{{ $banner['type'] }}" data-start="{{ ($banner['banner_start']??false)?date("d M Y - H:i", strtotime(implode(' ',[explode(' ', $banner['banner_start'])[0], explode(' ', $banner['banner_start'])[1]]))):'' }}" data-end="{{ ($banner['banner_end']??false)?date("d M Y - H:i", strtotime(implode(' ',[explode(' ', $banner['banner_end'])[0], explode(' ', $banner['banner_end'])[1]]))):''}}"><i class="fa fa-pencil"></i> </a>
 												@endif
 												@if(MyHelper::hasAccess([147], $grantedFeature))
 												<a class="btn red-mint btn-circle btn-delete" data-id="{{ $banner['id_banner'] }}"><i class="fa fa-trash-o"></i> </a>
@@ -770,9 +770,9 @@
 					 			 		<div>Click to:</div>
 										<div>{{ $click_to }}</div><br>
 										<div>Date Start:</div>
-										<div>{{ ($banner['banner_start']??false)?date("d F Y H:i", strtotime(implode(' ',[explode(' ', $banner['banner_start'])[0], explode(' ', $banner['banner_start'])[1]]))):'-' }}</div><br>
+										<div>{{ ($banner['banner_start']??false)?date("d M Y H:i", strtotime(implode(' ',[explode(' ', $banner['banner_start'])[0], explode(' ', $banner['banner_start'])[1]]))):'-' }}</div><br>
 										<div>Date End:</div>
-					 			 		<div>{{ ($banner['banner_end']??false)?date("d F Y H:i", strtotime(implode(' ',[explode(' ', $banner['banner_end'])[0], explode(' ', $banner['banner_end'])[1]]))):'-' }}</div>
+					 			 		<div>{{ ($banner['banner_end']??false)?date("d M Y H:i", strtotime(implode(' ',[explode(' ', $banner['banner_end'])[0], explode(' ', $banner['banner_end'])[1]]))):'-' }}</div>
 					 			 	</div>
 					 			</div>
 					 			@endforeach
