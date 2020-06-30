@@ -24,10 +24,10 @@ class Controller extends BaseController
 
 	function login(loginRequest $request){
 
-//        $captcha = GoogleReCaptchaV3::verifyResponse($request->input('g-recaptcha-response'))->isSuccess();
-//        if (!$captcha) {
-//        	return redirect()->back()->withErrors(['Recaptcha failed']);
-//        }
+        $captcha = GoogleReCaptchaV3::verifyResponse($request->input('g-recaptcha-response'))->isSuccess();
+        if (!$captcha) {
+        	return redirect()->back()->withErrors(['Recaptcha failed']);
+        }
 
 
 		if(strlen($request->input('password')) != 6){

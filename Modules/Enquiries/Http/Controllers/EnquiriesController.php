@@ -53,21 +53,17 @@ class EnquiriesController extends Controller
         // get api
         $data['enquiries']    = parent::getData(MyHelper::get('enquiries/list'));
 
-        $data['textreplaces'] = [
-            ['keyword' => '%phone%','reference' => 'user phone'],
-            ['keyword' => '%name%','reference' => 'user name'],
-            ['keyword' => '%email%','reference' => 'user email'],
-            ['keyword' => '%gender%','reference' => 'user gender'],
-            ['keyword' => '%city%','reference' => 'user city'],
-            ['keyword' => '%province%','reference' => 'user province'],
-            ['keyword' => '%birthday%','reference' => 'user birthday'],
-            ['keyword' => '%level%','reference' => 'user level'],
-            ['keyword' => '%points%','reference' => 'user points'],
-            ['keyword' => '%phone_verify_status%','reference' => 'user phone verify status'],
-            ['keyword' => '%email_verify_status%','reference' => 'user email verify status'],
-            ['keyword' => '%register_time%','reference' => 'user register time'],
-            ['keyword' => '%suspend_status%','reference' => 'user suspend status'],
-        ];
+        $replace = MyHelper::get('autocrm/textreplace');
+        if($replace['status'] == 'success'){
+            $data['textreplaces'] = $replace['result'];
+        }
+
+        $data['textreplaces'][] = ['keyword' => '%enquiry_subject%','reference' => 'enquiry subject'];
+        $data['textreplaces'][] = ['keyword' => '%enquiry_message%','reference' => 'enquiry message'];
+        $data['textreplaces'][] = ['keyword' => '%enquiry_phone%','reference' => 'enquiry phone'];
+        $data['textreplaces'][] = ['keyword' => '%enquiry_name%','reference' => 'enquiry name'];
+        $data['textreplaces'][] = ['keyword' => '%enquiry_email%','reference' => 'enquiry email'];
+        $data['textreplaces'][] = ['keyword' => '%visiting_time%','reference' => 'enquiry visiting time'];
 
         return view('enquiries::index', $data);
     }
