@@ -90,8 +90,8 @@
             var image, file;
             var domLock = $(this);
             var i_size = {
-                x: 200,
-                y: 200
+                x: 400,
+                y: 400
             }
             if($(this).data('type') == 'image_detail'){
                 i_size = {

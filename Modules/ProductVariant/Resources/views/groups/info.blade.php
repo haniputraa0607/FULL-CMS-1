@@ -58,7 +58,7 @@
                                 Image
                                 <span class="required" aria-required="true"> * </span>
                                 <br>
-                                <span class="required" aria-required="true"> (200 * 200) (PNG Only) </span>
+                                <span class="required" aria-required="true"> (400 * 400) (PNG Only) </span>
                                 <i class="fa fa-question-circle tooltips" data-original-title="Gambar yang akan ditampilkan di daftar produk" data-container="body"></i>
                             </label>
                             <div class="col-md-7">
