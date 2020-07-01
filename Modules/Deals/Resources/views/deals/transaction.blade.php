@@ -182,7 +182,7 @@
                         <div class="col-md-8">
                             <div class="input-icon right">
                                 <!-- <i class="fa fa-question-circle tooltips" data-original-title="Pilih outlet yang memberlakukan deals tersebut" data-container="body"></i> -->
-                                <select class="form-control select2-multiple" data-placeholder="Select Deals" name="id_deals">
+                                <select class="form-control select2-multiple" data-placeholder="Select Deals" name="id_deals" required>
                                 <optgroup label="Deals List">
                                     <!-- <option value="">Select Outlet</option> -->
                                     @if (!empty($dealsType))
