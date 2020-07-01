@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="portlet-body form">
-            <form class="form-horizontal" action="{{ url('transaction/setting/timer-ovo') }}" method="post" id="form">
+            <form class="form-horizontal" action="{{ url('transaction/setting/timer-payment-gateway') }}" method="post" id="form">
             {{ csrf_field() }}
             <div class="form-body">
                 @if(MyHelper::hasAccess([247], $grantedFeature))
