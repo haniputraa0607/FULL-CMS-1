@@ -22,6 +22,7 @@ class DealsController extends Controller
 {
     function __construct() {
         date_default_timezone_set('Asia/Jakarta');
+        $this->promo_campaign       = "Modules\PromoCampaign\Http\Controllers\PromoCampaignController";
     }
 
 
@@ -448,39 +449,73 @@ class DealsController extends Controller
     /* LIST */
     function deals(Request $request) {
         $post=$request->except('_token');
-        if($post){
-            if(($post['clear']??false)=='session'){
-                session(['deals_filter'=>[]]);
-            }else{
-                session(['deals_filter'=>$post]);
-            }
-            return back();
-        }
+        unset($post['page']);
         $identifier = $this->identifier();
         $dataDeals  = $this->dataDeals($identifier);
 
-        $data       = $dataDeals['data'];
-        $post       = $dataDeals['post'];
-        $post['newest'] = 1;
-        $post['web'] = 1;
+    	if($dataDeals['post']['deals_type'] == 'Promotion'){
+            $rpage = 'promotion/deals';
+    	}elseif($dataDeals['post']['deals_type'] == 'WelcomeVoucher'){
+            $rpage = 'welcome-voucher';
+        }else{
+            $rpage = $dataDeals['post']['deals_type'] =='Deals'?'deals':'inject-voucher';
+        }
+
+
+        if ($request->post('clear') == 'session') 
+        {
+            session(['deals_filter' => '']);
+        }
+
+        $data       		= $dataDeals['data'];
+        $post['deals_type'] = $dataDeals['post']['deals_type'];
+        $post['web'] 		= 1;
+        $post['paginate'] 	= 10;
+        $post['admin']		= 1;
+        $post['updated_at']	= 1;
+
+        app($this->promo_campaign)->session_mixer($request, $post, 'deals_filter');
         if(($filter=session('deals_filter'))&&is_array($filter)){
-            $post=array_merge($filter,$post);
+
             if($filter['rule']??false){
                 $data['rule']=array_map('array_values', $filter['rule']);
             }
             if($filter['operator']??false){
                 $data['operator']=$filter['operator'];
             }
+            session(['deals_filter' => $post]);
         }
-        // return MyHelper::post('deals/be/list', $post);
-        $post['admin']=1;
 
-        $data['deals'] = parent::getData(MyHelper::post('deals/be/list', $post));
+
+        if (!empty($request->except('_token','page'))) {
+        	return redirect($rpage);
+        	dd($request->except('_token','page'));
+        }
+        $get_data = MyHelper::post('deals/be/list?page='.$request->get('page'), $post);
+
+		if(!empty($get_data['result']['data']) && $get_data['status'] == 'success' && !empty($get_data['result']['data'])){
+
+            $data['deals']            = $get_data['result']['data'];
+            $data['dealsTotal']       = $get_data['result']['total'];
+            $data['dealsPerPage']     = $get_data['result']['from'];
+            $data['dealsUpTo']        = $get_data['result']['from'] + count($get_data['result']['data'])-1;
+            $data['dealsPaginator']   = new LengthAwarePaginator($get_data['result']['data'], $get_data['result']['total'], $get_data['result']['per_page'], $get_data['result']['current_page'], ['path' => url()->current()]);
+            $data['total']            = $get_data['result']['total'];
+            
+        }else{
+            $data['deals']          = [];
+            $data['dealsTotal']     = 0;
+            $data['dealsPerPage']   = 0;
+            $data['dealsUpTo']      = 0;
+            $data['dealsPaginator'] = false;
+            $data['total']          = 0;
+        }
 
         $outlets = parent::getData(MyHelper::get('outlet/be/list'));
         $brands = parent::getData(MyHelper::get('brand/be/list'));
         if (!empty($data['deals'])) {
         	foreach ($data['deals'] as $key => $value) {
+        		$data['deals'][$key]['id_deals_decrypt'] = $value['id_deals'];
         		$data['deals'][$key]['id_deals'] = MyHelper::createSlug($value['id_deals'], $value['created_at']);
         	}
         }
