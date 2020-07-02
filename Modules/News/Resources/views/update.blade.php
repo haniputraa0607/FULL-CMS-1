@@ -1197,7 +1197,7 @@
 
                                             @if (!empty($product))
                                                 @foreach($product as $suw)
-                                                    <option value="{{ $suw['id_product'] }}" @if (in_array($suw['id_product'], $selectedProduct)) selected @endif>{{ $suw['product_name'] }}</option>
+                                                    <option value="{{ $suw['id_product_group'] }}" @if (in_array($suw['id_product_group'], $selectedProduct)) selected @endif>{{ $suw['product_group_name'] }}</option>
                                                 @endforeach
                                             @endif
                                         </optgroup>

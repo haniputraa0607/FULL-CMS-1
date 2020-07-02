@@ -92,10 +92,18 @@
                 </thead>
                 <tbody class="sortable">
                     @foreach($payments as $key => $payment)
+                    @php
+                        $oa = [
+                            'Shopeepay' => 'ShopeePay',
+                            'Ovo'       => 'OVO',
+                            'Gopay'     => 'GoPay',
+                            'Ipay88'    => 'IPay88',
+                        ];
+                    @endphp
                     <tr>
                         <td class="sortable-handle"><i class="fa fa-ellipsis-h" style="transform: rotate(90deg);"></i></td>
-                        <td>{{$payment['payment_gateway']}}</td>
-                        <td>{{$payment['payment_method']}}</td>
+                        <td>{{$oa[$payment['payment_gateway']]??$payment['payment_gateway']}}</td>
+                        <td>{{$oa[$payment['payment_method']]??$payment['payment_method']}}</td>
                         <td>
                             <input type="checkbox" name="payments[{{$payment['code']}}][status]" class="make-switch brand_visibility" data-size="small" data-on-color="info" data-on-text="Enable" data-off-color="default" data-off-text="Disable" value="1" {{$payment['status']?'checked':''}}>
                         </td>
