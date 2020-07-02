@@ -492,8 +492,8 @@ $configs  = session('configs');
 <div class="alert alert-block alert-info fade in">
 	<button type="button" class="close" data-dismiss="alert"></button>
 	<h4 class="alert-heading">Displaying search result :</h4>
-	<p>{{count($deals)}}</p><br>
-	<form action="{{ url('deals') }}" method="post">
+	<p>{{($total??false)?:0}}</p><br>
+	<form action="" method="post">
 		{{csrf_field()}}
 		<button class="btn btn-sm btn-warning" name="clear" value="session">Reset</button>
 	</form>

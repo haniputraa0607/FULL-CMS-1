@@ -21,6 +21,10 @@ $grantedFeature     = session('granted_features');
             vertical-align: middle!important;
             text-align: left;
         }
+        .paginator-right {
+            display: flex;
+            justify-content: flex-end;
+        }
     </style>
 @endsection
 
@@ -104,7 +108,7 @@ $grantedFeature     = session('granted_features');
                     [5, 10, 15, 20, "All"]
                 ],
                 pageLength: 10,
-                dom: "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>"
+                dom: "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'>>"
         });
 
         $('#sample_1').on('click', '.delete', function() {
@@ -166,6 +170,7 @@ $grantedFeature     = session('granted_features');
             <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_1">
                 <thead>
                     <tr>
+                        <th> ID </th>
                         <th> Type </th>
                         <th> Title </th>
                         @if(MyHelper::hasAccess([97], $configs))
@@ -192,6 +197,7 @@ $grantedFeature     = session('granted_features');
 	                            }
 	                        @endphp
                             <tr>
+                                <td class="middle-center">{{ $value['id_deals_decrypt'] }}</td>
                                 <td nowrap>
                                 	<ul>
                                 		@if (!empty($value['is_online']))
@@ -288,6 +294,11 @@ $grantedFeature     = session('granted_features');
                     @endif
                 </tbody>
             </table>
+            <div class="paginator-right">
+                @if ($dealsPaginator)
+                  {{ $dealsPaginator->links() }}
+                @endif
+            </div>
         </div>
     </div>
 
