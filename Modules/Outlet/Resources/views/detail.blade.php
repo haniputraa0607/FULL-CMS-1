@@ -560,11 +560,11 @@
                  <li id="pinOutlet">
                     <a href="#pin" data-toggle="tab" > Update Pin </a>
                 </li>
-                <!-- @if(MyHelper::hasAccess([29], $grantedFeature))
+                @if(MyHelper::hasAccess([29], $grantedFeature))
                     <li>
                         <a href="#photo" data-toggle="tab"> Photo </a>
                     </li>
-                @endif -->
+                @endif 
                 @if(MyHelper::hasAccess([4], $configs))
                     @if(MyHelper::hasAccess([34], $grantedFeature))
                         <li>
@@ -595,9 +595,9 @@
                 <!-- <div class="tab-pane" id="pin">
                     @ i n c l u d e ('outlet::pin')
                 </div> -->
-                <!-- <div class="tab-pane" id="photo">
+                <div class="tab-pane" id="photo">
                     @include('outlet::photo')
-                </div> -->
+                </div>
                 <div class="tab-pane" id="holiday">
                     @include('outlet::holiday')
                 </div>

@@ -58,8 +58,7 @@ class NewsController extends Controller
             $data['outlet']    = parent::getData(MyHelper::get('outlet/be/list'));
             $data['categories']    = parent::getData(MyHelper::post('news/be/category',['admin' => '1']));
             // get product
-            $data['product']   = parent::getData(MyHelper::get('product/be/list'));
-            
+            $data['product']   = parent::getData(MyHelper::get('product-variant/group'));
             return view('news::create', $data);
         }
         else {
@@ -261,7 +260,7 @@ class NewsController extends Controller
             $data['outlet']    = parent::getData(MyHelper::get('outlet/be/list'));
             
             // get product
-            $data['product']   = parent::getData(MyHelper::get('product/be/list'));
+            $data['product']   = parent::getData(MyHelper::get('product-variant/group'));
             
             // print_r($data); exit();
             return view('news::update', $data);
