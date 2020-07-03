@@ -164,9 +164,9 @@
 					operator_value.options[operator_value.options.length] = new Option("", "");
 					for(x=0;x < result.length; x++){
 						if(idref == result[x]['id_deals']){
-							operator_value.options[operator_value.options.length] = new Option(result[x]['deals_title']+' '+result[x]['deals_second_title'], result[x]['id_deals'], false, true);
+							operator_value.options[operator_value.options.length] = new Option(result[x]['id_deals']+' - '+result[x]['deals_title']??'', result[x]['id_deals'], false, true);
 						}else{
-							operator_value.options[operator_value.options.length] = new Option(result[x]['deals_title']+' '+result[x]['deals_second_title'], result[x]['id_deals']);
+							operator_value.options[operator_value.options.length] = new Option(result[x]['id_deals']+' - '+result[x]['deals_title']??'', result[x]['id_deals']);
 						}
 					}
 				}
