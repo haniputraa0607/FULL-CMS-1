@@ -11,13 +11,13 @@ class PromoSheet implements FromArray, WithTitle, WithHeadings, ShouldAutoSize
 {
     private $data;
     private $title;
-    Private $use_heading;
+    Private $sheet_name;
 
-    public function __construct(array $data, $title='', $use_heading=0)
+    public function __construct(array $data, $title='', $sheet_name=null)
     {
-        $this->data = $data;
-        $this->title  = $title;
-        $this->use_heading  = $use_heading;
+        $this->data 		= $data;
+        $this->title  		= $title;
+        $this->sheet_name  	= $sheet_name;
     }
 
     public function array(): array
@@ -33,9 +33,15 @@ class PromoSheet implements FromArray, WithTitle, WithHeadings, ShouldAutoSize
     public function headings(): array
     {
     	$heading = [];
-    	if ($this->use_heading == 1) 
-    	{
+    	if (empty($this->sheet_name) ) {
     		$heading = $this->data[0]??[];
+    	}
+    	elseif ($this->sheet_name == 'content') {
+    		$heading = [
+    			'title' 		=> null,
+    			'visibility' 	=> null,
+    			'detail' 		=> null
+    		];
     	}
 
         return array_keys($heading);

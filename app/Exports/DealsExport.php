@@ -28,11 +28,15 @@ class DealsExport implements WithMultipleSheets
 	        // sheet title maksimal 31 caracter
             if ($key == 'rule') 
             {
-	            $sheets[] = new PromoSheet($value, substr($key,0,30));	
+	            $sheets[] = new PromoSheet($value, substr($key,0,30), 'rule');	
+            }
+            elseif ($key == 'content') 
+            {
+	            $sheets[] = new PromoSheet($value, substr($key,0,30), 'content');	
             }
             else
             {
-	            $sheets[] = new PromoSheet($value, substr($key,0,30), 1);	
+	            $sheets[] = new PromoSheet($value, substr($key,0,30));
             }
         }
 
