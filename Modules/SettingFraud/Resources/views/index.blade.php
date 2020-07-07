@@ -928,12 +928,16 @@ $configs    		= session('configs');
                         <li class=" @if(isset($tipe) && $tipe == 'fraud_check_promo_code') active @endif">
                             <a data-toggle="tab" href="#fraud_check_promo_code"><i class="fa fa-cog"></i> Check Promo Code </a>
                         </li>
-                        <li class=" @if(isset($tipe) && $tipe == 'fraud_check_referral_user') active @endif">
-                            <a data-toggle="tab" href="#fraud_check_referral_user"><i class="fa fa-cog"></i> Check Referral User </a>
-                        </li>
-                        <li class=" @if(isset($tipe) && $tipe == 'fraud_referral') active @endif">
-                            <a data-toggle="tab" href="#fraud_referral"><i class="fa fa-cog"></i> Check Referral </a>
-                        </li>
+                        @if(MyHelper::hasAccess([216], $grantedFeature) || MyHelper::hasAccess([217], $grantedFeature))
+                            <li class=" @if(isset($tipe) && $tipe == 'fraud_check_referral_user') active @endif">
+                                <a data-toggle="tab" href="#fraud_check_referral_user"><i class="fa fa-cog"></i> Check Referral User </a>
+                            </li>
+                        @endif
+                        @if(MyHelper::hasAccess([216], $grantedFeature) || MyHelper::hasAccess([218], $grantedFeature))
+                            <li class=" @if(isset($tipe) && $tipe == 'fraud_referral') active @endif">
+                                <a data-toggle="tab" href="#fraud_referral"><i class="fa fa-cog"></i> Check Referral </a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
                 <div class="col-md-9">

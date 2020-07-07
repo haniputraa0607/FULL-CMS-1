@@ -1227,14 +1227,14 @@
 				{{ csrf_field() }}
 				<div class="row">
 					<div class="col-12">
-						@if(MyHelper::hasAccess([12,13,14], $grantedFeature))
+						@if(MyHelper::hasAccess([12,13], $grantedFeature))
 							<div class="alert alert-warning" role="alert">
 							If you click submit, it may take a long time because the system will recalculate the user's membership
 							</div>
 						@endif
 					</div>
 					<div class="col-md-offset-5 col-md-7">
-						@if(MyHelper::hasAccess([12,13,14], $grantedFeature))
+						@if(MyHelper::hasAccess([12,13], $grantedFeature))
 							<button type="submit" class="btn green">Submit</button>
 						@endif
 						<!-- <button type="button" class="btn default">Cancel</button> -->
