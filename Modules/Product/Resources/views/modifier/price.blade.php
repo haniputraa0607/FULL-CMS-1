@@ -18,6 +18,7 @@
 @endsection
 
 @section('page-script')
+    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js')}}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
@@ -74,19 +75,28 @@
                 ]
             },
         };
-        $('.price').inputmask("numeric", {
+        $('.price').inputmask("currency", {
+            @if(env('COUNTRY_CODE') == 'SG')
+            removeMaskOnSubmit: true,
+            min:0,
+            prefix: "",
+            autoGroup: true,
+            radixPoint: ".",
+            groupSeparator: ",",
+            rightAlign: false
+            @else
+            removeMaskOnSubmit: true,
+            min:0,
+            prefix: "",
+            autoGroup: true,
             radixPoint: ",",
             groupSeparator: ".",
-            digits: 0,
-            autoGroup: true,
             rightAlign: false,
-            oncleared: function () { self.Value(''); }
+            digitsOptional:2
+            @endif
         });
         $('#outlet_selector').on('change',function(){
             window.location.href = "{{url('product/modifier/price')}}/"+$(this).val();
-        });
-        $('#form-prices').submit(function(){
-            $('.price').inputmask('remove');
         });
     </script>
 
