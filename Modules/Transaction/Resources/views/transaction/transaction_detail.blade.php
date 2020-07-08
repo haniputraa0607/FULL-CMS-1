@@ -534,7 +534,7 @@
                     <div class="row space-text">
                         <div class="col-2 Ubuntu text-left" style="color: #8fd6bd;">{{$item['transaction_product_qty']}}x</div>
                         <div class="col-7 Ubuntu-Medium text-black">{{$item['product']['product_name']}}</div>
-                        <div class="col-3 text-right Ubuntu-Medium text-black">@if (is_numeric($item['transaction_product_subtotal'])) {{ number_format($item['transaction_product_subtotal'])}} @else {{$item['transaction_product_subtotal']}} @endif</div>
+                        <div class="col-3 text-right Ubuntu-Medium text-black">@if (!is_string($item['transaction_product_subtotal'])) {{ number_format($item['transaction_product_subtotal'])}} @else {{$item['transaction_product_subtotal']}} @endif</div>
                     </div>
                     <div class="row space-text">
                         <div class="col-2 Ubuntu text-left"></div>
@@ -558,7 +558,7 @@
                             ?>
                         </div>
                         <div class="col-3 text-right Ubuntu-Medium text-black" style="color:grey;font-size: 11px">
-                            @if($item['transaction_product_qty'] > 1)@ @if (is_numeric($item['transaction_product_sub_item'])) {{ number_format(str_replace("@","",$item['transaction_product_sub_item']))}} @else {{ str_replace("@","",$item['transaction_product_sub_item'])}} @endif @endif
+                            @if($item['transaction_product_qty'] > 1)@ @if (!is_string($item['transaction_product_sub_item'])) {{ number_format(str_replace("@","",$item['transaction_product_sub_item']))}} @else {{ str_replace("@","",$item['transaction_product_sub_item'])}} @endif @endif
                         </div>
                     </div>
                     <div class="col-12">
@@ -573,17 +573,17 @@
                 </div>
                 <div class="row space-bottom">
                     <div class="col-6 text-13-3px Ubuntu-Medium text-black ">Subtotal</div>
-                    <div class="col-6 text-13-3px text-right Ubuntu text-black">@if (is_numeric( $data['transaction_subtotal'])) {{ number_format($data['transaction_subtotal']) }} @else {{ $data['transaction_subtotal'] }} @endif </div>
+                    <div class="col-6 text-13-3px text-right Ubuntu text-black">@if (!is_string( $data['transaction_subtotal'])) {{ number_format($data['transaction_subtotal']) }} @else {{ $data['transaction_subtotal'] }} @endif </div>
                 </div>
                 @if($data['transaction_discount'] != 0)
                     <div class="row space-bottom">
                         <div class="col-6 text-13-3px Ubuntu-Medium">Discount</div>
-                        <div class="col-6 text-13-3px text-right Ubuntu" style="color: red">@if (is_numeric( $data['transaction_discount'])) {{ number_format($data['transaction_discount']) }} @else {{ $data['transaction_discount'] }} @endif </div>
+                        <div class="col-6 text-13-3px text-right Ubuntu" style="color: red">@if (!is_string( $data['transaction_discount'])) {{ number_format($data['transaction_discount']) }} @else {{ $data['transaction_discount'] }} @endif </div>
                     </div>
                 @endif
                 <div class="row" style="background-color: #f0f3f7;border-radius: 5px;">
                     <div class="col-6 text-13-3px Ubuntu-Medium text-black" style="padding-top: 4px;padding-bottom: 4px;"><b>Grand Total</b></div>
-                    <div class="col-6 text-13-3px text-right Ubuntu-Bold text-black" style="padding-top: 4px;padding-bottom: 4px;"><b>@if (is_numeric( $data['transaction_grandtotal'])) {{ number_format($data['transaction_grandtotal']) }} @else {{ $data['transaction_grandtotal'] }} @endif</b></div>
+                    <div class="col-6 text-13-3px text-right Ubuntu-Bold text-black" style="padding-top: 4px;padding-bottom: 4px;"><b>@if (!is_string( $data['transaction_grandtotal'])) {{ number_format($data['transaction_grandtotal']) }} @else {{ $data['transaction_grandtotal'] }} @endif</b></div>
                 </div>
             </div>
 
@@ -599,9 +599,9 @@
                             $check = strpos(strtolower($dp['name']), 'point')
                         ?>
                         @if($check === false)
-                            <div class="col-6 text-13-3px text-right Ubuntu-Medium text-black">@if (is_numeric( $dp['amount'])) {{number_format($dp['amount'])}} @else {{ $dp['amount']}} @endif</div>
+                            <div class="col-6 text-13-3px text-right Ubuntu-Medium text-black">@if (!is_string( $dp['amount'])) {{number_format($dp['amount'])}} @else {{ $dp['amount']}} @endif</div>
                         @else
-                            <div class="col-6 text-13-3px text-right Ubuntu-Medium" style="color: red">@if (is_numeric( $dp['amount'])) {{number_format($dp['amount'])}} @else {{ $dp['amount']}} @endif</div>
+                            <div class="col-6 text-13-3px text-right Ubuntu-Medium" style="color: red">@if (!is_string( $dp['amount'])) {{number_format($dp['amount'])}} @else {{ $dp['amount']}} @endif</div>
                         @endif
                     @endforeach
                 </div>
