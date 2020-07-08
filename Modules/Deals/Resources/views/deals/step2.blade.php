@@ -567,7 +567,7 @@
 					<div class="row">
 	                    <div class="col-md-3">
 	                    	<div class="input-group col-md-12" id="offline-input">
-	                    		<div class="input-group-addon" id="promoid-inputgroup" @if ($result['deals_promo_id_type'] == "promoid") style="display: none;" @endif>IDR</div>
+	                    		<div class="input-group-addon" id="promoid-inputgroup" @if ($result['deals_promo_id_type'] == "promoid") style="display: none;" @endif>{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</div>
 		                        <input type="text" class="form-control" name="deals_promo_id_promoid" value="{{ $result['deals_promo_id']??'' }}" placeholder="Input Promo ID" @if ($result['deals_promo_id_type'] == "nominal") style="display: none;" @endif style="text-align: center!important;" autocomplete="off">
 
 		                        <input type="text" class="form-control digit_mask" name="deals_promo_id_nominal" value="{{ $result['deals_promo_id']??'' }}" placeholder="Input nominal" @if ($result['deals_promo_id_type'] == "promoid") style="display: none;" @endif style="text-align: center!important;" autocomplete="off">
@@ -750,7 +750,7 @@
 													(	isset($result['deals_promotion_product_discount_rules']['discount_type']) && 
 														$result['deals_promotion_product_discount_rules']['discount_type'] == "Percent" )
 													) style="display: none;" 
-												@endif>IDR</div>
+												@endif>{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</div>
 											<input required type="text" class="form-control text-center" name="discount_value" placeholder="" 
 												@if(
 													(	isset($result['deals_product_discount_rules']['discount_value']) && 
@@ -779,7 +779,7 @@
 										<i class="fa fa-question-circle tooltips" data-original-title="Jumlah diskon maksimal yang bisa didapatkan ketika menggunakan promo. </br></br>Note : Kosongkan jika maksimal persen mengikuti harga produk " data-container="body" data-html="true"></i>
 										<div class="input-group col-md-12">
 
-											<div class="input-group-addon">IDR</div>
+											<div class="input-group-addon">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</div>
 
 											<input type="text" class="form-control text-center digit_mask" name="max_percent_discount" placeholder="" value="{{ $result['deals_product_discount_rules']['max_percent_discount']??$result['deals_promotion_product_discount_rules']['max_percent_discount']??'' }}" min="0" oninput="validity.valid||(value='');" autocomplete="off">
 										</div>

@@ -130,7 +130,7 @@
 	   		</div><hr>
 	   		<div class="row space-text">
 	   			<div class="col-6 text-14px text-black">Total Price</div>
-	   			<div class="col-6 text-right text-14px text-black">IDR 36.685</div>
+	   			<div class="col-6 text-right text-14px text-black">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} 36.685</div>
 	   		</div><hr>
 	   		<div class="row space-text">
 	   			<div class="col-6 text-14px text-black">Total Earn</div>

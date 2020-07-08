@@ -261,7 +261,7 @@
                         <h2 @if ($result['trasaction_type'] == 'Pickup Order' && $value == 'shipment') style="display: none" @endif class="invoice-desc" @if ($value == 'discount') style="color: red" @endif>Rp {{ number_format($result['transaction_'.$value]) }}</h2>
                     @endif
                 @endforeach
-                    <h2 class="invoice-desc">IDR {{ number_format($result['transaction_grandtotal']) }}</h2>
+                    <h2 class="invoice-desc">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} {{ number_format($result['transaction_grandtotal']) }}</h2>
             </div>
 
             <div class="col-md-12">

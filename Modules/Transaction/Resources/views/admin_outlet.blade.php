@@ -207,8 +207,8 @@
 		                                                <h3>{{ strtoupper($product['product_name']) }}</h3>
 		                                            </td>
 		                                            <td class="text-center sbold">{{ $product['pivot']['transaction_product_qty'] }}</td>
-		                                            <td class="text-center sbold">IDR {{ number_format($product['pivot']['transaction_product_price']) }}</td>
-		                                            <td class="text-center sbold">IDR {{ number_format($product['pivot']['transaction_product_subtotal']) }}</td>
+		                                            <td class="text-center sbold">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} {{ number_format($product['pivot']['transaction_product_price']) }}</td>
+		                                            <td class="text-center sbold">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} {{ number_format($product['pivot']['transaction_product_subtotal']) }}</td>
 		                                        </tr>
                                     		@endforeach
                                     	@endif
@@ -228,10 +228,10 @@
                             		@if ($trx['transaction_'.$value] < 1)
                                 		<h2 @if ($trx['trasaction_type'] == 'Pickup Order' && $value == 'shipment') style="display: none" @endif class="invoice-desc" @if ($value == 'discount') style="color: red" @endif>-</h2>
                             		@else
-                                		<h2 @if ($trx['trasaction_type'] == 'Pickup Order' && $value == 'shipment') style="display: none" @endif class="invoice-desc" @if ($value == 'discount') style="color: red" @endif>IDR {{ number_format($trx['transaction_'.$value]) }}</h2>
+                                		<h2 @if ($trx['trasaction_type'] == 'Pickup Order' && $value == 'shipment') style="display: none" @endif class="invoice-desc" @if ($value == 'discount') style="color: red" @endif>{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} {{ number_format($trx['transaction_'.$value]) }}</h2>
                             		@endif
                             	@endforeach
-                                	<h2 class="invoice-desc">IDR {{ number_format($trx['transaction_grandtotal']) }}</h2>
+                                	<h2 class="invoice-desc">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} {{ number_format($trx['transaction_grandtotal']) }}</h2>
                             </div>
                         </div><br>
                         <div class="row">

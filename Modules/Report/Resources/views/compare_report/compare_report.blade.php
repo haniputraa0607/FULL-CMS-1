@@ -1457,8 +1457,8 @@
 				smart: "Smart"
 			};
             trx_series = {
-                total_idr_1: "IDR 1",
-                total_idr_2: "IDR 2"
+                total_idr_1: "{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} 1",
+                total_idr_2: "{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} 2"
             };
             trx_qty_series = {
                 total_qty_1: "Quantity 1",

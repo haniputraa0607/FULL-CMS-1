@@ -109,7 +109,7 @@
                         <tr>
                             <th data-data='number'> No </th>
                             <th data-data='date' class="col-date"> Date </th>
-                            <th data-data='trx_grand'> Total (IDR) </th>
+                            <th data-data='trx_grand'> Total ({{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}) </th>
                             <th data-data='trx_count'> Total (Qty) </th>
                             <th data-data='trx_cashback_earned'> User Kenangan Point </th>
                             <th data-data='cust_male'> Male Customer </th>

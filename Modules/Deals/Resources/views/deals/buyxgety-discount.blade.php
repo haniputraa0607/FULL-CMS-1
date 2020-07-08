@@ -105,7 +105,7 @@
 					</div>\
 					<div class="form-group ::hide_nominal::">\
 						<div class="input-group">\
-							<div class="input-group-addon">IDR</div>\
+							<div class="input-group-addon">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</div>\
 							<input type="text" class="form-control digit_mask text-center" min="0" name="promo_rule[::n::][discount_nominal]" value="::discount_nominal::" ::required_nominal:: placeholder="100000" autocomplete="off">\
 						</div>\
 					</div>\
@@ -127,7 +127,7 @@
 					<div class="col-md-6 p-l-r-0">\
 						<div class="form-group">\
 							<div class="input-group">\
-								<div class="input-group-addon">IDR</div>\
+								<div class="input-group-addon">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</div>\
 								<input type="text" class="form-control digit_mask text-center" min="0" name="promo_rule[::n::][max_percent_discount]" value="::max_percent_discount::"  placeholder="100000" autocomplete="off">\
 							</div>\
 						</div>\

@@ -51,7 +51,7 @@
                             	@elseif(!empty($deals['deals_voucher_price_point']))
                             		{{ number_format($deals['deals_voucher_price_point']).' Points' }}
                             	@elseif(!empty($deals['deals_voucher_price_cash']))
-                            		{{ 'IDR'.number_format($deals['deals_voucher_price_cash']) }}
+                            		{{ (env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').number_format($deals['deals_voucher_price_cash']) }}
                             	@endif
                             </span>
                         </li>
@@ -241,9 +241,9 @@
                         <div class="col-md-4 name">Discount</div>
                         <div class="col-md-8 value">: 
                             @if ($deals['deals_product_discount_rules']['discount_type'] == 'Percent')
-                                {{$deals['deals_product_discount_rules']['discount_value']}} % {{ !empty($deals['deals_product_discount_rules']['max_percent_discount']) ? '(Max : IDR '.number_format($deals['deals_product_discount_rules']['max_percent_discount']).') ' : '' }}
+                                {{$deals['deals_product_discount_rules']['discount_value']}} % {{ !empty($deals['deals_product_discount_rules']['max_percent_discount']) ? '(Max : '.(env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($deals['deals_product_discount_rules']['max_percent_discount']).') ' : '' }}
                             @elseif ($deals['deals_product_discount_rules']['discount_type'] == 'Nominal')
-                                {{ 'IDR '.number_format($deals['deals_product_discount_rules']['discount_value']) }}
+                                {{ (env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($deals['deals_product_discount_rules']['discount_value']) }}
                             @else
                                 No discount
                             @endif
@@ -310,7 +310,7 @@
                                 <tr>
                                     <td>{{ number_format($res['min_qty']) }}</td>
                                     <td>{{ number_format($res['max_qty']) }}</td>
-                                    <td>{{ ($deals['deals_tier_discount_rules'][0]['discount_type'] == 'Percent') ? ( $res['discount_value'].' % (Max : IDR '.number_format($res['max_percent_discount']).')' ) : ('IDR '.number_format($res['discount_value'])) }}</td>
+                                    <td>{{ ($deals['deals_tier_discount_rules'][0]['discount_type'] == 'Percent') ? ( $res['discount_value'].' % (Max : '.(env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($res['max_percent_discount']).')' ) : ((env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($res['discount_value'])) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -348,17 +348,17 @@
                                     <td>{{ $res['benefit_qty'] }}</td>
                                     <td>
                                     @if( ($res['discount_type']??false) == 'nominal' )
-                                    	{{'IDR '.number_format($res['discount_value'])}}
+                                    	{{(env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($res['discount_value'])}}
                                     @elseif( ($res['discount_type']??false) == 'percent' )
                                     	@if( ($res['discount_value']??false) == 100 )
                                     		Free
                                 		@else
-                                    		{{ ($res['discount_value']??false).'% (Max : IDR '.number_format($res['max_percent_discount']).')' }}
+                                    		{{ ($res['discount_value']??false).'% (Max : '.(env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($res['max_percent_discount']).')' }}
                                     	@endif
                                     @endif
 	                                    </td>
 	                                    <td>
-	                                    {{ ( ($res['discount_percent']??'') == 100) ? 'Free' : ( ($res['discount_percent']??false) ? $res['discount_percent'].' % (Max : IDR '.number_format($res['max_percent_discount']).')' : (($res['discount_nominal']??false) ? 'IDR '.number_format($res['discount_nominal']) : '' ) ) }}</td>
+	                                    {{ ( ($res['discount_percent']??'') == 100) ? 'Free' : ( ($res['discount_percent']??false) ? $res['discount_percent'].' % (Max : IDR '.number_format($res['max_percent_discount']).')' : (($res['discount_nominal']??false) ? (env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($res['discount_nominal']) : '' ) ) }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -371,7 +371,7 @@
                                                 @if ($deals['deals_discount_global_rule']['discount_type'] == 'Percent')
                                                     {{ $deals['deals_discount_global_rule']['discount_value'] }} %
                                                 @elseif ($deals['deals_discount_global_rule']['discount_type'] == 'Nominal')
-                                                    {{ 'IDR '.number_format($deals['deals_discount_global_rule']['discount_value']) }}
+                                                    {{ (env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($deals['deals_discount_global_rule']['discount_value']) }}
                                                 @else
                                                     No discount
                                                 @endif

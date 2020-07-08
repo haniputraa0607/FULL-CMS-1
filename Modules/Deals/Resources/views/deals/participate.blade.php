@@ -132,7 +132,7 @@
 	                        <td nowrap> @if (empty($value['redeemed_at'])) -  @else {{ date('d M Y', strtotime($value['redeemed_at'])) }} @endif</td>
 	                        <td nowrap> @if (empty($value['voucher_expired_at'])) -  @else {{ date('d M Y', strtotime($value['voucher_expired_at'])) }} @endif</td>
 	                        <td nowrap> {{ ucwords($value['paid_status']) }} </td>
-	                        <td nowrap> @if (empty($value['deal_voucher']['transaction_voucher']['transaction']['transaction_grandtotal'])) -  @else {{ 'IDR '.number_format($value['deal_voucher']['transaction_voucher']['transaction']['transaction_grandtotal']) }} @endif</td>
+	                        <td nowrap> @if (empty($value['deal_voucher']['transaction_voucher']['transaction']['transaction_grandtotal'])) -  @else {{ (env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($value['deal_voucher']['transaction_voucher']['transaction']['transaction_grandtotal']) }} @endif</td>
 	                    </tr>
 	                @endforeach
 	                </tbody>

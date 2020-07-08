@@ -611,7 +611,7 @@
 										<div class="col-md-4">
 											<div class="input-icon right input-group levelReq">
 												<span class="input-group-btn levelReqIDR" @if($value != 'value') style="display:none;" @endif>
-													<button class="btn blue" type="button" >IDR</button>
+													<button class="btn blue" type="button" >{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</button>
 												</span>
 												<span class="input-group-btn levelReqBalance" @if($value != 'balance') style="display:none;" @endif>
 													<button class="btn blue" type="button" >{{env('POINT_NAME', 'Points')}}</button>
@@ -634,7 +634,7 @@
 										<div class="col-md-4">
 											<div class="input-icon right input-group levelRet">
 												<span class="input-group-btn levelRetIDR" @if($value != 'value') style="display:none;" @endif>
-													<button class="btn blue" type="button" >IDR</button>
+													<button class="btn blue" type="button" >{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</button>
 												</span>
 												<span class="input-group-btn levelRetBalance" @if($value != 'balance') style="display:none;" @endif>
 													<button class="btn blue" type="button" >{{env('POINT_NAME', 'Points')}}</button>
@@ -699,7 +699,7 @@
 												<div class="col-md-4">
 													<div class="input-icon right input-group">
 														<span class="input-group-btn">
-															<button class="btn blue" type="button">IDR</button>
+															<button class="btn blue" type="button">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</button>
 														</span>
 														<input class="form-control price" type="text" name="cashback_maximum" @if(empty($membership['cashback_maximum'])) value="0" @else value="{{$membership['cashback_maximum']}}" @endif placeholder="{{env('POINT_NAME', 'Points')}} Maximum">
 													</div>
@@ -1029,7 +1029,7 @@
 										<div class="col-md-4">
 											<div class="input-icon right input-group levelReq">
 												<span class="input-group-btn levelReqIDR">
-													<button class="btn blue" type="button" >IDR</button>
+													<button class="btn blue" type="button" >{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</button>
 												</span>
 												<input class="form-control price" type="text" name="min_value" placeholder="Level Requirement">
 												<span class="input-group-btn levelReqX" style="display:none;">
@@ -1049,7 +1049,7 @@
 										<div class="col-md-4">
 											<div class="input-icon right input-group levelRet">
 												<span class="input-group-btn levelRetIDR" >
-													<button class="btn blue" type="button" >IDR</button>
+													<button class="btn blue" type="button" >{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</button>
 												</span>
 												<input class="form-control price" type="text" name="min_retain_value" placeholder="Minimum Retain Value">
 												<span class="input-group-btn levelRetX" style="display:none;">
@@ -1111,7 +1111,7 @@
 												<div class="col-md-4">
 													<div class="input-icon right input-group">
 														<span class="input-group-btn">
-															<button class="btn blue" type="button">IDR</button>
+															<button class="btn blue" type="button">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</button>
 														</span>
 														<input class="form-control price" type="text" name="cashback_maximum" value="0" placeholder="{{env('POINT_NAME', 'Points')}} Maximum">
 													</div>
