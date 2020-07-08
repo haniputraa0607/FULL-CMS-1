@@ -349,7 +349,7 @@
                                 @elseif ( empty($deals['deals_voucher_price_point']) )
                             		style="display: none;"
                             	@endif>
-                                <input type="text" class="form-control point moneyOpp freeOpp digit-mask" name="deals_voucher_price_point" value="{{ $deals['deals_voucher_price_point']??'' }}" placeholder="Input point values" autocomplete="off">
+                                <input type="text" class="form-control point moneyOpp freeOpp {{env('COUNTRY_CODE') == 'SG' ? 'dinamic_price' : 'digit-mask'}}" name="deals_voucher_price_point" value="{{ $deals['deals_voucher_price_point']??'' }}" placeholder="Input point values" autocomplete="off">
                             </div>
                             <div class="col-md-9 payment" id="money"
                             	@if ( old('prices_by'))
@@ -359,7 +359,7 @@
                                 @elseif ( empty($deals['deals_voucher_price_cash']) )
                             		style="display: none;"
                             	@endif>
-                                <input type="text" class="form-control money pointOpp freeOpp price" name="deals_voucher_price_cash" value="{{ $deals['deals_voucher_price_cash']??'' }}" placeholder="Input money values" autocomplete="off">
+                                <input type="text" class="form-control money pointOpp freeOpp dinamic_price" name="deals_voucher_price_cash" value="{{ $deals['deals_voucher_price_cash']??'' }}" placeholder="Input money values" autocomplete="off">
                             </div>
                         </div>
                     </div>

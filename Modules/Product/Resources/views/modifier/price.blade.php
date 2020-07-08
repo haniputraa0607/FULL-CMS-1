@@ -92,7 +92,7 @@
             radixPoint: ",",
             groupSeparator: ".",
             rightAlign: false,
-            digitsOptional:2
+            digits: 0
             @endif
         });
         $('#outlet_selector').on('change',function(){

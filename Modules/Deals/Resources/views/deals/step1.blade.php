@@ -25,6 +25,7 @@
 @endsection
 
 @section('page-script')
+    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript"></script>
     <!-- <script src="{{ env('S3_URL_VIEW') }}{{('assets/datemultiselect/jquery-ui.min.js') }}" type="text/javascript"></script> -->
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
@@ -185,7 +186,8 @@
 				removeMaskOnSubmit: true, 
 				placeholder: "",
 				alias: "currency", 
-				digits: 0, 
+				digits: 0,
+                prefix: "", 
 				rightAlign: false,
 				min: 0,
 				max: '999999999'
@@ -496,6 +498,28 @@
 	            redrawOutlets($('select[name="id_outlet[]"]').data('all-outlet'),value,convertAll);
 	        }
         });
+
+        $(`.dinamic_price`).inputmask('currency',{
+            @if(env('COUNTRY_CODE') == 'SG')
+            removeMaskOnSubmit: true,
+            min:0,
+            prefix: "",
+            autoGroup: true,
+            radixPoint: ".",
+            groupSeparator: ",",
+            rightAlign: false
+            @else
+            removeMaskOnSubmit: true,
+            min:0,
+            prefix: "",
+            autoGroup: true,
+            radixPoint: ",",
+            groupSeparator: ".",
+            rightAlign: false,
+            digits: 0
+            @endif
+        });
+
     </script>
 @endsection
 
