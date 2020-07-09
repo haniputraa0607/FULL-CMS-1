@@ -92,6 +92,7 @@
             {{-- <table class="table table-striped table-bordered table-hover order-column" id="participate_tables"> --}}
 	                <thead>
 	                    <tr>
+	                        <th> Payment </th>
 	                        <th> User </th>
 	                        <th> Status </th>
 	                        <th> Voucher Code </th>
@@ -101,14 +102,35 @@
 	                        <th> Outlet Redeem </th>
 	                        <th> Redeem At </th>
 	                        <th> Expired At </th>
-	                        <th> Payment </th>
 	                        <th> Grand Total </th>
 	                    </tr>
 	                </thead>
 	                <tbody>
 	                @if (!empty($user))
-	                @foreach($user as $value)
+	                @foreach($user as $key => $value)
 	                    <tr>
+	                        <td nowrap style="text-align: center;"> 
+	                        	@php $paid_status = strtolower($value['paid_status'])??null; @endphp
+	                        	@switch($paid_status)
+	                        	    @case('free')
+                                		<span class="sale-num sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #26C281;padding: 5px 12px;color: #fff;">{{ ucwords($paid_status) }}</span>
+	                        	        @break
+	                        	    @case('pending')
+                                		<span class="sale-num sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #ACB5C3;padding: 5px 12px;color: #fff;">{{ ucwords($paid_status) }}</span>
+	                        	        @break
+	                        	    @case('paid')
+                                		<span class="sale-num sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #26C281;padding: 5px 12px;color: #fff;">{{ ucwords($paid_status) }}</span>
+	                        	        @break
+	                        		@case('complete')
+                                		<span class="sale-num sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #26C281;padding: 5px 12px;color: #fff;">{{ ucwords($paid_status) }}</span>
+	                        	        @break
+	                        	    @case('cancelled')
+                                		<span class="sale-num sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #E7505A;padding: 5px 12px;color: #fff;">{{ ucwords($paid_status) }}</span>
+	                        	        @break
+	                        	    @default
+	                        	            
+	                        	@endswitch
+	                        </td>
 	                        <td nowrap> {{ $value['user']['name'] }} - {{ $value['user']['phone'] }} </td>
 	                        <td nowrap>
 	                        	@if (!empty($value['used_at']))
@@ -122,16 +144,19 @@
 		                        @endif 
 		                    </td>
 	                        <td nowrap> {{ $value['voucher_code'] }} </td>
-	                        <td nowrap> @if (empty($value['claimed_at'])) -  @else {{ date('d M Y', strtotime($value['claimed_at'])) }} @endif</td>
-	                        <td nowrap> @if (empty($value['used_at'])) -  @else {{ date('d M Y', strtotime($value['used_at'])) }} @endif</td>
+	                        <td nowrap> @if (empty($value['claimed_at'])) -  @else {{ date('d M Y H:i:s', strtotime($value['claimed_at'])) }} @endif</td>
+	                        <td nowrap> @if (empty($value['used_at'])) -  @else {{ date('d M Y H:i:s', strtotime($value['used_at'])) }} @endif</td>
 	                        @php
-	                        	$trx_url = url('transaction/detail/'.$value['deal_voucher']['transaction_voucher']['transaction']['id_transaction'].'/'.strtolower($value['deal_voucher']['transaction_voucher']['transaction']['trasaction_type']));
+	                        	if(!empty($value['deal_voucher']['transaction_voucher'])) {
+	                        		$trx_url = url('transaction/detail/'.$value['deal_voucher']['transaction_voucher']['transaction']['id_transaction'].'/'.strtolower($value['deal_voucher']['transaction_voucher']['transaction']['trasaction_type']));
+	                        	}else{
+	                        		$trx_url = null;
+	                        	}
 	                        @endphp
 	                        <td nowrap> @if (empty($value['deal_voucher']['transaction_voucher']['transaction']['transaction_receipt_number'])) -  @else <a target="_blank" href="{{ $trx_url }}">{{ $value['deal_voucher']['transaction_voucher']['transaction']['transaction_receipt_number'] }}</a> @endif</td>
 	                        <td nowrap> @if(empty($value['outlet'])) - @else {{ $value['outlet']['outlet_code'] }} - {{ $value['outlet']['outlet_name'] }} @endif </td>
-	                        <td nowrap> @if (empty($value['redeemed_at'])) -  @else {{ date('d M Y', strtotime($value['redeemed_at'])) }} @endif</td>
-	                        <td nowrap> @if (empty($value['voucher_expired_at'])) -  @else {{ date('d M Y', strtotime($value['voucher_expired_at'])) }} @endif</td>
-	                        <td nowrap> {{ ucwords($value['paid_status']) }} </td>
+	                        <td nowrap> @if (empty($value['redeemed_at'])) -  @else {{ date('d M Y H:i:s', strtotime($value['redeemed_at'])) }} @endif</td>
+	                        <td nowrap> @if (empty($value['voucher_expired_at'])) -  @else {{ date('d M Y H:i:s', strtotime($value['voucher_expired_at'])) }} @endif</td>
 	                        <td nowrap> @if (empty($value['deal_voucher']['transaction_voucher']['transaction']['transaction_grandtotal'])) -  @else {{ 'IDR '.number_format($value['deal_voucher']['transaction_voucher']['transaction']['transaction_grandtotal']) }} @endif</td>
 	                    </tr>
 	                @endforeach
