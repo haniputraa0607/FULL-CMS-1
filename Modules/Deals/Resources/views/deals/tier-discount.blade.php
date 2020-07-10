@@ -6,7 +6,7 @@
 				<label for="multipleProduct2" class="control-label">Select Product <span class="required" aria-required="true"> * </span>
 				<i class="fa fa-question-circle tooltips" data-original-title="Pilih produk yang akan diberikan diskon" data-container="body"></i></label>
 				<select id="multipleProduct2" name="product" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" data-value="{{
-					($result['deals_promotion_tier_discount_product']??$result['deals_tier_discount_product'])
+					($result['deals_promotion_tier_discount_product']??$result['deals_tier_discount_product']??null)
 					?
 					json_encode(
 					[

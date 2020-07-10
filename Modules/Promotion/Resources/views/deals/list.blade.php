@@ -133,7 +133,9 @@ $grantedFeature     = session('granted_features');
     </div><br>
 
     @include('layouts.notifications')
-
+    <div class="alert alert-warning">
+        This template will be used to generate deals when promotion has hidden deals & vouchers as its content.
+    </div>
     <div class="portlet light bordered">
         <div class="portlet-title">
             <div class="caption">

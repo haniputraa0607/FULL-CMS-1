@@ -93,6 +93,7 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'promotio
 	Route::group(['prefix' => 'deals'], function()
 	{
 		Route::get('/', 'PromotionController@listDeals');
+		Route::get('detail/{id}', 'PromotionController@detailDeals');
 	});
 });
 
@@ -105,6 +106,10 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'promotio
 	    Route::any('step3/{id}', ['middleware' => 'feature_control:74', 'uses' => 'DealsController@step3']);
 	    Route::post('update-complete', ['middleware' => 'feature_control:75', 'uses' => 'DealsController@updateComplete']);
 	    // Route::any('detail/{id}/{promo}', ['middleware' => 'feature_control:73', 'uses' => 'DealsController@detail']);
-	    Route::any('detail/{id}', ['middleware' => 'feature_control:73', 'uses' => 'DealsController@detail']);
+	    // Route::any('detail/{id}', ['middleware' => 'feature_control:73', 'uses' => 'DealsController@detail']);
 	});
+});
+
+Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'promotion-deals', 'namespace' => 'Modules\Deals\Http\Controllers'], function () {
+	Route::get('{id}', ['middleware' => 'feature_control:75', 'uses' => 'DealsController@detail']);
 });

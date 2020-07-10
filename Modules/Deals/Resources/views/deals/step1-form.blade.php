@@ -4,6 +4,8 @@
  ?>
             @if (empty($deals['deals_type']) || $deals['deals_type'] != "Point")
                 <div class="form-body">
+
+                	{{-- Deals Type, Offline, Online --}}
                 	@if(MyHelper::hasAccess([99], $configs) && MyHelper::hasAccess([100], $configs))
                 	<div class="form-group">
                         <div class="input-icon right">
@@ -54,6 +56,7 @@
                     <input type="hidden" name="is_online" value="1">
                     @endif
 
+                    {{-- Brand --}}
                     @if(MyHelper::hasAccess([97], $configs))
                     <div class="form-group">
                         <div class="input-icon right">
@@ -78,6 +81,7 @@
                     </div>
                     @endif
 
+                    {{-- Product type --}}
                     <div class="form-group" id="product-type-form" @if( empty($deals['is_online']) ) style="display: none;" @endif>
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -96,6 +100,7 @@
                         </div>
                     </div>
 
+                    {{-- Title --}}
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -109,6 +114,7 @@
                         </div>
                     </div>
 
+                    {{-- Second Title --}}
                     @if(MyHelper::hasAccess([101], $configs))
                     <div class="form-group">
                         <div class="input-icon right">
@@ -123,6 +129,7 @@
                     </div>
                     @endif
 
+                    {{-- Deals Periode --}}
                     @if ( $deals_type == "Deals" )
                     <div class="form-group">
                         <label class="col-md-3 control-label"> Deals Periode <span class="required" aria-required="true"> * </span> </label>
@@ -159,6 +166,7 @@
                     </div>
                     @endif
 
+                    {{-- Publish Periode --}}
                     @if ($deals_type == "Deals")
                     <div class="form-group">
                         <label class="col-md-3 control-label"> Publish Periode <span class="required" aria-required="true"> * </span> </label>
@@ -195,6 +203,7 @@
                     </div>
                     @endif
 
+                    {{-- Image --}}
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -225,6 +234,7 @@
                         </div>
                     </div>
 
+                    {{-- Outlet --}}
                     @php
                         if (!empty($deals['outlets'])) {
                             $outletselected = array_pluck($deals['outlets'],'id_outlet');
@@ -233,7 +243,6 @@
                             $outletselected = [];
                         }
                     @endphp
-
 
                     <div class="form-group">
                         <div class="input-icon right">
@@ -255,6 +264,7 @@
                         </div>
                     </div>
 
+                    {{-- Custom Outlet Text --}}
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -269,6 +279,7 @@
                         </div>
                     </div>
 
+                    {{-- Voucher Price --}}
                     @if ( $deals_type == "Deals" )
                     <div class="form-group">
                         <div class="input-icon right">
@@ -365,6 +376,8 @@
                     </div>
                     @endif
 
+                    {{-- Voucher Type --}}
+                    @if($deals_type != 'Promotion')
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -516,8 +529,11 @@
                             </div>
                         </div>
                     </div>
-
                     <br>
+                    @endif
+
+                    {{-- Voucher Start Date --}}
+                    @if($deals_type != 'Promotion')
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -542,6 +558,7 @@
                         </div>
                     </div>
 
+                    {{-- Voucher Expiry --}}
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
@@ -622,6 +639,27 @@
                         </div>
                     </div>
 
+                    @else
+
+                    <div class="form-group">
+                        <div class="input-icon right">
+                            <label class="col-md-3 control-label">
+                            Voucher Expiry Duration
+                            <i class="fa fa-question-circle tooltips" data-original-title="Durasi masa berlaku voucher, berapa hari voucher tersebut expired setelah melakukan klaim voucher" data-container="body"></i>
+                            </label>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" min="1" class="form-control duration datesOpp digit-mask" name="deals_voucher_duration" value="{{ old('deals_voucher_duration')??$deals['deals_voucher_duration']??'' }}" autocomplete="off">
+                                <span class="input-group-addon">
+                                    day after claimed
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
+                    {{-- User Limit --}}
                     <div class="form-group">
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
