@@ -161,7 +161,7 @@
       "valueAxes": [{
         "axisAlpha": 0,
         "position": "left",
-        "title": "Nominal each products (IDR)"
+        "title": "Nominal each products ({{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}})"
       }],
       "startDuration": 1,
       "graphs": [{

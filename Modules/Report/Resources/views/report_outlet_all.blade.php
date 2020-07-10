@@ -167,7 +167,7 @@
       "valueAxes": [{
         "axisAlpha": 0,
         "position": "left",
-        "title": "Total Transaction Value (IDR)"
+        "title": "Total Transaction Value ({{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}})"
       }],
       "startDuration": 1,
       "graphs": [{
