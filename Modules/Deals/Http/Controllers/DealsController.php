@@ -1547,14 +1547,17 @@ class DealsController extends Controller
         $post['step'] = 'all';
         
         $deals = MyHelper::post('deals/export',$post);
-    	
-        $data = new DealsExport($deals['result']);
 
-        if(!$data){
-            return back()->withErrors(['Something went wrong']);
+		if (($deals['status']??false) == 'success') {
+        	
+	        $data = new DealsExport($deals['result']);
+
+	        return Excel::download($data,'Config_Deals_'.($deals['result']['rule'][0][1]??'').'_'.date('Ymdhis').'.xls');
         }
+        else{
 
-        return Excel::download($data,'Config_Deals_'.($deals['result']['rule'][3][1]??'').'_'.date('Ymdhis').'.xls');
+	    	return back()->withErrors($post['messages']??['Something went wrong']);
+        }
     }
 
     public function importDeals(Request $request)
@@ -1573,7 +1576,6 @@ class DealsController extends Controller
             $import = new PromoWithoutHeadingImport();
             $data1 = \Excel::import($import,$request->file('import_file'))??[];
             $data2 = \Excel::toArray(new PromoWithHeadingImport(),$request->file('import_file'))??[];
-
             $data = [];
 			foreach ($import->sheetNames as $key => $value) {
 				$data[$value] = $data2[$key];
