@@ -149,24 +149,24 @@
                                                 <h3>NG NATURAL PEELING FOR ANTI AGING</h3>
                                             </td>
                                             <td class="text-center sbold">4</td>
-                                            <td class="text-center sbold">IDR 100.000</td>
-                                            <td class="text-center sbold">IDR 400.000</td>
+                                            <td class="text-center sbold">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} 100.000</td>
+                                            <td class="text-center sbold">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} 400.000</td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <h3>UV FILTER MOIST DAY CREAM</h3>
                                             </td>
                                             <td class="text-center sbold">1</td>
-                                            <td class="text-center sbold">IDR 10.000</td>
-                                            <td class="text-center sbold">IDR 10.000</td>
+                                            <td class="text-center sbold">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} 10.000</td>
+                                            <td class="text-center sbold">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} 10.000</td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <h3>TEEN'S SEBUM CONTROL CREAM</h3>
                                             </td>
                                             <td class="text-center sbold">1</td>
-                                            <td class="text-center sbold">IDR 25.000</td>
-                                            <td class="text-center sbold">IDR 25.000</td>
+                                            <td class="text-center sbold">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} 25.000</td>
+                                            <td class="text-center sbold">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} 25.000</td>
                                         </tr>
                                     </tbody>
                                 </table>

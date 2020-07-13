@@ -89,7 +89,7 @@
                             <div class="number">
                                 <span data-counter="counterup" data-value="0" id="card_trx_1">{{ $report['transactions']['total_idr'] }}</span> </div>
                                 <div class="desc">
-                                Total Transaction (IDR)
+                                Total Transaction ({{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}})
                             </div>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                             <div class="number">
                                 <span data-counter="counterup" data-value="0" id="card_trx_3">{{ $report['transactions']['average_idr'] }}</span> </div>
                                 <div class="desc">
-                                Avg Transaction (IDR)
+                                Avg Transaction ({{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}})
                             </div>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                             <th data-data='number'> No </th>
                             <th data-data='date' class="col-date"> Date </th>
                             <th data-data='trx_count'> Total (Qty) </th>
-                            <th data-data='trx_grand'> Total (IDR) </th>
+                            <th data-data='trx_grand'> Total ({{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}) </th>
                             <th data-data='trx_cashback_earned'> User {{env('POINT_NAME', 'Points')}} </th>
                             <th data-data='cust_male'> Male Customer </th>
                             <th data-data='cust_female'> Female Customer </th>

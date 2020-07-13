@@ -151,11 +151,11 @@
             @foreach ($data['product_transaction'] as $key => $pro)
     	   		<div class="row">
     	   			<div class="col-6 text-grey-white text-14px">{{ $pro['product']['product_name'] }}</div>
-    	   			<div class="col-6 text-right text-grey-white">IDR {{ str_replace(',', '.', number_format($pro['transaction_product_subtotal'])) }}</div>
+    	   			<div class="col-6 text-right text-grey-white">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} {{ str_replace(',', '.', number_format($pro['transaction_product_subtotal'])) }}</div>
     	   			<div class="col-12 text-grey text-11-7px space-text">@if (isset($pro['transaction_product_note'])) ({{ $pro['transaction_product_note'] }}) @endif</div>
     	   		</div>
     	   		<div class="row space-bottom">
-    	   			<div class="col-12 text-grey text-12-7px">{{ $pro['transaction_product_qty'] }} x IDR {{ str_replace(',', '.', number_format($pro['transaction_product_price'])) }}</div>
+    	   			<div class="col-12 text-grey text-12-7px">{{ $pro['transaction_product_qty'] }} x {{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} {{ str_replace(',', '.', number_format($pro['transaction_product_price'])) }}</div>
     	   		</div>
             @endforeach
             <hr>
@@ -163,22 +163,22 @@
             @foreach ($data['order_label_v2'] as $key => $label)
     	   		<div class="row space-text">
     	   			<div class="col-6 text-grey-white text-14px">{{ $label }}</div>
-    	   			<div class="col-6 text-right @if($label == 'Discount') text-grey-red @else text-grey-white @endif text-14px">@if($label == 'Discount') - @endif IDR {{ str_replace(',', '.', number_format($data[$data['order_v2'][$key]])) }}</div>
+    	   			<div class="col-6 text-right @if($label == 'Discount') text-grey-red @else text-grey-white @endif text-14px">@if($label == 'Discount') - @endif {{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} {{ str_replace(',', '.', number_format($data[$data['order_v2'][$key]])) }}</div>
     	   		</div>
             @endforeach
             <hr>
 	   		<div class="row space-text">
 	   			<div class="col-6 text-14px text-black">Total Price</div>
-	   			<div class="col-6 text-right text-14px text-black">IDR {{ str_replace(',', '.', number_format($data['transaction_grandtotal'])) }}</div>
+	   			<div class="col-6 text-right text-14px text-black">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} {{ str_replace(',', '.', number_format($data['transaction_grandtotal'])) }}</div>
 	   		</div>
             @if ($data['trasaction_payment_type'] == 'Balance')
     	   		<div class="row space-text">
     	   			<div class="col-6 text-14px text-black">Your Balance</div>
-    	   			<div class="col-6 text-right text-14px text-grey-red">IDR {{ str_replace(',', '.', number_format($data['balance'])) }}</div>
+    	   			<div class="col-6 text-right text-14px text-grey-red">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} {{ str_replace(',', '.', number_format($data['balance'])) }}</div>
     	   		</div>
     	   		<div class="row space-text">
     	   			<div class="col-6 bold text-14px text-black">Total Payment</div>
-    	   			<div class="col-6 text-right bold text-14px text-black">IDR {{ str_replace(',', '.', number_format($data['transaction_grandtotal'] + $data['balance'])) }}</div>
+    	   			<div class="col-6 text-right bold text-14px text-black">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} {{ str_replace(',', '.', number_format($data['transaction_grandtotal'] + $data['balance'])) }}</div>
     	   		</div>
             @endif
 	   	</div>
@@ -214,7 +214,7 @@
     	   		</div><hr>
     	   		<div class="row space-bottom">
     	   			<div class="col-6 text-black text-12-7px">@if ($data['trasaction_payment_type'] == 'Balance') BALANCE @endif @if ($data['trasaction_payment_type'] == 'Midtrans') ONLINE PAYMENT @endif @if ($data['trasaction_payment_type'] == 'Manual') BANK TRANSFER @endif</div>
-                    <div class="col-6 text-right text-black text-13-3px">IDR @if ($data['trasaction_payment_type'] == 'Balance') {{ str_replace(',', '.', number_format(abs($data['balance']))) }} @else {{ str_replace(',', '.', number_format(abs($data['transaction_grandtotal']))) }} @endif</div>
+                    <div class="col-6 text-right text-black text-13-3px">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} @if ($data['trasaction_payment_type'] == 'Balance') {{ str_replace(',', '.', number_format(abs($data['balance']))) }} @else {{ str_replace(',', '.', number_format(abs($data['transaction_grandtotal']))) }} @endif</div>
                     @if (isset($data['payment']['payment_type']))
     	   			     <div class="col-12 text-black text-11-7px">{{ $data['payment']['payment_type'] }}</div>
                     @endif

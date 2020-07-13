@@ -85,7 +85,7 @@
 			<div class="::class_div_input::">\
 				<div class="form-group">\
 					<div class="input-group">\
-						<div class="input-group-addon ::nominal::">IDR</div>\
+						<div class="input-group-addon ::nominal::">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</div>\
 						<input type="text" class="form-control discount_viewer text-center" id="discount_value::n::" data-target="promo_rule[::n::][discount_value]"  value="::discount_valuex::" required placeholder="::placeholder::" autocomplete="off">\
 						<input type="number" class="form-control discount_value" style="display:none" min="0" name="promo_rule[::n::][discount_value]" value="::discount_value::" ::discount_prop:: required>\
 						<div class="input-group-addon ::percent::">%</div>\
@@ -95,7 +95,7 @@
 			<div class="col-md-4 max-percent-input ::class_div_max_percent::">\
 				<div class="form-group">\
 					<div class="input-group">\
-						<div class="input-group-addon">IDR</div>\
+						<div class="input-group-addon">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</div>\
 						<input type="text" class="form-control text-center digit_mask" id="max_percent_discount::n::" data-target="promo_rule[::n::][max_percent_discount]"  value="::max_percent_discountx::" autocomplete="off" name="promo_rule[::n::][max_percent_discount]">\
 					</div>\
 				</div>\

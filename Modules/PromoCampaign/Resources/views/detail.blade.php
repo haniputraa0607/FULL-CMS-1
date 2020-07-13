@@ -501,9 +501,9 @@
                                             <div class="col-md-4 name">Discount</div>
                                             <div class="col-md-8 value">: 
                                                 @if ($result['promo_campaign_product_discount_rules']['discount_type'] == 'Percent')
-                                                    {{$result['promo_campaign_product_discount_rules']['discount_value']}} % {{ !empty($result['promo_campaign_product_discount_rules']['max_percent_discount']) ? '(Max : IDR '.number_format($result['promo_campaign_product_discount_rules']['max_percent_discount']).') ' : '' }}
+                                                    {{$result['promo_campaign_product_discount_rules']['discount_value']}} % {{ !empty($result['promo_campaign_product_discount_rules']['max_percent_discount']) ? '(Max : '.(env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($result['promo_campaign_product_discount_rules']['max_percent_discount']).') ' : '' }}
                                                 @elseif ($result['promo_campaign_product_discount_rules']['discount_type'] == 'Nominal')
-                                                    {{ 'IDR '.number_format($result['promo_campaign_product_discount_rules']['discount_value']) }}
+                                                    {{ (env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($result['promo_campaign_product_discount_rules']['discount_value']) }}
                                                 @else
                                                     No discount
                                                 @endif
@@ -570,7 +570,7 @@
                                                     <tr>
                                                         <td>{{ number_format($res['min_qty']) }}</td>
                                                         <td>{{ number_format($res['max_qty']) }}</td>
-                                                        <td>{{ ($result['promo_campaign_tier_discount_rules'][0]['discount_type'] == 'Percent') ? ( $res['discount_value'].' % (Max : IDR '.number_format($res['max_percent_discount']).')' ) : ('IDR '.number_format($res['discount_value'])) }}</td>
+                                                        <td>{{ ($result['promo_campaign_tier_discount_rules'][0]['discount_type'] == 'Percent') ? ( $res['discount_value'].' % (Max : '.(env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($res['max_percent_discount']).')' ) : ((env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($res['discount_value'])) }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -608,17 +608,17 @@
                                                         <td>{{ $res['benefit_qty'] }}</td>
                                                         <td>
                                                         @if( ($res['discount_type']??false) == 'nominal' )
-                                                        	{{'IDR '.number_format($res['discount_value'])}}
+                                                        	{{(env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($res['discount_value'])}}
                                                         @elseif( ($res['discount_type']??false) == 'percent' )
                                                         	@if( ($res['discount_value']??false) == 100 )
                                                         		Free
                                                         	@else
-                                                        		{{ ($res['discount_value']??false).'% (Max : IDR '.number_format($res['max_percent_discount']).')' }}
+                                                        		{{ ($res['discount_value']??false).'% (Max : '.(env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($res['max_percent_discount']).')' }}
                                                         	@endif
                                                         @endif
                                                         </td>
                                                         <td>
-                                                        {{ ( ($res['discount_percent']??'') == 100) ? 'Free' : ( ($res['discount_percent']??false) ? $res['discount_percent'].' % (Max : IDR '.number_format($res['max_percent_discount']).')' : (($res['discount_nominal']??false) ? 'IDR '.number_format($res['discount_nominal']) : '' ) ) }}</td>
+                                                        {{ ( ($res['discount_percent']??'') == 100) ? 'Free' : ( ($res['discount_percent']??false) ? $res['discount_percent'].' % (Max : '.(env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($res['max_percent_discount']).')' : (($res['discount_nominal']??false) ? (env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($res['discount_nominal']) : '' ) ) }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -631,7 +631,7 @@
                                                 @if ($result['promo_campaign_discount_global_rule']['discount_type'] == 'Percent')
                                                     {{ $result['promo_campaign_discount_global_rule']['discount_value'] }} %
                                                 @elseif ($result['promo_campaign_discount_global_rule']['discount_type'] == 'Nominal')
-                                                    {{ 'IDR '.number_format($result['promo_campaign_discount_global_rule']['discount_value']) }}
+                                                    {{ (env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($result['promo_campaign_discount_global_rule']['discount_value']) }}
                                                 @else
                                                     No discount
                                                 @endif

@@ -18,6 +18,7 @@
 @endsection
 
 @section('page-script')
+    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
@@ -362,6 +363,27 @@
                 } );
             });
 		});
+
+        $(`.dinamic_price`).inputmask('currency',{
+            @if(env('COUNTRY_CODE') == 'SG')
+            removeMaskOnSubmit: true,
+            min:0,
+            prefix: "",
+            autoGroup: true,
+            radixPoint: ".",
+            groupSeparator: ",",
+            rightAlign: false
+            @else
+            removeMaskOnSubmit: true,
+            min:0,
+            prefix: "",
+            autoGroup: true,
+            radixPoint: ",",
+            groupSeparator: ".",
+            rightAlign: false,
+            digits: 0
+            @endif
+        });
 
 		$('.price').each(function() {
 			var input = $(this).val();

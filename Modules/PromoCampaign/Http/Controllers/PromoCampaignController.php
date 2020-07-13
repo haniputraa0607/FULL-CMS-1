@@ -303,7 +303,7 @@ class PromoCampaignController extends Controller
                 // $post['id_promo_campaign'] = MyHelper::explodeSlug($post['id_promo_campaign'])[0];
             }
             $action = MyHelper::post('promo-campaign/step1', $post);
-            
+
             if (isset($action['status']) && $action['status'] == 'success') 
             {
                 return redirect('promo-campaign/step2/' . ($slug??$id_promo_campaign??$action['promo-campaign']['id_promo_campaign']??''));
@@ -425,14 +425,18 @@ class PromoCampaignController extends Controller
         $post['step'] = 'all';
         
         $promo = MyHelper::post('promo-campaign/export',$post);
+        
+        if (($promo['status']??false) == 'success') {
+        	
+        	$data = new DealsExport($promo['result']);
 
-        if( ($promo['status']??false) != 'success' ){
-            return back()->withErrors(['Something went wrong']);
+        	return Excel::download($data,'Config_Promo_Campaign_'.($promo['result']['rule'][0][1]??'').'_'.date('Ymdhis').'.xls');
+        }
+        else{
+            return back()->withErrors($post['messages']??['Something went wrong']);
         }
 
-        $data = new DealsExport($promo['result']);
 
-        return Excel::download($data,'Config_Promo_Campaign_'.($promo['result']['rule'][0][1]??'').'_'.date('Ymdhis').'.xls');
     }
 
     public function import(Request $request)
