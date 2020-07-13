@@ -58,6 +58,8 @@
 		};
 	}
 	$(document).ready(function() {
+		promo_id = {!! $result['id_promo_campaign']??"false" !!}
+
 		$('.digit_mask').inputmask({
 			removeMaskOnSubmit: true, 
 			placeholder: "",
@@ -150,8 +152,9 @@
 						type: "GET",
 						url: "check",
 						data: {
-							'type_code' : 'single',
-							'search_code' : this.value
+							'type_code' 	: 'single',
+							'search_code' 	: this.value,
+							'promo_id' 		: promo_id
 						},
 						dataType: "json",
 						success: function(msg){
@@ -171,7 +174,6 @@
 				$('#multipleCode').show()
 				$('#number_last_code').show()
 				$('input[name=total_coupon]').val('')
-				$('#multiplePrefixCode').prop('required', true);
 				$('#multipleNumberLastCode').prop('required', true);
 				$('#multiplePrefixCode').keyup(function() {	
 					$('#multiplePrefixCode').val (function () {
@@ -179,35 +181,65 @@
 					})
 				});
 				$('#multiplePrefixCode').keyup(delay(function() {
-					$.ajax({
-						type: "GET",
-						url: "check",
-						data: {
-							'type_code' : 'prefix',
-							'search_code' : this.value
-						},
-						dataType: "json",
-						success: function(msg){
-							if (msg.status == 'available') {
-								$(':input[type="submit"]').prop('disabled', false);
-								$('#alertMultipleCode').removeClass( "has-error" );
-								$('#alertMultiplePromoCode').hide();
-							} else {
-								$(':input[type="submit"]').prop('disabled', true);
-								$('#alertMultipleCode').addClass( "has-error" );
-								$('#alertMultiplePromoCode').show();
+					if ($(this).val()) {
+						$.ajax({
+							type: "GET",
+							url: "check",
+							data: {
+								'type_code' 	: 'prefix',
+								'search_code' 	: this.value,
+								'promo_id' 		: promo_id
+							},
+							dataType: "json",
+							success: function(msg){
+								if (msg.status == 'available') {
+									$(':input[type="submit"]').prop('disabled', false);
+									$('#alertMultipleCode').removeClass( "has-error" );
+									$('#alertMultiplePromoCode').hide();
+								} else {
+									$(':input[type="submit"]').prop('disabled', true);
+									$('#alertMultipleCode').addClass( "has-error" );
+									$('#alertMultiplePromoCode').show();
+								}
 							}
-						}
-					});
-					$('#exampleMultipleCode').show()
-					$('#number_last_code').show()
-					$('#multipleNumberLastCode').val('')
-					$('#exampleCode').replaceWith("<span id='exampleCode'></span>")
-					$('#multipleNumberLastCode').attr('max', maxChar - this.value.length)
+						});
+						$('#exampleMultipleCode').show()
+						$('#number_last_code').show()
+						$('#multipleNumberLastCode').val('')
+						$('#exampleCode').replaceWith("<span id='exampleCode'></span>")
+						$('#multipleNumberLastCode').attr('max', maxChar - this.value.length)
+					}
+					else {
+						$(':input[type="submit"]').prop('disabled', false);
+						$('#alertMultipleCode').removeClass( "has-error" );
+						$('#alertMultiplePromoCode').hide();
+						$('#multipleNumberLastCode').attr('max', maxChar - this.value.length)
+					}
+
 				}, 1000));
+
 				$('#multipleNumberLastCode').keyup(function() {
 					prefix = ($('#multiplePrefixCode').val())
 					last_code = ($('#multipleNumberLastCode').val())
+					max = +$(this).attr('max');
+					val = +$(this).val();
+
+					if (val > max) {
+						$('#multipleNumberLastCode').val(max);
+						last_code = max;
+					}
+
+					if(val < 6) {
+						$(':input[type="submit"]').prop('disabled', true);
+						$('#number_last_code').addClass( "has-error" );
+						$('#alertDigitRandom').show();
+					}else{
+						$(':input[type="submit"]').prop('disabled', false);
+						$('#number_last_code').removeClass( "has-error" );
+						$('#alertDigitRandom').hide();
+					}
+
+					console.log(last_code)
 					var result           = '';
 					var result1          = '';
 					var result2          = '';
@@ -222,6 +254,18 @@
 					$('#exampleCode1').replaceWith("<span id='exampleCode1'>"+prefix+result1+"</span>")
 					$('#exampleCode2').replaceWith("<span id='exampleCode2'>"+prefix+result2+"</span>")
 				});
+
+				$('#multipleNumberLastCode').keyup(function() {
+					prefix = ($('#multiplePrefixCode').val())
+					last_code = ($('#multipleNumberLastCode').val())
+					max = +$(this).attr('max');
+					val = +$(this).val();
+					
+					if (val > max) {
+						$('#multipleNumberLastCode').val(max);
+					}
+				});
+
 				$('input[name=total_coupon]').keyup(function() {
 					if (code != 'Single') {
 						maxCharDigit = 28;
@@ -305,7 +349,7 @@
 					<div class="form-group">
 						<label class="control-label">Name</label>
 						<span class="required" aria-required="true"> * </span>
-						<i class="fa fa-question-circle tooltips" data-original-title="Nama Campaign" data-container="body"></i>
+						<i class="fa fa-question-circle tooltips" data-original-title="Campaign Name" data-container="body"></i>
 						<div class="input-group col-md-12">
 							<input required type="text" class="form-control" name="campaign_name" placeholder="Campaign Name" @if(isset($result['campaign_name']) && $result['campaign_name'] != "") value="{{$result['campaign_name']}}" @elseif(old('campaign_name') != "") value="{{old('campaign_name')}}" @endif autocomplete="off">
 						</div>
@@ -313,19 +357,19 @@
 					<div class="form-group">
 						<label class="control-label">Title</label>
 						<span class="required" aria-required="true"> * </span>
-                        <i class="fa fa-question-circle tooltips" data-original-title="Judul Promo" data-container="body"></i>
+                        <i class="fa fa-question-circle tooltips" data-original-title="Title that will be displayed when promo campaign is used" data-container="body"></i>
 						<div class="input-group col-md-12">
 							<input required type="text" class="form-control" name="promo_title" placeholder="Promo Title" @if(isset($result['promo_title']) && $result['promo_title'] != "") value="{{$result['promo_title']}}" @elseif(old('promo_title') != "") value="{{old('promo_title')}}" @endif autocomplete="off">
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="selectTag" class="control-label">Tag</label>
-						<i class="fa fa-question-circle tooltips" data-original-title="Kode tag digunakan untuk mengkategorikan kode promo" data-container="body"></i>
+						<i class="fa fa-question-circle tooltips" data-original-title="Tags that will be used to categorized promo campaign" data-container="body"></i>
 						<select id="selectTag" name="promo_tag[]" class="form-control select2-multiple select2-hidden-accessible" multiple="multiple" tabindex="-1" aria-hidden="true"></select>
 					</div>
 					<div class="form-group">
 						<label for="selectTag" class="control-label">Product Type</label>
-						<i class="fa fa-question-circle tooltips" data-original-title="Tipe produk yang akan dikenakan kode promo" data-container="body"></i>
+						<i class="fa fa-question-circle tooltips" data-original-title="Product type that will be applied when promo code is used" data-container="body"></i>
 						<select class="form-control" name="product_type">
 							<option value="single" @if(isset($result['product_type']) && $result['product_type'] == "single") selected @endif required> Single </option>
 							<option value="group" @if(isset($result['product_type']) && $result['product_type'] == "group") selected @endif> Group </option>
@@ -334,7 +378,7 @@
 					<div class="form-group">
 						<label class="control-label">Start Date</label>
 						<span class="required" aria-required="true"> * </span>
-                        <i class="fa fa-question-circle tooltips" data-original-title="Waktu dimulai berlakunya promo" data-container="body"></i>
+                        <i class="fa fa-question-circle tooltips" data-original-title="Date when promo started" data-container="body"></i>
 						<div class="input-group date bs-datetime">
 							<input required autocomplete="off" id="start_date" type="text" class="form-control" name="date_start" placeholder="Start Date" @if(isset($result['date_start']) && $result['date_start'] != "") value="{{date('d F Y - H:i', strtotime($result['date_start']))}}" @elseif(old('date_start') != "") value="{{old('date_start')}}" @endif>
 							<span class="input-group-addon">
@@ -347,7 +391,7 @@
 					<div class="form-group">
 						<label class="control-label">End Date</label>
 						<span class="required" aria-required="true"> * </span>
-                        <i class="fa fa-question-circle tooltips" data-original-title="Waktu selesai berlakunya promo" data-container="body"></i>
+                        <i class="fa fa-question-circle tooltips" data-original-title="Date when promo ended" data-container="body"></i>
 						<div class="input-group date bs-datetime">
 							<input required autocomplete="off" id="end_date" type="text" class="form-control" name="date_end" placeholder="End Date" @if(isset($result['date_end']) && $result['date_end'] != "") value="{{date('d F Y - H:i', strtotime($result['date_end']))}}" @elseif(old('date_end') != "") value="{{old('date_end')}}" @endif>
 							<span class="input-group-addon">
@@ -372,7 +416,7 @@
 					<div class="form-group" style="height: 90px;">
 						<label class="control-label">Code Type</label>
 						<span class="required" aria-required="true"> * </span>
-						<i class="fa fa-question-circle tooltips" data-original-title="Tipe kode promo yang dibuat" data-container="body"></i>
+						<i class="fa fa-question-circle tooltips" data-original-title="Type of promo code that will be made" data-container="body"></i>
 						<div class="mt-radio-list">
 							<label class="mt-radio mt-radio-outline"> Single
 								<input type="radio" value="Single" name="code_type" @if(isset($result['code_type']) && $result['code_type'] == "Single") checked @elseif(old('code_type') == "Single") checked @endif required/>
@@ -388,10 +432,10 @@
 						<div class="form-group">
 							<label class="control-label">Promo Code</label>
 							<span class="required" aria-required="true"> * </span>
-							<i class="fa fa-question-circle tooltips" data-original-title="Kode promo yang dibuat" data-container="body"></i>
+							<i class="fa fa-question-circle tooltips" data-original-title="Code that is used to apply promo" data-container="body"></i>
 							<div class="input-group col-md-12">
 								<input id="singlePromoCode" maxlength="15" type="text" class="form-control" name="promo_code" onkeyup="this.value=this.value.replace(/[^abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]/g,'');" placeholder="Promo Code" @if(isset($result['promo_campaign_promo_codes'][0]['promo_code']) && $result['promo_campaign_promo_codes'][0]['promo_code'] != "") value="{{$result['promo_campaign_promo_codes'][0]['promo_code']}}" @elseif(old('promo_code') != "") value="{{old('promo_code')}}" @endif autocomplete="off">
-								<p id="alertSinglePromoCode" style="display: none;" class="help-block">Kode sudah pernah dibuat!</p>
+								<p id="alertSinglePromoCode" style="display: none;" class="help-block">Code has already been made!</p>
 							</div>
 						</div>
 					</div>
@@ -399,23 +443,28 @@
 						<div class="form-group" id="alertMultipleCode">
 							<label class="control-label">Prefix Code</label>
 							<span class="required" aria-required="true"> * </span>
-							<i class="fa fa-question-circle tooltips" data-original-title="Kode prefix untuk judul kode" data-container="body"></i>
+							<i class="fa fa-question-circle tooltips" data-original-title="Code that is added to the beginning of each generated code.
+							</br>
+							</br> Prefix code can be null.
+							</br>
+							</br> Prefix Code + Digit Random cannot exceed 15 characters." data-container="body" data-html="true"></i>
 							<div class="input-group col-md-12">
-								<input id="multiplePrefixCode" maxlength="15" type="text" class="form-control" name="prefix_code" onkeyup="this.value=this.value.replace(/[^abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]/g,'');" placeholder="Prefix Code" @if(isset($result['prefix_code']) && $result['prefix_code'] != "") value="{{$result['prefix_code']}}" @elseif(old('prefix_code') != "") value="{{old('prefix_code')}}" @endif autocomplete="off">
-								<p id="alertMultiplePromoCode" style="display: none;" class="help-block">Kode prefix sudah pernah dibuat, lebih disarankan untuk membuat kode baru!</p>
+								<input id="multiplePrefixCode" maxlength="9" type="text" class="form-control" name="prefix_code" onkeyup="this.value=this.value.replace(/[^abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]/g,'');" placeholder="Prefix Code" @if(isset($result['prefix_code']) && $result['prefix_code'] != "") value="{{$result['prefix_code']}}" @elseif(old('prefix_code') != "") value="{{old('prefix_code')}}" @endif autocomplete="off">
+								<p id="alertMultiplePromoCode" style="display: none;" class="help-block">Prefix code has already been made, it is recommended to create a new code!</p>
 							</div>
 						</div>
 						<div class="form-group" id="number_last_code">
 							<label class="control-label">Digit Random</label>
 							<span class="required" aria-required="true"> * </span>
-							<i class="fa fa-question-circle tooltips" data-original-title="Jumlah digit yang digenerate secara otomatis untuk akhiran kode" data-container="body"></i>
+							<i class="fa fa-question-circle tooltips" data-original-title="Random Code that is added to the end of each generated code. Prefix Code + Digit Random cannot exceed 15 digits. Minimum 6 digit" data-container="body"></i>
 							<div class="input-group col-md-12">
-								<input id="multipleNumberLastCode" type="number" class="form-control" name="number_last_code" placeholder="Total Digit Random Last Code" @if(isset($result['number_last_code']) && $result['number_last_code'] != "") value="{{$result['number_last_code']}}" @elseif(old('number_last_code') != "") value="{{old('number_last_code')}}" @endif autocomplete="off" oninput="validity.valid||(value='');" min="6" max="15">
+								<input id="multipleNumberLastCode" type="number" class="form-control" name="number_last_code" placeholder="Total Digit Random Last Code" @if(isset($result['number_last_code']) && $result['number_last_code'] != "") value="{{$result['number_last_code']}}" @elseif(old('number_last_code') != "") value="{{old('number_last_code')}}" @endif autocomplete="off" min="6" max="15">
+								<p id="alertDigitRandom" style="display: none;" class="help-block">Digit Random minimum value is 6</p>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label">Example Code 
-							<i class="fa fa-question-circle tooltips" data-original-title="Contoh Kode yang digenerate secara otomatis" data-container="body"></i></label>
+							<i class="fa fa-question-circle tooltips" data-original-title="Example of codes that will be made" data-container="body"></i></label>
 							<div class="input-group col-md-12">
 								<span id="exampleCode"></span>
 							</div>
@@ -430,7 +479,7 @@
 					<div class="form-group">
 						<label class="control-label">Limit Usage</label>
 						<span class="required" aria-required="true"> * </span>
-						<i class="fa fa-question-circle tooltips" data-original-title="Limit penggunaan kode promo" data-container="body"></i>
+						<i class="fa fa-question-circle tooltips" data-original-title="Limit of one user can use promo code" data-container="body"></i>
 						<div class="input-group col-md-12">
 							<input required type="text" class="form-control digit_mask" name="limitation_usage" placeholder="Limit Usage" @if(isset($result['limitation_usage']) && $result['limitation_usage'] != "") value="{{$result['limitation_usage']}}" @elseif(old('limitation_usage') != "") value="{{old('limitation_usage')}}" @endif autocomplete="off">
 						</div>
@@ -438,10 +487,10 @@
 					<div class="form-group" id="totalCoupon">
 						<label class="control-label">Total Coupon</label>
 						<span class="required" aria-required="true"> * </span>
-						<i class="fa fa-question-circle tooltips" data-original-title="Total kode kupon yang dibuat" data-container="body"></i>
+						<i class="fa fa-question-circle tooltips" data-original-title="Maximum total Coupons that can be used. Input 0 for unlimited coupons" data-container="body"></i>
 						<div class="input-group col-md-12">
 							<input required type="text" class="form-control digit_mask" name="total_coupon" placeholder="Total Coupon" value="{{$result['total_coupon']??old('total_coupon')}}" autocomplete="off">
-							<p id="alertTotalCoupon" style="display: none;" class="help-block">Generate Random Total Coupon sangat tidak memungkinkan!</p>
+							<p id="alertTotalCoupon" style="display: none;" class="help-block">Generate Random Total Coupon exceed maximum estimated number of codes!</p>
 						</div>
 					</div>
 					@if (isset($result['id_promo_campaign']))

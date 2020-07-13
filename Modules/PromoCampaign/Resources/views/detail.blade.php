@@ -409,7 +409,7 @@
                                     @if( ($result['code_type'])=='Multiple' )
                                     <div class="row static-info">
                                         <div class="col-md-4 name">Prefix Code</div>
-                                        <div class="col-md-8 value">: {{ $result['prefix_code']??'' }}</div>
+                                        <div class="col-md-8 value">: {{ $result['prefix_code']?:'No Prefix Code' }}</div>
                                     </div>
                                     <div class="row static-info">
                                         <div class="col-md-4 name">Number Last Code</div>
