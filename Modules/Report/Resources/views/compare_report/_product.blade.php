@@ -144,7 +144,7 @@
                             <div class="number">
                                 <span data-counter="counterup" data-value="0" id="card_product_1">{{ $report['products']['product_total_nominal'] }}</span> </div>
                                 <div class="desc"> 
-                                Total Nominal (IDR)
+                                Total Nominal ({{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}})
                             </div>
                         </div>
                     </div>
@@ -203,7 +203,7 @@
                             <th data-data='product.product_name'> Product </th>
                             <th data-data='total_rec'> Total Recurring </th>
                             <th data-data='total_qty'> Total (Qty) </th>
-                            <th data-data='total_nominal'> Total Nominal (IDR) </th>
+                            <th data-data='total_nominal'> Total Nominal ({{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}) </th>
                             <th data-data='cust_male'> Male Customer </th>
                             <th data-data='cust_female'> Female Customer </th>
                             <th data-data='cust_android'> Android </th>

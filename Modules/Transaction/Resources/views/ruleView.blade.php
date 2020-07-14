@@ -444,7 +444,7 @@
                                                 <div class="input-group" style="margin: px">
                                                     <input id="persen" type="text" class="form-control pointPersen" placeholder="value" value="{{ $point['value'] }}">
                                                     <span class="input-group-addon">
-                                                        IDR = 1 Point
+                                                        {{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}} = 1 Point
                                                     </span>
                                                     </div>
                                             </div>

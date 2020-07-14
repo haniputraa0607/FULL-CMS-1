@@ -56,7 +56,7 @@
 					<span class="required" aria-required="true"> * </span>
 					<i class="fa fa-question-circle tooltips" data-original-title="Jumlah diskon yang diberikan" data-container="body"></i>
 					<div class="input-group @if(isset($result['deals_product_discount_rules']['discount_type']) && $result['deals_product_discount_rules']['discount_type'] == "Percent") col-md-5 @else col-md-12 @endif" id="product-discount-group">
-						<div class="input-group-addon" id="product-addon-rp" @if(isset($result['deals_product_discount_rules']['discount_type']) && $result['deals_product_discount_rules']['discount_type'] == "Percent") style="display: none;" @endif>IDR</div>
+						<div class="input-group-addon" id="product-addon-rp" @if(isset($result['deals_product_discount_rules']['discount_type']) && $result['deals_product_discount_rules']['discount_type'] == "Percent") style="display: none;" @endif>{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</div>
 						<input required type="text" class="form-control text-center" name="discount_value" placeholder="Discount Value" @if(isset($result['deals_product_discount_rules']['discount_value']) && $result['deals_product_discount_rules']['discount_value'] != "") value="{{$result['deals_product_discount_rules']['discount_value']}}" @elseif(old('discount_value') != "") value="{{old('discount_value')}}" @endif min="0" oninput="validity.valid||(value='');" autocomplete="off">
 						<div class="input-group-addon" id="product-discount-addon" @if(isset($result['deals_product_discount_rules']['discount_type']) && $result['deals_product_discount_rules']['discount_type'] == "Nominal") style="display: none;" @endif>%</div>
 					</div>

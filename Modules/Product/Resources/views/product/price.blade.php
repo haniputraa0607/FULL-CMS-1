@@ -10,6 +10,7 @@
 @endsection
 
 @section('page-script')
+    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js') }}" type="text/javascript"></script>
     {{-- <script src="{{ env('S3_URL_VIEW') }}{{('assets/datemultiselect/jquery-ui.min.js') }}" type="text/javascript"></script> --}}
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
@@ -80,6 +81,28 @@
 				$( this ).val("");
 			}
 		}
+		
+        $(`.dinamic_price`).inputmask('currency',{
+            @if(env('COUNTRY_CODE') == 'SG')
+            removeMaskOnSubmit: true,
+            min:0,
+            prefix: "",
+            autoGroup: true,
+            radixPoint: ".",
+            groupSeparator: ",",
+            rightAlign: false
+            @else
+            removeMaskOnSubmit: true,
+            min:0,
+            prefix: "",
+            autoGroup: true,
+            radixPoint: ",",
+            groupSeparator: ".",
+            rightAlign: false,
+            digits: 0
+            @endif
+        });
+
 		$( "#formWithPrice" ).submit(function() {
 			$( "#submit" ).attr("disabled", true);
 			$( "#submit" ).addClass("m-loader m-loader--light m-loader--right");
@@ -210,10 +233,10 @@
 																		$marker = 1;
 																	@endphp
 																	<td style="width: 15%">
-																		<input type="text" name="price[]" value="{{ $dpp['product_price'] }}" data-placeholder="input price" data-id="{{$pro['id_product']}}" class="form-control mt-repeater-input-inline price">
+																		<input type="text" name="price[]" value="{{ $dpp['product_price'] }}" data-placeholder="input price" data-id="{{$pro['id_product']}}" class="form-control mt-repeater-input-inline dinamic_price">
 																	</td>
 																	<td style="width: 15%">
-																		<input type="text" name="price_base[]" value="{{ $dpp['product_price_base'] }}" data-placeholder="input price" class="form-control mt-repeater-input-inline price_float" id="price_base_{{$pro['id_product']}}" readonly hide>
+																		<input type="text" name="price_base[]" value="{{ $dpp['product_price_base'] }}" data-placeholder="input price" class="form-control mt-repeater-input-inline {{env('COUNTRY_CODE') == 'SG'? 'dinamic_price' : 'price_float'}}" id="price_base_{{$pro['id_product']}}" readonly hide>
 																	</td>
 																	<td style="width: 15%">
 																		<input type="text" name="price_tax[]" value="{{ $dpp['product_price_tax'] }}" data-placeholder="input price" class="form-control mt-repeater-input-inline price_float" id="price_tax_{{$pro['id_product']}}" readonly hide>

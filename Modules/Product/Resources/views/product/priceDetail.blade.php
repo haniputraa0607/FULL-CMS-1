@@ -23,7 +23,7 @@ $id_product = $product[0]['id_product'];
 					<div style="width:10%; display:inline-block">
 						<input type="hidden" name="id_product_price[]" value="{{ $price['id_product_price'] }}">
 						<input type="hidden" name="id_outlet[]" value="{{ $ou['id_outlet'] }}">
-						<input type="text" class="form-control nominal price product-price" name="product_price[]" value="{{ $price['product_price'] }}" data-id="{{$ou['id_outlet']}}">
+						<input type="text" class="form-control nominal dinamic_price product-price" name="product_price[]" value="{{ $price['product_price'] }}" data-id="{{$ou['id_outlet']}}">
 					</div>
 					<div style="width:10%; display:none">
 						<input type="text" class="form-control nominal price_float product-price-base" name="product_price_base[]" value="{{ $price['product_price_base'] }}" id="price_base_{{$ou['id_outlet']}}" readonly>

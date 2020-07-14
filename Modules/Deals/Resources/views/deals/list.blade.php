@@ -218,7 +218,7 @@ $grantedFeature     = session('granted_features');
                                 	@elseif(!empty($value['deals_voucher_price_point']))
                                 		{{ number_format($value['deals_voucher_price_point']).' Points' }}
                                 	@elseif(!empty($value['deals_voucher_price_cash']))
-                                		{{ 'IDR'.number_format($value['deals_voucher_price_cash']) }}
+                                		{{ (env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').number_format($value['deals_voucher_price_cash']) }}
                                 	@endif
                                 </td>
                                 @if($deals_type !='WelcomeVoucher' && $deals_type != "Hidden")

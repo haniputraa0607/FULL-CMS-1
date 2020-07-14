@@ -1195,7 +1195,7 @@
 			};
 			trx_series = {
 				total_qty: ["Quantity", false],
-				total_idr: ["IDR", true],
+				total_idr: ["{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}", true],
 				kopi_point: ["{{env('POINT_NAME', 'Points')}}", true]
 			};
 		   	product_series = { total_qty: "Quantity" };

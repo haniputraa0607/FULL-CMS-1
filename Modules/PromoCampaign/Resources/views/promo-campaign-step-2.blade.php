@@ -788,7 +788,7 @@
 											<i class="fa fa-question-circle tooltips" data-original-title="Jumlah diskon maksimal yang bisa didapatkan ketika menggunakan promo. Kosongkan jika maksimal persen mengikuti harga produk " data-container="body"></i>
 											<div class="input-group col-md-12">
 
-												<div class="input-group-addon">IDR</div>
+												<div class="input-group-addon">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</div>
 
 												<input type="text" class="form-control text-center digit_mask" name="max_percent_discount" placeholder="" value="{{$result['promo_campaign_product_discount_rules']['max_percent_discount']}}" min="0" oninput="validity.valid||(value='');" autocomplete="off">
 											</div>
