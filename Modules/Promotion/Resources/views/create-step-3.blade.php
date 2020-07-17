@@ -845,7 +845,7 @@ $grantedFeature     = session('granted_features');
 									@endif
 								</div>
 
-								<a href="{{url('promotion/recipient/'.$result['id_promotion'])}}" target="_blank" class="btn blue btn-sm" style="margin-left: 15px;">Show Recipient List</a>
+								<a href="{{url('promotion/recipient/'.$result['id_promotion'])}}" target="_blank" class="btn blue" style="margin-left: 15px;">Show Recipient List</a>
 							</div>
 						</div>
 					</form>
@@ -1397,7 +1397,7 @@ $grantedFeature     = session('granted_features');
 															$deals_slug = MyHelper::createSlug($result['contents'][$x-1]['deals']['id_deals'], $result['contents'][$x-1]['deals']['created_at']);
 														@endphp
 														<div class="col-md-3" style="margin-bottom:30px">
-															<a href="{{ url('promotion-deals/'.$deals_slug) }}" class="btn btn-sm blue">detail</i></a>
+															<a href="{{ url('promotion-deals/'.$deals_slug) }}" class="btn blue">detail</i></a>
 														</div>
 													</div>
 												</div>
@@ -1964,7 +1964,7 @@ $grantedFeature     = session('granted_features');
 											$deals_slug = MyHelper::createSlug($result['contents'][0]['deals']['id_deals'],$result['contents'][0]['deals']['created_at']);
 										@endphp
 										<div class="col-md-3" style="margin-bottom:30px">
-											<a href="{{ url('promotion-deals/'.$deals_slug) }}" class="btn btn-sm blue">Detail</i></a>
+											<a href="{{ url('promotion-deals/'.$deals_slug) }}" class="btn blue">Detail</i></a>
 										</div>
 									</div>
 								</div>

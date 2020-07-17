@@ -505,7 +505,7 @@ class PromotionController extends Controller
 		// if (isset($getOutlet['status']) && $getOutlet['status'] == 'success') $data['outlet'] = $getOutlet['result']; else $data['outlet'] = null;
 
 		$deals = MyHelper::post('promotion/deals/detail', ['id_deals_promotion_template' => $id]);
-		// dd($deals);
+
 		if (isset($deals['status']) && $deals['status'] == "success") {
 			$data['deals'] = $deals['result'];
 			$data['deals']['id_deals_promotion_template'] = $id_encrypt;
@@ -586,7 +586,7 @@ class PromotionController extends Controller
 					$x['phone'],
 					$x['gender'],
 					$x['city_name'],
-					$x['birthday']
+					date('d M Y', strtotime($x['birthday']))
 				];
 			},$action['result']['users']??[]);
 			return $return;

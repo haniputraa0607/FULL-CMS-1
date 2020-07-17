@@ -789,6 +789,7 @@ $configs    		= session('configs');
 										All User
 									@endif
 								</div>
+								<a href="{{url('promotion/recipient/'.$result['id_promotion'])}}" target="_blank" class="btn blue" style="margin-left: 15px;">Show Recipient List</a>
 							</div>
 						</div>
 				</div>

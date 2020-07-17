@@ -153,7 +153,9 @@
 	            @endif
 	        </div>
     	@endif
-
+{{-- @php
+	dd($deals);
+@endphp --}}
     	@if (!empty($deals['is_online']))
         <div class="profile-info portlet light bordered">
             <div class="portlet-title"> 
@@ -177,9 +179,9 @@
                                     No Product Requirement
                                 @endif
                             @elseif ($deals['deals_promotion_tier_discount_rules'] != null)
-                                {{$deals['deals_tier_discount_product']['product']['product_name']}}
+                                {{$deals['deals_promotion_tier_discount_product']['product']['product_name']}}
                             @elseif ($deals['deals_promotion_buyxgety_rules'] != null)
-                                {{$deals['deals_buyxgety_product_requirement']['product']['product_name']??''}}
+                                {{$deals['deals_promotion_buyxgety_product_requirement']['product']['product_name']??''}}
                             @endif
                         </div>
                     </div>
@@ -214,7 +216,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($deals['deals_product_discount'] as $res)
+                                        @foreach($deals['deals_promotion_product_discount'] as $res)
                                             <tr>
                                                 <td>{{ $res['product']['product_code']??$res['product_group']['product_group_code']??'' }}</td>
                                                 <td>
@@ -235,11 +237,11 @@
                     <div class="row static-info">
                         <div class="col-md-4 name">Product Requirement</div>
                         <div class="col-md-8 value">: 
-                            @if ( isset($deals['deals_tier_discount_product']) )
-                            	@if (!empty($deals['deals_tier_discount_product']['product_group']))
-                                	<a href="{{ url('product-variant/group/'.$deals['deals_tier_discount_product']['product_group']['id_product_group']??'') }}">{{ ($deals['deals_tier_discount_product']['product_group']['product_group_code']??'').' - '.($deals['deals_tier_discount_product']['product_group']['product_group_name']??'') }}</a>
+                            @if ( isset($deals['deals_promotion_tier_discount_product']) )
+                            	@if (!empty($deals['deals_promotion_tier_discount_product']['product_group']))
+                                	<a href="{{ url('product-variant/group/'.$deals['deals_promotion_tier_discount_product']['product_group']['id_product_group']??'') }}">{{ ($deals['deals_promotion_tier_discount_product']['product_group']['product_group_code']??'').' - '.($deals['deals_promotion_tier_discount_product']['product_group']['product_group_name']??'') }}</a>
                                 @else
-                            		<a href="{{ url('product/detail/'.$deals['deals_tier_discount_product']['product']['product_code']??'') }}">{{ ($deals['deals_tier_discount_product']['product']['product_code']??'').' - '.($deals['deals_tier_discount_product']['product']['product_name']??'') }}</a>
+                            		<a href="{{ url('product/detail/'.$deals['deals_promotion_tier_discount_product']['product']['product_code']??'') }}">{{ ($deals['deals_promotion_tier_discount_product']['product']['product_code']??'').' - '.($deals['deals_promotion_tier_discount_product']['product']['product_name']??'') }}</a>
                                 @endif
                             @endif
                         </div>
@@ -266,11 +268,11 @@
                     <div class="row static-info">
                         <div class="col-md-4 name">Product Requirement</div>
                         <div class="col-md-8 value">: 
-                            @if ( isset($deals['deals_buyxgety_product_requirement']) )
-                            	@if (!empty($deals['deals_buyxgety_product_requirement']['product_group']))
-                                	<a href="{{ url('product-variant/group/'.$deals['deals_buyxgety_product_requirement']['product_group']['id_product_group']??'') }}">{{ ($deals['deals_buyxgety_product_requirement']['product_group']['product_group_code']??'').' - '.($deals['deals_buyxgety_product_requirement']['product_group']['product_group_name']??'') }}</a>
+                            @if ( isset($deals['deals_promotion_buyxgety_product_requirement']) )
+                            	@if (!empty($deals['deals_promotion_buyxgety_product_requirement']['product_group']))
+                                	<a href="{{ url('product-variant/group/'.$deals['deals_promotion_buyxgety_product_requirement']['product_group']['id_product_group']??'') }}">{{ ($deals['deals_promotion_buyxgety_product_requirement']['product_group']['product_group_code']??'').' - '.($deals['deals_promotion_buyxgety_product_requirement']['product_group']['product_group_name']??'') }}</a>
                                 @else
-                            		<a href="{{ url('product/detail/'.$deals['deals_buyxgety_product_requirement']['product']['product_code']??'') }}">{{ ($deals['deals_buyxgety_product_requirement']['product']['product_code']??'').' - '.$deals['deals_buyxgety_product_requirement']['product']['product_name']??'' }}</a>
+                            		<a href="{{ url('product/detail/'.$deals['deals_promotion_buyxgety_product_requirement']['product']['product_code']??'') }}">{{ ($deals['deals_promotion_buyxgety_product_requirement']['product']['product_code']??'').' - '.$deals['deals_promotion_buyxgety_product_requirement']['product']['product_name']??'' }}</a>
                                 @endif
                             @endif
                         </div>

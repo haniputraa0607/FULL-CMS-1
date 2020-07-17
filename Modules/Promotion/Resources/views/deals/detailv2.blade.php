@@ -577,7 +577,7 @@ $grantedFeature     = session('granted_features');
 
     @include('layouts.notifications')
 
-@if($deals_type != 'Promotion')
+{{--@if($deals_type != 'Promotion')
     <div class="row">
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <a class="dashboard-stat dashboard-stat-v2 blue">
@@ -586,12 +586,12 @@ $grantedFeature     = session('granted_features');
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="{{ $deals['deals_total_voucher'] }}">
+                        <span data-counter="counterup" data-value="{{ $deals['deals_promotion_total_voucher'] }}">
                         @if (!empty($deals['deals_voucher_type']))
                         	@if ( $deals['deals_voucher_type'] == "Unlimited")
                         		{{ 'Unlimited' }}
                         	@else
-                        		{{ number_format(($deals['deals_total_voucher']??0)-($deals['deals_total_claimed']??0)) }}
+                        		{{ number_format(($deals['deals_promotion_total_voucher']??0)-($deals['deals_promotion_total_claimed']??0)) }}
                         	@endif
                         @endif
                         </span>
@@ -607,7 +607,7 @@ $grantedFeature     = session('granted_features');
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="{{ $deals['deals_total_claimed']??'' }}">{{ $deals['deals_total_claimed']??'' }}</span>
+                        <span data-counter="counterup" data-value="{{ $deals['deals_promotion_total_claimed']??'' }}">{{ $deals['deals_promotion_total_claimed']??'' }}</span>
                     </div>
                     <div class="desc"> Total Claimed </div>
                 </div>
@@ -620,7 +620,7 @@ $grantedFeature     = session('granted_features');
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="{{ $deals['deals_total_redeemed']??'' }}">{{ $deals['deals_total_redeemed']??'' }}</span>
+                        <span data-counter="counterup" data-value="{{ $deals['deals_promotion_total_redeemed']??'' }}">{{ $deals['deals_promotion_total_redeemed']??'' }}</span>
                     </div>
                     <div class="desc"> Total Redeem </div>
                 </div>
@@ -633,14 +633,15 @@ $grantedFeature     = session('granted_features');
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="{{ $deals['deals_total_used']??'' }}">{{ $deals['deals_total_used']??'' }}</span>
+                        <span data-counter="counterup" data-value="{{ $deals['deals_promotion_total_used']??'' }}">{{ $deals['deals_promotion_total_used']??'' }}</span>
                     </div>
                     <div class="desc"> Total Used </div>
                 </div>
             </a>
         </div>
     </div>
-@endif
+@endif--}}
+
     <div class="portlet light bordered">
         <div class="portlet-title tabbable-line">
             <div class="caption">
@@ -672,7 +673,7 @@ $grantedFeature     = session('granted_features');
                     @endif
                 --}}
                 	@if ($deals['step_complete'] != 1)
-                    <a data-toggle="modal" href="#small" class="btn btn-primary" style="float: right; margin-right: 5px">Mark as Complete</a>
+                    <a data-toggle="modal" href="#small" class="btn btn-primary" style="float: right; margin-right: 5px">Start Deals Template</a>
                     @endif
                 	<ul class="nav nav-tabs" id="tab-header">
                         <li class="active" id="infoOutlet">
@@ -742,7 +743,7 @@ $grantedFeature     = session('granted_features');
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title">Mark as complete?</h4>
+                    <h4 class="modal-title">Start Deals Template?</h4>
                 </div>
                 <form action="{{url('deals/update-complete')}}" method="post">
                 	@csrf
