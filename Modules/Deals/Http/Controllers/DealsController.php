@@ -1535,7 +1535,7 @@ class DealsController extends Controller
 
 		if ( ($update['status']??false) == 'success' )
 		{
-			return redirect($rpage.'/detail/'.$slug)->withSuccess(['Deals has been completed'])	;
+			return redirect($rpage.'/detail/'.$slug)->withSuccess(['Deals has been started'])	;
 		}
 		elseif ( ($update['status']??false) == 'fail' )
 		{
