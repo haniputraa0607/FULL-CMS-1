@@ -75,6 +75,7 @@
             <table class="table table-striped table-bordered table-hover dt-responsive">
             <thead>
               <tr>
+                  <th>Status Cashback</th>
                   <th>Outlet</th>
                   <th>Receipt Number</th>
                   <th>Customer Name</th>
@@ -88,6 +89,13 @@
                 @if(!empty($trx))
                     @foreach($trx as $res)
                         <tr>
+                            <td style="text-align: center">
+                                @if(is_null($res['transaction_cashback_earned']))
+                                    <i class="fa fa-close" style="color: red"></i>
+                                @else
+                                    <i class="fa fa-check" style="color: green"></i><br>{{number_format($res['transaction_cashback_earned'])}}
+                                @endif
+                            </td>
                             <td>{{ $res['outlet_code'] }} - {{ $res['outlet_name'] }}</td>
                             <td>{{ $res['transaction_receipt_number'] }}</td>
                             @if (isset($res['name']))

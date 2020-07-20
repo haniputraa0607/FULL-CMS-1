@@ -222,7 +222,12 @@
 								];
 
 								$code = substr($val['response'], strpos($val['response'], "=") + 1);
-								echo '<td>'.$val['response'].'<br>('.$statusCodes[$code].')</td>';
+								if(isset($statusCodes[$code])){
+									echo '<td>'.$val['response'].'<br>('.$statusCodes[$code].')</td>';
+								}else{
+									echo '<td>'.$val['response'].'</td>';
+								}
+
 							?>
 						</tr>
 					@endforeach
