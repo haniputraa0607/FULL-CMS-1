@@ -536,6 +536,7 @@ $grantedFeature     = session('granted_features');
 		$('#modalSentList').modal('show');
 	}
 	</script>
+	{{--
 	<script type="text/javascript">
 
 		$(function() {
@@ -559,7 +560,7 @@ $grantedFeature     = session('granted_features');
 		});
 
 		</script>
-
+		--}}
 @endsection
 
 @section('content')
@@ -2019,9 +2020,11 @@ $grantedFeature     = session('granted_features');
 		</div>
 		@endif
 
+	{{--
 		<div class="recipient">
 			@include('promotion::recipient')
 		</div>
+	--}}
 
 	</div>
 	<div class="col-md-12" style="padding-left: 30px;padding-right: 30px;">

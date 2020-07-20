@@ -1153,14 +1153,20 @@ class DealsController extends Controller
     /* DELETE DEAL */
     function deleteDeal(Request $request) {
         $post    = $request->except('_token');
-        $post['id_deals'] = MyHelper::explodeSlug($post['id_deals'])[0]??'';
-        $voucher = MyHelper::post('deals/delete', ['id_deals' => $post['id_deals']]);
+        if (isset($post['id_deals'])) {
+	        $post['id_deals'] = MyHelper::explodeSlug($post['id_deals'])[0]??'';
+	        $voucher = MyHelper::post('deals/delete', ['id_deals' => $post['id_deals']]);
+        }
+        else{
+        	$post['id_deals_promotion_template'] = MyHelper::explodeSlug($post['id_deals_promotion_template'])[0]??'';
+	        $voucher = MyHelper::post('promotion/deals/delete', ['id_deals_promotion_template' => $post['id_deals_promotion_template']]);	
+        }
 
         if (isset($voucher['status']) && $voucher['status'] == "success") {
             return "success";
         }
         else {
-            return "fail";
+            return $voucher;
         }
     }
 

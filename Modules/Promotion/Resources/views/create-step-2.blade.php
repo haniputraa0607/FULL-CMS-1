@@ -1551,7 +1551,7 @@ $configs    		= session('configs');
 												<div class="caption font-blue ">
 													<i class="icon-settings font-blue "></i>
 													<span class="caption-subject bold uppercase">Deals Setting</span>
-													@if($result['contents'][$x-1]['promotion_count_voucher_give'] > 0)
+													@if(isset($result['contents'][$x-1]['promotion_count_voucher_give']) && $result['contents'][$x-1]['promotion_count_voucher_give'] > 0)
 													<input type="hidden" name="id_deals_promotion_template[{{$x-1}}]" value="{{$result['contents'][$x-1]['id_deals_promotion_template']??''}}">
 													<input type="hidden" name="promotion_channel[{{$x-1}}][]" value="deals">
 													@endif
@@ -1564,7 +1564,7 @@ $configs    		= session('configs');
 														<div class="col-md-7">
 															<div class="input-icon right">
 																<select class="form-control select2 select-deals" data-placeholder="Select Deals" name="id_deals_promotion_template[{{$x-1}}]" 
-																@if($result['contents'][$x-1]['promotion_count_voucher_give'] > 0)
+																@if(isset($result['contents'][$x-1]['promotion_count_voucher_give']) && $result['contents'][$x-1]['promotion_count_voucher_give'] > 0)
 																	disabled 
 																@endif
 																>

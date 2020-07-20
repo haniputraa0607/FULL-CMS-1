@@ -102,7 +102,8 @@ $grantedFeature     = session('granted_features');
                         toastr.info("Deals has been deleted.");
                     }
                     else {
-                        toastr.warning("Something went wrong. Failed to delete deals.");
+                    	messages = result['messages'] ?? "Something went wrong. Failed to delete deals.";
+                        toastr.warning(messages);
                     }
                 }
             });
