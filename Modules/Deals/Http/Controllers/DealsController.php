@@ -872,7 +872,7 @@ class DealsController extends Controller
             $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
         }
 
-        if (empty($post['id_deals'])) {
+        if (empty($post['id_deals']) && empty($post['id_deals_promotion_template'])) {
             /* SAVE DEALS */
             return $this->saveDefaultDeals($post);
         }
@@ -936,7 +936,7 @@ class DealsController extends Controller
 
         if ( ($update['status']??false) == 'success') {
 
-        	if ($post['deals_voucher_type'] == "List Vouchers" && $post['deals_type'] != 'Promotion') {
+        	if ($post['deals_type'] != 'Promotion' && $post['deals_voucher_type'] == "List Vouchers") {
                 // return parent::redirect($this->saveVoucherList($post['id_deals'], $post['voucher_code']), "Deals has been updated.","$rpage/step2/{$slug}");
                 $save_voucher_list = $this->saveVoucherList($post['id_deals'], $post['voucher_code']);
 
@@ -1054,6 +1054,12 @@ class DealsController extends Controller
     /* UPDATE DATA DEALS */
     function update($post) {
         // print_r($post); exit();
+    	if (!empty($post['id_deals_promotion_template'])) {
+    		unset($post['id_deals']);
+    	}else{
+    		unset($post['id_deals_promotion_template']);
+    	}
+
         if (isset($post['deals_promo_id_type'])) {
             if ($post['deals_promo_id_type'] == "promoid") {
                 $post['deals_promo_id'] = $post['deals_promo_id_promoid'];

@@ -4,6 +4,16 @@
     }else{
         $is_all_outlet = 0;
     }
+
+    if(isset($deals['deals_list_outlet']))
+    {
+    	if (in_array("all", explode(',',$deals['deals_list_outlet']))) {
+        	$is_all_outlet = 1;
+		}
+		else{
+        	$is_all_outlet = 0;
+		}
+    }
 ?>
 @extends('layouts.main')
 
@@ -600,6 +610,7 @@
 				                @endif
 				            </div>
 				            <input type="hidden" name="id_deals" value="{{ $deals['id_deals']??'' }}">
+				            <input type="hidden" name="id_deals_promotion_template" value="{{ $deals['id_deals_promotion_template']??'' }}">
 				            <input type="hidden" name="slug" value="{{ $deals['slug']??'' }}">
 				            <input type="hidden" name="deals_type" value="{{ $deals['deals_type']??$deals_type??'' }}">
 				            <input type="hidden" name="template" value="{{ $deals['template']??0 }}">

@@ -653,7 +653,7 @@ $grantedFeature     = session('granted_features');
                     <a href="#info" data-toggle="tab" > Info </a>
                 </li>
                 <li>
-                    <a href="#participate" data-toggle="tab"> Participate </a>
+                    <a href="#promotion" data-toggle="tab"> Promotion </a>
                 </li>
             </ul>
         </div>
@@ -730,7 +730,7 @@ $grantedFeature     = session('granted_features');
                     </div>
                 </div>
                 @if($deals_type != 'Promotion')                
-                <div class="tab-pane" id="participate">
+                <div class="tab-pane" id="promotion">
                     @yield('detail-participate')
                 </div>
                 @endif

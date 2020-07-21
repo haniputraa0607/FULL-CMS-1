@@ -3361,7 +3361,7 @@ $configs    		= session('configs');
 			</div>
 			@endif
 		</div>
-
+{{--
 	@if($result['promotion_type'] == 'Instant Campaign')
 	<div class="col-md-12" style="padding-left: 30px;padding-right: 30px;">
 		<div class="portlet box blue-hoki">
@@ -3416,6 +3416,7 @@ $configs    		= session('configs');
 		</div>
 	</div>
 	@endif
+--}}	
 	<div class="col-md-12" style="padding-left: 30px;padding-right: 30px;">
 		<div class="portlet light bordered">
 			<div class="form-actions">

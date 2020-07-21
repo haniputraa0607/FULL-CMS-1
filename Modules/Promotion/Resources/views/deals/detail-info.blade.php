@@ -63,6 +63,7 @@
                     <div class="col-md-4 name">Product Type</div>
                     <div class="col-md-8 value">: {{ $deals['product_type']??'' }}</div>
                 </div>
+            {{--    
                 <div class="row static-info">
                     <div class="col-md-4 name">Total Voucher</div>
                     <div class="col-md-8 value">: {{ !empty($deals['deals_total_voucher']) ? number_format($deals['deals_total_voucher']).' Vouchers' : (isset($deals['deals_total_voucher']) ? 'unlimited' : '') }}</div>
@@ -71,6 +72,7 @@
                     <div class="col-md-4 name">Used Voucher</div>
                     <div class="col-md-8 value">: {{ number_format($deals['deals_total_used']??0).' Vouchers' }}</div>
                 </div>
+            --}}
                 <div class="row static-info">
                     <div class="col-md-4 name">User Limit</div>
                     <div class="col-md-8 value">: {{ $deals['user_limit']??false ? number_format($deals['user_limit']).' Times usage' : 'Unlimited' }}</div>

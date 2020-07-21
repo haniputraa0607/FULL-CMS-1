@@ -239,6 +239,9 @@
                         if (!empty($deals['outlets'])) {
                             $outletselected = array_pluck($deals['outlets'],'id_outlet');
                         }
+                        elseif(!empty($deals['deals_list_outlet'])) {
+                            $outletselected = explode(',',$deals['deals_list_outlet']);
+                        }
                         else {
                             $outletselected = [];
                         }

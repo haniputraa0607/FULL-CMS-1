@@ -432,7 +432,7 @@ class PromotionController extends Controller
             'submenu_active' => 'deals-promotion',
         ];
 
-        $deals = MyHelper::get('promotion/deals');
+        $deals = MyHelper::post('promotion/deals', ['brand' => 'brand']);
 
         if (isset($deals['status']) && $deals['status'] == "success") {
             $data['deals'] = $deals['result'];
