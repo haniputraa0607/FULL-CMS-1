@@ -264,7 +264,7 @@
                         </div>
                         <div class="col-md-9">
                             <div class="input-icon right">
-                                <textarea name="custom_outlet_text" id="field_tos" class="form-control summernote" placeholder="Custom Outlet Available Text">{{ old('custom_outlet_text')??$row['custom_outlet_text']??'' }}</textarea>
+                                <textarea name="custom_outlet_text" id="field_tos" class="form-control summernote" placeholder="Custom Outlet Available Text">{{ old('custom_outlet_text')??$deals['custom_outlet_text']??'' }}</textarea>
                             </div>
                         </div>
                     </div>
