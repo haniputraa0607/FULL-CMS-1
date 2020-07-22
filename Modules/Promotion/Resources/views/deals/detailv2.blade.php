@@ -1,22 +1,15 @@
-<?php
-    if(isset($deals['is_all_outlet'])){
-        $is_all_outlet = $deals['is_all_outlet'];
-    }else{
-        $is_all_outlet = 0;
-    }
-
-    if(isset($deals['deals_list_outlet']))
-    {
-    	if (in_array("all", explode(',',$deals['deals_list_outlet']))) {
-        	$is_all_outlet = 1;
-		}
-		else{
-        	$is_all_outlet = 0;
-		}
-    }
-?>
-@extends('layouts.main')
-
+@php
+use App\Lib\MyHelper;
+// dd($deals);
+$configs    		= session('configs');
+$grantedFeature     = session('granted_features');
+	$deals_type = 'deals_promotion';
+    $rpage = 'promotion/deals';
+@endphp
+@extends('layouts.main-closed')
+@include('promotion::deals.detail-info')
+@include('promotion::deals.detail-info-content')
+@include('promotion::deals.participate')
 @section('page-style')
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/datemultiselect/jquery-ui.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/datemultiselect/jquery-ui.multidatespicker.css') }}" rel="stylesheet" type="text/css" />
@@ -32,10 +25,54 @@
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-summernote/summernote.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{ env('S3_URL_VIEW') }}{{ ('assets/pages/css/profile-2.min.css') }}" rel="stylesheet" type="text/css" /> 
+    <style type="text/css">
+		.d-none {
+			display: none;
+		}
+		.width-60-percent {
+			width: 60%;
+		}
+		.width-100-percent {
+			width: 100%;
+		}
+		.width-voucher-img {
+			max-width: 200px;
+			width: 100%;
+		}
+		.v-align-top {
+			vertical-align: top;
+		}
+		.p-t-10px {
+			padding-top: 10px;
+		}
+		.page-container-bg-solid .page-content {
+			background: #fff!important;
+		}
+		.text-decoration-none {
+			text-decoration: none!important;
+		}
+		.p-l-0{
+			padding-left: 0px;
+		}
+		.p-r-0{
+			padding-right: 0px;
+		}
+		.p-l-r-0{
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+		.font-custom-dark-grey {
+			color: #95A5A6!important;
+		}
+		.font-custom-green {
+			color: #26C281!important;
+		}
+	</style>
+@yield('detail-style')	
 @endsection
 
 @section('page-script')
-    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript"></script>
     <!-- <script src="{{ env('S3_URL_VIEW') }}{{('assets/datemultiselect/jquery-ui.min.js') }}" type="text/javascript"></script> -->
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
@@ -48,8 +85,8 @@
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')}}"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js') }}" type="text/javascript"></script>
-    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/scripts/jquery.inputmask.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('js/prices.js')}}"></script>
+    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/scripts/jquery.inputmask.min.js') }}" type="text/javascript"></script>
 
 <!--     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/clockface/js/clockface.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
@@ -76,6 +113,12 @@
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script>
 
     <script type="text/javascript">
+
+    	$('.list-deals').on('click', function() {
+            id = $(this).data('deals');
+            $('#modal-id-deals').val(id);
+        });
+
         $('#sample_1').dataTable({
                 language: {
                     aria: {
@@ -165,13 +208,47 @@
                 "paging": false,
                 dom: "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>"
         });
+        $('#participate_tables').dataTable({
+            language: {
+                aria: {
+                    sortAscending: ": activate to sort column ascending",
+                    sortDescending: ": activate to sort column descending"
+                },
+                emptyTable: "No data available in table",
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                infoEmpty: "No entries found",
+                infoFiltered: "(filtered1 from _MAX_ total entries)",
+                lengthMenu: "_MENU_ entries",
+                search: "Search:",
+                zeroRecords: "No matching records found"
+            },
+            buttons: [{
+                extend: "print",
+                className: "btn dark btn-outline"
+            }, {
+                extend: "pdf",
+                className: "btn green btn-outline"
+            }, {
+                extend: "csv",
+                className: "btn purple btn-outline "
+            }],
+            deferRender: !0,
+            scroller: !0,
+            deferRender: !0,
+            scrollX: !0,
+            scrollCollapse: !0,
+            stateSave: !0,
+            lengthMenu: [
+                [10, 15, 20, -1],
+                [10, 15, 20, "All"]
+            ],
+            pageLength: 10,
+            dom: "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>"
+        });
     </script>
 
     <script type="text/javascript">
         var oldOutlet=[];
-        var value=$('select[name="id_outlet[]"]').val();
-        var convertAll=false;
-
         function redrawOutlets(list,selected,convertAll){
             var html="";
             if(list.length){
@@ -182,82 +259,58 @@
             });
             $('select[name="id_outlet[]"]').html(html);
             $('select[name="id_outlet[]"]').val(selected);
-            var isAllOutlet = "{{$is_all_outlet}}";
-            if(isAllOutlet == 1){
+            if(convertAll&&$('select[name="id_outlet[]"]').val().length==list.length){
                 $('select[name="id_outlet[]"]').val(['all']);
             }
             oldOutlet=list;
         }
-
         $(document).ready(function() {
             token = '<?php echo csrf_token();?>';
 
-            $('.digit-mask').inputmask({
-				removeMaskOnSubmit: true, 
-				placeholder: "",
-				alias: "currency", 
-				digits: 0,
-                prefix: "", 
-				rightAlign: false,
-				min: 0,
-				max: '999999999'
-			});
-
-            $('#is_online, #is_offline').on('change', function(){
-            	var is_online = $('#is_online').is(":checked");
-            	var is_offline = $('#is_offline').is(":checked");
-            	if (is_online || is_offline) {$('.online_offline').prop('required', false);}
-            	if (!is_offline && !is_online) {$('.online_offline').prop('required', true);}
-            });
-
-		    $('#is_online').change(function() {
+            $('#is_offline').change(function() {
 		        if(this.checked) {
-		            $('#product-type-form').show();
+		            $('#promo-type-form').show().find('input').prop('required', true).prop('checked', false);
 		        }else{
-		            $('#product-type-form').hide();
+		            $('#promo-type-form').hide().find('input').prop('required', false).prop('checked', false);
+
+                    $('.dealsPromoTypeValuePrice').val('');
+                    $('.dealsPromoTypeValuePrice').hide();
+                    $('.dealsPromoTypeValuePrice').removeAttr('required', true);
+                    $('.dealsPromoTypeValuePromo').val('');
+                    $('.dealsPromoTypeValuePromo').hide();
+                    $('.dealsPromoTypeValuePromo').removeAttr('required', true);
+
+		        	$('.dealsPromoTypeShow').hide();
 		        }
 		    });
 
+		    $('#is_online').change(function() {
+		        if(this.checked) {
+		            $('#step-online').show();
+		            $('#step-offline').hide();
+		        }else{
+		            $('#step-online').hide();
+		            $('#step-offline').show();
+		        }
+		    });
+		    
             /* TYPE VOUCHER */
-            $('input[name=deals_voucher_type]').click(function() {
+            $('.voucherType').click(function() {
                 // tampil duluk
                 var nilai = $(this).val();
 
                 // alert(nilai);
 
                 if (nilai == "List Vouchers") {
-
-                	$('input[name=total_voucher_type]:checked').prop('checked', false);
-                	$('input[name=total_voucher_type]').prop('required', false);
-                	$('input[name=deals_total_voucher]').val('');
-
                     $('#listVoucher').show();
                     $('.listVoucher').prop('required', true);
                     $('.listVoucher').prop('disabled', false);
 
-                    $('#total-voucher-form').hide();
                     $('#generateVoucher').hide();
                     $('.generateVoucher').removeAttr('required');
                     $('.generateVoucher').prop('disabled', true);
                 }
                 else if (nilai == "Auto generated"){
-                    $('#total-voucher-form').show();
-                    
-                	$('input[name=total_voucher_type]').prop('required', true);
-                    $('#listVoucher').hide();
-                    $('.listVoucher').removeAttr('required');
-                    $('.listVoucher').prop('disabled', true);
-                }
-            });
-
-            /* TOTAL TYPE VOUCHER */
-            $('input[name=total_voucher_type]').click(function() {
-                // tampil duluk
-                var nilai = $(this).val();
-                // alert(nilai);
-
-                if (nilai == "Auto generated") {
-
                     $('#generateVoucher').show();
                     $('.generateVoucher').prop('required', true);
                     $('.generateVoucher').prop('disabled', false);
@@ -265,16 +318,13 @@
                     $('#listVoucher').hide();
                     $('.listVoucher').removeAttr('required');
                     $('.listVoucher').prop('disabled', true);
-                }
-                else if (nilai == "Unlimited"){
-                    $('#listVoucher').hide();
-                    $('.listVoucher').removeAttr('required');
-                    $('.listVoucher').prop('disabled', true);
-
+                }else{
                     $('#generateVoucher').hide();
                     $('.generateVoucher').removeAttr('required');
                     $('.generateVoucher').prop('disabled', true);
-                    $('input[name=deals_total_voucher]').val('');
+                    $('#listVoucher').hide();
+                    $('.listVoucher').removeAttr('required');
+                    $('.listVoucher').prop('disabled', true);
                 }
             });
 
@@ -496,41 +546,12 @@
                 });
             });
             $('select[name="id_brand"]').change();
-
-            if($('select[name="id_outlet[]"]').data('value')){
-	            var value=$('select[name="id_outlet[]"]').val();
-	            var convertAll=false;
-	            if($('select[name="id_outlet[]"]').data('value')){
-	                value=$('select[name="id_outlet[]"]').data('value');
-	                $('select[name="id_outlet[]"]').data('value',false);
-	                convertAll=true;
-	            }
-	            redrawOutlets($('select[name="id_outlet[]"]').data('all-outlet'),value,convertAll);
-	        }
         });
-
-        $(`.dinamic_price`).inputmask('currency',{
-            @if(env('COUNTRY_CODE') == 'SG')
-            removeMaskOnSubmit: true,
-            min:0,
-            prefix: "",
-            autoGroup: true,
-            radixPoint: ".",
-            groupSeparator: ",",
-            rightAlign: false
-            @else
-            removeMaskOnSubmit: true,
-            min:0,
-            prefix: "",
-            autoGroup: true,
-            radixPoint: ",",
-            groupSeparator: ".",
-            rightAlign: false,
-            digits: 0
-            @endif
-        });
-
     </script>
+	@yield('child-script')
+	@yield('child-script2')
+	@yield('detail-script')
+	@yield('participate-script')
 @endsection
 
 @section('content')
@@ -556,70 +577,210 @@
 
     @include('layouts.notifications')
 
-    <div class="portlet light bordered">
-    	<div class="col-md-12">
-            <div class="mt-element-step">
-                <div class="row step-line">
-                    <div id="step-online">
-	                    <div class="col-md-4 mt-step-col first active">
-	                        <div class="mt-step-number bg-white">1</div>
-	                        <div class="mt-step-title uppercase font-grey-cascade">Info</div>
-	                        <div class="mt-step-content font-grey-cascade">Title, Image, Periode</div>
-	                    </div>
-	                    <div class="col-md-4 mt-step-col ">
-	                        <div class="mt-step-number bg-white">2</div>
-	                        <div class="mt-step-title uppercase font-grey-cascade">Rule</div>
-	                        <div class="mt-step-content font-grey-cascade">discount rule</div>
-	                    </div>
-	                    <div class="col-md-4 mt-step-col last">
-		                    <div class="mt-step-number bg-white">3</div>
-		                    <div class="mt-step-title uppercase font-grey-cascade">Content</div>
-		                    <div class="mt-step-content font-grey-cascade">Detail Content Deals</div>
-	                    </div>
-                    </div>
+{{--@if($deals_type != 'Promotion')
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <a class="dashboard-stat dashboard-stat-v2 blue">
+                <div class="visual">
+                    <i class="fa fa-comments"></i>
                 </div>
-            </div>
+                <div class="details">
+                    <div class="number">
+                        <span data-counter="counterup" data-value="{{ $deals['deals_promotion_total_voucher'] }}">
+                        @if (!empty($deals['deals_voucher_type']))
+                        	@if ( $deals['deals_voucher_type'] == "Unlimited")
+                        		{{ 'Unlimited' }}
+                        	@else
+                        		{{ number_format(($deals['deals_promotion_total_voucher']??0)-($deals['deals_promotion_total_claimed']??0)) }}
+                        	@endif
+                        @endif
+                        </span>
+                    </div>
+                    <div class="desc"> Total Voucher </div>
+                </div>
+            </a>
         </div>
-        <div class="portlet-title">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <a class="dashboard-stat dashboard-stat-v2 red">
+                <div class="visual">
+                    <i class="fa fa-bar-chart-o"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        <span data-counter="counterup" data-value="{{ $deals['deals_promotion_total_claimed']??'' }}">{{ $deals['deals_promotion_total_claimed']??'' }}</span>
+                    </div>
+                    <div class="desc"> Total Claimed </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <a class="dashboard-stat dashboard-stat-v2 green">
+                <div class="visual">
+                    <i class="fa fa-shopping-cart"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        <span data-counter="counterup" data-value="{{ $deals['deals_promotion_total_redeemed']??'' }}">{{ $deals['deals_promotion_total_redeemed']??'' }}</span>
+                    </div>
+                    <div class="desc"> Total Redeem </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <a class="dashboard-stat dashboard-stat-v2 purple">
+                <div class="visual">
+                    <i class="fa fa-globe"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        <span data-counter="counterup" data-value="{{ $deals['deals_promotion_total_used']??'' }}">{{ $deals['deals_promotion_total_used']??'' }}</span>
+                    </div>
+                    <div class="desc"> Total Used </div>
+                </div>
+            </a>
+        </div>
+    </div>
+@endif--}}
+
+    <div class="portlet light bordered">
+        <div class="portlet-title tabbable-line">
             <div class="caption">
-                <span class="caption-subject font-blue bold uppercase">{{ $deals['deals_title']??'New '.( ($title??'Deals') == 'Promotion' ? 'Deals Promotion' : ($title??'Deals') ) }}</span>
+                <span class="caption-subject font-blue bold uppercase">{{ $deals['deals_title']??'' }}</span>
             </div>
+            <ul class="nav nav-tabs">
+
+                <li class="active" id="infoOutlet">
+                    <a href="#info" data-toggle="tab" > Info </a>
+                </li>
+                <li>
+                    <a href="#promotion" data-toggle="tab"> Promotion </a>
+                </li>
+            </ul>
         </div>
         <div class="portlet-body">
 
             <div class="tab-content">
                 <div class="tab-pane active" id="info">
-                	<div class="portlet-body form">
-					    <form id="form" class="form-horizontal" role="form" action=" @if($deals_type == "Deals") {{ url('deals/update') }} @else {{ url('inject-voucher/update') }} @endif" method="post" enctype="multipart/form-data">
-                				@include('deals::deals.step1-form')
-				                <div class="form-actions">
-				                @if(empty($deals['deals_total_claimed']) || $deals['deals_total_claimed'] == 0)
-				                {{ csrf_field() }}
-				                <div class="row">
-				                    <div class="col-md-offset-3 col-md-9">
-				                        <button type="submit" class="btn green">Submit</button>
-				                        <!-- <button type="button" class="btn default">Cancel</button> -->
-				                    </div>
-				                </div>
-				                @else
-				                <div class="row">
-				                    <div class="col-md-offset-3 col-md-9">
-				                    	<a href="{{ ($deals['slug'] ?? false) ? url('deals/detail/'.$deals['slug']) : '' }}" class="btn green">Detail</a>
-				                    </div>
-				                </div>
-				                @endif
-				            </div>
-				            <input type="hidden" name="id_deals" value="{{ $deals['id_deals']??'' }}">
-				            <input type="hidden" name="id_deals_promotion_template" value="{{ $deals['id_deals_promotion_template']??'' }}">
-				            <input type="hidden" name="slug" value="{{ $deals['slug']??'' }}">
-				            <input type="hidden" name="deals_type" value="{{ $deals['deals_type']??$deals_type??'' }}">
-				            <input type="hidden" name="template" value="{{ $deals['template']??0 }}">
-					    </form>
-					</div>
+                {{--	@if ($deals['deals_voucher_type']!='List Vouchers')
+                	<form action="{{ url('deals/export') }}" method="post" style="display: inline;">
+                		{{ csrf_field() }}
+					    <input type="hidden" value="{{ $deals['id_deals_promotion_template']??'' }}" name="id_deals_promotion_template" />
+					    <input type="hidden" value="{{ $deals_type??'' }}"  name="deals_type" />
+					    <button type="submit" class="btn green-jungle" style="float: right;"><i class="fa fa-download"></i> Export</button>
+					</form>
+					@else
+					<a data-toggle="modal" href="#export-modal" class="btn green-jungle list-deals" data-deals="{{ $deals['id_deals_promotion_template']??'' }}" style="float: right;"><i class="fa fa-download"></i> Export</a>
+                    @endif
+                --}}
+                	@if ($deals['step_complete'] != 1)
+                    <a data-toggle="modal" href="#small" class="btn btn-primary" style="float: right; margin-right: 5px">Start Deals Template</a>
+                    @endif
+                	<ul class="nav nav-tabs" id="tab-header">
+                        <li class="active" id="infoOutlet">
+                            <a href="#basic" data-toggle="tab" > Basic Info </a>
+                        </li>
+                        <li>
+                            <a href="#content" data-toggle="tab"> Content Info </a>
+                        </li>
+                        <li>
+                            <a href="#outlet" data-toggle="tab"> Outlet Info </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="basic">
+                			@yield('detail-info')
+                        </div>
+                        <div class="tab-pane " id="content">
+                			@yield('detail-info-content')
+                        </div>
+                        <div class="tab-pane" id="outlet">
+                            @if(($deals['is_all_outlet']??false) == 1)
+                                <div class="alert alert-warning">
+                                    This deals applied to <strong>All Outlet</strong>.
+                                </div>
+                            @else
+                                <!-- BEGIN: Comments -->
+                                <div class="mt-comments">
+                                    <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_2">
+                                        <thead>
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Name</th>
+                                                <th>Address</th>
+                                                <th>Phone</th>
+                                                <th>Email</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach(($promotion_outlets??$deals['outlets']) as $res)
+                                                <tr>
+                                                    <td>{{ $res['outlet_code'] }}</td>
+                                                    <td>{{ $res['outlet_name'] }}</td>
+                                                    <td>{{ $res['outlet_address'] }}</td>
+                                                    <td>{{ $res['outlet_phone'] }}</td>
+                                                    <td>{{ $res['outlet_email'] }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- END: Comments -->
+                            @endif
+                        </div>
+                    </div>
                 </div>
+                @if($deals_type != 'Promotion')                
+                <div class="tab-pane" id="promotion">
+                    @yield('detail-participate')
+                </div>
+                @endif
             </div>
         </div>
     </div>
+    @if (($deals['step_complete']??false) != 1)
+    <div class="modal fade bs-modal-sm" id="small" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Start Deals Template?</h4>
+                </div>
+                <form action="{{url('deals/update-complete')}}" method="post">
+                	@csrf
+                	<input type="hidden" name="id_deals_promotion_template" value="{{$deals['id_deals_promotion_template']??''}}">
+                	<input type="hidden" name="deals_type" value="{{$deals['deals_type']??$deals_type}}">
+	                <div class="modal-footer">
+	                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Cancel</button>
+	                    <button type="submit" class="btn green">Confirm</button>
+	                </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    @endif
 
+    <div class="modal fade bs-modal-sm" id="export-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Export List Voucher</h4>
+                </div>
+                <div class="modal-body row">
+	                <form action="{{url('deals/export')}}" method="post">
+	                	{{ csrf_field() }}
+					    <input type="hidden" value="" name="id_deals_promotion_template" id="modal-id-deals" />
+					    <input type="hidden" value="{{ $deals_type??'' }}"  name="deals_type" />
+			    		<button type="submit" class="btn green-jungle col-md-12" value="1" name="list_voucher"><i class="fa fa-download"></i> With Voucher</button>
+			    		<button type="submit" class="btn green-jungle col-md-12" value="0" name="list_voucher" style="margin-top: 15px"><i class="fa fa-download"></i> Without Voucher</button>
+	                </form>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 
 @endsection

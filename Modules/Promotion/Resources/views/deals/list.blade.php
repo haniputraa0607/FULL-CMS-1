@@ -2,6 +2,7 @@
 <?php
 use App\Lib\MyHelper;
 $grantedFeature     = session('granted_features');
+$configs    		= session('configs');
 ?>
 @extends('layouts.main')
 
@@ -10,6 +11,20 @@ $grantedFeature     = session('granted_features');
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+    	.middle-center {
+            vertical-align: middle!important;
+            text-align: center;
+        }
+        .middle-left {
+            vertical-align: middle!important;
+            text-align: left;
+        }
+        .paginator-right {
+            display: flex;
+            justify-content: flex-end;
+        }
+    </style>
 @endsection
 
 @section('page-script')
@@ -102,7 +117,8 @@ $grantedFeature     = session('granted_features');
                         toastr.info("Deals has been deleted.");
                     }
                     else {
-                        toastr.warning("Something went wrong. Failed to delete deals.");
+                    	messages = result['messages'] ?? "Something went wrong. Failed to delete deals.";
+                        toastr.warning(messages);
                     }
                 }
             });
@@ -133,7 +149,9 @@ $grantedFeature     = session('granted_features');
     </div><br>
 
     @include('layouts.notifications')
-
+    <div class="alert alert-warning">
+        This template will be used to generate deals when promotion has hidden deals & vouchers as its content.
+    </div>
     <div class="portlet light bordered">
         <div class="portlet-title">
             <div class="caption">
@@ -144,33 +162,42 @@ $grantedFeature     = session('granted_features');
             <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_1">
                 <thead>
                     <tr>
-
-                        <th> Title </th>
                         <th> Type </th>
-                        <th> Promo ID / Nominal </th>
-                        <th> Deals Period </th>
-                        <th> Action </th>
+                        <th> Title </th>
+                        @if(MyHelper::hasAccess([97], $configs))
+                        <th> Brand </th>
+                        @endif
+                        <th class="middle-center"> Status </th>
+                        <th class="middle-center"> Action </th>
                     </tr>
                 </thead>
                 <tbody>
+                	@php $now = date("Y-m-d H:i:s"); @endphp
                     @if (!empty($deals))
-                        @foreach($deals as $value)
+                        @foreach($deals as $key => $value)
                             <tr>
+                                <td nowrap>
+                                	<ul>
+                                		@if (!empty($value['is_online']))
+                                			<li>{{'Online : '.$value['promo_type'] }}</li>
+                                		@endif
+                                		@if (!empty($value['is_offline']))
+                                			<li>{{'Offline : '.($value['deals_promo_id_type'] == 'promoid' ? 'Promo Id' : 'Nominal' ).' ('.$value['deals_promo_id'].')' }}</li>
+                                		@endif
+                                	</ul>
+                            	</td>
                                 <td>{{ $value['deals_title'] }}</td>
-                                <td>@if($value['deals_promo_id_type'] == 'nominal') Nominal @else Promo ID @endif </td>
-                                <td>@if($value['deals_promo_id']){{ $value['deals_promo_id'] }}@else{{number_format($value['deals_nominal'],0,',','.')}}@endif</td>
-                                <td>
-                                    @php
-                                        $bulan   = date('m', strtotime($value['deals_start']));
-                                        $bulanEx = date('m', strtotime($value['deals_end']));
-                                    @endphp
-                                    @if ($bulan == $bulanEx)
-                                        {{ date('d', strtotime($value['deals_start'])) }} - {{ date('d M Y', strtotime($value['deals_end'])) }}
-                                    @else
-                                        {{ date('d M Y', strtotime($value['deals_start'])) }} - {{ date('d M Y', strtotime($value['deals_end'])) }}
-                                    @endif
-                                </td>
-                                <td style="width: 80px;">
+                                @if(MyHelper::hasAccess([97], $configs))
+                                <td>{{ $value['brand']['name_brand']??'Not Set' }}</td>
+                                @endif
+                                <td class="middle-center">
+	                                @if ( empty($value['step_complete']) )
+	                                    <a href="{{url('deals/step2', $value['id_deals_promotion_template'])??'#'}}"><span class="sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #F4D03F;padding: 5px 12px;color: #fff;">Not Complete</span></a>
+	                                @else
+	                                    <span class="sbold badge badge-pill" style="font-size: 14px!important;height: 25px!important;background-color: #26C281;padding: 5px 12px;color: #fff;">Started</span>
+	                                @endif
+	                            </td>
+                                <td nowrap class="middle-left">
                                     @if(MyHelper::hasAccess([76], $grantedFeature))
                                         <a data-toggle="confirmation" data-popout="true" class="btn btn-sm red delete" data-id="{{ $value['id_deals_promotion_template'] }}"><i class="fa fa-trash-o"></i></a>
                                     @endif
@@ -185,7 +212,4 @@ $grantedFeature     = session('granted_features');
             </table>
         </div>
     </div>
-
-
-
 @endsection
