@@ -59,6 +59,7 @@ $grantedFeature     = session('granted_features');
 			document.getElementById('scheduled_time').style.display = 'none';
 			document.getElementById('recurring').style.display = 'none';
 			document.getElementById('recurring-periode').style.display = 'none';
+			document.getElementById('checkbox-periode').checked = false;
 			document.getElementById('date-periode').style.display = 'none';
 			document.getElementById('series').style.display = 'none';
 			document.getElementById('mask_number').value = 0;
@@ -72,6 +73,7 @@ $grantedFeature     = session('granted_features');
 			document.getElementById('scheduled_time').style.display = 'block';
 			document.getElementById('recurring').style.display = 'none';
 			document.getElementById('recurring-periode').style.display = 'none';
+			document.getElementById('checkbox-periode').checked = false;
 			document.getElementById('date-periode').style.display = 'none';
 			document.getElementById('series').style.display = 'none';
 			document.getElementById('mask_number').value = 0;
@@ -86,7 +88,6 @@ $grantedFeature     = session('granted_features');
 			document.getElementById('scheduled_time').style.display = 'block';
 			document.getElementById('recurring').style.display = 'block';
 			document.getElementById('recurring-periode').style.display = 'block';
-			document.getElementById('date-periode').style.display = 'block';
 			document.getElementById('series').style.display = 'none';
 			document.getElementById('mask_number').value = 0;
 		}
@@ -95,7 +96,6 @@ $grantedFeature     = session('granted_features');
 			document.getElementById('scheduled_time').style.display = 'block';
 			document.getElementById('recurring').style.display = 'block';
 			document.getElementById('recurring-periode').style.display = 'block';
-			document.getElementById('date-periode').style.display = 'block';
 			document.getElementById('series').style.display = 'block';
 			document.getElementById('mask_number').value = 1;
 
@@ -269,13 +269,13 @@ $grantedFeature     = session('granted_features');
 						<div class="form-group" id="recurring-periode" @if(isset($result['promotion_type'])) @if($result['promotion_type'] == "Recurring Campaign" || $result['promotion_type'] == "Campaign Series") style="display:block;"  @else style="display:none;" @endif @else style="display:none;" @endif>
 							<div>
 								<label class="mt-checkbox mt-checkbox-outline" style="margin-bottom: 0px"> Use Periode
-									<input type="checkbox" name="use_periode[]" class="same" data-check="periode" onChange="showPeriode(this);" @if(isset($result['schedules'][0]['date_start']) && isset($result['schedules'][0]['date_end']) ) checked @endif/>
+									<input id="checkbox-periode" type="checkbox" name="use_periode[]" class="same" data-check="periode" onChange="showPeriode(this);" @if(isset($result['schedules'][0]['date_start']) && isset($result['schedules'][0]['date_end']) ) checked @endif/>
 								  	<span></span>
 								</label>
 							</div>				
 						</div>
 						<div class="form-group" id="date-periode" @if(isset($result['schedules'][0]['date_start']) && isset($result['schedules'][0]['date_end']) ) style="display:block;" @else style="display:none;" @endif>
-	                        <label> Promotion Periode <span class="required" aria-required="true"> * </span></label>
+	                        <label> Promotion Periode </label>
 	                        <div class="row">
 		                        <div class="col-md-5">
 		                            <div class="input-icon right">
