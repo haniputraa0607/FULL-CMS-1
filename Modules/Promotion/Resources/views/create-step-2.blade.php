@@ -679,6 +679,22 @@ $configs    		= session('configs');
 										</div>
 									</div>
 								</div>
+								@if ($result['promotion_type'] == 'Recurring' || $result['promotion_type'] == 'Campaign Series')
+								<div class="col-md-6">
+									<div class="form-group">
+										<div class="col-md-12">
+											<p class="form-control-static">Promotion Periode</p>
+										</div>
+										<div class="col-md-12">
+											@if( isset($result['schedules'][0]['date_start']) && isset($result['schedules'][0]['date_end']) )
+												<p class="form-control-static"><b>{{ date('d M Y H:i', strtotime($result['schedules'][0]['date_start'])) }} - {{ date('d M Y H:i', strtotime($result['schedules'][0]['date_end'])) }}</b></p>
+											@else
+												<p class="form-control-static"><b>-</b></p>
+											@endif
+										</div>
+									</div>
+								</div>
+								@endif
 							</div>
 						</div>
 				</div>
