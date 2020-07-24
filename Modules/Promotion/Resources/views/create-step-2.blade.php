@@ -679,7 +679,7 @@ $configs    		= session('configs');
 										</div>
 									</div>
 								</div>
-								@if ($result['promotion_type'] == 'Recurring' || $result['promotion_type'] == 'Campaign Series')
+								@if ($result['promotion_type'] == 'Recurring Campaign' || $result['promotion_type'] == 'Campaign Series')
 								<div class="col-md-6">
 									<div class="form-group">
 										<div class="col-md-12">
