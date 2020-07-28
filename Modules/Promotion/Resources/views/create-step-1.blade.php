@@ -58,6 +58,9 @@ $grantedFeature     = session('granted_features');
 			document.getElementById('scheduled_date').style.display = 'none';
 			document.getElementById('scheduled_time').style.display = 'none';
 			document.getElementById('recurring').style.display = 'none';
+			document.getElementById('recurring-periode').style.display = 'none';
+			document.getElementById('checkbox-periode').checked = false;
+			document.getElementById('date-periode').style.display = 'none';
 			document.getElementById('series').style.display = 'none';
 			document.getElementById('mask_number').value = 0;
 
@@ -69,6 +72,9 @@ $grantedFeature     = session('granted_features');
 			document.getElementById('scheduled_date').style.display = 'block';
 			document.getElementById('scheduled_time').style.display = 'block';
 			document.getElementById('recurring').style.display = 'none';
+			document.getElementById('recurring-periode').style.display = 'none';
+			document.getElementById('checkbox-periode').checked = false;
+			document.getElementById('date-periode').style.display = 'none';
 			document.getElementById('series').style.display = 'none';
 			document.getElementById('mask_number').value = 0;
 
@@ -81,6 +87,7 @@ $grantedFeature     = session('granted_features');
 			document.getElementById('scheduled_date').style.display = 'none';
 			document.getElementById('scheduled_time').style.display = 'block';
 			document.getElementById('recurring').style.display = 'block';
+			document.getElementById('recurring-periode').style.display = 'block';
 			document.getElementById('series').style.display = 'none';
 			document.getElementById('mask_number').value = 0;
 		}
@@ -88,6 +95,7 @@ $grantedFeature     = session('granted_features');
 			document.getElementById('scheduled_date').style.display = 'none';
 			document.getElementById('scheduled_time').style.display = 'block';
 			document.getElementById('recurring').style.display = 'block';
+			document.getElementById('recurring-periode').style.display = 'block';
 			document.getElementById('series').style.display = 'block';
 			document.getElementById('mask_number').value = 1;
 
@@ -134,6 +142,22 @@ $grantedFeature     = session('granted_features');
 			document.getElementById('recurring_week_month').style.display = 'none';
 		}
 	}
+
+	function showPeriode(status){
+		if(status.checked){
+			document.getElementById('date-periode').style.display = 'block';
+		} 
+		else {
+			document.getElementById('date-periode').style.display = 'none';
+		}
+	}
+
+	$(".form_datetime").datetimepicker({
+        format: "d-M-yyyy hh:ii",
+        autoclose: true,
+        todayBtn: true,
+        minuteStep:1
+    });
 	</script>
 
 @endsection
@@ -242,6 +266,49 @@ $grantedFeature     = session('granted_features');
 							</div>
 						</div>
 
+						<div class="form-group" id="recurring-periode" @if(isset($result['promotion_type'])) @if($result['promotion_type'] == "Recurring Campaign" || $result['promotion_type'] == "Campaign Series") style="display:block;"  @else style="display:none;" @endif @else style="display:none;" @endif>
+							<div>
+								<label class="mt-checkbox mt-checkbox-outline" style="margin-bottom: 0px"> Use Periode
+									<input id="checkbox-periode" type="checkbox" name="use_periode[]" class="same" data-check="periode" onChange="showPeriode(this);" @if(isset($result['schedules'][0]['date_start']) && isset($result['schedules'][0]['date_end']) ) checked @endif/>
+								  	<span></span>
+								</label>
+							</div>				
+						</div>
+						<div class="form-group" id="date-periode" @if(isset($result['schedules'][0]['date_start']) && isset($result['schedules'][0]['date_end']) ) style="display:block;" @else style="display:none;" @endif>
+	                        <label> Promotion Periode </label>
+	                        <div class="row">
+		                        <div class="col-md-5">
+		                            <div class="input-icon right">
+		                                <div class="input-group">
+		                                    <input type="text" class="form_datetime form-control" name="date_start" value="{{ !empty($result['schedules'][0]['date_start']) || old('date_start') ? date('d-M-Y H:i', strtotime(old('date_start')??$result['schedules'][0]['date_start'])) : ''}}" required autocomplete="off">
+		                                    <span class="input-group-btn">
+		                                        <button class="btn default" type="button">
+		                                            <i class="fa fa-calendar"></i>
+		                                        </button>
+		                                        <button class="btn default" type="button">
+		                                            <i class="fa fa-question-circle tooltips" data-original-title="Date promotion started" data-container="body"></i>
+		                                        </button>
+		                                    </span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="col-md-5">
+		                            <div class="input-icon right">
+		                                <div class="input-group">
+		                                    <input type="text" class="form_datetime form-control" name="date_end" value="{{ !empty($result['schedules'][0]['date_end']) || old('date_end') ? date('d-M-Y H:i', strtotime(old('date_end')??$result['schedules'][0]['date_end'])) : ''}}" required autocomplete="off">
+		                                    <span class="input-group-btn">
+		                                        <button class="btn default" type="button">
+		                                            <i class="fa fa-calendar"></i>
+		                                        </button>
+		                                        <button class="btn default" type="button">
+		                                            <i class="fa fa-question-circle tooltips" data-original-title="Date promotion ended" data-container="body"></i>
+		                                        </button>
+		                                    </span>
+		                                </div>
+		                            </div>
+		                        </div>
+	                        </div>
+	                    </div>
 						<div class="form-group" id="recurring" @if(isset($result['promotion_type'])) @if($result['promotion_type'] == "Recurring Campaign" || $result['promotion_type'] == "Campaign Series") style="display:block;"  @else style="display:none;" @endif @else style="display:none;" @endif>
 							<label>Recurring Rule</label>
 							<select name="recurring_rule" class="form-control input-sm select2" data-placeholder="Select Recurring Rule" onChange="showRecurring(this.value);">
