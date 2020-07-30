@@ -742,6 +742,11 @@
 						</a>
 					</li>
 					@endif
+					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-void-point') ? 'active' : ''}}">
+						<a href="{{url('autoresponse/transaction/void-point')}}" class="nav-link nav-toggle">
+							<span class="title">[Response] Transaction Offline Void Point</span>
+						</a>
+					</li>
 
 					<!-- <li class="nav-item {{($submenu_active == 'transaction-autoresponse-topup-success') ? 'active open' : ''}}">
 						<a href="{{url('autoresponse/transaction/topup-success')}}" class="nav-link ">
