@@ -69,6 +69,7 @@
                     {{ csrf_field() }}
                     <div class="col-md-offset-3 col-md-9">
                         <input type="hidden" name="id_deals" value="{{ $deals['id_deals'] }}">
+                        <input type="hidden" name="deals_type" value="{{ $deals_type }}">
                         <button type="submit" class="btn yellow">Submit</button>
                     </div>
                 </div>
