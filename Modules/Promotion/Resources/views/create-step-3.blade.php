@@ -1907,24 +1907,28 @@ $grantedFeature     = session('granted_features');
 										<div class="col-md-3" style="margin-bottom:30px"> Outlet Available </div>
 										<div class="col-md-9" style="margin-bottom:30px">
 											@if (!empty($outlets))
-												<?php $ou = array(); $jmlOutlet = count($outlets); $jmlOutletSelected = 0?>
-												@if(isset($result['contents'][0]['deals']['outlets']))
-													@foreach($result['contents'][0]['deals']['outlets'] as $o)
-														<?php
-														array_push($ou, $o['id_outlet']);
-														?>
-													@endforeach
-													@php
-														$jmlOutletSelected = count($ou);
-													@endphp
-												@endif
-
-												@if ($jmlOutlet == $jmlOutletSelected)
+												@if($result['contents'][0]['deals']['is_all_outlet'])
 													All Outlets
 												@else
-													@foreach($outlets as $suw)
-														@if(in_array($suw['id_outlet'], $ou)) {{ $suw['outlet_code'] }} - {{ $suw['outlet_name'] }} <br> @endif
-													@endforeach
+													<?php $ou = array(); $jmlOutlet = count($outlets); $jmlOutletSelected = 0?>
+													@if(isset($result['contents'][0]['deals']['outlets']))
+														@foreach($result['contents'][0]['deals']['outlets'] as $o)
+															<?php
+															array_push($ou, $o['id_outlet']);
+															?>
+														@endforeach
+														@php
+															$jmlOutletSelected = count($ou);
+														@endphp
+													@endif
+
+													@if ($jmlOutlet == $jmlOutletSelected)
+														All Outlets
+													@else
+														@foreach($outlets as $suw)
+															@if(in_array($suw['id_outlet'], $ou)) {{ $suw['outlet_code'] }} - {{ $suw['outlet_name'] }} <br> @endif
+														@endforeach
+													@endif
 												@endif
 											@endif
 										</div>
