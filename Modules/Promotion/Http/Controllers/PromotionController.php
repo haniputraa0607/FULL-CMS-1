@@ -252,7 +252,7 @@ class PromotionController extends Controller
 			if($post['promotion_type'] == 'Instant Campaign' && isset($post['send'])){
 				$sendCampaign = MyHelper::post('promotion/queue', ['id_promotion' => $id_promotion]);
 				if(isset($sendCampaign['status']) && $sendCampaign['status'] == 'success'){
-					return redirect('promotion/step3/'.$id_promotion)->withSuccess(['Promotion will be sent to '.$sendCampaign['count_user'].' users.']);
+					return redirect('promotion/step3/'.$id_promotion)->withSuccess(['Promotion has been sent']);
 				}
 			}
 			$redirect = redirect('promotion/step3/'.$id_promotion)->withSuccess(['Promotion has been updated']);
