@@ -694,7 +694,7 @@ $grantedFeature     = session('granted_features');
                 			@yield('detail-info-content')
                         </div>
                         <div class="tab-pane" id="outlet">
-                            @if(($deals['is_all_outlet']??false) == 1)
+                            @if(in_array("all", explode(',',$deals['deals_list_outlet'])))
                                 <div class="alert alert-warning">
                                     This deals applied to <strong>All Outlet</strong>.
                                 </div>
