@@ -50,7 +50,8 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if ($exception instanceof TokenMismatchException) {
-            return response()->view('error_token', ['msg' => "Token not found, please add csrf_token to your view"], 419);
+            return redirect('login')->withErrors(['e' => 'Please login.']);
+            //response()->view('error_token', ['msg' => "Token not found, please add csrf_token to your view"], 419);
         }
 
         return parent::render($request, $exception);
