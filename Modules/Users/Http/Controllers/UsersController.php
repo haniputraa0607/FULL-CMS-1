@@ -440,10 +440,19 @@ class UsersController extends Controller
 		}
 		if(isset($post['password'])){
 			$checkpin = MyHelper::post('users/pin/check-backend', array('phone' => Session::get('phone'), 'pin' => $post['password'], 'admin_panel' => 1));
-			if($checkpin['status'] != "success")
+			if($checkpin['status'] != "success") {
 				return back()->withErrors(['invalid_credentials' => 'Invalid PIN'])->withInput();
-			else
-				Session::put('secure','yes');Session::put('secure_last_activity',time());
+			}
+			else{
+				$phone_sess = session('secure_phone');
+				if(!is_array($phone_sess)){
+					$phone_sess = [];
+				}
+				$phone_sess[] = $phone;
+				Session::put('secure_phone', $phone_sess);
+				Session::put('secure','yes');
+				Session::put('secure_last_activity',time());
+			}
 		}
 
 		if(isset($post['phone'])){
@@ -488,7 +497,10 @@ class UsersController extends Controller
 			return parent::redirect($update, 'Suspend Status has been changed.');
         }
 
-		if(empty(Session::get('secure')) || Session::get('secure_last_activity') < (time() - 900)){
+		if(empty(Session::get('secure')) || !in_array($phone,Session::get('secure_phone')?:[]) || Session::get('secure_last_activity') < (time() - 900)){
+			if(Session::get('secure_last_activity') < (time() - 900)) {
+				session(['secure_phone' => []]);
+			}
 			$data = [ 'title'             => 'User',
 					  'menu_active'       => 'user',
 					  'submenu_active'    => 'user-list',
