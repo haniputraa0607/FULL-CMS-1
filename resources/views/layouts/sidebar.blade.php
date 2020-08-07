@@ -1638,6 +1638,31 @@
 				</li>
 			@endif
 
+			@if(MyHelper::hasAccess([111], $configs))
+				<li class="nav-item {{($menu_active == 'redirect-complex') ? 'active' : ''}}">
+					<a href="javascript:;" class="nav-link nav-toggle">
+						<i class="icon-feed"></i>
+						<span class="title">Redirect Complex</span>
+						<span class="arrow {{($menu_active == 'redirect-complex') ? 'open' : ''}}"></span>
+					</a>
+					<ul class="sub-menu">
+						@if(MyHelper::hasAccess([116], $grantedFeature))
+							<li class="nav-item {{($submenu_active == 'redirect-complex-create') ? 'active' : ''}}">
+								<a href="{{url('redirect-complex/create')}}" class="nav-link ">
+									<span class="title">New Redirect Complex</span>
+								</a>
+							</li>
+						@endif
+						@if(MyHelper::hasAccess([114], $grantedFeature))
+							<li class="nav-item {{($submenu_active == 'redirect-complex-list') ? 'active' : ''}}">
+								<a href="{{url('redirect-complex')}}" class="nav-link ">
+									<span class="title">Redirect Complex List</span>
+								</a>
+							</li>
+						@endif
+					</ul>
+				</li>
+			@endif
 			<!-- @if(MyHelper::hasAccess([55], $configs))
 				@if(MyHelper::hasAccess([119,120,121,122,123], $grantedFeature))
 				<li class="nav-item {{($menu_active == 'autocrm') ? 'active' : ''}}">
