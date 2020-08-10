@@ -114,7 +114,7 @@ class RedirectComplexController extends Controller
 
         if (empty($post)) {
 
-        	$data['data'] = parent::getData(MyHelper::post('redirect-complex/be/detail', ['id_redirect_complex_reference' => $id]));
+        	$data['data'] = parent::getData(MyHelper::post('redirect-complex/be/edit', ['id_redirect_complex_reference' => $id]));
         	if (empty($data['data'])) {
         		return redirect('redirect-complex')->withErrors(['data not found']); 
         	}
@@ -133,7 +133,8 @@ class RedirectComplexController extends Controller
         }
     }
 
-    function delete(Request $request) {
+    function delete(Request $request) 
+    {
         $post   = $request->all();
 
         $delete = MyHelper::post('redirect-complex/delete', ['id_redirect_complex_reference' => $post['id_redirect_complex_reference']]);
@@ -144,5 +145,15 @@ class RedirectComplexController extends Controller
         else {
             return "fail";
         }
+    }
+
+    function listActive(Request $request) 
+    {
+        $post = $request->except('_token');
+        $post['select'] = ['id_redirect_complex_reference', 'name'];
+
+        $data = parent::getData(MyHelper::post('redirect-complex/be/list/active?log_save=0', $post));
+
+		return response()->json($data);
     }
 }
