@@ -14,4 +14,6 @@
 Route::group(['middleware' => ['web', 'validate_session', 'config_control:111'], 'prefix' => 'redirect-complex'], function () {
     Route::any('/', 'RedirectComplexController@index');
     Route::any('create', 'RedirectComplexController@create');
+    Route::any('edit/{id}', 'RedirectComplexController@edit');
+    Route::post('delete', 'RedirectComplexController@delete');
 });

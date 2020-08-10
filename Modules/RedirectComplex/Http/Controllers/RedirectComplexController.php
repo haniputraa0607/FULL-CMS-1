@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Lib\MyHelper;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Session;
 
 class RedirectComplexController extends Controller
 {
@@ -64,7 +65,13 @@ class RedirectComplexController extends Controller
         }
         else {
         	$create = MyHelper::post('redirect-complex/create', $post);
-        	dd($create);
+
+        	if (($create['status']??false) == 'success') {
+        		return redirect('redirect-complex/edit/'.$create['result']['id_redirect_complex_reference'])->withSuccess(['Redirect Complex has been created']);
+        	}
+        	else {
+        		return redirect()->back()->withErrors($messages??['failed to insert data']);
+        	}
         }
 
     }
@@ -94,29 +101,48 @@ class RedirectComplexController extends Controller
      * @param int $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        return view('redirectcomplex::edit');
+        $post = $request->except('_token');
+
+    	$data = [
+            'title'          => 'Redirect Complex',
+            'sub_title'      => 'Redirect Complex List',
+            'menu_active'    => 'redirect-complex',
+            'submenu_active' => 'redirect-complex-list',
+        ];
+
+        if (empty($post)) {
+
+        	$data['data'] = parent::getData(MyHelper::post('redirect-complex/be/detail', ['id_redirect_complex_reference' => $id]));
+        	if (empty($data['data'])) {
+        		return redirect('redirect-complex')->withErrors(['data not found']); 
+        	}
+        	return view('redirectcomplex::create', $data);
+        }
+        else {
+
+        	$update = MyHelper::post('redirect-complex/update', $post);
+        	
+        	if (($update['status']??false) == 'success') {
+        		return redirect('redirect-complex/edit/'.$id)->withSuccess(['Redirect Complex has been updated']);
+        	}
+        	else {
+        		return redirect()->back()->withErrors($messages??['failed to update data']);
+        	}
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+    function delete(Request $request) {
+        $post   = $request->all();
 
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+        $delete = MyHelper::post('redirect-complex/delete', ['id_redirect_complex_reference' => $post['id_redirect_complex_reference']]);
+        
+        if (isset($delete['status']) && $delete['status'] == "success") {
+            return "success";
+        }
+        else {
+            return "fail";
+        }
     }
 }

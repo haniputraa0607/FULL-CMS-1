@@ -78,6 +78,7 @@
                         target: "tr"
                     }
                 },
+                ordering: false,
                 order: [0, "asc"],
                 lengthMenu: [
                     [5, 10, 15, 20, -1],
@@ -94,15 +95,15 @@
 
             $.ajax({
                 type : "POST",
-                url : "{{ url('news/category/delete') }}",
+                url : "{{ url('redirect-complex/delete') }}",
                 data : "_token="+token+"&id_redirect_complex_reference="+id,
                 success : function(result) {
                     if (result == "success") {
                         $('#sample_1').DataTable().row(column).remove().draw();
-                        toastr.info("News has been deleted.");
+                        toastr.info("Redirect Complex has been deleted.");
                     }
                     else {
-                        toastr.warning("Something went wrong. Failed to delete news.");
+                        toastr.warning("Something went wrong. Failed to delete.");
                     }
                 }
             });
@@ -185,6 +186,7 @@
                         <th> Redirect Type </th>
                         <th> Outlet Type </th>
                         <th> Promo type </th>
+                        <th> Action </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -198,11 +200,11 @@
                                 @if(MyHelper::hasAccess([166,167], $grantedFeature))
                                 <td>
                                     @if(MyHelper::hasAccess([166], $grantedFeature))
-                                    <button class="edit btn btn-sm btn-info"><i class="fa fa-edit" data-id="{{$val['id_redirect_complex_reference']}}" type="button"></i> Edit</button> 
+                                    <a href="{{url('redirect-complex/edit', $val['id_redirect_complex_reference'])??'#'}}" class="edit btn btn-sm btn-info"><i class="fa fa-edit" ></i> Edit</a>
                                     @endif
                                     @if(MyHelper::hasAccess([167], $grantedFeature))
                                     <button  data-id="{{$val['id_redirect_complex_reference']}}" data-toggle="confirmation" data-btn-ok-label="Yes" data-btn-ok-class="btn-success" data-btn-ok-icon-content="check" data-btn-cancel-label="Cancel" data-btn-cancel-class="btn-danger"  data-btn-cancel-icon-content="close"
-                                    data-title="Are you sure delete this category?" data-content="This might be dangerous" class="btn btn-sm btn-danger btn-flat delete"><i class="fa fa-trash"></i> Delete</button>
+                                    data-title="Are you sure delete this redirect complex?" data-content="This might be dangerous" class="btn btn-sm btn-danger btn-flat delete"><i class="fa fa-trash"></i> Delete</button>
                                     @endif
                                 </td>
                                 @endif

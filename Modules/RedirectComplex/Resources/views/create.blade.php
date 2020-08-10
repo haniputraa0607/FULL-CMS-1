@@ -16,7 +16,9 @@
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-select2.min.js') }}" type="text/javascript"></script>
 
     @php
-    $outlet = [];
+    	$outlet 	= [];
+		$product 	= [];
+    	$promo 		= $data['promo_reference']??null;
     	if (isset($data['outlet_type']) && $data['outlet_type'] == "specific") {
 			$outlet_type = $data['outlet_type'];
 			$outlet = [];
@@ -24,17 +26,38 @@
 				$outlet[] = $data['outlets'][$i]['id_outlet'];
 			}
 		}
+		if (!empty($data['products'])) {
+			foreach ($data['products'] as $value) {
+				$product[] = [
+					'id' => $value['id_product'],
+					'qty' => $value['pivot']['qty']
+				];
+			}
+		}
     @endphp
 
     <script type="text/javascript">
 
     	var product_option = '';
+    	var ajax_product_data = [];
 
-    	function addProduct() {
-			var count = $('#data-product > div').length;
-			var id = count;
-			var result = id+1;
-			
+    	function addProduct(selected_product = null, qty = null) {
+			let count 	= $('#data-product > div').length;
+			let id 		= count;
+			let result 	= id+1;
+			let selected = '';
+			let qty_val = qty ?? '';
+			let product_option = '';
+			$.each(ajax_product_data, function( key, value ) {
+				selected = '';
+				if (selected_product && value.id_product == selected_product) {
+					selected = 'selected';
+				}
+
+				product_option += "<option id='product"+value.id_product+"' value='"+value.id_product+"' "+selected+">"+value.product+"</option>";
+			});
+    		console.log(selected_product);
+
 			var listDetail = '\
 		    <div class="product'+result+'" style="padding-bottom: 50px;">\
 		        <div data-repeater-item class="mt-overflow">\
@@ -45,7 +68,7 @@
 			listDetail +=  '</select>\
 						</div>\
 						<div class="col-md-2" style="padding-left: 15px; padding-right: 0px">\
-							<input type="text" class="form-control text-center qty_mask" min="1" name="product['+count+'][qty]" value="" required autocomplete="off">\
+							<input type="text" class="form-control text-center qty_mask" min="1" name="product['+count+'][qty]" value="'+qty_val+'" required autocomplete="off">\
 						</div>\
 						<div class="col-md-1">\
 		                    <a href="javascript:;" data-repeater-delete class="btn btn-danger mt-repeater-delete mt-repeater-del-right mt-repeater-btn-inline" onclick="delProduct('+result+')">\
@@ -111,8 +134,11 @@
 						$.ajax(this)
 						return
 					}
-					$.each(data, function( key, value ) {
-						product_option += "<option id='product"+value.id_product+"' value='"+value.id_product+"'>"+value.product+"</option>";
+					ajax_product_data = data;
+					product = JSON.parse('{!!json_encode($product)!!}')
+					console.log(product);
+					$.each(product, function( key, value ) {
+						addProduct(value['id'], value['qty']);
 					});
 				}
 			});
@@ -132,8 +158,14 @@
 						$.ajax(this)
 						return
 					}
+					let selected = '';
+					let promo = JSON.parse('{!!json_encode($promo)!!}')
 					$.each(data, function( key, value ) {
-						$('#promo').append("<option id='promo"+value.id_promo+"' value='"+value.id_promo+"'>"+value.promo+"</option>");
+						selected = '';
+						if (promo && value.id_promo == promo) {
+							selected = 'selected';
+						}
+						$('#promo').append("<option id='promo"+value.id_promo+"' value='"+value.id_promo+"' "+selected+">"+value.promo+"</option>");
 					});
 				}
 			});
@@ -186,6 +218,7 @@
         </div>
         <div class="portlet-body form">
             <form class="form-horizontal" role="form" action="{{ url()->current() }}" method="post" enctype="multipart/form-data">
+            	<input type="hidden" name="id_redirect_complex_reference" value="{{ $data['id_redirect_complex_reference']??null }}">
                 <div class="form-body">
                     <div class="form-group">
                         <label class="col-md-3 control-label">Name
@@ -194,7 +227,7 @@
                         </label>
                         <div class="col-md-7">
                             <div class="input-icon right">
-                                <input type="text" placeholder="Category Name" class="form-control" name="name" value="{{ old('name') }}">
+                                <input type="text" placeholder="Category Name" class="form-control" name="name" value="{{ old('name')??$data['name']??null }}">
                             </div>
                         </div>
                     </div>
@@ -207,18 +240,28 @@
 							<div class="mt-radio-inline">
 								<label class="mt-radio mt-radio-outline">
 									<i class="fa fa-question-circle tooltips" data-original-title="near me" data-container="body"></i> Near Me
-									<input type="radio" value="near me" name="outlet_type" @if(isset($result['outlet_type']) && $result['outlet_type'] == "near_me") checked @endif required/>
+									<input type="radio" value="near me" name="outlet_type" 
+									@if ( old('outlet_type') )
+										@if( old('outlet_type') == "near me") checked @endif
+									@elseif ( isset($data['outlet_type']) && $data['outlet_type'] == "near me") checked 
+									@endif 
+									required/>
 									<span></span>
 								</label>
 								<label class="mt-radio mt-radio-outline">
 									<i class="fa fa-question-circle tooltips" data-original-title="Promo code hanya berlaku untuk outlet tertentu" data-container="body"></i> Specific
-									<input type="radio" value="specific" name="outlet_type" @if(isset($result['outlet_type']) && $result['outlet_type'] == "specific") checked @endif required/>
+									<input type="radio" value="specific" name="outlet_type" 
+									@if ( old('outlet_type') )
+										@if( old('outlet_type') == "specific") checked @endif
+									@elseif ( isset($data['outlet_type']) && $data['outlet_type'] == "specific") checked 
+									@endif 
+									required/>
 									<span></span>
 								</label>
 							</div>
                         </div>
 					</div>
-					<div class="form-group" id="selectOutlet" @if(($result['outlet_type']??false) != 'near me' && empty($result['outlets'])) style="display: none;" @endif>
+					<div class="form-group" id="selectOutlet" @if((old('outlet_type')??$data['outlet_type']??true) == 'near me')) style="display: none;" @endif>
                         <label class="col-md-3 control-label">Select Outlet
                         	<span class="required" aria-required="true"> * </span>
                             <i class="fa fa-question-circle tooltips" data-original-title="Select outlet" data-container="body"></i>
