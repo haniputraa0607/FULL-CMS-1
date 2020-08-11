@@ -1,3 +1,8 @@
+<?php
+	use App\Lib\MyHelper;
+	$configs  = session('configs');
+	date_default_timezone_set('Asia/Jakarta');
+?>
 @extends('layouts.main')
 
 @section('page-style')
@@ -36,10 +41,23 @@
 		}
     @endphp
 
+    @if(MyHelper::hasAccess([97], $configs))
+	    @php
+	    	$brand 	= [];
+			if (!empty($data['brands'])) {
+				foreach ($data['brands'] as $value) {
+					$brand[] = $value['id_brand'];
+				}
+			}
+	    @endphp
+    @endif
+
     <script type="text/javascript">
 
     	var product_option = '';
     	var ajax_product_data = [];
+    	var brand = JSON.parse('{!!json_encode($brand??[])!!}');
+    	var token  = "{{ csrf_token() }}";
 
     	function addProduct(selected_product = null, qty = null) {
 			let count 	= $('#data-product > div').length;
@@ -92,13 +110,16 @@
 
 		function loadOutlet(){
 			$.ajax({
-				type: "GET",
-				url: "{{url('promo-campaign/step2/getData')}}",
+				type: "post",
+				url: "{{url('redirect-complex/get-data')}}",
 				data : {
-					get : 'Outlet'
+					"get" 	: 'Outlet',
+					"brand" : brand,
+					"_token" : token
 				},
 				dataType: "json",
 				success: function(data){
+					console.log(data);
 					if (data.status == 'fail') {
 						$.ajax(this)
 						return
@@ -123,7 +144,7 @@
 		function loadProduct(){
 			$.ajax({
 				type: "GET",
-				url: "{{url('promo-campaign/step2/getData')}}",
+				url: "{{url('redirect-complex/get-data')}}",
 				data : {
 					get : 'Product',
 					type : 'Single'
@@ -183,6 +204,11 @@
 				}
 			});
 
+			$('select-brand').on('change', function(){
+				brand = $(this).val();
+				console.log(brand);
+			});
+
 			loadProduct();
 	    	loadOutlet();
 	    	loadPromo();
@@ -231,46 +257,66 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                    	<label class="col-md-3 control-label">Outlet Type
-                            <span class="required" aria-required="true"> * </span>
-                            <i class="fa fa-question-circle tooltips" data-original-title="Type of method to get outlet" data-container="body"></i>
-                        </label>
-                        <div class="col-md-7" style="margin-bottom: -20px">
-							<div class="mt-radio-inline">
-								<label class="mt-radio mt-radio-outline">
-									<i class="fa fa-question-circle tooltips" data-original-title="near me" data-container="body"></i> Near Me
-									<input type="radio" value="near me" name="outlet_type" 
-									@if ( old('outlet_type') )
-										@if( old('outlet_type') == "near me") checked @endif
-									@elseif ( isset($data['outlet_type']) && $data['outlet_type'] == "near me") checked 
-									@endif 
-									required/>
-									<span></span>
-								</label>
-								<label class="mt-radio mt-radio-outline">
-									<i class="fa fa-question-circle tooltips" data-original-title="Promo code hanya berlaku untuk outlet tertentu" data-container="body"></i> Specific
-									<input type="radio" value="specific" name="outlet_type" 
-									@if ( old('outlet_type') )
-										@if( old('outlet_type') == "specific") checked @endif
-									@elseif ( isset($data['outlet_type']) && $data['outlet_type'] == "specific") checked 
-									@endif 
-									required/>
-									<span></span>
-								</label>
-							</div>
-                        </div>
-					</div>
-					<div class="form-group" id="selectOutlet" @if((old('outlet_type')??$data['outlet_type']??true) == 'near me')) style="display: none;" @endif>
-                        <label class="col-md-3 control-label">Select Outlet
-                        	<span class="required" aria-required="true"> * </span>
-                            <i class="fa fa-question-circle tooltips" data-original-title="Select outlet" data-container="body"></i>
-                        </label>
-                        <div class="col-md-7">
-							<select id="specific-outlet" name="outlet[]" class="form-control select2-multiple select2-hidden-accessible" multiple="multiple" tabindex="-1" aria-hidden="true"></select>
-                        </div>
-                    </div>
-                    <div class="form-group">
+                    @if(MyHelper::hasAccess([97], $configs))
+	                    <div class="form-group" id="form-brand" >
+	                        <label class="col-md-3 control-label">Select Brand
+	                        	<span class="required" aria-required="true"> * </span>
+	                            <i class="fa fa-question-circle tooltips" data-original-title="Select Brand" data-container="body"></i>
+	                        </label>
+	                        <div class="col-md-7">
+								<select id="select-brand" name="brand[]" class="form-control select2-multiple select2-hidden-accessible" multiple="multiple" tabindex="-1" aria-hidden="true">
+									<option></option>
+	                                @if (!empty($brands))
+	                                    @foreach($brands as $brand)
+	                                        <option value="{{ $brand['id_brand'] }}" @if ( old('id_brand',($data['id_brand']??false)) ) @if($brand['id_brand'] == old( 'id_brand',($data['id_brand']??false) )) selected @endif @endif>{{ $brand['name_brand'] }}</option>
+	                                    @endforeach
+	                                @endif
+								</select>
+	                        </div>
+	                    </div>
+	                @endif
+	                <div id="form-outlet">
+	                    <div class="form-group">
+	                    	<label class="col-md-3 control-label">Outlet Type
+	                            <span class="required" aria-required="true"> * </span>
+	                            <i class="fa fa-question-circle tooltips" data-original-title="Type of method to get outlet" data-container="body"></i>
+	                        </label>
+	                        <div class="col-md-7" style="margin-bottom: -20px">
+								<div class="mt-radio-inline">
+									<label class="mt-radio mt-radio-outline">
+										<i class="fa fa-question-circle tooltips" data-original-title="near me" data-container="body"></i> Near Me
+										<input type="radio" value="near me" name="outlet_type" 
+										@if ( old('outlet_type') )
+											@if( old('outlet_type') == "near me") checked @endif
+										@elseif ( isset($data['outlet_type']) && $data['outlet_type'] == "near me") checked 
+										@endif 
+										required/>
+										<span></span>
+									</label>
+									<label class="mt-radio mt-radio-outline">
+										<i class="fa fa-question-circle tooltips" data-original-title="Promo code hanya berlaku untuk outlet tertentu" data-container="body"></i> Specific
+										<input type="radio" value="specific" name="outlet_type" 
+										@if ( old('outlet_type') )
+											@if( old('outlet_type') == "specific") checked @endif
+										@elseif ( isset($data['outlet_type']) && $data['outlet_type'] == "specific") checked 
+										@endif 
+										required/>
+										<span></span>
+									</label>
+								</div>
+	                        </div>
+						</div>
+						<div class="form-group" id="selectOutlet" @if((old('outlet_type')??$data['outlet_type']??true) == 'near me')) style="display: none;" @endif>
+	                        <label class="col-md-3 control-label">Select Outlet
+	                        	<span class="required" aria-required="true"> * </span>
+	                            <i class="fa fa-question-circle tooltips" data-original-title="Select outlet" data-container="body"></i>
+	                        </label>
+	                        <div class="col-md-7">
+								<select id="specific-outlet" name="outlet[]" class="form-control select2-multiple select2-hidden-accessible" multiple="multiple" tabindex="-1" aria-hidden="true"></select>
+	                        </div>
+	                    </div>
+	                </div>
+                    <div class="form-group" id="form-product">
                         <label class="col-md-3 control-label">Product </label>
                         <div class="col-md-7">
                         	<div id="data-product" style="padding-right: 15px">
@@ -279,7 +325,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="form-promo">
 					<label class="col-md-3 control-label">Promo Code </label>
 					<div class="col-md-4">
 						<select name="promo" id="promo" class="form-control select2">

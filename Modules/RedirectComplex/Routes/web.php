@@ -17,4 +17,5 @@ Route::group(['middleware' => ['web', 'validate_session', 'config_control:111'],
     Route::any('edit/{id}', 'RedirectComplexController@edit');
     Route::post('delete', 'RedirectComplexController@delete');
     Route::get('/list/active', 'RedirectComplexController@listActive');
+    Route::any('get-data', 'RedirectComplexController@getMasterData');
 });

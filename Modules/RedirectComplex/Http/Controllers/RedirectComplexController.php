@@ -52,6 +52,7 @@ class RedirectComplexController extends Controller
     public function create(Request $request)
     {
     	$post = $request->except('_token');
+    	$configs = session('configs');
 
     	$data = [
             'title'          => 'Redirect Complex',
@@ -61,6 +62,9 @@ class RedirectComplexController extends Controller
         ];
 
         if (empty($post)) {
+        	if(MyHelper::hasAccess([97], $configs)){
+                $data['brands'] = parent::getData(MyHelper::get('brand/be/list'));
+            }
         	return view('redirectcomplex::create', $data);
         }
         else {
@@ -115,6 +119,7 @@ class RedirectComplexController extends Controller
         if (empty($post)) {
 
         	$data['data'] = parent::getData(MyHelper::post('redirect-complex/be/edit', ['id_redirect_complex_reference' => $id]));
+
         	if (empty($data['data'])) {
         		return redirect('redirect-complex')->withErrors(['data not found']); 
         	}
@@ -155,5 +160,12 @@ class RedirectComplexController extends Controller
         $data = parent::getData(MyHelper::post('redirect-complex/be/list/active?log_save=0', $post));
 
 		return response()->json($data);
+    }
+
+    function getMasterData(Request $request)
+    {
+        $action = MyHelper::post('redirect-complex/getData', ['get' => $request->get, 'type' => $request->type, 'brand' => $request->brand]);
+
+        return $action;
     }
 }
