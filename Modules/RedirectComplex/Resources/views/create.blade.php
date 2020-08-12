@@ -54,10 +54,12 @@
 
     <script type="text/javascript">
 
-    	var product_option = '';
     	var ajax_product_data = [];
-    	var brand = JSON.parse('{!!json_encode($brand??[])!!}');
     	var token  = "{{ csrf_token() }}";
+    	var brand = JSON.parse('{!!json_encode($brand??[])!!}');
+    	var product = JSON.parse('{!!json_encode($product)!!}');
+    	var promo = JSON.parse('{!!json_encode($promo)!!}');
+    	var outlet = JSON.parse('{!!json_encode($outlet)!!}');
 
     	function addProduct(selected_product = null, qty = null) {
 			let count 	= $('#data-product > div').length;
@@ -74,14 +76,13 @@
 
 				product_option += "<option id='product"+value.id_product+"' value='"+value.id_product+"' "+selected+">"+value.product+"</option>";
 			});
-    		console.log(selected_product);
 
 			var listDetail = '\
 		    <div class="product'+result+'" style="padding-bottom: 50px;">\
 		        <div data-repeater-item class="mt-overflow">\
 		            <div class="mt-repeater-cell">\
 		                <div class="col-md-9" style="padding-left: 0px; padding-right: 0px">\
-							<select name="product['+count+'][id]" class="form-control product-selector select2" id="select-product'+result+'" placeholder="Select product" style="width: 100%!important">';
+							<select name="product['+count+'][id]" class="form-control product-selector select2" id="select-product'+result+'" placeholder="Select product" style="width: 100%!important" onChange="updateProductValue()">';
 			listDetail +=  product_option;
 			listDetail +=  '</select>\
 						</div>\
@@ -119,21 +120,21 @@
 				},
 				dataType: "json",
 				success: function(data){
-					console.log(data);
+					removeChildElement('select-outlet');
 					if (data.status == 'fail') {
 						$.ajax(this)
 						return
 					}
 					listOutlet=data;
 					$.each(data, function( key, value ) {
-						$('#specific-outlet').append("<option id='outlet"+value.id_outlet+"' value='"+value.id_outlet+"'>"+value.outlet+"</option>");
+						$('#select-outlet').append("<option id='outlet"+value.id_outlet+"' value='"+value.id_outlet+"'>"+value.outlet+"</option>");
 					});
 
 				},
 				complete: function(data){
 					if (data.responseJSON.status != 'fail') {
-						selectedOutlet = JSON.parse('{!!json_encode($outlet)!!}')
-						$.each(selectedOutlet, function( key, value ) {
+						
+						$.each(outlet, function( key, value ) {
 							$("#outlet"+value+"").attr('selected', true)
 						});
 					}
@@ -143,21 +144,23 @@
 
 		function loadProduct(){
 			$.ajax({
-				type: "GET",
+				type: "POST",
 				url: "{{url('redirect-complex/get-data')}}",
 				data : {
-					get : 'Product',
-					type : 'Single'
+					"get" : 'Product',
+					"type" : 'Single',
+					"brand": brand,
+					"_token" : token
 				},
 				dataType: "json",
 				success: function(data){
+					removeChildElement('data-product');
 					if (data.status == 'fail') {
 						$.ajax(this)
 						return
 					}
 					ajax_product_data = data;
-					product = JSON.parse('{!!json_encode($product)!!}')
-					console.log(product);
+
 					$.each(product, function( key, value ) {
 						addProduct(value['id'], value['qty']);
 					});
@@ -167,51 +170,87 @@
 
 		function loadPromo(){
 			$.ajax({
-				type: "GET",
-				url: "{{url('promo-campaign/step2/getData')}}",
+				type: "POST",
+				url: "{{url('redirect-complex/get-data')}}",
 				data : {
-					get : 'promo',
-					type : 'promo_campaign'
+					"get" 	: 'promo',
+					"type" 	: 'promo_campaign',
+					"brand" : brand,
+					"outlet" : outlet,
+					"product" : product,
+					"_token" : token
 				},
 				dataType: "json",
 				success: function(data){
+					removeChildElement('select-promo');
 					if (data.status == 'fail') {
 						$.ajax(this)
 						return
 					}
 					let selected = '';
-					let promo = JSON.parse('{!!json_encode($promo)!!}')
 					$.each(data, function( key, value ) {
 						selected = '';
 						if (promo && value.id_promo == promo) {
 							selected = 'selected';
 						}
-						$('#promo').append("<option id='promo"+value.id_promo+"' value='"+value.id_promo+"' "+selected+">"+value.promo+"</option>");
+						$('#select-promo').append("<option id='promo"+value.id_promo+"' value='"+value.id_promo+"' "+selected+">"+value.promo+"</option>");
 					});
 				}
 			});
 		}
 
-        $(document).ready(function() {
-	        $('input[name=outlet_type]').on('click', function(){
-				outlet = $(this).val();
+		function removeChildElement(id) {
+			const parent_element = document.getElementById(id);
+			while (parent_element.firstChild) {
+				parent_element.removeChild(parent_element.lastChild);
+			}
+		}
 
-				if(outlet == 'specific') {
+		function updateProductValue() {
+			let temp_product = $('#data-product select').serializeArray();
+			product = [];
+			$.each(temp_product, function( key, value ) {
+				product.push(value.value);
+			});
+			//loadPromo();
+		}
+
+		function updateOutletValue() {
+			outlet = $('#select-outlet').val();
+			loadPromo();
+		}
+
+        $(document).ready(function() {
+			loadProduct();
+	    	loadOutlet();
+	    	loadPromo();
+	    	$("#form-outlet, #form-product, #form-promo").hide();
+	        $('input[name=outlet_type]').on('click', function(){
+				outlet_type = $(this).val();
+
+				if(outlet_type == 'specific') {
 					$('#selectOutlet').show();
 				}
 				else {
 					$('#selectOutlet').hide();
+					outlet = null;
+				}
+				loadPromo();
+			});
+
+			$('#select-brand').on('change', function(){
+				brand = $(this).val();
+				loadOutlet();
+				loadProduct();
+				loadPromo();
+
+				if (brand != null && brand.length > 0) {
+					$("#form-outlet, #form-product, #form-promo").show();
+				}
+				else {
+					$("#form-outlet, #form-product, #form-promo").hide();
 				}
 			});
-
-			$('select-brand').on('change', function(){
-				brand = $(this).val();
-				console.log(brand);
-			});
-
-			loadProduct();
-	    	loadOutlet();
-	    	loadPromo();
         });
 
     </script>
@@ -312,7 +351,7 @@
 	                            <i class="fa fa-question-circle tooltips" data-original-title="Select outlet" data-container="body"></i>
 	                        </label>
 	                        <div class="col-md-7">
-								<select id="specific-outlet" name="outlet[]" class="form-control select2-multiple select2-hidden-accessible" multiple="multiple" tabindex="-1" aria-hidden="true"></select>
+								<select id="select-outlet" name="outlet[]" class="form-control select2-multiple select2-hidden-accessible" multiple="multiple" tabindex="-1" aria-hidden="true" onchange="updateOutletValue()"></select>
 	                        </div>
 	                    </div>
 	                </div>
@@ -321,15 +360,15 @@
                         <div class="col-md-7">
                         	<div id="data-product" style="padding-right: 15px">
                         	</div>
-                        	<a href="javascript:;" data-repeater-create class="btn btn-success" onclick="addProduct()"><i class="fa fa-plus"></i> New Product</a>
+                        	<a href="javascript:;" data-repeater-create class="btn btn-success" onclick="addProduct();updateProductValue()"><i class="fa fa-plus"></i> New Product</a>
                         </div>
                     </div>
                 </div>
                 <div class="form-group" id="form-promo">
 					<label class="col-md-3 control-label">Promo Code </label>
 					<div class="col-md-4">
-						<select name="promo" id="promo" class="form-control select2">
-							<option value="0">Select Promo Code</option>
+						<select id="select-promo" name="promo" class="form-control select2">
+							<option value="0">Not use Promo</option>
 						</select>
 					</div>
 				</div>
@@ -342,6 +381,8 @@
                     </div>
                 </div>
             </form>
+                <button type="button" class="btn blue" onclick="removeChildElement('data-product')">del element</button>
+                <button type="button" class="btn blue" onclick="loadPromo()">load promo</button>
         </div>
     </div>
 @endsection

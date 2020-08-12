@@ -164,7 +164,8 @@ class RedirectComplexController extends Controller
 
     function getMasterData(Request $request)
     {
-        $action = MyHelper::post('redirect-complex/getData', ['get' => $request->get, 'type' => $request->type, 'brand' => $request->brand]);
+    	$post = $request->except('_token');
+        $action = MyHelper::post('redirect-complex/getData', $post);
 
         return $action;
     }
