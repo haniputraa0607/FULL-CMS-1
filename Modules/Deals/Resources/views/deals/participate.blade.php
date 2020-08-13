@@ -96,10 +96,11 @@
 	                        <th> Payment </th>
 	                        <th> User </th>
 	                        <th> Status </th>
+	                        <th> Deals Receipt Number </th>
 	                        <th> Voucher Code </th>
 	                        <th> Claimed At </th>
 	                        <th> Used At </th>
-	                        <th> Receipt Number </th>
+	                        <th> Transaction Receipt Number </th>
 	                        <th> Outlet Redeem </th>
 	                        <th> Redeem At </th>
 	                        <th> Expired At </th>
@@ -144,6 +145,13 @@
 		                        	{{ 'Claimed' }}
 		                        @endif 
 		                    </td>
+	                        <td nowrap> 
+                                @if(isset($value['deals_receipt_number']))
+                                    {{ $value['deals_receipt_number'] }}
+                                @else
+                                    @php implode('', [strtotime($value['claimed_at']), $value['id_deals_user']]); @endphp
+                                @endif 
+                            </td>
 	                        <td nowrap> {{ $value['voucher_code'] }} </td>
 	                        <td nowrap> @if (empty($value['claimed_at'])) -  @else {{ date('d M Y H:i:s', strtotime($value['claimed_at'])) }} @endif</td>
 	                        <td nowrap> @if (empty($value['used_at'])) -  @else {{ date('d M Y H:i:s', strtotime($value['used_at'])) }} @endif</td>
