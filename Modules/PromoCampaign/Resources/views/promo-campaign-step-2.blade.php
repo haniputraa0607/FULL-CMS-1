@@ -675,7 +675,7 @@
 							</div>
 						</div>
 						
-						<div id="selectOutlet" class="form-group" @if($result['is_all_outlet'] != 1 && empty($result['outlets'])) style="display: none;" @endif>
+						<div id="selectOutlet" class="form-group" @if($result['is_all_outlet'] != 1 || empty($result['outlets'])) style="display: none;" @endif>
 							<label for="multipleOutlet" class="control-label">Select Outlet</label>
 							<select id="multipleOutlet" name="multiple_outlet[]" class="form-control select2-multiple select2-hidden-accessible" multiple="multiple" tabindex="-1" aria-hidden="true"></select>
 						</div>
