@@ -306,8 +306,7 @@ class PromoCampaignController extends Controller
 
             if (isset($action['status']) && $action['status'] == 'success') 
             {
-                return redirect('promo-campaign/step2/' . ($slug??$id_promo_campaign??$action['promo-campaign']['id_promo_campaign']??''));
-                // return redirect('promo-campaign/step2/' . ($slug?:MyHelper::createSlug($action['promo-campaign']['id_promo_campaign'],'')));
+                return redirect('promo-campaign/step2/' . ($slug??$id_promo_campaign??$action['promo-campaign']['id_promo_campaign']??''))->withSuccess($messages??['Promo Campaign has been created']);
             } 
             else 
             {
@@ -360,7 +359,7 @@ class PromoCampaignController extends Controller
 
             if (isset($action['status']) && $action['status'] == 'success') {
 
-                return redirect('promo-campaign/detail/' . $slug);
+                return redirect('promo-campaign/detail/' . $slug)->withSuccess(['Promo Campaign has been updated']);
             } 
             elseif($action['messages']??false) {
                 return back()->withErrors($action['messages'])->withInput();
