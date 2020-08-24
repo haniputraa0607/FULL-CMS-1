@@ -112,7 +112,7 @@ $configs    		= session('configs');
 		}
 
 		@if(count($result['contents']) > 0)
-			@if($result['promotion_series'] > 0)
+			@if($result['promotion_type'] == 'Campaign Series')
 				@for($x = 1;$x <= $result['promotion_series']; $x++)
 				var clickto 	 = null;
 				var clicktoInbox = null;
