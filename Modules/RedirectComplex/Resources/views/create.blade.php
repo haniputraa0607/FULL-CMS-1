@@ -41,22 +41,11 @@
 		}
     @endphp
 
-    @if(MyHelper::hasAccess([97], $configs))
-	    @php
-	    	$brand 	= [];
-			if (!empty($data['brands'])) {
-				foreach ($data['brands'] as $value) {
-					$brand[] = $value['id_brand'];
-				}
-			}
-	    @endphp
-    @endif
-
     <script type="text/javascript">
 
     	var ajax_product_data = [];
     	var token  = "{{ csrf_token() }}";
-    	var brand = JSON.parse('{!!json_encode($brand??[])!!}');
+    	var brand = [];
     	var product = JSON.parse('{!!json_encode($product)!!}');
     	var promo = JSON.parse('{!!json_encode($promo)!!}');
     	var outlet = JSON.parse('{!!json_encode($outlet)!!}');
@@ -74,7 +63,7 @@
 					selected = 'selected';
 				}
 
-				product_option += "<option id='product"+value.id_product+"' value='"+value.id_product+"' "+selected+">"+value.product+"</option>";
+				product_option += "<option id='product"+value.id_product+"' value='"+value.id_brand+"-"+value.id_product+"' "+selected+">"+value.product+"</option>";
 			});
 
 			var listDetail = '\
@@ -188,6 +177,7 @@
 						return
 					}
 					let selected = '';
+					$('#select-promo').append("<option id='promo0' value='0'> Not Using Promo</option>");
 					$.each(data, function( key, value ) {
 						selected = '';
 						if (promo && value.id_promo == promo) {
@@ -224,6 +214,7 @@
 			loadProduct();
 	    	loadOutlet();
 	    	loadPromo();
+
 	    	$("#form-outlet, #form-product, #form-promo").hide();
 	        $('input[name=outlet_type]').on('click', function(){
 				outlet_type = $(this).val();
@@ -251,6 +242,7 @@
 					$("#form-outlet, #form-product, #form-promo").hide();
 				}
 			});
+	    	$("#select-brand").change();
         });
 
     </script>
@@ -292,7 +284,7 @@
                         </label>
                         <div class="col-md-7">
                             <div class="input-icon right">
-                                <input type="text" placeholder="Category Name" class="form-control" name="name" value="{{ old('name')??$data['name']??null }}">
+                                <input type="text" placeholder="Redirect Complex Name" class="form-control" name="name" value="{{ old('name')??$data['name']??null }}" autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -305,9 +297,23 @@
 	                        <div class="col-md-7">
 								<select id="select-brand" name="brand[]" class="form-control select2-multiple select2-hidden-accessible" multiple="multiple" tabindex="-1" aria-hidden="true">
 									<option></option>
-	                                @if (!empty($brands))
-	                                    @foreach($brands as $brand)
-	                                        <option value="{{ $brand['id_brand'] }}" @if ( old('id_brand',($data['id_brand']??false)) ) @if($brand['id_brand'] == old( 'id_brand',($data['id_brand']??false) )) selected @endif @endif>{{ $brand['name_brand'] }}</option>
+									@php
+										$selected_brand = [];
+										if (old('brand')) {
+											$selected_brand = old('brand');
+										}
+										elseif (!empty($data['brands'])) {
+											$selected_brand = array_column($data['brands'], 'id_brand');
+										}
+									@endphp
+	                                @if (!empty($brand_list))
+	                                    @foreach($brand_list as $brand)
+	                                        <option value="{{ $brand['id_brand'] }}" 
+	                                        	@if ( $selected_brand??false ) 
+	                                        		@if( in_array($brand['id_brand'], $selected_brand) ) selected 
+	                                        		@endif 
+	                                        	@endif
+	                                        >{{ $brand['name_brand'] }}</option>
 	                                    @endforeach
 	                                @endif
 								</select>
@@ -368,7 +374,7 @@
 					<label class="col-md-3 control-label">Promo Code </label>
 					<div class="col-md-4">
 						<select id="select-promo" name="promo" class="form-control select2">
-							<option value="0">Not use Promo</option>
+							<option value="0">Not using Promo</option>
 						</select>
 					</div>
 				</div>
@@ -381,8 +387,6 @@
                     </div>
                 </div>
             </form>
-                <button type="button" class="btn blue" onclick="removeChildElement('data-product')">del element</button>
-                <button type="button" class="btn blue" onclick="loadPromo()">load promo</button>
         </div>
     </div>
 @endsection
