@@ -187,9 +187,9 @@
 					operator_value.options[operator_value.options.length] = new Option("", "");
 					for(x=0;x < result.length; x++){
 						if(idref == result[x]['id_redirect_complex_reference']){
-							operator_value.options[operator_value.options.length] = new Option(result[x]['id_redirect_complex_reference']+' - '+result[x]['name']??'', result[x]['id_redirect_complex_reference'], false, true);
+							operator_value.options[operator_value.options.length] = new Option(result[x]['name']??'', result[x]['id_redirect_complex_reference'], false, true);
 						}else{
-							operator_value.options[operator_value.options.length] = new Option(result[x]['id_redirect_complex_reference']+' - '+result[x]['name']??'', result[x]['id_redirect_complex_reference']);
+							operator_value.options[operator_value.options.length] = new Option(result[x]['name']??'', result[x]['id_redirect_complex_reference']);
 						}
 					}
 				}
