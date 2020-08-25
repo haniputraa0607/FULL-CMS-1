@@ -41,6 +41,12 @@
 		}
     @endphp
 
+    @if(MyHelper::hasAccess([97], $configs))
+    <script type="text/javascript">
+    	$("#form-outlet, #form-product, #form-promo").hide();
+    </script>
+    @endif
+
     <script type="text/javascript">
 
     	var ajax_product_data = [];
@@ -215,7 +221,6 @@
 	    	loadOutlet();
 	    	loadPromo();
 
-	    	$("#form-outlet, #form-product, #form-promo").hide();
 	        $('input[name=outlet_type]').on('click', function(){
 				outlet_type = $(this).val();
 
