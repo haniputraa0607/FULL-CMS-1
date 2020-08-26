@@ -59,9 +59,26 @@
 									</div>
 								</div>
 								<div class="form-group col-md-12">
-									<label class="control-label col-md-4">Confirmation Pay Messages
+									<label class="control-label col-md-4">Confirmation Cash Messages
 										<span class="required" aria-required="true"> * </span>
-										<i class="fa fa-question-circle tooltips" data-original-title="Teks yang akan tampil saat konfirmasi pembelian deals" data-container="body"></i>
+										<i class="fa fa-question-circle tooltips" data-original-title="Teks yang akan tampil saat konfirmasi pembelian deals menggunakan cash" data-container="body"></i>
+									</label>
+									<div class="fileinput fileinput-new col-md-8">
+										<input class="form-control" type="text" name="payment_messages_cash" value="{{ old('payment_messages_cash',$msg['payment_messages_cash']??'') }}" id="payment_messages_cash" required><br>
+										<div class="row appender" data-target="#payment_messages_cash">
+											<div class="col-md-3" style="margin-bottom:5px;">
+												<span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%cash%' with deals price cash" data-value="%cash%">%cash%</span>
+											</div>
+											<div class="col-md-3" style="margin-bottom:5px;">
+												<span class="btn dark btn-xs btn-block btn-outline var appender-btn" data-toggle="tooltip" title="Text will be replace '%deals_title%' with deals name" data-value="%deals_title%">%deals_title%</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group col-md-12">
+									<label class="control-label col-md-4">Confirmation Point Messages
+										<span class="required" aria-required="true"> * </span>
+										<i class="fa fa-question-circle tooltips" data-original-title="Teks yang akan tampil saat konfirmasi pembelian deals menggunakan point" data-container="body"></i>
 									</label>
 									<div class="fileinput fileinput-new col-md-8">
 										<input class="form-control" type="text" name="payment_messages_point" value="{{ old('payment_messages_point',$msg['payment_messages_point']??'') }}" id="payment_messages_point" required><br>

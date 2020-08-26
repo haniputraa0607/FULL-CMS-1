@@ -1172,6 +1172,7 @@ class SettingController extends Controller
             $data=[
                 'update'=>[
                     'payment_messages'=>['value_text',$post['payment_messages']],
+                    'payment_messages_cash'=>['value_text',$post['payment_messages_cash']],
                     'payment_messages_point'=>['value_text',$post['payment_messages_point']],
                     'payment_success_messages'=>['value_text',$post['payment_success_messages']],
                     'payment_fail_messages'=>['value_text',$post['payment_fail_messages']],
@@ -1186,12 +1187,14 @@ class SettingController extends Controller
             }
         }else{
             $payment_messages=MyHelper::post('setting',['key'=>'payment_messages'])['result']['value_text']??'Kamu yakin ingin mengambil voucher ini?';
+            $payment_messages_cash=MyHelper::post('setting',['key'=>'payment_messages_cash'])['result']['value_text']??'Will you buy one %deals_title% at a price of %cash%?';
             $payment_messages_point=MyHelper::post('setting',['key'=>'payment_messages_point'])['result']['value_text']??'Anda akan menukarkan %point% points anda dengan Voucher %deals_title%?';
             $payment_success_messages=MyHelper::post('setting',['key'=>'payment_success_messages'])['result']['value_text']??'Apakah kamu ingin menggunakan Voucher sekarang?';
             $payment_fail_messages=MyHelper::post('setting',['key'=>'payment_fail_messages'])['result']['value_text']??'Mohon maaf, point anda tidak cukup';
             $payment_ovo_fail_messages=MyHelper::post('setting',['key'=>'payment_ovo_fail_messages'])['result']['value_text']??'Transaksi gagal';
             $data['msg']=[
                 'payment_messages'=>$payment_messages,
+                'payment_messages_cash'=>$payment_messages_cash,
                 'payment_messages_point'=>$payment_messages_point,
                 'payment_success_messages'=>$payment_success_messages,
                 'payment_fail_messages'=>$payment_fail_messages,
