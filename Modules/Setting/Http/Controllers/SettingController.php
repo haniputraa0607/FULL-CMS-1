@@ -899,7 +899,7 @@ class SettingController extends Controller
         ];
 
         if(empty($post)){
-            $query = MyHelper::get('setting/whatsapp');
+            $query = MyHelper::get('setting/be/whatsapp');
             if(isset($query['status']) && $query['status'] == 'success'){
                 $data['api_key_whatsapp'] = $query['result'];
             }else{
@@ -907,7 +907,7 @@ class SettingController extends Controller
             }
             return view('setting::whatsapp.whatsapp', $data);
         }else{
-            $save = MyHelper::post('setting/whatsapp', $post);
+            $save = MyHelper::post('setting/be/whatsapp', $post);
             if (isset($save['status']) && $save['status'] == "success") {
                 return redirect('setting/whatsapp')->withSuccess(['Api key whatsApp has been updated.']);
             }else {
