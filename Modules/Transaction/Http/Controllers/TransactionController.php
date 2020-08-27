@@ -1292,16 +1292,70 @@ class TransactionController extends Controller
     }
 
     /*================ Start POS Transaction online failed ================*/
+    public function transactionPOS(Request $request) {
+        $post = $request->post();
+        $data = [
+            'title'          => 'Transactions',
+            'menu_active'    => 'transaction-online-pos',
+            'sub_title'      => '[POS] All Transactions Online',
+            'submenu_active' => 'transaction-online-pos-list',
+            'filter_title'   => 'Filter Transaction'
+        ];
+
+        if(($post['rule']??false) && !isset($post['draw'])){
+            session(['transaction_pos_filter'=>$post]);
+            return back();
+        }
+
+        if($post['clear']??false){
+            session(['transaction_pos_filter'=>null]);
+            return back();
+        }
+
+        if(session('transaction_pos_filter')){
+            $extra=session('transaction_pos_filter');
+            $data['rule']=array_map('array_values', $extra['rule']);
+            $data['operator']=$extra['operator'];
+        } else{
+            $extra = [];
+        }
+
+        if ($request->wantsJson()) {
+            $data = MyHelper::get('transaction/online-pos', $extra + $request->all())['result'] ?? [];
+            // return \MyHelper::apiGet('product-modifier', $request->all());
+            $data['recordsFiltered'] = $data['total'];
+            $data['draw'] = $request->draw;
+            return $data;
+        }
+
+        $outlets = MyHelper::post('outlet/be/list',['simple_result' => 1])['result'] ?? [];
+        $data['outlets'] = [];
+
+        foreach ($outlets as $outlet) {
+            $data['outlets'][] = [$outlet['id_outlet'], $outlet['outlet_name']];
+        }
+
+        return view('transaction::transactionOnlinePOS.list', $data);
+    }
+
     public function transactionFailed(Request $request) {
         $post = $request->except('_token');
         $data = [
             'title'          => 'Transactions',
             'menu_active'    => 'transaction-online-pos',
             'sub_title'      => '[POS] Transactions Online Failed',
-            'submenu_active' => 'transaction-online-pos-list'
+            'submenu_active' => 'transaction-online-pos-failed'
         ];
 
-        return view('transaction::transactionOnlinePOS.list', $data);
+        if ($request->wantsJson()) {
+            $data = MyHelper::get('transaction/online-pos', $request->all())['result'] ?? [];
+            // return \MyHelper::apiGet('product-modifier', $request->all());
+            $data['recordsFiltered'] = $data['total'];
+            $data['draw'] = $request->draw;
+            return $data;
+        }
+
+        return view('transaction::transactionOnlinePOS.list-failed', $data);
     }
 
     public function getlistTransactionFailed(Request $request){

@@ -166,7 +166,7 @@ class MyHelper
     }
   }
 
-  public static function get($url){
+  public static function get($url, $data = null){
     $api = env('APP_API_URL');
     $client = new Client;
 
@@ -181,6 +181,15 @@ class MyHelper
         'user-agent-view' => $_SERVER['HTTP_USER_AGENT'],
       ]
     );
+
+    if ($data) {
+        $query_params = http_build_query($data); // xxx=yyy&zzz=aaa
+        if (strpos($url, '?')) {
+            $url .= '&'.$query_params;
+        } else {
+            $url .= '?'.$query_params;
+        }
+    }
 
     try {
       $response =  $client->request('GET',$api.'api/'.$url, $content);

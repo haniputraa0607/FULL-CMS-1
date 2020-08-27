@@ -246,7 +246,7 @@
 <div class="alert alert-block alert-info fade in">
 	<button type="button" class="close" data-dismiss="alert"></button>
 	<h4 class="alert-heading">Displaying search result :</h4>
-	<p>{{$total??0}}</p><br>
+	<p id="list-filter-result-counter">{{$total??0}}</p><br>
 	<form action="{{ url('#') }}" method="post">
 		{{csrf_field()}}
 		<button class="btn btn-sm btn-warning" name="clear" value="session">Reset</button>

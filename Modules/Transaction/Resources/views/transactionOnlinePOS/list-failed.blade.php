@@ -4,114 +4,17 @@
 @endphp
 
 @extends('layouts.main')
-@include('list_filter')
 
 @section('page-style')
-    <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('page-plugin')
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.js') }}" type="text/javascript"></script>
-    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/ui-blockui.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script>
-    @yield('filter_script')
-    <script type="text/javascript">
-        rules = {
-            all_product_modifier :{
-                display:'All Transaction',
-                operator:[],
-                opsi:[]
-            },
-            transaction_receipt_number :{
-                display:'Receipt Number',
-                operator:[
-                    ['=','='],
-                    ['like','like']
-                ],
-                opsi:[]
-            },
-            transaction_date :{
-                display:'Transaction Date',
-                operator:[
-                    ['=','='],
-                    ['<','<'],
-                    ['>','>'],
-                    ['<=','<='],
-                    ['>=','>='],
-                ],
-                type: 'date',
-                opsi:[]
-            },
-            success_retry_status :{
-                display:'Send POS Status',
-                operator:[
-                ],
-                opsi:[
-                    ['1', 'Success'],
-                    ['0', 'Failed']
-                ]
-            },
-            id_outlet :{
-                display:'Outlet',
-                operator:[
-                ],
-                opsi:{!!json_encode($outlets)!!}
-            },
-            name :{
-                display:'Customer Name',
-                operator:[
-                    ['=','='],
-                    ['like','like']
-                ],
-                opsi:[]
-            },
-            phone :{
-                display:'Customer Phone',
-                operator:[
-                    ['=','='],
-                    ['like','like']
-                ],
-                opsi:[]
-            }
-        };
-        var manual = 1;
-        $(document).ready(function(){
-            $('table').on('switchChange.bootstrapSwitch','.default-visibility',function(){
-                if(!manual){
-                    manual=1;
-                    return false;
-                }
-                var switcher=$(this);
-                var newState=switcher.bootstrapSwitch('state');
-                $.ajax({
-                    method:'PATCH',
-                    url:"{{url('product/modifier')}}/"+switcher.data('id'),
-                    data:{
-                        product_modifier_visibility:newState?1:0,
-                        _token:"{{csrf_token()}}"
-                    },
-                    success:function(data){
-                        if(data.status == 'success'){
-                            toastr.info("Success update visibility");
-                        }else{
-                            manual=0;
-                            toastr.warning("Fail update visibility");
-                            switcher.bootstrapSwitch('state',!newState);
-                        }
-                    }
-                }).fail(function(data){
-                    manual=0;
-                    toastr.warning("Fail update visibility");
-                    switcher.bootstrapSwitch('state',!newState);
-                });
-            });
-        });
-    </script>
 @endsection
 
 @section('page-script')
@@ -130,7 +33,6 @@
          }
 
         $(document).ready(function () {
-            var total_data = 0;
             table = $('#tableList').DataTable({
                 serverSide: true,
                 ajax: {
@@ -139,11 +41,16 @@
                     data: function (data) {
                         const info = $('#tableList').DataTable().page.info();
                         data.page = (info.start / info.length) + 1;
+                        data.operator = 'and';
+                        data.rule = [
+                            {
+                                subject: 'success_retry_status',
+                                operator: '=',
+                                parameter: 0
+                            }
+                        ];
                     },
                     dataSrc: 'data'
-                },
-                fnDrawCallback: function( oSettings ) {
-                    $('#list-filter-result-counter').text(oSettings.jqXHR.responseJSON.recordsTotal);
                 },
                 columns: [
                     {
@@ -195,7 +102,7 @@
             $('table').on('click', '.modal-summoner', function() {
                 const modal = $('#modal-info');
                 modal.find('.modal-title').text($(this).data('is-response')?'Response':'Request');
-                modal.find('.modal-body').html('<pre>' + escapeHtml(JSON.stringify($(this).data('body'), null, 2)) + '</pre>');
+                modal.find('.modal-body').html('<pre>' + JSON.stringify($(this).data('body'), null, 2) + '</pre>');
                 modal.modal('show');
             });
         });
@@ -217,6 +124,7 @@
                         toastr.warning('Failed resend transaction');
                     }else{
                         document.getElementById("status-"+id_transaction_online_pos).innerHTML = '<b id="status-'+id_transaction_online_pos+'" style="color: green">Success</b>';
+                        console.log($('#resend'+id_transaction_online_pos));
                         $('#resend'+id_transaction_online_pos).remove();
                     }
                 },
@@ -242,7 +150,7 @@
     </div><br>
     
     @include('layouts.notifications')
-    @yield('filter_view')
+
     <div class="portlet light portlet-fit bordered">
         <div class="portlet-title">
             <div class="caption">
