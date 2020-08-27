@@ -777,6 +777,11 @@
 					<ul class="sub-menu">
 						<li class="nav-item {{($submenu_active == 'transaction-online-pos-list') ? 'active open' : ''}}">
 							<a href="{{url('transaction/online-pos')}}" class="nav-link ">
+								<span class="title">All Transaction Online</span>
+							</a>
+						</li>
+						<li class="nav-item {{($submenu_active == 'transaction-online-pos-failed') ? 'active open' : ''}}">
+							<a href="{{url('transaction/online-pos/failed')}}" class="nav-link ">
 								<span class="title">Transaction Online Failed</span>
 							</a>
 						</li>
