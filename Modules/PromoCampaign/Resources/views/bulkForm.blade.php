@@ -47,7 +47,7 @@
 				<label>Max. Qty <i class="fa fa-question-circle tooltips" data-original-title="Jumlah maksimal pembelian produk untuk mendapatkan diskon" data-container="body"></i></label>
 			</div>
 			<div class="{{ (($result['promo_campaign_tier_discount_rules'][0]['discount_type']??'') == 'Percent') ? 'col-md-3' : 'col-md-5'}}  text-center" id="bulk-label-div">
-				<label id="bulk-label" class="control-label"> {{ (($result['promo_campaign_tier_discount_rules'][0]['discount_type']??'') == 'Percent') ? 'Percent value' : 'Nominal value'}} </label><span class="required" aria-required="true">  </span><i class="fa fa-question-circle tooltips" data-original-title="Besar diskon yang diberikan" data-container="body"></i><br>
+				<label id="bulk-label" class="control-label"> {{ (($result['promo_campaign_tier_discount_rules'][0]['discount_type']??'') == 'Percent') ? 'Percent value' : 'Nominal value'}} </label><span class="required" aria-required="true">  </span><i class="fa fa-question-circle tooltips" data-original-title="Besar diskon yang diberikan. Persentase akan dihitung dari harga produk + harga modifier" data-container="body"></i><br>
 				<div class="form-group">
 				</div>
 			</div>
