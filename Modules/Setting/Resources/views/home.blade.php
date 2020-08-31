@@ -251,8 +251,10 @@
 				if (type == 'general') {
 					$('#modalBannerUpdate .click-to-radio[value="url"]').prop("checked", true);
 	            	$('.click-to-url').show();
-				} else {
+				} elseif(type == 'gofood') {
 					$('#modalBannerUpdate .click-to-radio[value="gofood"]').prop("checked", true);
+				} elseif(type == 'grabfood') {
+					$('#modalBannerUpdate .click-to-radio[value="grabfood"]').prop("checked", true);
 				}
 			}
 			else if(id_news != "") {
@@ -1109,11 +1111,16 @@
 										<input class="click-to-radio" type="radio" name="click_to" value="none" checked> None
 									</label>
 	                            </div>
-	                            {{-- <div class="col-md-3">
+	                            <div class="col-md-3">
                                     <label class="radio-inline">
-										<input class="click-to-radio" type="radio" name="click_to" value="gofood"> GO-FOOD
+										<input class="click-to-radio" type="radio" name="click_to" value="gofood"> GoFood
 									</label>
-	                            </div> --}}
+	                            </div>
+	                            <div class="col-md-3">
+                                    <label class="radio-inline">
+										<input class="click-to-radio" type="radio" name="click_to" value="grabdfood"> GrabFood
+									</label>
+	                            </div>
 								<div class="col-md-2">
 									<label class="radio-inline">
 										<input class="click-to-radio" type="radio" name="click_to" value="referral"> Referral
@@ -1226,11 +1233,16 @@
 										<input class="click-to-radio" type="radio" name="click_to" value="none" checked> None
 									</label>
 	                            </div>
-	                            {{-- <div class="col-md-3">
+	                            <div class="col-md-3">
                                     <label class="radio-inline">
-										<input class="click-to-radio" type="radio" name="click_to" value="gofood"> GO-FOOD
+										<input class="click-to-radio" type="radio" name="click_to" value="gofood"> GoFood
 									</label>
-	                            </div> --}}
+	                            </div>
+	                            <div class="col-md-3">
+                                    <label class="radio-inline">
+										<input class="click-to-radio" type="radio" name="click_to" value="grabfood"> GrabFood
+									</label>
+	                            </div>
 								<div class="col-md-2">
 									<label class="radio-inline">
 										<input class="click-to-radio" type="radio" name="click_to" value="referral"> Referral
