@@ -289,12 +289,6 @@
 								// $('#remove_square').click()
 								// image.src = _URL.createObjectURL();
 								cancelBtn.click();
-							}else if(file.size > (50 * 1024)){
-								toastr.warning("Max uploaded file is 50 KB");
-								$(this).val("");
-								// $('#remove_square').click()
-								// image.src = _URL.createObjectURL();
-								cancelBtn.click();
 							}
 						} else if (type == 'bg_image') {
 							if(this.width != 250 || this.height != 250){
@@ -457,7 +451,7 @@
 												Level Image
 												<i class="fa fa-question-circle tooltips" data-original-title="Icon membership untuk ditampilkan pada aplikasi ketika membuka halaman detail membership." data-container="body"></i>
 												<br>
-												<span class="required" aria-required="true"> (75 x 75, Max 50 KB, Only PNG) </span>
+												<span class="required" aria-required="true"> (75 x 75, Only PNG) </span>
 											</div>
 										</div>
 
