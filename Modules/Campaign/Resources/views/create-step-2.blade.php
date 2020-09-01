@@ -175,6 +175,29 @@
 			if(type=="inbox") document.getElementById('div_inbox_content').style.display = 'none';
 		}
 
+		else if(det == 'Complex'){
+			$.ajax({
+				type : "GET",
+				url : "{{ url('redirect-complex/list/active') }}",
+				data : "_token="+token,
+				success : function(result) {
+					document.getElementById('atd_'+type).style.display = 'block';
+					var operator_value = document.getElementsByName('campaign_'+type+'_id_reference')[0];
+					for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
+					operator_value.options[operator_value.options.length] = new Option("", "");
+					for(x=0;x < result.length; x++){
+						if(idref == result[x]['id_redirect_complex_reference']){
+							operator_value.options[operator_value.options.length] = new Option(result[x]['name']??'', result[x]['id_redirect_complex_reference'], false, true);
+						}else{
+							operator_value.options[operator_value.options.length] = new Option(result[x]['name']??'', result[x]['id_redirect_complex_reference']);
+						}
+					}
+				}
+			});
+			document.getElementById('link_'+type).style.display = 'none';
+			if(type=="inbox") document.getElementById('div_inbox_content').style.display = 'none';
+		}
+
 		else if(det == 'Link'){
 			console.log(idref)
 			document.getElementById('atd_'+type).style.display = 'none';
@@ -797,6 +820,7 @@
 										<option value="Contact Us" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Contact Us") selected @endif>Contact Us</option>
 										<option value="Link" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Link") selected @endif>Link</option>
 										<option value="Logout" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Logout") selected @endif>Logout</option>
+										<option value="Complex" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Complex") selected @endif>Complex</option>
 									</select>
 								</div>
 							</div>

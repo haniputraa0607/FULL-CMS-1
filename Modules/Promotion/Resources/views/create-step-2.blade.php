@@ -112,7 +112,7 @@ $configs    		= session('configs');
 		}
 
 		@if(count($result['contents']) > 0)
-			@if($result['promotion_series'] > 0)
+			@if($result['promotion_type'] == 'Campaign Series')
 				@for($x = 1;$x <= $result['promotion_series']; $x++)
 				var clickto 	 = null;
 				var clicktoInbox = null;
@@ -397,6 +397,29 @@ $configs    		= session('configs');
 			for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
 			document.getElementById('link_'+type+'_'+series).style.display = 'none';
 			document.getElementById(type+'_content_'+series).style.display = 'block';
+		}
+
+		else if(det == 'Complex'){
+			$.ajax({
+				type : "GET",
+				url : "{{ url('redirect-complex/list/active') }}",
+				data : "_token="+token,
+				success : function(result) {
+					document.getElementById('atd_'+type+'_'+series).style.display = 'block';
+					var operator_value = document.getElementById('promotion_'+type+'_id_reference_'+series);
+					for(i = operator_value.options.length - 1 ; i >= 0 ; i--) operator_value.remove(i);
+					operator_value.options[operator_value.options.length] = new Option("", "");
+					for(x=0;x < result.length; x++){
+						if(idref == result[x]['id_redirect_complex_reference']){
+							operator_value.options[operator_value.options.length] = new Option(result[x]['name']??'', result[x]['id_redirect_complex_reference'], false, true);
+						}else{
+							operator_value.options[operator_value.options.length] = new Option(result[x]['name']??'', result[x]['id_redirect_complex_reference']);
+						}
+					}
+				}
+			});
+			document.getElementById('link_'+type+'_'+series).style.display = 'none';
+			if(type=="inbox") document.getElementById(type+'_content_'+series).style.display = 'none';
 		}
 
 		else {
@@ -1227,6 +1250,7 @@ $configs    		= session('configs');
                 												<option value="Contact Us" @if(isset($result['contents'][$x-1]['promotion_push_clickto']) && $result['contents'][$x-1]['promotion_push_clickto'] == "Contact Us") selected @endif>Contact Us</option>
                 												<option value="Link" @if(isset($result['contents'][$x-1]['promotion_push_clickto']) && $result['contents'][$x-1]['promotion_push_clickto'] == "Link") selected @endif>Link</option>
                 												<option value="Logout" @if(isset($result['contents'][$x-1]['promotion_push_clickto']) && $result['contents'][$x-1]['promotion_push_clickto'] == "Logout") selected @endif>Logout</option>
+                												<option value="Complex" @if(isset($result['contents'][$x-1]['promotion_push_clickto']) && $result['contents'][$x-1]['promotion_push_clickto'] == "Complex") selected @endif>Complex</option>
                 											</select>
 														</div>
 													</div>
@@ -2506,6 +2530,7 @@ $configs    		= session('configs');
 													<option value="Contact Us" @if(isset($result['contents'][0]['promotion_push_clickto']) && $result['contents'][0]['promotion_push_clickto'] == "Contact Us") selected @endif>Contact Us</option>
 													<option value="Link" @if(isset($result['contents'][0]['promotion_push_clickto']) && $result['contents'][0]['promotion_push_clickto'] == "Link") selected @endif>Link</option>
 													<option value="Logout" @if(isset($result['contents'][0]['promotion_push_clickto']) && $result['contents'][0]['promotion_push_clickto'] == "Logout") selected @endif>Logout</option>
+													<option value="Complex" @if(isset($result['contents'][0]['promotion_push_clickto']) && $result['contents'][0]['promotion_push_clickto'] == "Complex") selected @endif>Complex</option>
 												</select>
 											</div>
 										</div>
