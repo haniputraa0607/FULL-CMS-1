@@ -251,9 +251,9 @@
 				if (type == 'general') {
 					$('#modalBannerUpdate .click-to-radio[value="url"]').prop("checked", true);
 	            	$('.click-to-url').show();
-				} elseif(type == 'gofood') {
+				} else if(type == 'gofood') {
 					$('#modalBannerUpdate .click-to-radio[value="gofood"]').prop("checked", true);
-				} elseif(type == 'grabfood') {
+				} else if(type == 'grabfood') {
 					$('#modalBannerUpdate .click-to-radio[value="grabfood"]').prop("checked", true);
 				}
 			}
