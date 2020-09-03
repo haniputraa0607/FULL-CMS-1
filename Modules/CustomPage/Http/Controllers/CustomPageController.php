@@ -212,7 +212,7 @@ class CustomPageController extends Controller
             unset($post['customform']);
         } else {
             // set to null if form type didn't match
-            foreach ($post['customform'] as $key => $form) {
+            foreach ($post['customform']??[] as $key => $form) {
                 if (is_string($form['custom_page_image_header'])) {
                     $post['customform'][$key]['custom_page_image_header'] = $form['custom_page_image_header'];
                 } else {

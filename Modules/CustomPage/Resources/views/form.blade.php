@@ -707,33 +707,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <div class="input-icon right">
-                                <label class="col-md-3 control-label">
-                                Icon Image
-                                <span class="required" aria-required="true"> * </span>
-                                <br>
-                                <span class="required" aria-required="true"> (Only PNG) </span>
-                                <i class="fa fa-question-circle tooltips" data-original-title="Gambar dengan ukuran square ditampilkan pada list button" data-container="body"></i>
-                                </label>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="fileinput fileinput-new" data-provides="fileinput">
-                                    <div class="fileinput-new thumbnail" style="width: 150px; height: 150px;">
-                                    <img @if (isset($detail['custom_page_icon_image'])) src="{{env('S3_URL_API')}}{{$detail['custom_page_icon_image']}}" disabled @elseif (isset($result['custom_page_icon_image'])) src="{{env('S3_URL_API')}}{{$result['custom_page_icon_image']}}" @else src="https://www.placehold.it/500x500/EFEFEF/AAAAAA&amp;text=no+image" @endif alt="">
-                                    </div>
-                                    <div class="fileinput-preview fileinput-exists thumbnail" id="image_icon" style="max-width: 200px; max-height: 200px;"></div>
-                                    <div>
-                                        <span class="btn default btn-file">
-                                        <span class="fileinput-new"> Select image </span>
-                                        <span class="fileinput-exists"> Change </span>
-                                        <input type="file" accept="image/png" id="field_image_icon" class="file" @if (isset($detail['custom_page_icon_image'])) value="'c:\fakepath\icon_image='.{{$detail['custom_page_icon_image']}}" disabled @elseif (isset($result['custom_page_icon_image'])) value="'icon_image='.{{$result['custom_page_icon_image']}}" @else value="{{ old('custom_page_icon_image') }}" required @endif name="custom_page_icon_image" data-jenis="icon">
-                                        </span>
-                                        <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- IMAGE HEADER -->
 						<div class="form-group">
