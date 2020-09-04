@@ -83,7 +83,13 @@
 		var status = $(this).is(':checked')?1:0;
 		$('#dumpInput').attr('name',name).val(status);
 		$('#dumpSubmit').click();
-	})
+	});
+	$('#transaction-type-input').on('change',function(){
+		var name = $(this).attr('name');
+		var status = $(this).val();
+		$('#dumpInput').attr('name',name).val(status);
+		$('#dumpSubmit').click();
+	});
 </script>
 
 <script type="text/javascript">
@@ -173,6 +179,15 @@
 		<div class="caption">
 			<span class="caption-subject font-dark sbold uppercase font-blue">Report Feedback Outlet {{$reportData['outlet_data']['outlet_name']}}</span>
 		</div>
+		<div class="actions">
+            <div class="form-group">
+            	<select class="select2 form-control" id="transaction-type-input" name="transaction_type">
+            		<option value="all">All Transaction</option>
+            		<option value="online" {{$transaction_type == 'online' ? 'selected' : ''}}>Online Transaction</option>
+            		<option value="offline" {{$transaction_type == 'offline' ? 'selected' : ''}}>Offline Transaction</option>
+            	</select>
+            </div>
+        </div>
 	</div>
 	<div class="portlet-body">
 		<form action="{{url('user-rating/report')}}" class="form-horizontal" method="POST">
