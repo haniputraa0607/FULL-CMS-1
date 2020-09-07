@@ -142,6 +142,7 @@ class UserRatingController extends Controller
         $date_end = date('Y-m-d H:i:s',strtotime(session('rating_date_end',date('Y-m-d H:i:s'))));
         $post['photos_only'] = session('rating_photos_only',0);
         $post['notes_only'] = session('rating_notes_only',0);
+        $post['transaction_type'] = session('rating_transaction_type', 'all');
         $post['date_start'] = $date_start;
         $post['date_end'] = $date_end;
         $data['reportData'] = MyHelper::post('user-rating/report',$post)['result']??[];
@@ -191,6 +192,9 @@ class UserRatingController extends Controller
         if(!is_null($request->post('order'))){
             $new_sess['rating_order'] = $request->post('order');
         }
+        if(!is_null($request->post('transaction_type'))){
+            $new_sess['rating_transaction_type'] = $request->post('transaction_type');
+        }
         if($request->exists('search')){
             $new_sess['rating_search'] = $request->post('search');
         }
@@ -219,6 +223,7 @@ class UserRatingController extends Controller
         $post['order'] = session('rating_order','outlet_name');
         $post['search'] = session('rating_search');
         $post['page'] = $page;
+        $post['transaction_type'] = session('rating_transaction_type', 'all');
         // return $post;
         $data['outlet_data'] = MyHelper::post('user-rating/report/outlet',$post)['result']??[];
         $data['next_page'] = $data['outlet_data']['next_page_url']?url()->current().'?page='.($page+1):'';
@@ -247,6 +252,7 @@ class UserRatingController extends Controller
         $post['date_start'] = $date_start;
         $post['date_end'] = $date_end;
         $post['outlet_code'] = $outlet_code;
+        $post['transaction_type'] = session('rating_transaction_type', 'all');
         $data['reportData'] = MyHelper::post('user-rating/report/outlet',$post)['result']??[];
         if(!$data['reportData']){
             return back()->withErrors(['Rating data not found']);

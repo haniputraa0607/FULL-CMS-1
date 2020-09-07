@@ -37,6 +37,12 @@
 		$('a.more').on('click',function(){
 			moveTo($(this).data('target'));
 		});
+		$('#transaction-type-input').on('change',function(){
+			var name = $(this).attr('name');
+			var status = $(this).val();
+			$('#dumpInput').attr('name',name).val(status);
+			$('#dumpSubmit').click();
+		});
 	});
 
 </script>
@@ -72,8 +78,24 @@
 		<div class="caption">
 			<span class="caption-subject font-dark sbold uppercase font-blue">Report Rating</span>
 		</div>
+		<div class="actions">
+            <div class="form-group">
+            	<select class="select2 form-control" id="transaction-type-input" name="transaction_type">
+            		<option value="all">All Transaction</option>
+            		<option value="online" {{$transaction_type == 'online' ? 'selected' : ''}}>Online Transaction</option>
+            		<option value="offline" {{$transaction_type == 'offline' ? 'selected' : ''}}>Offline Transaction</option>
+            	</select>
+            </div>
+        </div>
 	</div>
 	<div class="portlet-body">
+		<div class="hidden">
+			<form action="{{url('user-rating/report')}}" method="POST">
+				@csrf
+				<input type="text" id="dumpInput">
+				<input type="submit" id="dumpSubmit">
+			</form>
+		</div>
 		<form action="{{url('user-rating/report')}}" class="form-horizontal" method="POST">
 			@csrf
 			<div class="row">
