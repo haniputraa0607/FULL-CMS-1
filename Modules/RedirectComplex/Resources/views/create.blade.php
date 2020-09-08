@@ -293,6 +293,32 @@
                             </div>
                         </div>
                     </div>
+
+	                <div class="form-group" id="form-payment" >
+                        <label class="col-md-3 control-label">Select Payment
+                        	<span class="required" aria-required="true"> * </span>
+                            <i class="fa fa-question-circle tooltips" data-original-title="Select Payment" data-container="body"></i>
+                        </label>
+                        <div class="col-md-7">
+							<select id="select-payment" name="payment" class="form-control select2">
+								<option value="0">No Specific Payment</option>
+								@php
+									$selected_payment = old('payment') ?? $data['payment_method'] ?? null;
+								@endphp
+                                @if (!empty($payment_list))
+                                    @foreach($payment_list as $payment)
+                                        <option value="{{ $payment['code'] }}" 
+                                        	@if ( $selected_payment??false ) 
+                                        		@if( $payment['code'] == $selected_payment ) selected 
+                                        		@endif 
+                                        	@endif
+                                        >{{ $payment['payment_method'] }}</option>
+                                    @endforeach
+                                @endif
+							</select>
+                        </div>
+                    </div>
+
                     @if(MyHelper::hasAccess([97], $configs))
 	                    <div class="form-group" id="form-brand" >
 	                        <label class="col-md-3 control-label">Select Brand
@@ -325,6 +351,7 @@
 	                        </div>
 	                    </div>
 	                @endif
+
 	                <div id="form-outlet">
 	                    <div class="form-group">
 	                    	<label class="col-md-3 control-label">Outlet Type

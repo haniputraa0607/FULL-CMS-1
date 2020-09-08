@@ -185,7 +185,8 @@
                         <th> Name </th>
                         <th> Redirect Type </th>
                         <th> Outlet Type </th>
-                        <th> Promo type </th>
+                        <th> Promo </th>
+                        <th> Payment Method </th>
                         <th> Action </th>
                     </tr>
                 </thead>
@@ -196,7 +197,8 @@
                                 <td>{{ $val['name'] }}</td>
                                 <td>{{ $val['type'] }}</td>
                                 <td>{{ $val['outlet_type'] }}</td>
-                                <td>{{ $val['promo_type'] }}</td>
+                                <td>{{ $val['promo_type'] == 'promo_campaign' ? 'Promo Code' : null }}</td>
+                                <td>{{ $val['payment_method'] ?? null }}</td>
                                 @if(MyHelper::hasAccess([166,167], $grantedFeature))
                                 <td>
                                     @if(MyHelper::hasAccess([166], $grantedFeature))
