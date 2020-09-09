@@ -225,10 +225,21 @@
 				outlet_type = $(this).val();
 
 				if(outlet_type == 'specific') {
-					$('#selectOutlet').show();
+					$('#selectOutlet, #form-product').show();
+					$('#select-outlet').attr('required', true);
+					$("#use-product").prop("checked", false).change();
+					$("#form-payment").hide();
+				}
+				else if(outlet_type == 'near me') {
+					$('#selectOutlet, #form-payment').hide();
+					$('#select-outlet').removeAttr('required');
+					$('#form-product').show();
+					$("#use-product").prop("checked", false).change();
+					outlet = null;
 				}
 				else {
-					$('#selectOutlet').hide();
+					$('#select-outlet').removeAttr('required');
+					$('#selectOutlet, #form-product, #form-payment, #form-select-product').hide();
 					outlet = null;
 				}
 				loadPromo();
@@ -247,7 +258,20 @@
 					$("#form-outlet, #form-product, #form-promo").hide();
 				}
 			});
+
+	    	$("#use-product").on('change', function(){
+	    		let check = document.getElementById("use-product").checked;
+	    		if (check) {
+	    			$("#form-select-product").show().attr('required',true);
+	    			$("#form-payment").show();
+	    		}else{
+	    			$("#form-select-product").hide().attr('required',true);
+	    			$("#form-payment").hide();
+	    		}
+	    	});
+
 	    	$("#select-brand").change();
+	    	$("#use-product").change();
         });
 
     </script>
@@ -294,31 +318,7 @@
                         </div>
                     </div>
 
-	                <div class="form-group" id="form-payment" >
-                        <label class="col-md-3 control-label">Select Payment
-                        	<span class="required" aria-required="true"> * </span>
-                            <i class="fa fa-question-circle tooltips" data-original-title="Select Payment" data-container="body"></i>
-                        </label>
-                        <div class="col-md-7">
-							<select id="select-payment" name="payment" class="form-control select2">
-								<option value="0">No Specific Payment</option>
-								@php
-									$selected_payment = old('payment') ?? $data['payment_method'] ?? null;
-								@endphp
-                                @if (!empty($payment_list))
-                                    @foreach($payment_list as $payment)
-                                        <option value="{{ $payment['code'] }}" 
-                                        	@if ( $selected_payment??false ) 
-                                        		@if( $payment['code'] == $selected_payment ) selected 
-                                        		@endif 
-                                        	@endif
-                                        >{{ $payment['payment_method'] }}</option>
-                                    @endforeach
-                                @endif
-							</select>
-                        </div>
-                    </div>
-
+                    {{-- Brand --}}
                     @if(MyHelper::hasAccess([97], $configs))
 	                    <div class="form-group" id="form-brand" >
 	                        <label class="col-md-3 control-label">Select Brand
@@ -352,14 +352,24 @@
 	                    </div>
 	                @endif
 
+	                {{-- Outlet --}}
 	                <div id="form-outlet">
 	                    <div class="form-group">
 	                    	<label class="col-md-3 control-label">Outlet Type
-	                            <span class="required" aria-required="true"> * </span>
-	                            <i class="fa fa-question-circle tooltips" data-original-title="Type of method to get outlet" data-container="body"></i>
+	                            <i class="fa fa-question-circle tooltips" data-original-title="Method to get outlet" data-container="body"></i>
 	                        </label>
 	                        <div class="col-md-7" style="margin-bottom: -20px">
 								<div class="mt-radio-inline">
+									<label class="mt-radio mt-radio-outline">
+										<i class="fa fa-question-circle tooltips" data-original-title="No outlet" data-container="body"></i> No Outlet
+										<input type="radio" value="" name="outlet_type" 
+										@if ( old('outlet_type') )
+											@if( old('outlet_type') == "") checked @endif
+										@elseif ( isset($data['id_redirect_complex_reference']) && $data['outlet_type'] == "") checked 
+										@endif 
+										required/>
+										<span></span>
+									</label>
 									<label class="mt-radio mt-radio-outline">
 										<i class="fa fa-question-circle tooltips" data-original-title="near me" data-container="body"></i> Near Me
 										<input type="radio" value="near me" name="outlet_type" 
@@ -371,7 +381,7 @@
 										<span></span>
 									</label>
 									<label class="mt-radio mt-radio-outline">
-										<i class="fa fa-question-circle tooltips" data-original-title="Promo code hanya berlaku untuk outlet tertentu" data-container="body"></i> Specific
+										<i class="fa fa-question-circle tooltips" data-original-title="Select specific outlet" data-container="body"></i> Specific
 										<input type="radio" value="specific" name="outlet_type" 
 										@if ( old('outlet_type') )
 											@if( old('outlet_type') == "specific") checked @endif
@@ -393,23 +403,70 @@
 	                        </div>
 	                    </div>
 	                </div>
-                    <div class="form-group" id="form-product">
-                        <label class="col-md-3 control-label">Product </label>
+
+	                {{-- Product --}}
+	                <div class="form-group" id="form-product" @if (empty($data['outlet_type'])) style="display: none" @endif>
+	                	<label class="col-md-3 control-label">Product 
+	                        <i class="fa fa-question-circle tooltips" data-original-title="Add product to redirect, Check the checkbox to choose product" data-container="body"></i>
+	                	</label>
+                        <div class="col-md-7">
+			                <div class="mt-checkbox-inline">
+		                        <label class="mt-checkbox mt-checkbox-outline" style="margin-bottom: 0px">
+		                            <input type="checkbox" id="use-product" name="use_product" value="1" 
+		                            @if ( old('use_product') == "1" || !empty($data['use_product']) )
+		                                checked 
+		                            @endif> Use Product
+		                            <span></span>
+		                        </label>
+		                    </div>
+                        </div>
+	                </div>
+                    <div class="form-group" id="form-select-product">
+                        <label class="col-md-3 control-label">Select Product</label>
                         <div class="col-md-7">
                         	<div id="data-product" style="padding-right: 15px">
                         	</div>
                         	<a href="javascript:;" data-repeater-create class="btn btn-success" onclick="addProduct();updateProductValue()"><i class="fa fa-plus"></i> New Product</a>
                         </div>
                     </div>
-                </div>
-                <div class="form-group" id="form-promo">
-					<label class="col-md-3 control-label">Promo Code </label>
-					<div class="col-md-4">
-						<select id="select-promo" name="promo" class="form-control select2">
-							<option value="0">Not using Promo</option>
-						</select>
+
+	                {{-- Promo --}}
+	                <div class="form-group" id="form-promo">
+						<label class="col-md-3 control-label">Promo Code </label>
+						<div class="col-md-4">
+							<select id="select-promo" name="promo" class="form-control select2">
+								<option value="0">Not using Promo</option>
+							</select>
+						</div>
 					</div>
-				</div>
+
+					{{-- Payment --}}
+	                <div class="form-group" id="form-payment" >
+                        <label class="col-md-3 control-label">Select Payment
+                            <i class="fa fa-question-circle tooltips" data-original-title="Select Payment" data-container="body"></i>
+                        </label>
+                        <div class="col-md-4">
+							<select id="select-payment" name="payment" class="form-control select2">
+								<option value="0">No Specific Payment</option>
+								@php
+									$selected_payment = old('payment') ?? $data['payment_method'] ?? null;
+								@endphp
+                                @if (!empty($payment_list))
+                                    @foreach($payment_list as $payment)
+                                        <option value="{{ $payment['code'] }}" 
+                                        	@if ( $selected_payment??false ) 
+                                        		@if( $payment['code'] == $selected_payment ) selected 
+                                        		@endif 
+                                        	@endif
+                                        >{{ $payment['payment_method'] }}</option>
+                                    @endforeach
+                                @endif
+							</select>
+                        </div>
+                    </div>
+
+                </div>
+
                 <div class="form-actions">
                     {{ csrf_field() }}
                     <div class="row">
