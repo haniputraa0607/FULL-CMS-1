@@ -76,9 +76,9 @@ class UserRatingController extends Controller
 
         $post['id_transaction'] = $data['rating']['id_transaction'];
         $post['type'] = 'trx';
-        $post['check'] = 1;
+        $post['admin'] = 1;
 
-        $check = MyHelper::post('transaction/be/detail/webview?log_save=0', $post);
+        $check = MyHelper::post('transaction/be/detail?log_save=0', $post);
         // $check = MyHelper::post('outletapp/order/detail/view?log_save=0', $data);
         if (isset($check['status']) && $check['status'] == 'success') {
             $data['data'] = $check['result'];
