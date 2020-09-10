@@ -65,7 +65,7 @@ class RedirectComplexController extends Controller
         	if(MyHelper::hasAccess([97], $configs)){
                 $data['brand_list'] = parent::getData(MyHelper::get('brand/be/list'));
             }
-            $data['payment_list'] = parent::getData(MyHelper::post('transaction/available-payment',['show_all' => 1]));
+            $data['payment_list'] = parent::getData(MyHelper::post('transaction/available-payment',['show_all' => 0]));
             
         	return view('redirectcomplex::create', $data);
         }
@@ -129,7 +129,7 @@ class RedirectComplexController extends Controller
         	if(MyHelper::hasAccess([97], $configs)){
                 $data['brand_list'] = parent::getData(MyHelper::get('brand/be/list'));
             }
-            $data['payment_list'] = parent::getData(MyHelper::post('transaction/available-payment',['show_all' => 1]));
+            $data['payment_list'] = parent::getData(MyHelper::post('transaction/available-payment',['show_all' => 0]));
 
         	return view('redirectcomplex::create', $data);
         }

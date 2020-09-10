@@ -313,7 +313,7 @@
                         </label>
                         <div class="col-md-7">
                             <div class="input-icon right">
-                                <input type="text" placeholder="Redirect Complex Name" class="form-control" name="name" value="{{ old('name')??$data['name']??null }}" autocomplete="off">
+                                <input type="text" placeholder="Redirect Complex Name" class="form-control" name="name" value="{{ old('name')??$data['name']??null }}" autocomplete="off" required>
                             </div>
                         </div>
                     </div>
@@ -458,7 +458,7 @@
                                         		@if( $payment['code'] == $selected_payment ) selected 
                                         		@endif 
                                         	@endif
-                                        >{{ $payment['payment_method'] }}</option>
+                                        >{{ $payment['payment_method'] == 'Ovo' ? strtoupper($payment['payment_method']) : $payment['payment_method'] }}</option>
                                     @endforeach
                                 @endif
 							</select>
