@@ -21,9 +21,10 @@
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-select2.min.js') }}" type="text/javascript"></script>
 
     @php
-    	$outlet 	= [];
-		$product 	= [];
-    	$promo 		= $data['promo_reference']??null;
+    	$outlet 		= [];
+		$product 		= [];
+    	$promo 			= $data['promo_reference']??null;
+    	$outlet_type 	= $data['outlet_type']??null;
     	if (isset($data['outlet_type']) && $data['outlet_type'] == "specific") {
 			$outlet_type = $data['outlet_type'];
 			$outlet = [];
@@ -43,7 +44,7 @@
 
     @if(MyHelper::hasAccess([97], $configs))
     <script type="text/javascript">
-    	$("#form-outlet, #form-product, #form-promo").hide();
+    	$("#form-outlet, #form-product, #form-promo, #form-select-product, #form-payment, #form-transaction-type").hide();
     </script>
     @endif
 
@@ -55,6 +56,7 @@
     	var product = JSON.parse('{!!json_encode($product)!!}');
     	var promo = JSON.parse('{!!json_encode($promo)!!}');
     	var outlet = JSON.parse('{!!json_encode($outlet)!!}');
+    	var outlet_type = JSON.parse('{!!json_encode($outlet_type)!!}');
 
     	function addProduct(selected_product = null, qty = null) {
 			let count 	= $('#data-product > div').length;
@@ -216,32 +218,34 @@
 			loadPromo();
 		}
 
+		function toggleOutlet(outlet_type) {
+			if(outlet_type == 'specific') {
+				$('#selectOutlet, #form-product').show();
+				$('#select-outlet').attr('required', true);
+				$("#use-product").prop("checked", false).change();
+				$("#form-payment, #form-transaction-type").hide();
+			}
+			else if(outlet_type == 'near me') {
+				$('#selectOutlet, #form-payment, #form-transaction-type').hide();
+				$('#select-outlet').removeAttr('required');
+				$('#form-product').show();
+				$("#use-product").prop("checked", false).change();
+				outlet = null;
+			}
+			else {
+				$('#select-outlet').removeAttr('required');
+				$("#use-product").prop("checked", false).change();
+				$('#selectOutlet, #form-product, #form-payment, #form-select-product, #form-transaction-type').hide();
+				outlet = null;
+			}
+		}
+
         $(document).ready(function() {
-			loadProduct();
-	    	loadOutlet();
-	    	loadPromo();
 
-	        $('input[name=outlet_type]').on('click', function(){
+
+	        $('input[name=outlet_type]').on('click change', function(){
 				outlet_type = $(this).val();
-
-				if(outlet_type == 'specific') {
-					$('#selectOutlet, #form-product').show();
-					$('#select-outlet').attr('required', true);
-					$("#use-product").prop("checked", false).change();
-					$("#form-payment").hide();
-				}
-				else if(outlet_type == 'near me') {
-					$('#selectOutlet, #form-payment').hide();
-					$('#select-outlet').removeAttr('required');
-					$('#form-product').show();
-					$("#use-product").prop("checked", false).change();
-					outlet = null;
-				}
-				else {
-					$('#select-outlet').removeAttr('required');
-					$('#selectOutlet, #form-product, #form-payment, #form-select-product').hide();
-					outlet = null;
-				}
+				toggleOutlet(outlet_type);
 				loadPromo();
 			});
 
@@ -255,7 +259,8 @@
 					$("#form-outlet, #form-product, #form-promo").show();
 				}
 				else {
-					$("#form-outlet, #form-product, #form-promo").hide();
+					$("#form-outlet, #form-product, #form-promo, #form-select-product, #form-payment, #form-transaction-type").hide();
+					$("#use-product").prop("checked", false).change();
 				}
 			});
 
@@ -263,15 +268,25 @@
 	    		let check = document.getElementById("use-product").checked;
 	    		if (check) {
 	    			$("#form-select-product").show().attr('required',true);
-	    			$("#form-payment").show();
+	    			$("#form-payment, #form-transaction-type").show();
 	    		}else{
 	    			$("#form-select-product").hide().attr('required',true);
-	    			$("#form-payment").hide();
+	    			$("#form-payment, #form-transaction-type").hide();
 	    		}
 	    	});
 
 	    	$("#select-brand").change();
 	    	$("#use-product").change();
+
+	    	// manually show form product on load because toggleOutlet will remove checked
+	    	if (outlet_type !== null && brand) {
+	    		$("#form-product").show();
+	    	}
+	    	// toggleOutlet(outlet_type);
+	    	// $('input[name=outlet_type]').click();
+			loadProduct();
+	    	loadOutlet();
+	    	loadPromo();
         });
 
     </script>
@@ -326,7 +341,7 @@
 	                            <i class="fa fa-question-circle tooltips" data-original-title="Select Brand" data-container="body"></i>
 	                        </label>
 	                        <div class="col-md-7">
-								<select id="select-brand" name="brand[]" class="form-control select2-multiple select2-hidden-accessible" multiple="multiple" tabindex="-1" aria-hidden="true">
+								<select id="select-brand" name="brand[]" class="form-control select2-multiple select2-hidden-accessible" multiple="multiple" tabindex="-1" aria-hidden="true" required>
 									<option></option>
 									@php
 										$selected_brand = [];
@@ -439,6 +454,37 @@
 							</select>
 						</div>
 					</div>
+
+					{{-- Transaction type --}}
+					{{-- 
+	                <div class="form-group" id="form-transaction-type" >
+                        <label class="col-md-3 control-label">Transaction Type
+                            <i class="fa fa-question-circle tooltips" data-original-title="Select Transaction Type" data-container="body"></i>
+                        </label>
+                        <div class="col-md-4">
+							<select id="select-transaction-type" name="transaction_type" class="form-control select2">
+								<option value="0">No Transaction Type</option>
+								@php
+									$selected_transaction_type = old('transaction_type') ?? $data['transaction_type'] ?? null;
+									$transaction_type_list = [
+										'Pickup Order',
+										'GO-SEND'
+									];
+								@endphp
+                                @if (!empty($transaction_type_list))
+                                    @foreach($transaction_type_list as $transaction_type)
+                                        <option value="{{ $transaction_type }}" 
+                                        	@if ( $selected_transaction_type??false ) 
+                                        		@if( $transaction_type == $selected_transaction_type ) selected 
+                                        		@endif 
+                                        	@endif
+                                        >{{ $transaction_type }}</option>
+                                    @endforeach
+                                @endif
+							</select>
+                        </div>
+                    </div>
+					--}}
 
 					{{-- Payment --}}
 	                <div class="form-group" id="form-payment" >
