@@ -1,3 +1,8 @@
+<?php
+	use App\Lib\MyHelper;
+    $configs    		= session('configs');
+?>
+
 @extends('layouts.main-closed')
 
 @section('page-style')
@@ -820,7 +825,9 @@
 										<option value="Contact Us" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Contact Us") selected @endif>Contact Us</option>
 										<option value="Link" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Link") selected @endif>Link</option>
 										<option value="Logout" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Logout") selected @endif>Logout</option>
+										@if(MyHelper::hasAccess([111], $configs))
 										<option value="Complex" @if(isset($result['campaign_push_clickto']) && $result['campaign_push_clickto'] == "Complex") selected @endif>Complex</option>
+										@endif
 									</select>
 								</div>
 							</div>
