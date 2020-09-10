@@ -1250,7 +1250,9 @@ $configs    		= session('configs');
                 												<option value="Contact Us" @if(isset($result['contents'][$x-1]['promotion_push_clickto']) && $result['contents'][$x-1]['promotion_push_clickto'] == "Contact Us") selected @endif>Contact Us</option>
                 												<option value="Link" @if(isset($result['contents'][$x-1]['promotion_push_clickto']) && $result['contents'][$x-1]['promotion_push_clickto'] == "Link") selected @endif>Link</option>
                 												<option value="Logout" @if(isset($result['contents'][$x-1]['promotion_push_clickto']) && $result['contents'][$x-1]['promotion_push_clickto'] == "Logout") selected @endif>Logout</option>
+                												@if(MyHelper::hasAccess([111], $configs))
                 												<option value="Complex" @if(isset($result['contents'][$x-1]['promotion_push_clickto']) && $result['contents'][$x-1]['promotion_push_clickto'] == "Complex") selected @endif>Complex</option>
+                												@endif
                 											</select>
 														</div>
 													</div>
@@ -2530,7 +2532,9 @@ $configs    		= session('configs');
 													<option value="Contact Us" @if(isset($result['contents'][0]['promotion_push_clickto']) && $result['contents'][0]['promotion_push_clickto'] == "Contact Us") selected @endif>Contact Us</option>
 													<option value="Link" @if(isset($result['contents'][0]['promotion_push_clickto']) && $result['contents'][0]['promotion_push_clickto'] == "Link") selected @endif>Link</option>
 													<option value="Logout" @if(isset($result['contents'][0]['promotion_push_clickto']) && $result['contents'][0]['promotion_push_clickto'] == "Logout") selected @endif>Logout</option>
+													@if(MyHelper::hasAccess([111], $configs))
 													<option value="Complex" @if(isset($result['contents'][0]['promotion_push_clickto']) && $result['contents'][0]['promotion_push_clickto'] == "Complex") selected @endif>Complex</option>
+													@endif
 												</select>
 											</div>
 										</div>
