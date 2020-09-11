@@ -792,8 +792,8 @@
 																					<th> Detail </th>
 																				</tr>
 																			</thead>
-																			@if(!empty($profile['history_balance']))
-																				@foreach ($profile['history_balance'] as $balance)
+																			@if(!empty($profile['history_balance_trx']))
+																				@foreach ($profile['history_balance_trx'] as $balance)
 																					<tr
 																					{{--@if ($balance['source'] == 'voucher') style="color: red" @else style="color: blue" @endif --}}
 																					>
@@ -803,13 +803,13 @@
 																						<td> {{ date('H:i:s', strtotime($balance['created_at'])) }} </td>
 																						@if ($balance['source'] != 'voucher' || $balance['source'] != 'Complete Profile')
 																							<td>
-																							<a href="{{ url('transaction/detail/'.$balance['detail_trx']['id_transaction'].'/'.$balance['detail_trx']['trasaction_type']) }}">
+																							<a href="{{ url('transaction/detail/'.$balance['id_transaction'].'/'.$balance['trasaction_type']) }}">
 
-																							    {{ $balance['detail_trx']['transaction_receipt_number'] }}
+																							    {{ $balance['transaction_receipt_number'] }}
 																							</a>
 																							</td>
 																						@else
-																							<td> {{ $balance['detail_trx']['trx_id'] }} </td>
+																							<td> {{ $balance['trx_id'] }} </td>
 																						@endif
 
 																					</tr>
