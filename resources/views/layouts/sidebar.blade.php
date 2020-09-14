@@ -1646,7 +1646,7 @@
 			@if(MyHelper::hasAccess([111], $configs))
 				<li class="nav-item {{($menu_active == 'redirect-complex') ? 'active' : ''}}">
 					<a href="javascript:;" class="nav-link nav-toggle">
-						<i class="icon-feed"></i>
+						<i class="fa fa-external-link"></i>
 						<span class="title">Redirect Complex</span>
 						<span class="arrow {{($menu_active == 'redirect-complex') ? 'open' : ''}}"></span>
 					</a>

@@ -65,6 +65,7 @@ class RedirectComplexController extends Controller
         	if(MyHelper::hasAccess([97], $configs)){
                 $data['brand_list'] = parent::getData(MyHelper::get('brand/be/list'));
             }
+
             $data['payment_list'] = parent::getData(MyHelper::post('transaction/available-payment',['show_all' => 0]));
             
         	return view('redirectcomplex::create', $data);
@@ -174,6 +175,12 @@ class RedirectComplexController extends Controller
     {
     	$post = $request->except('_token');
         $action = MyHelper::post('redirect-complex/getData', $post);
+
+        if (($post['get']??false) == 'promo-detail' && ($action['promo_id']??false) && ($action['promo_created']??false)) {
+        	// $promo_slug = MyHelper::createSlug($action['promo_id'],$action['promo_created']);
+        	$promo_slug = $action['promo_id'];
+        	$action['promo_url'] = url('promo-campaign/detail/'.$promo_slug);
+        }
 
         return $action;
     }

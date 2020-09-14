@@ -10,6 +10,14 @@
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-summernote/summernote.css')}}" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+    	.promo-value {
+    		margin-left: -20px;
+    	}
+    	.margin-bottom-0 {
+    		margin-bottom: 0px!important;
+    	}
+    </style>
 @endsection
 
 @section('page-script')
@@ -21,10 +29,12 @@
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-select2.min.js') }}" type="text/javascript"></script>
 
     @php
-    	$outlet 	= [];
-		$product 	= [];
-    	$promo 		= $data['promo_reference']??null;
+    	$outlet 		= null;
+		$product 		= null;
+    	$promo 			= $data['promo_reference']??null;
+    	$outlet_type 	= $data['outlet_type']??null;
     	if (isset($data['outlet_type']) && $data['outlet_type'] == "specific") {
+    		$outlet = [];
 			$outlet_type = $data['outlet_type'];
 			$outlet = [];
 			for ($i=0; $i < count($data['outlets']); $i++) { 
@@ -32,6 +42,7 @@
 			}
 		}
 		if (!empty($data['products'])) {
+			$product = [];
 			foreach ($data['products'] as $value) {
 				$product[] = [
 					'id' => $value['id_product'],
@@ -43,7 +54,7 @@
 
     @if(MyHelper::hasAccess([97], $configs))
     <script type="text/javascript">
-    	$("#form-outlet, #form-product, #form-promo").hide();
+    	$("#form-outlet, #form-product, #form-promo, #form-select-product, #form-payment, #form-transaction-type, #form-promo-detail").hide();
     </script>
     @endif
 
@@ -55,6 +66,35 @@
     	var product = JSON.parse('{!!json_encode($product)!!}');
     	var promo = JSON.parse('{!!json_encode($promo)!!}');
     	var outlet = JSON.parse('{!!json_encode($outlet)!!}');
+    	var outlet_type = JSON.parse('{!!json_encode($outlet_type)!!}');
+    	var xhr_promo_detail = null;
+    	var xhr_product = null;
+    	var xhr_promo = null;
+    	var xhr_outlet = null;
+
+    	function stopAjax(ajax = 'all')
+    	{
+    		switch (ajax) {
+				case 'promo_detail':
+					xhr_promo_detail = null;
+					break;
+				case 'product':
+					xhr_product = null;
+					break;
+				case 'promo':
+					xhr_promo = null;
+					break;
+				case 'outlet':
+					xhr_outlet = null;
+					break;
+				default:
+					xhr_promo_detail = null;
+			    	xhr_product = null;
+			    	xhr_promo = null;
+			    	xhr_outlet = null;
+					break;
+			}
+    	}
 
     	function addProduct(selected_product = null, qty = null) {
 			let count 	= $('#data-product > div').length;
@@ -105,7 +145,7 @@
 		}
 
 		function loadOutlet(){
-			$.ajax({
+			xhr_outlet = $.ajax({
 				type: "post",
 				url: "{{url('redirect-complex/get-data')}}",
 				data : {
@@ -115,6 +155,9 @@
 				},
 				dataType: "json",
 				success: function(data){
+					if (xhr_outlet === null) {
+						return;
+					}
 					removeChildElement('select-outlet');
 					if (data.status == 'fail') {
 						$.ajax(this)
@@ -125,20 +168,18 @@
 						$('#select-outlet').append("<option id='outlet"+value.id_outlet+"' value='"+value.id_outlet+"'>"+value.outlet+"</option>");
 					});
 
-				},
-				complete: function(data){
-					if (data.responseJSON.status != 'fail') {
+					if (data.status != 'fail') {
 						
 						$.each(outlet, function( key, value ) {
 							$("#outlet"+value+"").attr('selected', true)
 						});
 					}
-				}
+				},
 			});
 		}
 
 		function loadProduct(){
-			$.ajax({
+			xhr_product = $.ajax({
 				type: "POST",
 				url: "{{url('redirect-complex/get-data')}}",
 				data : {
@@ -149,10 +190,13 @@
 				},
 				dataType: "json",
 				success: function(data){
+					if (xhr_product === null) {
+						return;
+					}
 					removeChildElement('data-product');
 					if (data.status == 'fail') {
-						$.ajax(this)
-						return
+						$.ajax(this);
+						return;
 					}
 					ajax_product_data = data;
 
@@ -164,7 +208,7 @@
 		}
 
 		function loadPromo(){
-			$.ajax({
+			xhr_promo = $.ajax({
 				type: "POST",
 				url: "{{url('redirect-complex/get-data')}}",
 				data : {
@@ -177,6 +221,10 @@
 				},
 				dataType: "json",
 				success: function(data){
+					if (xhr_promo === null) {
+						return;
+					}
+					$("#promo-detail").hide();
 					removeChildElement('select-promo');
 					if (data.status == 'fail') {
 						$.ajax(this)
@@ -191,6 +239,43 @@
 						}
 						$('#select-promo').append("<option id='promo"+value.id_promo+"' value='"+value.id_promo+"' "+selected+">"+value.promo+"</option>");
 					});
+					$("#select-promo").change();
+				}
+			});
+		}
+
+		function loadPromoDetail(promo_type, id_promo){
+
+			xhr_promo_detail = $.ajax({
+				type: "POST",
+				url: "{{url('redirect-complex/get-data')}}",
+				data : {
+					"get" 		: 'promo-detail',
+					"type" 		: promo_type,
+					"id_promo" 	: id_promo,
+					"_token" 	: token
+				},
+				dataType: "json",
+				success: function(data){
+					if (xhr_promo_detail === null) {
+						return;
+					}
+					$("#form-promo-detail").hide();
+					if (data.status == 'fail') {
+						$.ajax(this)
+						return
+					}
+
+					$("#promo-detail-name").text(data.promo_name);
+					$("#promo-detail-code").text(data.promo_code);
+					$("#promo-detail-date-start").text(data.promo_date_start);
+					$("#promo-detail-date-end").text(data.promo_date_end);
+					$("#promo-detail-total-coupon").text(data.promo_total_coupon);
+					$("#promo-detail-promo-type").text(data.promo_type);
+					$("#promo-detail-outlet").text(data.promo_outlet);
+					$("#promo-detail-more").attr("href", data.promo_url)
+					$("#promo-detail-used-coupon").text(data.promo_used_coupon);
+					$("#form-promo-detail").show();
 				}
 			});
 		}
@@ -216,34 +301,47 @@
 			loadPromo();
 		}
 
+		function toggleOutlet(outlet_type) {
+			this.outlet_type = outlet_type;
+			if(outlet_type == 'specific') {
+				$('#selectOutlet, #form-product').show();
+				$('#select-outlet').attr('required', true);
+				$("#use-product").prop("checked", false).change();
+				$("#form-payment, #form-transaction-type").hide();
+			}
+			else if(outlet_type == 'near me') {
+				$('#selectOutlet, #form-payment, #form-transaction-type').hide();
+				$('#select-outlet').removeAttr('required');
+				$('#form-product').show();
+				$("#use-product").prop("checked", false).change();
+				outlet = null;
+			}
+			else {
+				$('#select-outlet').removeAttr('required');
+				$("#use-product").prop("checked", false).change();
+				$('#selectOutlet, #form-product, #form-payment, #form-select-product, #form-transaction-type').hide();
+				outlet = null;
+			}
+		}
+
         $(document).ready(function() {
-			loadProduct();
-	    	loadOutlet();
-	    	loadPromo();
 
-	        $('input[name=outlet_type]').on('click', function(){
+	        $('input[name=outlet_type]').on('click change', function(){
 				outlet_type = $(this).val();
-
-				if(outlet_type == 'specific') {
-					$('#selectOutlet, #form-product').show();
-					$('#select-outlet').attr('required', true);
-					$("#use-product").prop("checked", false).change();
-					$("#form-payment").hide();
-				}
-				else if(outlet_type == 'near me') {
-					$('#selectOutlet, #form-payment').hide();
-					$('#select-outlet').removeAttr('required');
-					$('#form-product').show();
-					$("#use-product").prop("checked", false).change();
-					outlet = null;
-				}
-				else {
-					$('#select-outlet').removeAttr('required');
-					$('#selectOutlet, #form-product, #form-payment, #form-select-product').hide();
-					outlet = null;
-				}
+				toggleOutlet(outlet_type);
 				loadPromo();
 			});
+			
+	    	$("#select-promo").on('change', function(){
+	    		let id_promo 	= $(this).val();
+	    		let promo_type 	= 'promo_campaign';
+	    		if (id_promo != 0) {
+	    			loadPromoDetail(promo_type, id_promo);
+	    		}
+	    		else{
+	    			$('#form-promo-detail').hide();
+	    		}
+	    	});
 
 			$('#select-brand').on('change', function(){
 				brand = $(this).val();
@@ -252,10 +350,18 @@
 				loadPromo();
 
 				if (brand != null && brand.length > 0) {
-					$("#form-outlet, #form-product, #form-promo").show();
+					$("#form-outlet, #form-promo").show();
+					$("#select-promo").change();
+					toggleOutlet(outlet_type);
 				}
 				else {
-					$("#form-outlet, #form-product, #form-promo").hide();
+					xhr_promo_detail.abort();
+					xhr_promo.abort();
+					xhr_product.abort();
+					xhr_outlet.abort();
+					stopAjax();
+					$("#form-outlet, #form-product, #form-promo, #form-select-product, #form-payment, #form-transaction-type, #form-promo-detail").hide();
+					$("#use-product").prop("checked", false).change();
 				}
 			});
 
@@ -263,15 +369,34 @@
 	    		let check = document.getElementById("use-product").checked;
 	    		if (check) {
 	    			$("#form-select-product").show().attr('required',true);
-	    			$("#form-payment").show();
+	    			$("#form-payment, #form-transaction-type").show();
 	    		}else{
 	    			$("#form-select-product").hide().attr('required',true);
-	    			$("#form-payment").hide();
+	    			$("#form-payment, #form-transaction-type").hide();
 	    		}
 	    	});
 
+
 	    	$("#select-brand").change();
 	    	$("#use-product").change();
+
+	    	// manually show form product on load because toggleOutlet will remove checked
+	    	if (outlet_type !== null && brand) {
+	    		if (outlet_type == 'specific') {
+	    			$("#select-outlet").attr('required', true);
+	    		}
+	    		$("#form-product").show();
+	    		if (product && product != []) {
+	    			$("#use-product").prop("checked", true).change();
+	    		}
+	    	}
+	    	// toggleOutlet(outlet_type);
+	    	// $('input[name=outlet_type]').click();
+			loadProduct();
+	    	loadOutlet();
+	    	loadPromo();
+
+	    	// $("#select-promo").change();
         });
 
     </script>
@@ -326,7 +451,7 @@
 	                            <i class="fa fa-question-circle tooltips" data-original-title="Select Brand" data-container="body"></i>
 	                        </label>
 	                        <div class="col-md-7">
-								<select id="select-brand" name="brand[]" class="form-control select2-multiple select2-hidden-accessible" multiple="multiple" tabindex="-1" aria-hidden="true">
+								<select id="select-brand" name="brand[]" class="form-control select2-multiple select2-hidden-accessible" multiple="multiple" tabindex="-1" aria-hidden="true" required>
 									<option></option>
 									@php
 										$selected_brand = [];
@@ -433,12 +558,98 @@
 	                {{-- Promo --}}
 	                <div class="form-group" id="form-promo">
 						<label class="col-md-3 control-label">Promo Code </label>
-						<div class="col-md-4">
+						<div class="col-md-7">
 							<select id="select-promo" name="promo" class="form-control select2">
 								<option value="0">Not using Promo</option>
 							</select>
 						</div>
 					</div>
+
+					{{-- Detail Promo --}}
+					<div class="form-group" id="form-promo-detail">
+						<label class="col-md-3 control-label"></label>
+						<div class="col-md-7 profile-info">
+                            <div class="margin-bottom-0 profile-info portlet light bordered">
+                                <div class="row static-info">
+                                    <div class="col-md-3 name">Name</div>
+                                    <div class="col-md-1 name">:</div>
+                                    <div class="col-md-8 value promo-value"><span id="promo-detail-name"></span></div>
+                                </div>
+                                <div class="row static-info">
+                                    <div class="col-md-3 name">Promo Code</div>
+                                    <div class="col-md-1 name">:</div>
+                                    <div class="col-md-8 value promo-value"><span id="promo-detail-code"></span></div>
+                                </div>
+                                <div class="row static-info">
+                                    <div class="col-md-3 name">Date Start</div>
+                                    <div class="col-md-1 name">:</div>
+                                    <div class="col-md-8 value promo-value"><span id="promo-detail-date-start"></span></div>
+                                </div>
+                                <div class="row static-info">
+                                    <div class="col-md-3 name">Date End</div>
+                                    <div class="col-md-1 name">:</div>
+                                    <div class="col-md-8 value promo-value"><span id="promo-detail-date-end"></span></div>
+                                </div>
+                                <div class="row static-info">
+                                    <div class="col-md-3 name">Total Code</div>
+                                    <div class="col-md-1 name">:</div>
+                                    <div class="col-md-8 value promo-value"><span id="promo-detail-total-coupon"></span></div>
+                                </div>
+                                <div class="row static-info">
+                                    <div class="col-md-3 name">Used Code</div>
+                                    <div class="col-md-1 name">:</div>
+                                    <div class="col-md-8 value promo-value"><span id="promo-detail-used-coupon"></span></div>
+                                </div>
+                                <div class="row static-info">
+                                    <div class="col-md-3 name">Promo Type</div>
+                                    <div class="col-md-1 name">:</div>
+                                    <div class="col-md-8 value promo-value"><span id="promo-detail-promo-type"></span></div>
+                                </div>
+                                <div class="row static-info">
+                                    <div class="col-md-3 name">Outlet</div>
+                                    <div class="col-md-1 name">:</div>
+                                    <div class="col-md-8 value promo-value"><span id="promo-detail-outlet"></span></div>
+                                </div>
+                                
+                                <div class="row static-info">
+                                    <div class="col-md-12 value">
+                                        <a class="btn blue" target="_blank" href="" id="promo-detail-more">more detail</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+
+					{{-- Transaction type --}}
+					{{-- 
+	                <div class="form-group" id="form-transaction-type" >
+                        <label class="col-md-3 control-label">Transaction Type
+                            <i class="fa fa-question-circle tooltips" data-original-title="Select Transaction Type" data-container="body"></i>
+                        </label>
+                        <div class="col-md-4">
+							<select id="select-transaction-type" name="transaction_type" class="form-control select2">
+								<option value="0">No Transaction Type</option>
+								@php
+									$selected_transaction_type = old('transaction_type') ?? $data['transaction_type'] ?? null;
+									$transaction_type_list = [
+										'Pickup Order',
+										'GO-SEND'
+									];
+								@endphp
+                                @if (!empty($transaction_type_list))
+                                    @foreach($transaction_type_list as $transaction_type)
+                                        <option value="{{ $transaction_type }}" 
+                                        	@if ( $selected_transaction_type??false ) 
+                                        		@if( $transaction_type == $selected_transaction_type ) selected 
+                                        		@endif 
+                                        	@endif
+                                        >{{ $transaction_type }}</option>
+                                    @endforeach
+                                @endif
+							</select>
+                        </div>
+                    </div>
+					--}}
 
 					{{-- Payment --}}
 	                <div class="form-group" id="form-payment" >
