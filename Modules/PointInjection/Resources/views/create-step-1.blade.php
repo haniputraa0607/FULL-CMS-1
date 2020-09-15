@@ -334,6 +334,8 @@
 		$("input[name='point_injection_media[]']").change(function() {
 			if($('#pushNotif').is(':checked')) {
 				$('#formPushNotif').collapse('show')
+				$("#point_injection_push_subject").prop('required',true);
+				$("#point_injection_push_content").prop('required',true);
 			} else {
 				hideDisableInput('#formPushNotif')
 			}
