@@ -61,9 +61,9 @@
                     <li class="">
                         <a href="#tab_IOS" data-toggle="tab" aria-expanded="false"> IOS Setting </a>
                     </li>
-                    <li class="">
-                        <a href="#tab_OutletApps" data-toggle="tab" aria-expanded="false"> Outlet Apps Setting </a>
-                    </li>
+{{--                    <li class="">--}}
+{{--                        <a href="#tab_OutletApps" data-toggle="tab" aria-expanded="false"> Outlet Apps Setting </a>--}}
+{{--                    </li>--}}
                     <li class="dropdown">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> Display Setting
                             <i class="fa fa-angle-down"></i>
