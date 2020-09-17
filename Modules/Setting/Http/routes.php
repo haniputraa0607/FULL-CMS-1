@@ -36,7 +36,7 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'setting'
     Route::any('confirmation-messages','SettingController@confirmationMessages');
 
     /* confirmation messages */
-    Route::any('popup-messages','SettingController@popupMessages');
+    Route::any('otp-messages','SettingController@otpMessages');
 
     /*Text menu*/
     Route::any('text_menu', 'SettingController@textMenu');

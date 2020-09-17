@@ -1204,33 +1204,37 @@ class SettingController extends Controller
         }
     }
 
-    public function popupMessages(Request $request){
+    public function otpMessages(Request $request){
         $data = [
             'title'          => 'Popup Messages',
-            'menu_active'    => 'user',
+            'menu_active'    => 'setting',
             'submenu_active' => 'setting-popup-messages',
         ];
         if($post=$request->except('_token')){
             $data=[
                 'update'=>[
-                    'message_phone_check'=>['value_text',$post['message_phone_check']],
                     'message_send_otp_miscall'=>['value_text',$post['message_send_otp_miscall']],
                     'message_send_otp_wa'=>['value_text',$post['message_send_otp_wa']],
-                    'message_send_otp_sms'=>['value_text',$post['message_send_otp_sms']]
+                    'message_send_otp_sms'=>['value_text',$post['message_send_otp_sms']],
+                    'message_sent_otp_miscall'=>['value_text',$post['message_sent_otp_miscall']],
+                    'message_sent_otp_wa'=>['value_text',$post['message_sent_otp_wa']],
+                    'message_sent_otp_sms'=>['value_text',$post['message_sent_otp_sms']]
                 ]
             ];
             $result = MyHelper::post('setting/update2', $data);
             if(($result['status']??'')=='success'){
-                return redirect('setting/popup-messages')->with('success',['popup messages has been updated']);
+                return redirect('setting/otp-messages')->with('success',['popup messages has been updated']);
             }else{
                 return back()->withErrors($result['messages']??['Something went wrong']);
             }
         }else{
-            $message_phone_check=MyHelper::post('setting',['key'=>'message_phone_check'])['result']['value_text']??'Anda akan mendaftar menggunakan nomor <b>%phone%</b>. Apakah nomor telepon yang Anda masukkan sudah benar?';
             $message_send_otp_miscall=MyHelper::post('setting',['key'=>'message_send_otp_miscall'])['result']['value_text']??'Kami akan mengirimkan kode OTP melalui Missed Call ke %phone%.<br/>Anda akan mendapatkan panggilan dari nomor 6 digit.<br/>Nomor panggilan tsb adalah Kode OTP Anda.';
             $message_send_otp_wa=MyHelper::post('setting',['key'=>'message_send_otp_wa'])['result']['value_text']??'Kami akan mengirimkan kode OTP melalui Whatsapp.<br/>Pastikan nomor %phone% terdaftar di Whatsapp.';
             $message_send_otp_sms=MyHelper::post('setting',['key'=>'message_send_otp_sms'])['result']['value_text']??'Kami akan mengirimkan kode OTP melalui SMS.<br/>Pastikan nomor %phone% aktif.';
-            $data['msg']=compact('message_phone_check', 'message_send_otp_sms', 'message_send_otp_miscall', 'message_send_otp_wa');
+            $message_sent_otp_miscall=MyHelper::post('setting',['key'=>'message_sent_otp_miscall'])['result']['value_text']??'Kami telah mengirimkan PIN ke nomor %phone% melalui Missed Call.';
+            $message_sent_otp_wa=MyHelper::post('setting',['key'=>'message_sent_otp_wa'])['result']['value_text']??'Kami telah mengirimkan PIN ke nomor %phone% melalui Whatsapp.';
+            $message_sent_otp_sms=MyHelper::post('setting',['key'=>'message_sent_otp_sms'])['result']['value_text']??'Kami telah mengirimkan PIN ke nomor %phone% melalui SMS.';
+            $data['msg']=compact('message_send_otp_sms', 'message_send_otp_miscall', 'message_send_otp_wa', 'message_sent_otp_sms', 'message_sent_otp_miscall', 'message_sent_otp_wa');
             return view('setting::confirmation-messages.popup-messages',$data);
         }
     }
