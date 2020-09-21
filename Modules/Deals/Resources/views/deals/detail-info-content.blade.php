@@ -3,23 +3,39 @@
     $datenow = date("Y-m-d H:i:s");
 @endphp
 <div class="row">
-	<div class="col-md-12">
-		@if( $deals_type == 'Promotion' || $deals['deals_total_claimed'] == 0 )
-	    <div class="row static-info">
-	        <div class="col-md-11 value">
-	            <a class="btn blue" href="{{ url('/'.$rpage)}}/step3/{{$deals['id_deals']??$deals['id_deals_promotion_template']}}">Edit Content</a>
-	        </div>
-	    </div>
-	    @endif
+	<div class="col-md-6">
 		<div class="profile-info portlet light bordered">
 		    <div class="row static-info">
-	            <div class="col-md-4 name"> Description :</div>
-	            <div class="col-md-8 value"></div>
+	            <div class="col-md-6 name"> Description :</div>
+	            <div class="col-md-6"></div>
 	        </div>
 	        <div class="row static-info">
-	            <div class="col-md-6 value">{!! $deals['deals_description'] !!}</div>
+	            <div class="col-md-12 value">{!! $deals['deals_description'] !!}</div>
+				@if( $deals_type == 'Promotion' || $deals['deals_total_claimed'] == 0 )
+		        <div class="col-md-12">
+		            <a class="btn blue" href="{{ url('/'.$rpage)}}/step3/{{$deals['id_deals']??$deals['id_deals_promotion_template']}}">Edit Description & Content</a>
+		        </div>
+			    @endif
 	        </div>
 	    </div>
+	</div>
+	<div class="col-md-6">
+		<div class="profile-info portlet light bordered">
+		    <div class="row static-info">
+	            <div class="col-md-6 name"> Custom Outlet Available Text :</div>
+	            <div class="col-md-6"></div>
+	        </div>
+	        <div class="row static-info">
+	            <div class="col-md-12 value">{!! $deals['custom_outlet_text']??null !!}</div>
+			    @if( $deals_type == 'Promotion' || $deals['deals_total_claimed'] == 0 )
+		        <div class="col-md-12">
+		        	<a class="btn blue" href="{{ url('/'.$rpage)}}/step1/{{$deals['id_deals']??$deals['id_deals_promotion_template']}}">Edit Text</a>
+		        </div>
+			    @endif
+	        </div>
+	    </div>
+	</div>
+	<div class="col-md-12">
 
 		<div class="profile-info portlet light bordered">
 	        <div class="row static-info">
