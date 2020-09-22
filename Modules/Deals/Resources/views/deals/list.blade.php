@@ -179,6 +179,8 @@ $grantedFeature     = session('granted_features');
                         <th> Price </th>
                         @if($deals_type != "Hidden" && $deals_type !='WelcomeVoucher')
                             <th> Date Publish </th>
+                        @endif
+                        @if($deals_type != "Hidden")
                             <th> Date Start </th>
                         @endif
                         <th class="middle-center"> Status </th>
@@ -233,6 +235,8 @@ $grantedFeature     = session('granted_features');
                                         {{ date('d M Y', strtotime($value['deals_publish_start'])) }} - {{ date('d M Y', strtotime($value['deals_publish_end'])) }}
                                     @endif
                                 </td>
+                                @endif
+                                @if($deals_type != "Hidden")
                                 <td>
                                     @php
                                         $bulan   = date('m', strtotime($value['deals_start']));
