@@ -70,6 +70,11 @@
 										<span class="title">[Response] Pin Sent</span>
 									</a>
 								</li>
+								<li class="nav-item {{($submenu_active == 'user-autoresponse-pin-create') ? 'active open' : ''}}">
+									<a href="{{url('autoresponse/user/pin-create')}}" class="nav-link ">
+										<span class="title">[Response] Pin Create</span>
+									</a>
+								</li>
 							@endif
 							@if(MyHelper::hasAccess([42], $configs))
 								<li class="nav-item {{($submenu_active == 'user-autoresponse-pin-verify') ? 'active open' : ''}}">
@@ -1918,6 +1923,12 @@
 				<a href="{{url('setting/time-expired')}}" class="nav-link">
 					<i class="fa fa-envelope"></i>
 					<span class="title">Time Expired OTP and Email</span>
+				</a>
+			</li>
+			<li class="nav-item {{($submenu_active == 'setting-popup-messages') ? 'active open' : ''}}">
+				<a href="{{url('setting/otp-messages')}}" class="nav-link ">
+					<i class="fa fa-envelope"></i>
+					<span class="title">OTP Message</span>
 				</a>
 			</li>
 		@endif

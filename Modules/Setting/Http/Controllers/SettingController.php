@@ -1204,6 +1204,41 @@ class SettingController extends Controller
         }
     }
 
+    public function otpMessages(Request $request){
+        $data = [
+            'title'          => 'Popup Messages',
+            'menu_active'    => 'setting',
+            'submenu_active' => 'setting-popup-messages',
+        ];
+        if($post=$request->except('_token')){
+            $data=[
+                'update'=>[
+                    'message_send_otp_miscall'=>['value_text',$post['message_send_otp_miscall']],
+                    'message_send_otp_wa'=>['value_text',$post['message_send_otp_wa']],
+                    'message_send_otp_sms'=>['value_text',$post['message_send_otp_sms']],
+                    'message_sent_otp_miscall'=>['value_text',$post['message_sent_otp_miscall']],
+                    'message_sent_otp_wa'=>['value_text',$post['message_sent_otp_wa']],
+                    'message_sent_otp_sms'=>['value_text',$post['message_sent_otp_sms']]
+                ]
+            ];
+            $result = MyHelper::post('setting/update2', $data);
+            if(($result['status']??'')=='success'){
+                return redirect('setting/otp-messages')->with('success',['popup messages has been updated']);
+            }else{
+                return back()->withErrors($result['messages']??['Something went wrong']);
+            }
+        }else{
+            $message_send_otp_miscall=MyHelper::post('setting',['key'=>'message_send_otp_miscall'])['result']['value_text']??'Kami akan mengirimkan kode OTP melalui Missed Call ke %phone%.<br/>Anda akan mendapatkan panggilan dari nomor 6 digit.<br/>Nomor panggilan tsb adalah Kode OTP Anda.';
+            $message_send_otp_wa=MyHelper::post('setting',['key'=>'message_send_otp_wa'])['result']['value_text']??'Kami akan mengirimkan kode OTP melalui Whatsapp.<br/>Pastikan nomor %phone% terdaftar di Whatsapp.';
+            $message_send_otp_sms=MyHelper::post('setting',['key'=>'message_send_otp_sms'])['result']['value_text']??'Kami akan mengirimkan kode OTP melalui SMS.<br/>Pastikan nomor %phone% aktif.';
+            $message_sent_otp_miscall=MyHelper::post('setting',['key'=>'message_sent_otp_miscall'])['result']['value_text']??'Kami telah mengirimkan PIN ke nomor %phone% melalui Missed Call.';
+            $message_sent_otp_wa=MyHelper::post('setting',['key'=>'message_sent_otp_wa'])['result']['value_text']??'Kami telah mengirimkan PIN ke nomor %phone% melalui Whatsapp.';
+            $message_sent_otp_sms=MyHelper::post('setting',['key'=>'message_sent_otp_sms'])['result']['value_text']??'Kami telah mengirimkan PIN ke nomor %phone% melalui SMS.';
+            $data['msg']=compact('message_send_otp_sms', 'message_send_otp_miscall', 'message_send_otp_wa', 'message_sent_otp_sms', 'message_sent_otp_miscall', 'message_sent_otp_wa');
+            return view('setting::confirmation-messages.popup-messages',$data);
+        }
+    }
+
     public function phoneNumberSetting(Request $request){
         $getSetting = MyHelper::get('setting/phone');
 
