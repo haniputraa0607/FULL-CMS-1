@@ -81,7 +81,12 @@
 				success : function(result) {
 					if (result.status == "success") {
 						var data = result.result;
-						var code = data.response.split('=').pop();
+						var string = data.response;
+						var code = string.substr(string.indexOf("=")+1);
+						if(code.indexOf("&") > -1){
+							code = code.substr(0, code.indexOf("&"));
+						}
+
 						var arrStatusCode = {
 							1 :	'Success',
 							2 :	'Missing Parameter',
@@ -188,6 +193,10 @@
 					@foreach($data as $val)
 						<?php
 						$code = substr($val['response'], strpos($val['response'], "=") + 1);
+						if(strrpos($code, '&') !== false){
+							$code = substr($code, 0, strrpos($code, '&'));
+						}
+
 						if($code == 1){
 							$status = 'Success';
 							echo '<tr>';
