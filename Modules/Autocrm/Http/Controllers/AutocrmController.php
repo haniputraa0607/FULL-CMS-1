@@ -298,6 +298,14 @@ class AutocrmController extends Controller
 		}
 
 		$data['custom'] = $custom;
+
+        if ($subject == 'pin-create') {
+	        $data['click_notification'] = [
+	            ['value' => "No Action",'title' => 'No Action']
+	        ];
+	        return view('users::response_push', $data);
+        }
+
 		// print_r($data);exit;
         return view('users::response', $data);
 	}
