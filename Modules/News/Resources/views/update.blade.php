@@ -970,7 +970,7 @@
                             <div class="col-md-9">
                                 <span class="m-switch">
                                     <label>
-                                    <input type="checkbox" class="make-switch" id="featureLocation" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF" @if (!empty($value['news_event_location_name'])) checked @endif>
+                                    <input type="checkbox" class="make-switch" id="featureLocation" name="toggle_location" data-size="small" data-on-color="info" data-on-text="ON" data-off-color="default" data-off-text="OFF" @if (!empty($value['news_event_location_name'])) checked @endif>
                                     <span></span>
                                     </label>
                                 </span>

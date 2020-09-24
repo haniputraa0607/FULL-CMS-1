@@ -75,7 +75,7 @@ class NewsController extends Controller
 
             $news = array_filter($news);
 
-            if (!isset($news['news_event_location_name'])) {
+            if (!isset($news['toggle_location'])) {
                 unset($news['news_event_latitude']);
                 unset($news['news_event_longitude']);
             }
@@ -285,6 +285,11 @@ class NewsController extends Controller
             if (isset($news['news_content_long'])) {
                 // remove tag <font>
                 $news['news_content_long'] =preg_replace("/<\\/?font(.|\\s)*?>/",'',$news['news_content_long']);
+            }
+
+            if (!isset($news['toggle_location'])) {
+                unset($news['news_event_latitude']);
+                unset($news['news_event_longitude']);
             }
             
             // update data master news
