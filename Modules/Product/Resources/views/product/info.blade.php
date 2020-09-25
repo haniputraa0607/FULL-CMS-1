@@ -134,7 +134,7 @@
         </div>
          <div class="form-group">
             <label class="col-md-3 control-label">
-                Photo <span class="required" aria-required="true">* <br>(300*300) </span>
+                Photo <span class="required" aria-required="true">* <br>(400*400) </span>
                 <i class="fa fa-question-circle tooltips" data-original-title="Gambar Produk" data-container="body"></i>
             </label>
             <div class="col-md-8">
