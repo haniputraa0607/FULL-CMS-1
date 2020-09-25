@@ -186,7 +186,7 @@
                             <div class="col-md-7">
                                 <div class="fileinput fileinput-new" data-provides="fileinput">
                                     <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;">
-                                        <img id="preview_image" src="https://www.placehold.it/200x200/EFEFEF/AAAAAA"/>
+                                        <img id="preview_image" src="https://www.placehold.it/400x400/EFEFEF/AAAAAA"/>
                                     </div>
 
                                     <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>

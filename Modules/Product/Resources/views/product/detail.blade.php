@@ -538,8 +538,8 @@
         });
 
          $(".file").change(function(e) {
-            var widthImg  = 300;
-            var heightImg = 300;
+            var widthImg  = 400;
+            var heightImg = 400;
 
             var _URL = window.URL || window.webkitURL;
             var image, file;
@@ -554,7 +554,7 @@
                     }
                     else {
                         toastr.warning("Please check dimension of your photo.");
-                        $('#imageproduct').children('img').attr('src', 'https://www.placehold.it/300x300/EFEFEF/AAAAAA&amp;text=no+image');
+                        $('#imageproduct').children('img').attr('src', 'https://www.placehold.it/400x400/EFEFEF/AAAAAA&amp;text=no+image');
                         $('#fieldphoto').val("");
 
                     }

@@ -67,7 +67,7 @@
                                         @if(strpos($product_group['product_group_photo'],'default') === false)
                                         <img id="preview_image" src="{{$product_group['product_group_photo']}}"/>
                                          @else
-                                        <img id="preview_image" src="https://www.placehold.it/200x200/EFEFEF/AAAAAA"/>
+                                        <img id="preview_image" src="https://www.placehold.it/400x400/EFEFEF/AAAAAA"/>
                                         @endif
                                     </div>
 
