@@ -61,7 +61,7 @@
 		<div class="col-md-9">\
 			<div class="col-md-5">\
 				<div class="form-group">\
-					<select name="promo_rule[::n::][benefit_id_product]" class="form-control product-selector select2" placeholder="Select product" style="width: 100%!important">::productList::</select>\
+					<select name="promo_rule[::n::][benefit_id_product]" class="form-control product-selector select2" placeholder="Select product" style="width: 100%!important" required>::productList::</select>\
 				</div>\
 			</div>\
 			<div class="col-md-6">\
@@ -290,7 +290,13 @@
 				lastErrorReal=errorNow;
 			}
 			if(listProductSingle){
-				var htmlProduct='<option value="0">Same Product</option>';
+
+				if (product_type == "single") {
+					var htmlProduct='<option value="0">Same Product</option>';
+				}
+				else{
+					var htmlProduct='<option value="">Select Product</option>';
+				}
 				listProductSingle.forEach(function(i){
 					var addthis='';
 					if(it['benefit_id_product']&&it['benefit_id_product']==i['id_product']){
