@@ -80,6 +80,11 @@ class NewsController extends Controller
                 unset($news['news_event_longitude']);
             }
 
+            if (!isset($news['toggle_time'])) {
+                unset($news['news_event_time_start']);
+                unset($news['news_event_time_end']);
+            }
+
             // set tanggal 
             if (isset($news['news_post_date'])) {
                 $news['news_post_date'] = date('Y-m-d', strtotime($news['news_post_date']))." ".date('H:i:s', strtotime($news['news_post_time']));
@@ -290,6 +295,11 @@ class NewsController extends Controller
             if (!isset($news['toggle_location'])) {
                 unset($news['news_event_latitude']);
                 unset($news['news_event_longitude']);
+            }
+
+            if (!isset($news['toggle_time'])) {
+                unset($news['news_event_time_start']);
+                unset($news['news_event_time_end']);
             }
             
             // update data master news
