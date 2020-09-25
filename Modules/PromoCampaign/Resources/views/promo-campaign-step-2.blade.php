@@ -125,7 +125,7 @@
 	$(document).ready(function() {
 		listProduct=[];
 		listProductSingle=[];
-		productLoad = 1;
+		productLoad = 0;
 		product_type = '{!! $result['product_type'] !!}';
 
 		$.ajax({
@@ -142,38 +142,7 @@
 					return
 				}
 				listProductSingle=data;
-			}
-		});
-
-		$.ajax({
-			type: "GET",
-			url: "getData",
-			data : {
-				get : 'Product',
-				type : product_type
-			},
-			dataType: "json",
-			success: function(data){
-				if (data.status == 'fail') {
-					$.ajax(this)
-					return
-				}
-				productLoad = 1;
-				listProduct=data;
-				$.each(data, function( key, value ) {
-					
-					$('#multipleProduct').append("<option id='product"+value.id_product+"' value='"+value.id_product+"'>"+value.product+"</option>");
-					$('#multipleProduct2,#multipleProduct3').append("<option value='"+value.id_product+"'>"+value.product+"</option>");
-				});
-
-			},
-			complete: function(data){
-				if (data.responseJSON.status != 'fail') {
-					selectedProduct = JSON.parse('{!!json_encode($product)!!}')
-					$.each(selectedProduct, function( key, value ) {
-						$("#product"+value+"").attr('selected', true)
-					});
-				}
+				reOrder2();
 			}
 		});
 		// if (productLoad == 0) {
