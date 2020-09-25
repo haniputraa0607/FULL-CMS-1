@@ -1208,6 +1208,7 @@
 												<label class="control-label">Level User</label>
 												<select name="level" class="form-control input-sm select2" data-placeholder="Search Level">
 													<option value="">Select Level...</option>
+													<option value="Super Admin" @if($profile['level'] == 'Super Admin') selected @endif>Super Admin</option>
 													<option value="Admin" @if($profile['level'] == 'Admin') selected @endif>Admin</option>
 													<option value="Customer" @if($profile['level'] == 'Customer') selected @endif>Customer</option>
 												</select>
@@ -1226,6 +1227,13 @@
 												</div>
 											</div>
 											<div class="form-group">
+												<label class="control-label">OTP Request Status</label>
+												<select name="otp_request_status" class="form-control input-sm select2" placeholder="Search Status">
+													<option value="Can Request" @if($profile['otp_request_status'] == 'Can Request') selected @endif>Can Request</option>
+													<option value="Can Not Request" @if($profile['otp_request_status'] == 'Can Not Request') selected @endif>Can Not Request</option>
+												</select>
+											</div>
+											<div class="form-group">
 												<label class="control-label">Email Verified</label>
 												<div class="mt-radio-inline">
 													<label class="mt-radio">
@@ -1237,6 +1245,13 @@
 														<span></span>
 													</label>
 												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label">Verify Email Request Status</label>
+												<select name="email_verify_request_status" class="form-control input-sm select2" placeholder="Search Status">
+													<option value="Can Request" @if($profile['email_verify_request_status'] == 'Can Request') selected @endif>Can Request</option>
+													<option value="Can Not Request" @if($profile['email_verify_request_status'] == 'Can Not Request') selected @endif>Can Not Request</option>
+												</select>
 											</div>
 											<div class="margiv-top-10">
 												<button class="btn green"> Save Changes </button>
