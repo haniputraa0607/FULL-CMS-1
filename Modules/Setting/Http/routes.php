@@ -50,7 +50,7 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'setting'
     Route::any('maintenance-mode', 'SettingController@maintenanceMode');
 
     /*Setting Expired time OTP and Email*/
-    Route::any('time-expired', 'SettingController@timeExpired');
+    Route::any('otp-email-rule', 'SettingController@otpEmailRule');
 
     Route::any('home', 'SettingController@homeSetting');
 	Route::any('date', 'SettingController@dateSetting');

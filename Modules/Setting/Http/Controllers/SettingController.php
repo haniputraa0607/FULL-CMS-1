@@ -1306,22 +1306,22 @@ class SettingController extends Controller
         return view('setting::maintenance-mode', $data);
     }
 
-    function timeExpired(Request $request){
+    function otpEmailRule(Request $request){
         $post = $request->except('_token');
         $data = [
-            'title'   		=> 'Time Expired Setting',
-            'menu_active'    => 'time-expired',
-            'submenu_active' => 'time-expired'
+            'title'   		=> 'OTP and Email Verify',
+            'menu_active'    => 'otp-email-rule',
+            'submenu_active' => 'otp-email-rule'
         ];
         if($post){
-            $update= MyHelper::post('setting/time-expired/update', $post);
+            $update= MyHelper::post('setting/otp-email-rule/update', $post);
             if(($update['status']??'')=='success'){
-                return redirect('setting/time-expired')->with('success',['Success update time expired']);
+                return redirect('setting/otp-email-rule')->with('success',['Success update time expired']);
             }else{
-                return redirect('setting/time-expired')->withErrors([$update['message']]);
+                return redirect('setting/otp-email-rule')->withErrors([$update['message']]);
             }
         }else{
-            $get = MyHelper::get('setting/time-expired');
+            $get = MyHelper::get('setting/otp-email-rule');
             if(isset($get['status']) &&  $get['status']=='success'){
                 $data['result'] = $get['result'];
             }else{
@@ -1329,6 +1329,6 @@ class SettingController extends Controller
             }
         }
 
-        return view('setting::time-expired', $data);
+        return view('setting::otp-email-rule', $data);
     }
 }
