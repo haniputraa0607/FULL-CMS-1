@@ -1919,10 +1919,10 @@
 			</li>
 		@endif
 		@if(MyHelper::hasAccess([256, 257], $grantedFeature))
-			<li class="nav-item {{($menu_active == 'time-expired') ? 'active' : ''}}">
-				<a href="{{url('setting/time-expired')}}" class="nav-link">
+			<li class="nav-item {{($menu_active == 'otp-email-rule') ? 'active' : ''}}">
+				<a href="{{url('setting/otp-email-rule')}}" class="nav-link">
 					<i class="fa fa-envelope"></i>
-					<span class="title">Time Expired OTP and Email</span>
+					<span class="title">OTP and Email Verify</span>
 				</a>
 			</li>
 			<li class="nav-item {{($submenu_active == 'setting-popup-messages') ? 'active open' : ''}}">
