@@ -140,6 +140,9 @@
 			$('#multipleNumberLastCode').prop('required', false);
 			$('#multiplePrefixCode').val('')
 			if (code == 'Single') {
+				$(':input[type="submit"]').prop('disabled', false);
+				$('#totalCoupon').removeClass( "has-error" );
+				$('#alertTotalCoupon').hide();
 				$('#singleCode').show()
 				$('#singlePromoCode').prop('required', true);
 				$('#singlePromoCode').keyup(function() {	
@@ -266,7 +269,7 @@
 					}
 				});
 
-				$('input[name=total_coupon]').keyup(function() {
+				$('input[name=total_coupon], #multipleNumberLastCode').keyup(function() {
 					if (code != 'Single') {
 						maxCharDigit = 28;
 						hitungKemungkinan = Math.pow(maxCharDigit, $('#multipleNumberLastCode').val())
