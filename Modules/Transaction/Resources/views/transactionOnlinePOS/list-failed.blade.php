@@ -88,15 +88,22 @@
                 ],
                 createdRow: function( row, data, dataIndex ) {
                     $(row).data('id', data.id_transaction_online_pos);
-                }
-                // columnDefs: [
-                //     {
-                //         'targets': 3,
-                //         'createdCell':  function (td, cellData, rowData, row, col) {
-                //            $(td).addClass('input-price'); 
-                //         }
-                //     }
-                // ]
+                    $(row).addClass('row-' + data.id_transaction_online_pos);
+                },
+                columnDefs: [
+                    {
+                        'targets': 1,
+                        'createdCell':  function (td, cellData, rowData, row, col) {
+                           $(td).addClass('status'); 
+                        }
+                    },
+                    {
+                        'targets': 1,
+                        'createdCell':  function (td, cellData, rowData, row, col) {
+                           $(td).addClass('button'); 
+                        }
+                    }
+                ]
             });
 
             $('table').on('click', '.modal-summoner', function() {
@@ -123,9 +130,9 @@
                     if (result.status != "success") {
                         toastr.warning('Failed resend transaction');
                     }else{
-                        document.getElementById("status-"+id_transaction_online_pos).innerHTML = '<b id="status-'+id_transaction_online_pos+'" style="color: green">Success</b>';
-                        console.log($('#resend'+id_transaction_online_pos));
-                        $('#resend'+id_transaction_online_pos).remove();
+                        toastr.success('Success resend');
+                        $(`.row-${id_transaction_online_pos} .status`).html('<b id="status-'+id_transaction_online_pos+'" style="color: green">Success</b>');
+                        $(`#resend${id_transaction_online_pos}`).remove();
                     }
                 },
                 error: function (jqXHR, exception) {
