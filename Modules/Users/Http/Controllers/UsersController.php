@@ -457,6 +457,10 @@ class UsersController extends Controller
 
 		if(isset($post['phone'])){
 			if(isset($post['birthday'])){
+				if (stristr($post['birthday'], '/')) {
+	                $explode = explode('/', $post['birthday']);
+	                $post['birthday'] = $explode[2] . '-' . $explode[1] . '-' . $explode[0];
+	            }
 				$post['birthday'] = date('Y-m-d', strtotime($post['birthday']));
 			}
 			if(isset($post['relationship']) && $post['relationship']=="-"){
