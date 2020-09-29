@@ -1163,7 +1163,7 @@
 											<div class="form-group">
 												<label class="control-label">Birthday</label>
 												<div class="input-group date date-picker margin-bottom-5" data-date-format="yyyy-mm-dd">
-													<input type="text" class="form-control form-filter input-sm date-picker" name="birthday" placeholder="From"  value="{{date('d/m/Y', strtotime($profile['birthday']))}}">
+													<input type="text" class="form-control form-filter input-sm date-picker" name="birthday" placeholder="From"  value="{{date('d/m/Y', strtotime($profile['birthday']))}}" data-date-format="dd/mm/yyyy">
 													<span class="input-group-btn">
 														<button class="btn btn-sm default" type="button">
 															<i class="fa fa-calendar"></i>
