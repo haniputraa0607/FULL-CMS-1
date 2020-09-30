@@ -760,8 +760,10 @@
 											}elseif ($banner['url'] != null) {
 					 			 				if ($banner['type'] == 'general') {
 					 			 					$click_to = str_limit($banner['url'], 18);
-					 			 				} else {
-					 			 					$click_to = "GO-FOOD";
+					 			 				} elseif($click_to == 'gofood') {
+					 			 					$click_to = "GoFood";
+					 			 				} elseif($click_to == 'grabfood') {
+					 			 					$click_to = "GrabFood";
 					 			 				}
 					 			 			}
 					 			 			else {
