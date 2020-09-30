@@ -186,6 +186,8 @@
 				<th width="30%"> Request URL </th>
 				<th scope="col"> Request Body </th>
 				<th scope="col"> Response </th>
+				<th scope="col"> Status </th>
+				<th scope="col"> Status Response </th>
 			</tr>
 			</thead>
 			<tbody>
@@ -238,6 +240,8 @@
 								}
 
 							?>
+							<td>{{$val['status']}}</td>
+							<td>{{$val['status_response']}}</td>
 						</tr>
 					@endforeach
 				@else
