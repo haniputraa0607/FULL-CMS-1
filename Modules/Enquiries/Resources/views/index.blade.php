@@ -227,9 +227,7 @@ $configs = session('configs');
                         type: "column",
                         target: "tr"
                     }*/
-                    responsive: {
-			            details: false
-			        }
+			        details: false
                 },
                 order: [0, "asc"],
                 lengthMenu: [
@@ -247,6 +245,7 @@ $configs = session('configs');
 			var column  = $(this).parents('tr');
 			var id      = $(this).data('id');
 			var subject = $(this).data('subject');
+			var subject = subject.replace(/\s/g, '');
 
             $.ajax({
                 type : "POST",
