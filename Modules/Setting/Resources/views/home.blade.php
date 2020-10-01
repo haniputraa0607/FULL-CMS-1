@@ -118,11 +118,13 @@
 
     // banner: select click to
     $('.click-to-radio').change(function(){
+		$('.click-to-news').prop('required',false);
         if (this.checked && this.value == 'news') {
             $('.click-to-news').show();
             $('.click-to-type').find('.select2-container').show();
             $('.click-to-url').val('');
             $('.click-to-url').hide();
+			$('.click-to-news').prop('required',true);
         }
         else if(this.checked && this.value == 'url') {
         	$('.click-to-news').val(null).trigger('change');
@@ -251,11 +253,11 @@
 				if (type == 'general') {
 					$('#modalBannerUpdate .click-to-radio[value="url"]').prop("checked", true);
 	            	$('.click-to-url').show();
-				} else if(type == 'gofood') {
-					$('#modalBannerUpdate .click-to-radio[value="gofood"]').prop("checked", true);
-				} else if(type == 'grabfood') {
-					$('#modalBannerUpdate .click-to-radio[value="grabfood"]').prop("checked", true);
 				}
+			}else if(type == 'gofood') {
+				$('#modalBannerUpdate .click-to-radio[value="gofood"]').prop("checked", true);
+			} else if(type == 'grabfood') {
+				$('#modalBannerUpdate .click-to-radio[value="grabfood"]').prop("checked", true);
 			}
 			else if(id_news != "") {
 				$('#modalBannerUpdate .click-to-radio[value="news"]').prop("checked", true);
