@@ -945,6 +945,8 @@ class SettingController extends Controller
                 $post['type'] = 'gofood';
             }elseif ($post['click_to'] == 'referral') {
                 $post['type'] = 'referral';
+            }elseif ($post['click_to'] == 'grabfood') {
+                $post['type'] = 'grabfood';
             }
 
             // remove click_to index
@@ -983,6 +985,8 @@ class SettingController extends Controller
                 $post['type'] = 'gofood';
             }elseif ($post['click_to'] == 'referral') {
                 $post['type'] = 'referral';
+            }elseif ($post['click_to'] == 'grabfood') {
+                $post['type'] = 'grabfood';
             }
 
             // remove click_to index
