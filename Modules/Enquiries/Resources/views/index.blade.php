@@ -223,10 +223,13 @@ $configs = session('configs');
                   },
                 }],
                 responsive: {
-                    details: {
+                    /*details: {
                         type: "column",
                         target: "tr"
-                    }
+                    }*/
+                    responsive: {
+			            details: false
+			        }
                 },
                 order: [0, "asc"],
                 lengthMenu: [
