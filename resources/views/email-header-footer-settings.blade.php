@@ -37,12 +37,8 @@
 				var size = file.size/1024;
 
 				image.onload = function() {
-					if (this.width !== this.height) {
-						toastr.warning("Please check dimension of your photo. Recommended dimensions are 1:1");
-						$("#removeImage_"+type).trigger( "click" );
-					}
-					if (this.width > 100 ||  this.height > 100) {
-						toastr.warning("Please check dimension of your photo. The maximum height and width 100px.");
+					if (this.height > 200) {
+						toastr.warning("Please check dimension of your photo. The maximum height 100px.");
 						$("#removeImage_"+type).trigger( "click" );
 					}
 					if (size > 10) {

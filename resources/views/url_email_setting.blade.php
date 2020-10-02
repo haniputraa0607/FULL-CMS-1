@@ -25,13 +25,13 @@
 								<p style="margin-top:2%;margin-bottom:1%;"> Icon <span class="required" aria-required="true"> * </span></p>
 								<div style="color: #e02222;font-size: 12px;margin-top: 4%;">
 									- PNG Only <br>
-									- max dimension 100 x 100 <br>
+									- max height 200 px <br>
 									- max size 10 KB <br>
 								</div>
 							</div>
 							<div class="col-md-8">
 								<div class="fileinput fileinput-new" data-provides="fileinput" style="margin-top: 2%;">
-									<div class="fileinput-new thumbnail" style="width: 40px; height: 40px;">
+									<div class="fileinput-new thumbnail" style="width: 80px; height: 100px;">
 										@if(isset($value['icon']) && $value['icon'] != "")
 											<img src="{{$value['icon']}}" id="preview_icon_{{$key}}" />
 										@endif
