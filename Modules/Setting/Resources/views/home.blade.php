@@ -755,20 +755,19 @@
 					 			 	</div>
 					 			 	<div class="click-to">
 					 			 		@php
-					 			 			if ($banner['news_title'] != null) {
+											if ($banner['url'] != null) {
+												if ($banner['type'] == 'general') {
+					 			 					$click_to = str_limit($banner['url'], 18);
+					 			 				}
+											}elseif($banner['type'] == 'gofood') {
+												$click_to = "GoFood";
+											}elseif($banner['type'] == 'grabfood') {
+												$click_to = "GrabFood";
+											}elseif ($banner['news_title'] != null) {
 					 			 				$click_to = str_limit($banner['news_title'], 18);
 					 			 			}elseif($banner['type'] == 'referral') {
 					 			 					$click_to = "Referral";
-											}elseif ($banner['url'] != null) {
-					 			 				if ($banner['type'] == 'general') {
-					 			 					$click_to = str_limit($banner['url'], 18);
-					 			 				} elseif($click_to == 'gofood') {
-					 			 					$click_to = "GoFood";
-					 			 				} elseif($click_to == 'grabfood') {
-					 			 					$click_to = "GrabFood";
-					 			 				}
-					 			 			}
-					 			 			else {
+											}else {
 				 			 					$click_to = "-";
 					 			 			}
 					 			 		@endphp
