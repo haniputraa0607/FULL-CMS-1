@@ -186,8 +186,8 @@
 				<th width="30%"> Request URL </th>
 				<th scope="col"> Request Body </th>
 				<th scope="col"> Response </th>
-				<th scope="col"> Status </th>
-				<th scope="col"> Status Response </th>
+				<th scope="col"> Delivery Status </th>
+				<th scope="col"> Delivery Status Response </th>
 			</tr>
 			</thead>
 			<tbody>
