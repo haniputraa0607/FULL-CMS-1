@@ -37,11 +37,11 @@
 				var size = file.size/1024;
 
 				image.onload = function() {
-					if (this.height > 200) {
+					if (this.height > 250) {
 						toastr.warning("Please check dimension of your photo. The maximum height 100px.");
 						$("#removeImage_"+type).trigger( "click" );
 					}
-					if (size > 10) {
+					if (size > 20) {
 						toastr.warning("The maximum size is 10 KB");
 						$("#removeImage_"+type).trigger( "click" );
 					}
