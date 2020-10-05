@@ -25,8 +25,8 @@
 								<p style="margin-top:2%;margin-bottom:1%;"> Icon <span class="required" aria-required="true"> * </span></p>
 								<div style="color: #e02222;font-size: 12px;margin-top: 4%;">
 									- PNG Only <br>
-									- max height 200 px <br>
-									- max size 10 KB <br>
+									- max height 250 px <br>
+									- max size 20 KB <br>
 								</div>
 							</div>
 							<div class="col-md-8">
