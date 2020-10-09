@@ -614,7 +614,7 @@
 					<button type="submit" class="btn blue">Send Campaingn</button>
 				</div>
 			</div>
-			@elseif($result['campaign_is_sent'] == 'Yes')
+			@elseif($result['campaign_send_at'] == null && $result['campaign_is_sent'] == 'Yes')
 			<form role="form" action="" method="POST">
 			<div class="col-md-12" style="text-align:center;">
 				<div class="form-actions">
