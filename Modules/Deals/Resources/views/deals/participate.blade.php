@@ -94,6 +94,7 @@
 	                <thead>
 	                    <tr>
 	                        <th> Payment </th>
+	                        <th> Payment Method</th>
 	                        <th> User </th>
 	                        <th> Status </th>
 	                        <th> Deals Receipt Number </th>
@@ -132,6 +133,32 @@
 	                        	    @default
 	                        	            
 	                        	@endswitch
+	                        </td>
+	                        <td nowrap style="text-align: center;"> 
+	                        	@php
+	                        		switch ($value['payment_method']) {
+	                        			case 'Ipay88':
+	                        				$payment_method = 'CREDIT/DEBIT CARD';
+	                        				break;
+
+	                        			case 'Shopeepay':
+	                        				$payment_method = 'ShopeePay';
+	                        				break;
+
+	                        			case 'Ovo':
+	                        				$payment_method = 'OVO';
+	                        				break;
+
+	                        			case 'Balance':
+	                        				$payment_method = 'Balance';
+	                        				break;
+
+	                        			default:
+	                        				$payment_method = '-';
+	                        				break;
+	                        		}
+	                        	@endphp
+	                        	{{ $payment_method }}
 	                        </td>
 	                        <td nowrap> {{ $value['user']['name'] }} - {{ $value['user']['phone'] }} </td>
 	                        <td nowrap>
