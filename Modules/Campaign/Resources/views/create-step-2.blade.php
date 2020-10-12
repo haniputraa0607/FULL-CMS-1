@@ -575,11 +575,13 @@
 							@php $i++; @endphp
 							@endforeach
 						@endif
+						@if($result['campaign_is_sent'] != 'Yes')
 						<div class="row static-info">
 							<div class="col-md-11 value">
 								<a class="btn blue" href="{{url('/')}}/campaign/step1/{{$result['id_campaign']}}">Edit Campaign Information</a>
 							</div>
 						</div>
+						@endif
 					</div>
 				</div>
 			</div>
@@ -1130,12 +1132,14 @@
 			</div>
 			@endif
 		</div>
+        @if($result['campaign_is_sent'] != 'Yes')
 		<div class="col-md-12" style="text-align:center;">
 			<div class="form-actions">
 				{{ csrf_field() }}
 				<button type="submit" class="btn blue">Save Campaign</button>
 			</div>
 		</div>
+        @endif
 	</form>
 </div>
 @endsection

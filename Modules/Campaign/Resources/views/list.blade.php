@@ -122,10 +122,12 @@
 										<i class="fa fa-angle-down"></i>
 										</button> 
 										<ul class="dropdown-menu pull-right">
+											@if($data['campaign_is_sent'] != 'Yes')
 											<li>
 												<a href="{{ url('campaign/step1') }}/{{ $data['id_campaign'] }}">
 												<i class="fa fa-edit"></i> Edit Information </a>
 											</li>
+											@endif
 											<li>
 												<a href="{{ url('campaign/step2') }}/{{ $data['id_campaign'] }}">
 												<i class="fa fa-edit"></i> Edit Receipient </a>
