@@ -127,11 +127,11 @@
 												<a href="{{ url('campaign/step1') }}/{{ $data['id_campaign'] }}">
 												<i class="fa fa-edit"></i> Edit Information </a>
 											</li>
-											@endif
 											<li>
 												<a href="{{ url('campaign/step2') }}/{{ $data['id_campaign'] }}">
 												<i class="fa fa-edit"></i> Edit Receipient </a>
 											</li>
+											@endif
 											<li>
 												<a href="{{ url('campaign/step3') }}/{{ $data['id_campaign'] }}">
 												<i class="fa fa-gear"></i> Summary </a>
