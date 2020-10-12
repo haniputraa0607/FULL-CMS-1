@@ -93,7 +93,7 @@
 								<th>No</th>
 								<th>Title</th>
 								<th>Send At</th>
-								<th>Media</th>
+								<th>Media (All | Sent)</th>
 								<th width=10%>Action</th>
 							</tr>
 						</thead>
@@ -109,9 +109,9 @@
 									@endif</td>
 								<td>
 									<ul>
-										@if($data['campaign_media_email'] == 'Yes')<li> Email ({{$data['campaign_email_count_all']}} | {{$data['campaign_email_count_queue']}} | {{$data['campaign_email_count_sent']}}) </li> @endif
-										@if($data['campaign_media_sms'] == 'Yes')<li> SMS ({{$data['campaign_sms_count_all']}} | {{$data['campaign_sms_count_queue']}} | {{$data['campaign_sms_count_sent']}})</li> @endif
-										@if($data['campaign_media_push'] == 'Yes')<li> Push ({{$data['campaign_push_count_all']}} | {{$data['campaign_push_count_queue']}} | {{$data['campaign_push_count_sent']}})</li> @endif
+										@if($data['campaign_media_email'] == 'Yes')<li> Email ({{$data['campaign_email_count_all']}} | {{$data['campaign_email_count_sent']}}) </li> @endif
+										@if($data['campaign_media_sms'] == 'Yes')<li> SMS ({{$data['campaign_sms_count_all']}} | {{$data['campaign_sms_count_sent']}})</li> @endif
+										@if($data['campaign_media_push'] == 'Yes')<li> Push ({{$data['campaign_push_count_all']}} | {{$data['campaign_push_count_sent']}})</li> @endif
 										@if($data['campaign_media_inbox'] == 'Yes')<li> Inbox ({{$data['campaign_inbox_count']}})</li> @endif
 										@if($data['campaign_media_whatsapp'] == 'Yes')<li> WhatsApp ({{$data['campaign_whatsapp_count_all']}})</li> @endif
 									</ul>
