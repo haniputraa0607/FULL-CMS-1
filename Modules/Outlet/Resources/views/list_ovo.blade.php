@@ -94,6 +94,7 @@
             $('#modal-store_code').val(data['store_code'])
             $('#modal-tid').val(data['tid'])
             $('#modal-mid').val(data['mid'])
+            $("#titleModal").html("("+data['outlet_code']+" - "+data['outlet_name']+")");
         });
     </script>
 
@@ -148,11 +149,14 @@
                                 <td>{{ $value['outlet_name'] }}</td>
                                 <td>{{ $status = (!is_null($value['outlet_ovo'])) ? 'Active' : 'Inactive' }}</td>
                                 @if(MyHelper::hasAccess([25,27,28], $grantedFeature))
+                                    <?php
+                                    $value['outlet_ovo']['outlet_code'] = $value['outlet_code'];
+                                    $value['outlet_ovo']['outlet_name'] = $value['outlet_name'];
+                                    $value['outlet_ovo']['id_outlet'] = $value['id_outlet'];
+                                    ?>
                                     <td style="width: 90px;">
                                         @if(MyHelper::hasAccess([25,27], $grantedFeature))
-                                            @if (!is_null($value['outlet_ovo']))
-                                                <button type="button" class="btn btn-sm btn-primary" data-data="{{json_encode($value['outlet_ovo'])}}" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-search"></i></button>
-                                            @endif
+                                            <button type="button" class="btn btn-sm btn-primary" data-data="{{json_encode($value['outlet_ovo'])}}" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-search"></i></button>
                                         @endif
                                     </td>
                                 @endif
@@ -168,7 +172,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Outlet Ovo <b id="titleModal"></b></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
