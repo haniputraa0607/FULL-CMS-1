@@ -201,7 +201,7 @@
 				</div>
 			</div>
 		</div>
-		@if($result['campaign_is_sent'] != 'Yes')
+		@if(isset($result['campaign_is_sent']) && $result['campaign_is_sent'] != 'Yes')
 		<div class="col-md-12" style="text-align:center;">
 			<div class="form-actions">
 				{{ csrf_field() }}
