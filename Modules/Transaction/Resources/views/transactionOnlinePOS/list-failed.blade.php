@@ -67,6 +67,7 @@
                             return `<b style="color: ${value?'green':'red'}">${value?'Success':'Fail'}</b>`;
                         }
                     },
+                    {data: 'order_id'},
                     {data: 'transaction_receipt_number'},
                     {data: 'name'},
                     {data: 'phone'},
@@ -170,6 +171,7 @@
                   <tr>
                       <th>Actions</th>
                       <th>Status</th>
+                      <th>Order Id</th>
                       <th>Receipt Number</th>
                       <th>Customer Name</th>
                       <th>Customer Phone</th>
