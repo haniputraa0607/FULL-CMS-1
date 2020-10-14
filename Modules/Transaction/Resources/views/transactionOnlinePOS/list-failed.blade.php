@@ -67,6 +67,7 @@
                             return `<b style="color: ${value?'green':'red'}">${value?'Success':'Fail'}</b>`;
                         }
                     },
+                    {data: 'transaction_date', render: value => (new Date(value)).toLocaleString('id-ID',{ year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })},
                     {data: 'order_id'},
                     {data: 'transaction_receipt_number'},
                     {data: 'name'},
@@ -171,6 +172,7 @@
                   <tr>
                       <th>Actions</th>
                       <th>Status</th>
+                      <th>Transaction Date</th>
                       <th>Order Id</th>
                       <th>Receipt Number</th>
                       <th>Customer Name</th>
