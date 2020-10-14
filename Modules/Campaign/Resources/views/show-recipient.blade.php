@@ -52,7 +52,7 @@
 		    responsive: true,
 		    lengthMenu: [[5,10, 25, 50,100], [5,10, 25, 50,100]],
             pageLength: 10,
-            dom: "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-12 text-center col-sm-12'i><'col-md-12 text-center col-sm-12'p>>",
+            dom: "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l>r><'table-scrollable't><'row'<'col-md-12 text-center col-sm-12'i><'col-md-12 text-center col-sm-12'p>>",
 		    orderMulti: false,
             buttons: [ {
               extend: "copy",
