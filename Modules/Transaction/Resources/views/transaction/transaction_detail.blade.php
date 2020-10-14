@@ -587,7 +587,7 @@
                 </div>
             </div>
 
-
+            @if(isset($data['transaction_payment']))
             <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 15px;margin-top: 10px;">
                 <div class="row space-bottom">
                     <div class="col-12 text-14px Ubuntu-Bold text-black"><b>Payment Method</b></div>
@@ -606,7 +606,7 @@
                     @endforeach
                 </div>
             </div>
-
+            @endif
             @if ($data['trasaction_type'] != 'Offline')
                     <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 15px;margin-top: 10px;">
                     <div class="row space-bottom">
