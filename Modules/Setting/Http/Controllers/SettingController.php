@@ -1355,11 +1355,7 @@ class SettingController extends Controller
                 return redirect('setting/mailer')->withErrors([$update['message']]);
             }
         }else{
-            $gets = MyHelper::post('setting', ['key-like' => 'mailer_'])['result']??[];
-            $data['data'] = [];
-            foreach ($gets as $get) {
-                $data['data'][$get['key']] = $get['value'];
-            }
+            $data['data'] = MyHelper::get('setting/mailer')['result']??[];
         }
         return view('setting::mailer', $data);
     }
