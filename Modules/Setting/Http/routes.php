@@ -54,6 +54,7 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'setting'
 
     Route::any('home', 'SettingController@homeSetting');
 	Route::any('date', 'SettingController@dateSetting');
+    Route::any('mailer', 'SettingController@mailer')->middleware('feature_control:258');
     Route::get('{key}', 'SettingController@settingList');
 	
 	Route::any('background/create', ['middleware' => 'config_control:30,32', 'uses' => 'SettingController@createBackground']);
