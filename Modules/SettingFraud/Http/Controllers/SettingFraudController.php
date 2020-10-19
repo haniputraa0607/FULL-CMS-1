@@ -368,8 +368,7 @@ class SettingFraudController extends Controller
                         'Email' => $value['email'],
                         'Tanggal Fraud' => date('d F Y', strtotime($value['created_at'])),
                         'Waktu Fraud' => date('H:i', strtotime($value['created_at'])),
-                        'At Outlet' => $value['at_outlet']['outlet_name'],
-                        'Most Outlet' => $value['most_outlet']['outlet_name']
+                        'Outlet' => $value['most_outlet']['outlet_name']
                     ];
                     $arr['All Type'][] = $dt;
                 }

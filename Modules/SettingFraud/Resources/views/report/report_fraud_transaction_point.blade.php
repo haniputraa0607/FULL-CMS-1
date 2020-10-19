@@ -115,8 +115,7 @@
                 <th width="5%"> User Phone </th>
                 <th width="5%"> Date </th>
                 <th width="8%"> Time </th>
-                <th width="5%"> At Outlet </th>
-                <th width="5%"> Most Outlet </th>
+                <th width="5%"> Outlet </th>
                 <th width="40%"> Fraud Settings </th>
             </tr>
             </thead>
@@ -129,7 +128,6 @@
                         <td>{{$value['phone']}}</td>
                         <td>{{date("d F Y", strtotime($value['created_at']))}}</td>
                         <td>{{date("H:i", strtotime($value['created_at']))}}</td>
-                        <td>{{$value['at_outlet']['outlet_name']}}</td>
                         <td>{{$value['most_outlet']['outlet_name']}}</td>
                         <td>
                             <label>Detection Parameter</label>
