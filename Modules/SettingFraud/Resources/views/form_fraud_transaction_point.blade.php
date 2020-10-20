@@ -57,6 +57,17 @@ $configs = session('configs');
                         </div>
                     </div>
                 </div>
+                <div class="form-group" id="type-detail">
+                    <label class="col-md-4 control-label" ></label>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control  price" min="1"  name="parameter_detail_time" value="{{$result[4]['parameter_detail_time']}}">
+                            <span class="input-group-addon">
+                                day
+                        </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

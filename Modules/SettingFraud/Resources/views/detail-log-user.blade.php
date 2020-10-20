@@ -132,7 +132,6 @@
         </div>
     </div>
 
-    @if(MyHelper::hasAccess([87], $configs))
     <div class="portlet light bordered">
         <div class="portlet-title">
             <div class="caption">
@@ -195,7 +194,6 @@
             </div>
         </div>
     </div>
-    @endif
 
     <div class="portlet light bordered">
         <div class="portlet-title">
