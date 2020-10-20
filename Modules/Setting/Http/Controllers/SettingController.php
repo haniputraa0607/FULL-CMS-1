@@ -1335,4 +1335,28 @@ class SettingController extends Controller
 
         return view('setting::otp-email-rule', $data);
     }
+
+    function mailer(Request $request){
+        $post = $request->except('_token');
+        $data = [
+            'title'         => 'Mailer Setting',
+            'menu_active'    => 'crm-setting',
+            'submenu_active' => 'mailer'
+        ];
+        if($post){
+            $toUpdate = [];
+            foreach ($post['value'] as $key => $value) {
+                $toUpdate[$key] = ['value', $value];
+            }
+            $update= MyHelper::post('setting/update2', ['update' => $toUpdate]);
+            if(($update['status']??'')=='success'){
+                return redirect('setting/mailer')->with('success',['Success update mailer setting']);
+            }else{
+                return redirect('setting/mailer')->withErrors([$update['message']]);
+            }
+        }else{
+            $data['data'] = MyHelper::get('setting/mailer')['result']??[];
+        }
+        return view('setting::mailer', $data);
+    }
 }

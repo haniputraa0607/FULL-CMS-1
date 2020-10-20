@@ -1437,6 +1437,13 @@
 						</a>
 					</li>
 					@endif
+					@if(MyHelper::hasAccess([258], $grantedFeature))
+					<li class="nav-item {{($submenu_active == 'mailer') ? 'active' : ''}}">
+						<a href="{{url('setting/mailer')}}" class="nav-link nav-toggle">
+							<span class="title">Mailer Setting</span>
+						</a>
+					</li>
+					@endif
 					@if(MyHelper::hasAccess([74,75], $configs))
 					<li class="nav-item {{($submenu_active == 'whatsapp') ? 'active' : ''}}">
 						<a href="{{url('setting/whatsapp')}}" class="nav-link nav-toggle">
