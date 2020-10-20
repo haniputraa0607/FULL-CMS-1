@@ -132,6 +132,8 @@
                         <td>
                             <label>Detection Parameter</label>
                             <div><input class="form-control" disabled value="(maximum) {{$value['fraud_setting_parameter_detail']}}"></div>
+                            <label>Detection Parameter Time</label>
+                            <div><input class="form-control" disabled value="{{$value['fraud_setting_parameter_detail_time']}} (day)"></div>
                             <label>Auto Suspend</label>
                             <div><input class="form-control" disabled value="@if($value['fraud_setting_auto_suspend_status'] == 1) Active @else Inactive @endif"></div>
                             @if($value['fraud_setting_auto_suspend_status'] == 1 )
