@@ -1,9 +1,72 @@
+<?php
+use App\Lib\MyHelper;
+$grantedFeature     = session('granted_features');
+?>
 @extends('layouts.main')
 
 @section('page-style')
+	<link href="{{ env('STORAGE_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+	<link href="{{ env('STORAGE_URL_VIEW') }}{{('assets/global/plugins/bootstrap-sweetalert/sweetalert.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('page-plugin')
+	<script src="{{ env('STORAGE_URL_VIEW') }}{{('assets/global/scripts/datatable.js') }}" type="text/javascript"></script>
+	<script src="{{ env('STORAGE_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('STORAGE_URL_VIEW') }}{{('assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js') }}" type="text/javascript"></script>
+	<script>
+		var table=$('#sample_1').DataTable({
+			"paging": false,
+			"searching": false,
+			"ordering": false,
+			"info": false
+		});
+		var SweetAlert = function() {
+			return {
+				init: function() {
+					$(".sweetalert-delete").each(function() {
+						var token  	= "{{ csrf_token() }}";
+						let column 	= $(this).parents('tr');
+						let id     	= $(this).data('id');
+						let name    = $(this).data('name');
+						$(this).click(function() {
+							swal({
+										title: "Are you sure want to delete campaign '"+name+"' ?",
+										text: "Your will not be able to recover this data!",
+										type: "warning",
+										showCancelButton: true,
+										confirmButtonClass: "btn-danger",
+										confirmButtonText: "Yes, delete it!",
+										closeOnConfirm: false
+									},
+									function(){
+										$.ajax({
+											type : "POST",
+											url : "{{ url('campaign/delete') }}",
+											data : "_token="+token+"&id_campaign="+id,
+											success : function(result) {
+												if (result.status == "success") {
+													$('#sample_1').DataTable().row(column).remove().draw();
+													swal("Deleted!", "Campaign has been deleted.", "success")
+													SweetAlert.init();
+												}
+												else if(result.status == "fail"){
+													swal("Error!", "Failed to delete Campaign. Campaign has been sent.", "error")
+												}
+												else {
+													swal("Error!", "Something went wrong. Failed to delete Campaign.", "error")
+												}
+											}
+										});
+									});
+						})
+					})
+				}
+			}
+		}();
+		jQuery(document).ready(function() {
+			SweetAlert.init()
+		});
+	</script>
 @endsection
 
 @section('page-script')
@@ -87,7 +150,7 @@
 				</div>
 				<div class="table-scrollable">
 					@if(isset($result) && $result != '')
-					<table class="table table-striped table-bordered table-hover">
+					<table class="table table-striped table-bordered table-hover" id="sample_1">
 						<thead>
 							<tr>
 								<th>No</th>
@@ -131,10 +194,14 @@
 												<a href="{{ url('campaign/step2') }}/{{ $data['id_campaign'] }}">
 												<i class="fa fa-edit"></i> Edit Receipient </a>
 											</li>
+											<li>
+												<a class="sweetalert-delete" data-id="{{ $data['id_campaign']}}" data-name="{{ $data['campaign_title']}}">
+													<i class="fa fa-trash"></i> Delete </a>
+											</li>
 											@endif
 											<li>
 												<a href="{{ url('campaign/step3') }}/{{ $data['id_campaign'] }}">
-												<i class="fa fa-gear"></i> Summary </a>
+													<i class="fa fa-gear"></i> Summary </a>
 											</li>
 										</ul>
 									</div>
