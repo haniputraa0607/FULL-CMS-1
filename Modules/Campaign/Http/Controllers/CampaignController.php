@@ -761,7 +761,11 @@ class CampaignController extends Controller
      * Remove the specified resource from storage.
      * @return Response
      */
-    public function destroy()
+    public function destroy(Request $request)
     {
+        $post = $request->except(['_token']);
+        $delete = MyHelper::post('campaign/delete', ['id_campaign' => $post['id_campaign']]);
+
+        return $delete;
     }
 }
