@@ -1412,10 +1412,7 @@ class TransactionController extends Controller
             if(isset($get['status']) && $get['status'] == 'success'){
                 $data['result'] = $get['result'];
 
-                $textreplace = MyHelper::get('autocrm/textreplace');
-                if($textreplace['status'] == 'success'){
-                    $data['textreplaces'] = $textreplace['result'];
-                }
+                $data['textreplaces'] = [];
 
                 $custom = [];
                 if (isset($get['result']['custom_text_replace'])) {
