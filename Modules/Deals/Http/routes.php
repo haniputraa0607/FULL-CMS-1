@@ -16,6 +16,8 @@ Route::group(['middleware' => ['web', 'validate_session', 'config_control:25,26,
     Route::post('export', ['middleware' => ['feature_control:250'], 'uses' => 'DealsController@exportDeals']);
     Route::any('import', ['middleware' => ['feature_control:249'], 'uses' => 'DealsController@importDeals']);
 
+    Route::post('detail-update', 'DealsController@detailUpdate');
+
     /* TRANSACTION */
     Route::any('transaction', 'DealsController@transaction');
     Route::any('transaction/filter', 'DealsController@transactionFilter');

@@ -1674,4 +1674,33 @@ class DealsController extends Controller
             'messages'=>['Something went wrong']
         ];
     }
+
+    public function detailUpdate(Request $request)
+    {
+    	$post = $request->except('_token');
+    	$slug = $post['id_deals']??$post['id_deals_promotion_template'];
+        $post['id_deals'] = MyHelper::explodeSlug(($post['id_deals']??$post['id_deals_promotion_template']))[0]??'';
+
+    	$update = MyHelper::post('deals/detail-update',$post);
+
+    	if($post['deals_type'] == 'Promotion' || $post['deals_type'] == 'deals_promotion'){
+            $rpage = 'promotion/deals';
+    	}elseif($post['deals_type'] == 'WelcomeVoucher'){
+            $rpage = 'welcome-voucher';
+        }else{
+            $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
+        }
+
+		if ( ($update['status']??false) == 'success' ){
+			return redirect($rpage.'/detail/'.$slug)->withSuccess(['Deals has been updated'])	;
+		}elseif ( ($update['status']??false) == 'fail' ){
+			if ( !empty($update['step']) ){
+				return redirect($rpage.'/step'.$update['step'].'/'.$slug)->withErrors($update['messages']);
+			}else{
+				return redirect()->back()->withErrors($update['messages']);
+			}
+		}else{
+			return redirect()->back()->withErrors(['Something went wrong']);
+		}
+    }
 }

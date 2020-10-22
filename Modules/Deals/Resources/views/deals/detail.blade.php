@@ -73,6 +73,9 @@ $grantedFeature     = session('granted_features');
 		.font-custom-green {
 			color: #26C281!important;
 		}
+		.select2-results__option[aria-selected=true] {
+		    display: none;
+		}
 	</style>
 @yield('detail-style')	
 @endsection
@@ -105,6 +108,7 @@ $grantedFeature     = session('granted_features');
     $('.timepicker').timepicker();
     $(".form_datetime").datetimepicker({
         format: "d-M-yyyy hh:ii",
+        startDate: new Date(),
         autoclose: true,
         todayBtn: true,
         minuteStep:1
@@ -682,6 +686,7 @@ $grantedFeature     = session('granted_features');
                 	@if ($deals['step_complete'] != 1)
                     <a data-toggle="modal" href="#small" class="btn btn-primary" style="float: right; margin-right: 5px">Start Deals</a>
                     @endif
+                    <a data-toggle="modal" href="#edit-modal" class="btn btn-primary" style="float: right; margin-right: 5px">Edit Deals</a>
                 	<ul class="nav nav-tabs" id="tab-header">
                         <li class="active" id="infoOutlet">
                             <a href="#basic" data-toggle="tab" > Basic Info </a>
@@ -747,6 +752,8 @@ $grantedFeature     = session('granted_features');
             </div>
         </div>
     </div>
+
+    {{-- Start deals Modal --}}
     @if ($deals['step_complete'] != 1)
     <div class="modal fade bs-modal-sm" id="small" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">
@@ -771,6 +778,7 @@ $grantedFeature     = session('granted_features');
     </div>
     @endif
 
+    {{-- Export Deals Modal --}}
     <div class="modal fade bs-modal-sm" id="export-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
@@ -793,4 +801,114 @@ $grantedFeature     = session('granted_features');
         <!-- /.modal-dialog -->
     </div>
 
+    {{-- Edit Modal --}}
+    <div id="edit-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            	<form action="{{ url('deals/detail-update') }}" method="post">
+            		{{ csrf_field() }}
+	                <div class="modal-header">
+	                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+	                    <h4 class="modal-title">Edit Deals</h4>
+	                </div>
+	                <div class="modal-body">
+	                    <div class="row">
+		                    {{-- Deals Periode --}}
+		                    @if ( $deals_type == "Deals" || $deals_type == "WelcomeVoucher" )
+		                    <div class="form-group">
+		                        <label class="col-md-6 control-label"> Deals End Periode <span class="required" aria-required="true"> * </span> </label>
+		                        <div class="col-md-6">
+		                            <div class="input-icon right">
+		                                <div class="input-group">
+		                                    <input type="text" class="form_datetime form-control" name="deals_end" value="{{ !empty($deals['deals_end']) || old('deals_end') ? date('d-M-Y H:i', strtotime(old('deals_end')??$deals['deals_end'])) : ''}}" required autocomplete="off">
+		                                    <span class="input-group-btn">
+		                                        <button class="btn default" type="button">
+		                                            <i class="fa fa-calendar"></i>
+		                                        </button>
+		                                    </span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    @endif
+
+		                    {{-- Publish Periode --}}
+		                    @if ($deals_type == "Deals")
+		                    <div class="form-group">
+		                        <label class="col-md-6 control-label"> Publish End Periode <span class="required" aria-required="true"> * </span> </label>
+		                        <div class="col-md-6">
+		                            <div class="input-icon right">
+		                                <div class="input-group">
+		                                    <input type="text" class="form_datetime form-control" name="deals_publish_end" value="{{ !empty($deals['deals_publish_end']) || old('deals_publish_end') ? date('d-M-Y H:i', strtotime(old('deals_publish_end')??$deals['deals_publish_end'])) : '' }}" required autocomplete="off">
+		                                    <span class="input-group-btn">
+		                                        <button class="btn default" type="button">
+		                                            <i class="fa fa-calendar"></i>
+		                                        </button>
+		                                    </span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    @endif
+
+		                    {{-- Outlet --}}
+		                    @php
+						        if (!empty($deals['outlets'])) {
+						            $outlet_selected = array_pluck($deals['outlets'],'id_outlet');
+						        }
+						        else {
+						            $outlet_selected = old('id_outlet',[]);
+						        }
+						    @endphp
+
+						    <div class="form-group">
+						        <div class="input-icon right">
+						            <label class="col-md-12 control-label">Outlet</label>
+						        </div>
+						        <div class="col-md-12">
+						            <select name="id_outlet[]" class="form-control select2 select2-hidden-accessible" multiple tabindex="-1" aria-hidden="true" data-placeholder="Select Outlet" style="width: auto;">
+										@php
+											$selected_outlet = [];
+											if (old('id_outlet')) {
+												$selected_outlet = old('id_outlet');
+											}
+											elseif (!empty($deals['outlets'])) {
+												$selected_outlet = array_column($deals['outlets'], 'id_outlet');
+											}
+										@endphp
+
+						            	<option value="all" 
+						            		@if (old('id_outlet'))
+						            			@if (in_array('all', old('id_outlet')))
+							            			selected 
+						            			@endif
+							            	@elseif($deals['is_all_outlet'] == 1)
+							            		selected 
+							            	@endif>All Outlet</option>
+
+						                @if (!empty($outlets))
+						                    @foreach($outlets as $outlet)
+						                        <option value="{{ $outlet['id_outlet'] }}" 
+						                        	@if ( $selected_outlet??false ) 
+						                        		@if( in_array($outlet['id_outlet'], $selected_outlet) ) selected 
+						                        		@endif 
+						                        	@endif
+						                        >{{ $outlet['outlet_code'].' - '.$outlet['outlet_name'] }}</option>
+						                    @endforeach
+						                @endif
+									</select>
+						        </div>
+						    </div>
+	                    </div>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" data-dismiss="modal" class="btn dark btn-outline">Close</button>
+	                    <input type="hidden" value="{{ $deals['id_deals'] }}" name="id_deals" />
+					    <input type="hidden" value="{{ $deals_type??'' }}"  name="deals_type" />
+	                    <button type="submit" class="btn green">Save changes</button>
+	                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
