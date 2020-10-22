@@ -94,7 +94,7 @@
 			return `
 			<tr class="page${item.page}">
 			<td>${item.increment}</td>
-			<td>${new Date(item.created_at).toLocaleString('id-ID',{day:"2-digit",month:"short",year:"numeric",timeStyle:"medium",hour:"2-digit",minute:"2-digit"})}</td>
+			<td>${new Date(item.created_at).toLocaleString('id-ID',{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})}</td>
 			<td><a href="/user/detail/${item.id_user}">${item.user.name} (${item.user.phone})</a></td>
 			<td><a href="transaction/detail/${item.transaction.id_transaction}/${item.transaction.trasaction_type}">${item.transaction.transaction_receipt_number}</a></td>
 			<td><span class="price">${item.transaction.transaction_grandtotal}</span></td>
