@@ -11,7 +11,14 @@ use \App\Lib\MyHelper;
 class ReferralController extends Controller
 {
     public function getReportFilter($type){
-        return session('filter_report_'.$type,[]);
+        $filter = session('filter_report_'.$type,[]);
+        if(!isset($filter['date_start'])){
+            $filter['date_start'] = date('01 M Y');
+        }
+        if(!isset($filter['date_end'])){
+            $filter['date_end'] = date('d M Y');
+        }
+        return $filter;
     }
     /**
      * Update the specified resource in storage.
