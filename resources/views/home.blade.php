@@ -218,7 +218,7 @@
 																				@endif
 																			@endforeach
 																			<td>
-																				<a class="btn btn-block yellow btn-xs"
+																				<a style="font-size: 9px;" class="btn btn-block yellow btn-xs"
 																					@if(strpos($card['card_name'], 'User') !== false || strpos($card['card_name'], 'Customer') !== false)
 																						href="{{ url('report/customer/detail/'.$value[$head[1]].'/transactions') }}">
 																					@elseif(strpos($card['card_name'], 'Product') !== false)
@@ -300,7 +300,7 @@
 															<i class="fa fa-male"></i>
 														@elseif($card['card_name'] == 'Total Female Customer')
 															<i class="fa fa-female"></i>
-														@elseif($card['card_name'] == 'Total Customer Not Verified')
+														@elseif($card['card_name'] == 'Total Customer Not Verified' || $card['card_name'] == 'Total Customer Email Not Verified')
 															<i class="fa fa-times-circle"></i>
 														@elseif($card['card_name'] == 'Total Customer' || $card['card_name'] == 'Total User')
 															<i class="fa fa-users"></i>
@@ -317,26 +317,34 @@
 													<div class="details">
 														<div class="number">
 															<span data-counter="counterup" data-value="{{$card['value']}}">{{number_format($card['value'], 0, '.', ',')}}</span> </div>
-														<div class="desc">
+														<div class="desc" style="font-size: 14px;">
 															{{$card['card_name']}}
 														</div>
 													</div>
 
 													@if(strpos($card['card_name'], 'Customer') !== false || strpos($card['card_name'], 'Admin') !== false || strpos($card['card_name'], 'User') !== false)
-														<a class="more" href="{{url('report/customer/summary/?'.$card['url'])}}">
+														<a class="more" href="{{url('report/customer/summary/?'.$card['url'])}}" style="font-size: 9px;">
 															@if(strpos($card['card_name'], 'New') !== false )
 																Register Within {{$dashboard['daterange']}}
 															@else
 																@if(strpos($dashboard['daterange'], 'days') !== false || strpos($dashboard['daterange'], 'months') !== false || strpos($dashboard['daterange'], 'time') !== false)
-																	{{ str_replace('Total', '', $card['card_name']) }} (All Time)
+																	@if(strlen($card['card_name'].' (All Time)') > 21)
+																		{{ substr(str_replace('Total', '', $card['card_name']),0,25) }} ... (All Time)
+																	@else
+																		{{ str_replace('Total', '', $card['card_name']) }} (All Time)
+																	@endif
 																@else
-																	{{ str_replace('Total', '', $card['card_name']) }} (Until {{$dashboard['daterange']}})
+																	@if(strlen($card['card_name'].'(Until '.$dashboard['daterange'].')') > 21)
+																		{{ substr(str_replace('Total', '', $card['card_name']),0,15) }} ... (Until {{$dashboard['daterange']}})
+																	@else
+																		{{ str_replace('Total', '', $card['card_name']) }} (Until {{$dashboard['daterange']}})
+																	@endif
 																@endif
 															@endif
 															<i class="m-icon-swapright m-icon-white"></i>
 														</a>
 													@else
-														<a class="more"
+														<a style="font-size: 9px;" class="more"
 															@if(strpos($card['card_name'], 'Transaction') !== false )
 																href="{{url('report/global/?'.$card['url'])}}">
 																@if(strpos($dashboard['daterange'], 'months') !== false || strpos($dashboard['daterange'], 'days') !== false)
