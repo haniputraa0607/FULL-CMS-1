@@ -95,9 +95,9 @@
 			<tr class="page${item.page}">
 			<td>${item.increment}</td>
 			<td>${new Date(item.created_at).toLocaleString('id-ID',{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})}</td>
-			<td><a href="/user/detail/${item.id_user}">${item.user.name} (${item.user.phone})</a></td>
-			<td><a href="transaction/detail/${item.transaction.id_transaction}/${item.transaction.trasaction_type}">${item.transaction.transaction_receipt_number}</a></td>
-			<td><span class="price">${item.transaction.transaction_grandtotal}</span></td>
+			<td>${item.phone ? `<a href="{{url('user/detail')}}/${item.phone}">${item.name} (${item.phone})</a>` : '' }</td>
+			<td><a href="{{url('transaction/detail')}}/${item.id_transaction}/${item.trasaction_type}">${item.transaction_receipt_number}</a></td>
+			<td><span class="price">${item.transaction_grandtotal}</span></td>
 			<td><span class="price">${item.referrer_bonus?item.referrer_bonus:0}</span></td>
 			</tr>
 			`;
@@ -268,6 +268,14 @@
 				</div>
 			</div>
 		</div>
+	</div>
+</div>
+<div class="portlet light portlet-fit bordered">
+	<div class="portlet-title">
+		<div class="caption w-100">
+			<span class="caption-subject font-blue sbold uppercase"> Report Detail</span>
+		</div>
+	</div>
 		<form action="{{url('referral/report')}}" class="form-horizontal" method="POST" id="form-user">
 			<input type="hidden" name="type" value="user">
 			@csrf
@@ -311,9 +319,9 @@
 						<tr class="header-table">
 							<th style="width: 1%">No</th>
 							<th data-order="promo_campaign_referral_transactions.created_at">Date</th>
-							<th data-order="id_user">Referred User</th>
-							<th>Transaction Receipt Number</th>
-							<th data-order="referred_bonus">Grand Total</th>
+							<th data-order="name">Referred User</th>
+							<th data-order="transaction_receipt_number">Transaction Receipt Number</th>
+							<th data-order="transaction_grandtotal">Grand Total</th>
 							<th data-order="referrer_bonus">Earned Cashback</th>
 						</tr>
 					</thead>
