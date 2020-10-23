@@ -113,5 +113,5 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'promotio
 });
 
 Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'promotion-deals', 'namespace' => 'Modules\Deals\Http\Controllers'], function () {
-	Route::get('{id}', ['middleware' => 'feature_control:75', 'uses' => 'DealsController@detail']);
+	Route::any('{id}', ['middleware' => 'feature_control:75', 'uses' => 'DealsController@detail']);
 });
