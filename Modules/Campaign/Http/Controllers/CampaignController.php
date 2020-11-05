@@ -44,7 +44,7 @@ class CampaignController extends Controller
         }else{
             Session::forget('search-campaign');
         }
-        $post['page'] = $page;
+        $post['page'] = $post['page']??$page;
 		$action = MyHelper::post('campaign/list', $post);
 
         if (isset($action['status']) && $action['status'] == "success") {
