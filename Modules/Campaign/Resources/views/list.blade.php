@@ -115,7 +115,7 @@ $grantedFeature     = session('granted_features');
 			<div class="portlet-body">
 				<div class="col-md-12" style="padding-left:0px;padding-right:0px;margin-top:20px;margin-bottom:15px">
 					<div class="col-md-6" style="padding: 0px;">
-						<form action="" method="POST">
+						<form action="?filter=1" method="POST">
 						<input type="text" class="form-control" name="campaign_title" placeholder="Search Campaign Title" @if(isset($post['campaign_title']) && $post['campaign_title'] != "") value = "{{$post['campaign_title']}}" @endif>
 					</div>
 					<div class="col-md-1" style="padding: 0px;">
@@ -126,30 +126,8 @@ $grantedFeature     = session('granted_features');
 					<div class="col-md-1" style="padding: 0px;">
 						@if(isset($post['campaign_title']) && $post['campaign_title'] != "")<a href="{{url('campaign')}}" class="btn red">Reset Search</a>@endif
 					</div>
-					<div class="col-md-4" style="padding: 0px;">
-						<div class="pull-right pagination" style="margin-top: 0px;margin-bottom: 0px;">
-							<ul class="pagination" style="margin-top: 0px;margin-bottom: 0px;">
-							@if(isset($post['campaign_title']) && $post['campaign_title'] != "")
-							@else
-								@if($post['skip'] > 0)
-									<li class="page-first"><a href="{{url('campaign')}}/page/{{(($post['skip'] + $post['take'])/$post['take'])-1}}">«</a></li>
-								@else
-									<li class="page-first disabled"><a href="javascript:void(0)">«</a></li>
-								@endif
-								
-								@if(isset($count) && $count > (($post['skip']+1) * $post['take']))
-									<li class="page-last"><a href="{{url('campaign')}}/page/{{(($post['skip'] + $post['take'])/$post['take'])+1}}">»</a></li>
-								@else
-									<li class="page-last disabled"><a href="javascript:void(0)">»</a></li>
-								@endif
-							
-							@endif
-							</ul>
-						</div>
-					</div>
 				</div>
 				<div class="table-scrollable">
-					@if(isset($result) && $result != '')
 					<table class="table table-striped table-bordered table-hover" id="sample_1">
 						<thead>
 							<tr>
@@ -161,9 +139,10 @@ $grantedFeature     = session('granted_features');
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($result as $key => $data)
+						@if(!empty($campaign))
+							@foreach($campaign as $key => $data)
 							<tr>
-								<td>{{(($post['skip'] + $post['take']) - $post['take'])+($key+1)}}</td>
+								<td>{{($post['page'] - 1) * 15 + $key + 1}}</td>
 								<td>{{$data['campaign_title']}}</td>
 								<td>@if($data['campaign_send_at'] != "")
 										{{date('d F Y - H:i', strtotime($data['campaign_send_at']))}}
@@ -208,10 +187,16 @@ $grantedFeature     = session('granted_features');
 								</td>
 							</tr>
 							@endforeach
+						@else
+							<tr style="text-align: center"><td colspan="10">No Data Available</td></tr>
+						@endif
 						</tbody>
 					</table>
-					@else
-						No User found with such conditions
+				</div>
+				<br>
+				<div style="text-align: right">
+					@if ($campaignPaginator)
+						{{ $campaignPaginator->links() }}
 					@endif
 				</div>
 			</div>
