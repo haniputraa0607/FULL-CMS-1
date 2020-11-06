@@ -168,6 +168,12 @@
                             return `<b style="color: ${value?'green':'red'}">${value?'Success':'Fail'}</b>`;
                         }
                     },
+                    {
+                        data: 'outlet_code',
+                        render: function (value, type, row) {
+                            return value + ' - ' + row.outlet_name;
+                        }
+                    },
                     {data: 'order_id'},
                     {data: 'transaction_receipt_number'},
                     {data: 'name'},
@@ -272,6 +278,7 @@
                   <tr>
                       <th>Actions</th>
                       <th>Status</th>
+                      <th>Outlet</th>
                       <th>Order Id</th>
                       <th>Receipt Number</th>
                       <th>Customer Name</th>
