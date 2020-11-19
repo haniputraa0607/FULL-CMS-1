@@ -208,13 +208,14 @@ class PromoCampaignController extends Controller
             $return['recordsFiltered'] = $getPromoCampaignReport['count'];
             $return['data'] = array_map(function($x){
                 $trxUrl=url('transaction/detail/'.$x['id_transaction'].'/'.strtolower($x['transaction']['trasaction_type']));
+                $device_type = !empty($x['device_type']) ? $x['device_type'] : 'Android';
                 return [
                     $x['promo_campaign_promo_code']['promo_code'],
                     $x['user_name'].' ('.$x['user_phone'].')',
                     $x['created_at'],
                     "<a href='$trxUrl' target='_blank'>{$x['transaction']['transaction_receipt_number']}</a>",
                     $x['outlet']['outlet_name'],
-                    $x['device_type']
+                    $device_type
                 ];
             },$getPromoCampaignReport['result']);
             return $return;
