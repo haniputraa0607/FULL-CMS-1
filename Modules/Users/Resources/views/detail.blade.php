@@ -1358,7 +1358,7 @@
 							<div class="col-md-4">
 								<form action="{{url('user/detail')}}/{{$profile['phone']}}" role="form" enctype="multipart/form-data" method="POST" style="text-align:center;">
 								{{ csrf_field() }}
-									<input type="password" class="form-control" width="30%" name="password_level" placeholder="Enter Your current PIN" required>
+									<input type="password" class="form-control" width="30%" name="password_level" placeholder="Enter Your current PIN" maxLength="6" required>
 									<input type="hidden" class="form-control" name="level" value="Super Admin">
 									<button class="btn btn-lg red btn-block"> Yes! Be a Super Admin <i class="fa fa-user-secret "></i> </button>
 								</form>
@@ -1425,7 +1425,7 @@
 						<div class="form-group">
 							<label class="col-md-3 control-label">Your Password</label>
 							<div class="col-md-4">
-								<input type="password" class="form-control" width="30%" name="password_permission" placeholder="Enter Your current PIN" required style="width: 91.3%;">
+								<input type="password" class="form-control" width="30%" name="password_permission" placeholder="Enter Your current PIN" maxLength="6" required style="width: 91.3%;">
 							</div>
 						</div>
 						<div class="form-actions">
