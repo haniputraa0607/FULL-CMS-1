@@ -81,8 +81,8 @@
                 [5, 10, 15, 20, "All"]
             ],
             pageLength: 10,
-            dom: "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'><'col-md-6 col-sm-12'>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
-            searching   : true,
+            dom: "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
+            searching   : false,
             serverSide  : true,
             ajax: {
                 url: '{{url('promo-campaign/detail-coupon/'.$result['id_promo_campaign'].'?coupon=true')}}',
