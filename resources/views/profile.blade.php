@@ -192,10 +192,10 @@
 							{{ csrf_field() }}
 								<div class="form-group">
 									<label class="control-label">New Password</label>
-									<input type="password" class="form-control" name="password_new" /> </div>
+									<input type="password" class="form-control" maxLength="6" name="password_new" /> </div>
 								<div class="form-group">
 									<label class="control-label">Re-type New Password</label>
-									<input type="password" class="form-control" name="password_new_confirmation" /> </div>
+									<input type="password" class="form-control" maxLength="6" name="password_new_confirmation" /> </div>
 								<div class="margin-top-10">
 									<button class="btn green"> Save Changes </button>
 								</div>
