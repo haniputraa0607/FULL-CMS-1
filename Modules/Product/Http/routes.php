@@ -21,6 +21,7 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'product'
 	Route::any('delete', ['middleware' => 'feature_control:52', 'uses' => 'ProductController@delete']);
 	Route::any('detail/{product_code}', ['middleware' => 'feature_control:49', 'uses' => 'ProductController@detail']);
 	Route::any('example', ['middleware' => ['feature_control:57', 'config_control:11'], 'uses' => 'ProductController@example']);
+	Route::any('trigger-sync-price', ['middleware' => ['feature_control:62', 'config_control:11'], 'uses' => 'ProductController@triggerSyncPrice']);
 	Route::any('price/{key?}', ['middleware' => ['feature_control:62', 'config_control:11'], 'uses' => 'ProductController@price']);
 	Route::any('category/assign', ['middleware' => ['feature_control:44', 'config_control:11'], 'uses' => 'ProductController@categoryAssign']);
 
