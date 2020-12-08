@@ -165,9 +165,16 @@
                         data: 'success_retry_status',
                         orderable: false,
                         render: function(value) {
-                            return `<b style="color: ${value?'green':'red'}">${value?'Success':'Fail'}</b>`;
+                            if (value == 1) {
+                                return `<b style="color: green">Success</b>`;
+                            } else if (value == 2) {
+                                return `<b style="color: orange">Pending</b>`;
+                            } else {
+                                return `<b style="color: red">Fail</b>`;
+                            }
                         }
                     },
+                    {data: 'transaction_date', render: value => (new Date(value)).toLocaleString('id-ID',{ year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })},
                     {
                         data: 'outlet_code',
                         render: function (value, type, row) {
@@ -278,6 +285,7 @@
                   <tr>
                       <th>Actions</th>
                       <th>Status</th>
+                      <th>Transaction Date</th>
                       <th>Outlet</th>
                       <th>Order Id</th>
                       <th>Receipt Number</th>
