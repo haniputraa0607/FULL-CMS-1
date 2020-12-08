@@ -928,4 +928,21 @@ class ProductController extends Controller
 		return response()->json($data);
     }
 
+    public function triggerSyncPrice(Request $request){
+        if ($request->method() == 'POST') {
+            $trigger = MyHelper::post('product/trigger-sync', []);
+            if (($trigger['status'] ?? false) == 'success') {
+                return back()->withSuccess(['Success trigger sync price']);
+            } else {
+                return back()->withErrors($trigger['messages'] ?? ['Something went wrong']);
+            }
+        }
+        $data = [
+            'title' => 'Trigger Sync Product Price',
+            'menu_active' => 'sync-product-price',
+            'submenu_active' => 'sync-product-price',
+        ];
+        return view('product::product.trigger_sync_product', $data);
+    }
+
 }

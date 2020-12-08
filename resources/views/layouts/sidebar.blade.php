@@ -902,6 +902,12 @@
 					<span class="title">Outlet Product Price</span>
 				</a>
 			</li>
+			<li class="nav-item {{($menu_active == 'sync-product-price') ? 'active' : ''}}">
+				<a href="{{url('product/trigger-sync-price')}}" class="nav-link nav-toggle">
+					<i class="fa fa-refresh"></i>
+					<span class="title">Trigger Sync Price</span>
+				</a>
+			</li>
 			<!-- <li class="nav-item {{($menu_active == 'outlet-different-price') ? 'active' : ''}}">
 				<a href="{{url('outlet/different-price')}}" class="nav-link nav-toggle">
 					<i class="fa fa-check"></i>
