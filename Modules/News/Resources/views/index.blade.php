@@ -164,10 +164,10 @@
                                         $bulan   = date('m', strtotime($value['news_publish_date']));
                                         $bulanEx = date('m', strtotime($value['news_expired_date']));
                                     @endphp
-                                    @if ($bulan == $bulanEx)
-                                        {{ date('d', strtotime($value['news_publish_date'])) }} - {{ date('d F Y', strtotime($value['news_expired_date'])) }}
-                                    @elseif (empty($value['news_expired_date']))
+                                    @if (empty($value['news_expired_date']))
                                         From {{ date('d F Y', strtotime($value['news_publish_date'])) }} - Always
+                                    @elseif ($bulan == $bulanEx)
+                                        {{ date('d', strtotime($value['news_publish_date'])) }} - {{ date('d F Y', strtotime($value['news_expired_date'])) }}
                                     @else
                                         {{ date('d F Y', strtotime($value['news_publish_date'])) }} - {{ date('d F Y', strtotime($value['news_expired_date'])) }}
                                     @endif
