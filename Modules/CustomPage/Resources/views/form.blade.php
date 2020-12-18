@@ -880,7 +880,7 @@
                                 </div>
                                 <div class="col-md-5">
                                     <div class="input-group">
-                                        <input type="text" id="field_event_date_start" class="datepicker form-control featureDateForm field_event" name="custom_page_event_date_start"  @if (isset($detail['custom_page_event_date_start'])) value="{{$detail['custom_page_event_date_start']}}" disabled @elseif (isset($result['custom_page_event_date_start'])) value="{{$result['custom_page_event_date_start']}}" @else value="{{ old('custom_page_event_date_start') }}" @endif style="background-color:#fff" readonly>
+                                        <input type="text" id="field_event_date_start" class="datepicker form-control featureDateForm field_event" name="custom_page_event_date_start"  @if (isset($detail['custom_page_event_date_start'])) value="{{date('d-M-Y', strtotime($detail['custom_page_event_date_start']))}}" disabled @elseif (isset($result['custom_page_event_date_start'])) value="{{date('d-M-Y', strtotime($result['custom_page_event_date_start']))}}" @else value="{{ old('custom_page_event_date_start') }}" @endif style="background-color:#fff" readonly>
                                         <span class="input-group-btn">
                                             <button class="btn default" type="button">
                                                 <i class="fa fa-calendar"></i>
@@ -899,7 +899,7 @@
                                 </div>
                                 <div class="col-md-5">
                                     <div class="input-group">
-                                        <input type="text" id="field_event_date_end" class="datepicker form-control featureDateForm field_event" name="custom_page_event_date_end" @if (isset($detail['custom_page_event_date_end'])) value="{{$detail['custom_page_event_date_end']}}" disabled @elseif (isset($result['custom_page_event_date_end'])) value="{{$result['custom_page_event_date_end']}}" @else value="{{ old('custom_page_event_date_end') }}" @endif style="background-color:#fff" readonly>
+                                        <input type="text" id="field_event_date_end" class="datepicker form-control featureDateForm field_event" name="custom_page_event_date_end" @if (isset($detail['custom_page_event_date_end'])) value="{{date('d-M-Y', strtotime($detail['custom_page_event_date_end']))}}" disabled @elseif (isset($result['custom_page_event_date_end'])) value="{{date('d-M-Y', strtotime($result['custom_page_event_date_end']))}}" @else value="{{ old('custom_page_event_date_end') }}" @endif style="background-color:#fff" readonly>
                                         <span class="input-group-btn">
                                             <button class="btn default" type="button">
                                                 <i class="fa fa-calendar"></i>
