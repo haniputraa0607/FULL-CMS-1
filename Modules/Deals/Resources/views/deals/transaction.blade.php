@@ -217,6 +217,7 @@
                 <span class="caption-subject font-blue sbold uppercase">Result</span>
             </div>
             <div class="actions">
+            	<a class="btn blue" href="{{url('deals/transaction/list-export')}}" target="_blank"><i class="fa fa-th-list"></i> List Export</a>
                 @if(isset($deals) && !empty($deals))
                     <a class="btn green-jungle" id="btn-export" href="{{url()->current()}}?export=1" target="_blank"><i class="fa fa-download"></i> Export</a>
                 @endif
