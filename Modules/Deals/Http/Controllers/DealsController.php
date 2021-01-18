@@ -1228,13 +1228,12 @@ class DealsController extends Controller
             'submenu_active' => ''
         ];
 
-        $post = $request->except('_token');
-
+        $post = $request->except('_token');        	
         if (empty($post)) {
             return redirect('deals/transaction');
         }
 
-        if (isset($post['page'])) {
+        if (isset($post['page']) || session('date_start') !== null) {
             $post['date_start'] = session('date_start');
             $post['date_end']   = session('date_end');
             $post['id_outlet']  = session('id_outlet');
@@ -1245,6 +1244,11 @@ class DealsController extends Controller
             session(['date_end'   => $post['date_end']]);
             session(['id_outlet'  => $post['id_outlet']]);
             session(['id_deals'   => $post['id_deals']]);
+        }
+
+        // EXPORT 
+        if($request->get('export') && $request->get('export') == 1){
+            return $this->createExport($post);
         }
 
         $trx = $this->getDataDealsTrx($request->get('page'), $post);
