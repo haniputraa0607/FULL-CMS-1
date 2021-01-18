@@ -1233,7 +1233,7 @@ class DealsController extends Controller
             return redirect('deals/transaction');
         }
 
-        if (isset($post['page']) || session('date_start') !== null) {
+        if (isset($post['page']) || $request->get('export')) {
             $post['date_start'] = session('date_start');
             $post['date_end']   = session('date_end');
             $post['id_outlet']  = session('id_outlet');
@@ -1262,7 +1262,8 @@ class DealsController extends Controller
         }
 
         $data['outlet']    = parent::getData(MyHelper::get('outlet/be/list?log_save=0'));
-        $data['dealsType'] = parent::getData(MyHelper::post('deals/be/list', ['deals_type' => ["Deals", "Hidden"]]));
+        $data['dealsType'] = parent::getData(MyHelper::post('deals/be/list', ['deals_type_array' => ["Deals", "Hidden"], 'web' => 1]));
+        // $data['dealsType'] = parent::getData(MyHelper::post('deals/be/list', ['deals_type' => ["Deals", "Hidden"]]));
         // $data['dealsType'] = parent::getData(MyHelper::get('deals/be/list'));
 
         return view('deals::deals.transaction', $data);
