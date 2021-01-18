@@ -19,8 +19,12 @@ Route::group(['middleware' => ['web', 'validate_session', 'config_control:25,26,
     Route::post('detail-update', 'DealsController@detailUpdate');
 
     /* TRANSACTION */
-    Route::any('transaction', 'DealsController@transaction');
-    Route::any('transaction/filter', 'DealsController@transactionFilter');
+    Route::group(['prefix' => 'transaction'], function () {
+	    Route::any('/', 'DealsController@transaction');
+	    Route::any('filter', 'DealsController@transactionFilter');
+	    Route::any('list-export', [ 'uses' => 'DealsController@listExport']);
+	    Route::any('export-action/{action}/{id}', [ 'uses' => 'DealsController@actionExport']);
+    });
 
     /* MANUAL PAYMENT */
 

@@ -1195,6 +1195,11 @@ class DealsController extends Controller
             'date_end'   => date('Y-m-d')
         ];
 
+        // EXPORT 
+        if($request->get('export') && $request->get('export') == 1){
+            return $this->createExport($post);
+        }
+
         // TRX
         $trx = $this->getDataDealsTrx($request->get('page'), $post);
 
@@ -1702,5 +1707,91 @@ class DealsController extends Controller
 		}else{
 			return redirect()->back()->withErrors(['Something went wrong']);
 		}
+    }
+
+    function listExport(Request $request){
+        $data = [
+            'title'          => 'Deals',
+            'sub_title'      => 'Export Deals Report',
+            'menu_active'    => 'deals',
+            'submenu_active' => 'deals-list-export'
+        ];
+
+        $id_user = Session::get('id_user');
+        $report = MyHelper::post('report/export/list', ['id_user' => $id_user, 'report_type' => 'Deals']);
+        if (isset($report['status']) && $report['status'] == "success") {
+            $data['data']          = $report['result']['data'];
+            $data['dataTotal']     = $report['result']['total'];
+            $data['dataPerPage']   = $report['result']['from'];
+            $data['dataUpTo']      = $report['result']['from'] + count($report['result']['data'])-1;
+            $data['dataPaginator'] = new LengthAwarePaginator($report['result']['data'], $report['result']['total'], $report['result']['per_page'], $report['result']['current_page'], ['path' => url()->current()]);
+            $data['sum'] = 0;
+        } else {
+            $data['data']          = [];
+            $data['dataTotal']     = 0;
+            $data['dataPerPage']   = 0;
+            $data['dataUpTo']      = 0;
+            $data['dataPaginator'] = false;
+            $data['sum'] = 0;
+        }
+
+        return view('deals::deals.transaction-export-list', $data);
+    }
+
+    function actionExport(Request $request, $action, $id){
+        $post = $request->except('_token');
+
+        $post['action'] = $action;
+        $post['id_export_queue'] = $id;
+        $actions = MyHelper::post('report/export/action', $post);
+        if($action == 'deleted'){
+            if (isset($actions['status']) && $actions['status'] == "success") {
+                return redirect('deals/transaction/list-export')->withSuccess(['Success to Remove file']);
+            } else {
+                return redirect('deals/transaction/list-export')->withErrors(['Failed to Remove file']);
+            }
+        }else{
+            if (isset($actions['status']) && $actions['status'] == "success") {
+                $link = $actions['result']['url_export'];
+                $filename = "Report Deals_".strtotime(date('Ymdhis')).'.xlsx';
+                $tempImage = tempnam(sys_get_temp_dir(), $filename);
+                copy($link, $tempImage);
+
+                return response()->download($tempImage, $filename)->deleteFileAfterSend(true);
+            } else {
+                return redirect('deals/transaction/list-export')->withErrors(['Failed to Download file']);
+            }
+        }
+    }
+
+    function createExport($post) {
+        $post['date_start'] = date('Y-m-d', strtotime($post['date_start']));
+        $post['date_end']   = date('Y-m-d', strtotime($post['date_end']));
+
+        if (isset($post['id_outlet'])) {
+            if ($post['id_outlet'] == "all") {
+                unset($post['id_outlet']);
+            }
+        }
+
+        if (isset($post['id_deals'])) {
+            if ($post['id_deals'] == "all") {
+                unset($post['id_deals']);
+            }
+        }
+
+        $post  = array_filter($post);
+
+        $post['export'] = 1;
+        $post['report_type'] = 'Deals';
+        $post['id_user'] = Session::get('id_user');
+        $post['type'] = 'deals';
+        $report = MyHelper::post('report/export/create', $post);
+
+        if (isset($report['status']) && $report['status'] == "success") {
+            return redirect('deals/transaction/list-export')->withSuccess(['Success create export to queue']);
+        }else{
+            return redirect('deals/transaction/list-export')->withErrors(['Failed create export to queue']);
+        }
     }
 }

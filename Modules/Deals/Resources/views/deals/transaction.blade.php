@@ -216,6 +216,11 @@
             <div class="caption">
                 <span class="caption-subject font-blue sbold uppercase">Result</span>
             </div>
+            <div class="actions">
+                @if(isset($deals) && !empty($deals))
+                    <a class="btn green-jungle" id="btn-export" href="{{url()->current()}}?export=1" target="_blank"><i class="fa fa-download"></i> Export</a>
+                @endif
+            </div>
         </div>
         <div class="portlet-body form">
             <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_1">
