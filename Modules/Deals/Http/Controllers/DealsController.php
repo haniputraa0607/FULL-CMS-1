@@ -1717,13 +1717,16 @@ class DealsController extends Controller
     function listExport(Request $request){
         $data = [
             'title'          => 'Deals',
-            'sub_title'      => 'Export Deals Report',
-            'menu_active'    => 'deals',
-            'submenu_active' => 'deals-list-export'
+            'sub_title'      => 'Export Deals Transaction',
+            'menu_active'    => 'deals-transaction',
+            'submenu_active' => ''
         ];
 
         $id_user = Session::get('id_user');
         $report = MyHelper::post('report/export/list', ['id_user' => $id_user, 'report_type' => 'Deals']);
+        $data['outlet'] = parent::getData(MyHelper::get('outlet/be/list?log_save=0'));
+        $data['deals'] = parent::getData(MyHelper::post('deals/be/list', ['deals_type_array' => ["Deals", "Hidden"], 'web' => 1]));
+
         if (isset($report['status']) && $report['status'] == "success") {
             $data['data']          = $report['result']['data'];
             $data['dataTotal']     = $report['result']['total'];
