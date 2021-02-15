@@ -476,7 +476,10 @@
                                 <div class="portlet-title"> 
                                 <span class="caption font-blue sbold uppercase">{{ $result['promo_type']??'' }} Rules </span>
                                 </div>
+                                @include('promocampaign::template.promo-global-requirement-detail', ['promo_source' => 'promo_campaign'])
                                 @if ( !empty($result['step_complete']) )
+
+                                	{{-- PRODUCT DISCOUNT --}}
                                     @if (isset($result['promo_campaign_product_discount_rules']) && $result['promo_campaign_product_discount_rules'] != null)
                                         <div class="row static-info">
                                             <div class="col-md-4 name">Product Requirement</div>
@@ -544,6 +547,8 @@
                                                 @endif
                                             @endif
                                         </div>
+
+                                    {{-- TIER DISCOUNT --}}
                                     @elseif (isset($result['promo_campaign_tier_discount_rules']) && $result['promo_campaign_tier_discount_rules'] != null)
                                         <div class="row static-info">
                                             <div class="col-md-4 name">Product Requirement</div>
@@ -575,6 +580,8 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+
+                                    {{-- BXGY DISCOUNT --}}
                                     @elseif (isset($result['promo_campaign_buyxgety_rules']) && $result['promo_campaign_buyxgety_rules'] != null)
                                         <div class="row static-info">
                                             <div class="col-md-4 name">Product Requirement</div>
@@ -623,6 +630,8 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+
+                                    {{-- DISCOUNT GLOBAL --}}
                                     @elseif (isset($result['promo_campaign_discount_global_rule']) && $result['promo_campaign_discount_global_rule'] != null) 
                                         @if ($result['promo_campaign_discount_global_rule'] != null)
                                         <div class="row static-info">
@@ -638,7 +647,23 @@
                                             </div>
                                         </div>
                                         @endif
+
+                                    {{-- DELIVERY DISCOUNT --}}
+                                    @elseif (!empty($result['promo_campaign_discount_delivery_rules'])) 
+                                        <div class="row static-info">
+                                            <div class="col-md-4 name">Discount</div>
+                                            <div class="col-md-8 value">: 
+                                                @if ($result['promo_campaign_discount_delivery_rules']['discount_type'] == 'Percent')
+                                                    {{ $result['promo_campaign_discount_delivery_rules']['discount_value'] }}% (max : {{ !empty($result['promo_campaign_discount_delivery_rules']['max_percent_discount']) ? 'IDR '.number_format($result['promo_campaign_discount_delivery_rules']['max_percent_discount']) : '-' }})
+                                                @elseif ($result['promo_campaign_discount_delivery_rules']['discount_type'] == 'Nominal')
+                                                    {{ 'IDR '.number_format($result['promo_campaign_discount_delivery_rules']['discount_value']) }}
+                                                @else
+                                                    No discount
+                                                @endif
+                                            </div>
+                                        </div>
                                     @endif
+                                    
                                     @if( empty($result['used_code']) || empty($result['step_complete']))
                                     <div class="row static-info">
                                         <div class="col-md-11 value">

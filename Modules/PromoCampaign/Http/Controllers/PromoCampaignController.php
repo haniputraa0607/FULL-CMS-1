@@ -324,6 +324,7 @@ class PromoCampaignController extends Controller
         $post = $request->except('_token');
         $id_promo_campaign = $slug;
 
+        $shipment_list = MyHelper::post('promo-campaign/getData', ['get' => 'shipment_method']);
         if (empty($post)) {
 
             $get_data = MyHelper::post('promo-campaign/show-step2', ['id_promo_campaign' => $id_promo_campaign]);
@@ -339,6 +340,8 @@ class PromoCampaignController extends Controller
 
                 $data['result'] = $get_data['result'];
                 $data['result']['id_promo_campaign'] = $slug;
+
+                $data['shipment_list'] = $shipment_list;
 
             } else {
 
@@ -360,7 +363,34 @@ class PromoCampaignController extends Controller
 
             if (isset($action['status']) && $action['status'] == 'success') {
 
-                return redirect('promo-campaign/detail/' . $slug)->withSuccess(['Promo Campaign has been updated']);
+            	$msg_success = ['Promo Campaign has been updated'];
+	            if ($post['promo_type'] == 'Discount delivery') {
+	            	$shipment = [];
+	            	$shipment_text = [];
+            		foreach ($shipment_list as $val) {
+            			$shipment_text[] = $val['text'];
+            			$shipment_method[$val['code']] = $val['text'];
+            		}
+	            	if ($post['filter_shipment'] == 'all_shipment') {
+	            		$shipment = $shipment_text;
+	            	}
+
+	            	if (isset($post['shipment_method'])) {
+	            		foreach ($post['shipment_method'] as $val) {
+	            			if (!isset($shipment_method[$val]) || $val == 'Pickup Order') {
+	            				continue;
+	            			}
+		            		$shipment[] = $shipment_method[$val];
+	            		}
+		            	if (empty($shipment)) $shipment = $shipment_text;
+	            	}
+
+	            	$shipment_text 	= implode(', ', $shipment);
+	            	$msg_shipment 	= 'Tipe shipment yang tersimpan adalah delivery '.$shipment_text.' karena tipe promo yang dipilih merupakan diskon delivery';
+	            	$msg_success[] 	= $msg_shipment;
+	            }
+
+                return redirect('promo-campaign/detail/' . $slug)->withSuccess($msg_success);
             } 
             elseif($action['messages']??false) {
                 return back()->withErrors($action['messages'])->withInput();

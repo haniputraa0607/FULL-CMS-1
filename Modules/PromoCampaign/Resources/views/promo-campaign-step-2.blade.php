@@ -5,6 +5,8 @@
 @include('promocampaign::bulkForm')
 @include('promocampaign::buyXgetYForm')
 @include('promocampaign::warning-image')
+@include('promocampaign::template.discount-delivery', ['promo_source' => 'promo_campaign'])
+@include('promocampaign::template.promo-global-requirement', ['promo_source' => 'promo_campaign'])
 @section('page-style')
 	<link href="{{ secure_url('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> 
 	<link href="{{ secure_url('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" /> 
@@ -264,7 +266,7 @@
 			$('#tabContainer .tabContent').hide();
 			promo_type = $('select[name=promo_type] option:selected').val();
 			// $('#tabContainer input:not(input[name="promo_type"]),#tabContainer select').prop('disabled',true);
-			$('#productDiscount, #bulkProduct, #buyXgetYProduct').hide().find('input, textarea, select').prop('disabled', true);
+			$('#productDiscount, #bulkProduct, #buyXgetYProduct, #discount-delivery').hide().find('input, textarea, select').prop('disabled', true);
 
 			if (promo_type == 'Product Discount') {
 				product = $('select[name=filter_product] option:selected').val();
@@ -284,6 +286,10 @@
 				reOrder2();
 				$('#buyXgetYProduct').show().find('input, textarea, select').prop('disabled', false);
 				loadProduct('#multipleProduct3',reOrder2);
+			}
+			else if(promo_type == 'Discount delivery'){
+
+				$('#discount-delivery').show().find('input, textarea, select').prop('disabled', false);
 			}
 		}
 
@@ -431,6 +437,8 @@
 	@yield('child-script')
 	@yield('child-script2')
 	@yield('warning-image-script')
+	@yield('discount-delivery-script')
+	@yield('global-requirement-script')
 	<style>
 	input[type=number]::-webkit-inner-spin-button, 
 	input[type=number]::-webkit-outer-spin-button { 
@@ -655,7 +663,13 @@
 
 			{{-- PROMO TYPE FORM --}}
 			<div class="col-md-12">
+				
+				{{-- Global Requirement --}}
 				@yield('warning-image')
+
+				{{-- Global Requirement --}}
+				@yield('global-requirement')
+
 				<div class="portlet light bordered" id="promotype-form">
 					<div class="portlet-title">
 						<div class="caption font-blue ">
@@ -676,12 +690,21 @@
 									</br>
 									</br> Bulk/Tier Product : Promo hanya berlaku untuk suatu product setelah melakukan pembelian dalam jumlah yang telah ditentukan
 									</br>
-									</br> Buy X get Y : Promo hanya berlaku untuk product tertentu" data-container="body" data-html="true"></i>
+									</br> Buy X get Y : Promo hanya berlaku untuk product tertentu
+									</br>
+									</br> Discount Delivery : Promo berupa potongan harga untuk biaya pengiriman" 
+									data-container="body" data-html="true"></i>
 									<select class="form-control" name="promo_type" required>
 										<option value="" disabled {{ empty($result['promo_campaign_product_discount_rules']) && empty($result['promo_campaign_tier_discount_rules']) && empty($result['promo_campaign_buyxgety_rules']) ? 'selected' : '' }}> Select Promo Type </option>
 										<option value="Product Discount" {{ !empty($result['promo_campaign_product_discount_rules']) ? 'selected' : '' }} title="Promo berlaku untuk semua product atau product tertentu tanpa jumlah minimum"> Product Discount </option>
 										<option value="Tier discount" {{ !empty($result['promo_campaign_tier_discount_rules']) ? 'selected' : '' }} title="Promo hanya berlaku untuk suatu product setelah melakukan pembelian dalam jumlah yang telah ditentukan"> Bulk/Tier Product </option>
 										<option value="Buy X Get Y" {{ !empty($result['promo_campaign_buyxgety_rules']) ? 'selected' : '' }} title="Promo hanya berlaku untuk product tertentu"> Buy X Get Y </option>
+										<option value="Discount delivery" 
+											@if ( old('promo_type') && old('promo_type') == 'Discount delivery' ) selected 
+											@elseif ( !empty($result['promo_campaign_discount_delivery_rules']) ) selected 
+											@endif
+											title="Promo berupa potongan harga untuk total transaksi / delivery"
+											> Discount Delivery </option>
 		                            </select>
 								</div>
 							</div>
@@ -770,6 +793,9 @@
 							</div>
 							<div id="buyXgetYProduct" class="p-t-10px">
 								@yield('buyXgetYForm')
+							</div>
+							<div id="discount-delivery" class="p-t-10px">
+								@yield('discount-delivery')
 							</div>
 						</div>
 					</div>
