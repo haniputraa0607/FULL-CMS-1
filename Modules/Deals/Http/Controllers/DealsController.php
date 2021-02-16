@@ -668,7 +668,7 @@ class DealsController extends Controller
 		$getMembership = MyHelper::post('membership/be/list?log_save=0',[]);
 		if (isset($getMembership['status']) && $getMembership['status'] == 'success') $data['memberships'] = $getMembership['result']; else $data['memberships'] = [];
 
-
+		$data['shipment_list'] = MyHelper::post('promo-campaign/getData', ['get' => 'shipment_method']);
         if(!empty(Session::get('filter_user'))){
             $data['conditions'] = Session::get('filter_user');
         }else{
@@ -737,6 +737,8 @@ class DealsController extends Controller
         $slug = $id;
         $id = MyHelper::explodeSlug($id)[0]??'';
 
+        $shipment_list = MyHelper::post('promo-campaign/getData', ['get' => 'shipment_method']);
+
         if (empty($post)) {
 	        $identifier             = $this->identifier();
 	        $dataDeals              = $this->dataDeals($identifier);
@@ -750,10 +752,11 @@ class DealsController extends Controller
 
 	        // DEALS
 	        $deals = MyHelper::post('deals/be/detail', $post);
-// dd($deals);
+
 	        if (isset($deals['status']) && $deals['status'] == 'success') {
 
 	            $data['result'] = $deals['result'];
+	            $data['shipment_list'] = $shipment_list;
 
 	        } else {
 
@@ -771,8 +774,35 @@ class DealsController extends Controller
 	        }
 
 			$action = MyHelper::post('promo-campaign/step2', $post);
-// dd($action);
+
             if (isset($action['status']) && $action['status'] == 'success') {
+
+            	$msg_success = ['Promo Campaign has been updated'];
+	            if ($post['promo_type'] == 'Discount delivery') {
+	            	$shipment = [];
+	            	$shipment_text = [];
+            		foreach ($shipment_list as $val) {
+            			$shipment_text[] = $val['text'];
+            			$shipment_method[$val['code']] = $val['text'];
+            		}
+	            	if ($post['filter_shipment'] == 'all_shipment') {
+	            		$shipment = $shipment_text;
+	            	}
+
+	            	if (isset($post['shipment_method'])) {
+	            		foreach ($post['shipment_method'] as $val) {
+	            			if (!isset($shipment_method[$val]) || $val == 'Pickup Order') {
+	            				continue;
+	            			}
+		            		$shipment[] = $shipment_method[$val];
+	            		}
+		            	if (empty($shipment)) $shipment = $shipment_text;
+	            	}
+
+	            	$shipment_text 	= implode(', ', $shipment);
+	            	$msg_shipment 	= 'Tipe shipment yang tersimpan adalah delivery '.$shipment_text.' karena tipe promo yang dipilih merupakan diskon delivery';
+	            	$msg_success[] 	= $msg_shipment;
+	            }
 
             	if($post['deals_type'] == 'Promotion'){
 	                $rpage = 'promotion/deals';
@@ -782,7 +812,7 @@ class DealsController extends Controller
 	                $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
 	            }
 
-                return redirect($rpage.'/step3/' . $slug)->withSuccess(['Deals has been updated']);
+                return redirect($rpage.'/step3/' . $slug)->withSuccess($msg_success);
             }
             elseif($action['messages']??$action['message']??false) {
                 return back()->withErrors($action['messages']??$action['message'])->withInput();

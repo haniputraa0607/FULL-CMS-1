@@ -13,6 +13,12 @@
 	foreach ($payment_list??[] as $key => $value) {
 		$payment_list_text[$value['payment_method']] = $value['text'];
 	}
+
+	$shipment_list_text = [];
+	foreach ($shipment_list??[] as $key => $value) {
+		$shipment_list_text[$value['code']] = $value['text'];
+	}
+
 @endphp
 
 <div class="row static-info">
@@ -22,8 +28,8 @@
     	@if ($data_global['is_all_shipment'] == '1')
             <div style="margin-left: -5px">All Shipment</div>
         @elseif ($data_global['is_all_shipment'] == '0')
-        	@foreach ($data_global[$promo_source.'_shipment_method'] as $val)
-        		<div style="margin-bottom: 10px">{{ '- '.$val['shipment_method'] }}</div>
+        	@foreach ($data_global[$promo_source.'_shipment_method'] ?? [] as $val)
+        		<div style="margin-bottom: 10px">{{ '- '. ( $shipment_list_text[$val['shipment_method']] ?? $val['shipment_method'] )  }}</div>
         	@endforeach
         @else
             -

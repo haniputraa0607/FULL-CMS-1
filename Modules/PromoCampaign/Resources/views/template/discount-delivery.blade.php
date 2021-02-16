@@ -2,7 +2,7 @@
 @php
 	switch ($promo_source) {
 		case 'promo_campaign':
-			$promo_rule = $result['promo_campaign_tier_discount_rules'] ?: null;
+			$promo_rule = $result['promo_campaign_discount_delivery_rules'] ?: null;
 			break;
 		
 		case 'Promotion':
@@ -14,7 +14,7 @@
 			break;
 	}
 
-	$promo_rule = ($result['deals_promotion_discount_delivery_rules'] ?? $result['deals_discount_delivery_rules'] ?? $result['promo_campaign_discount_delivery_rules']) ?: null;
+	$promo_rule = ($result['deals_promotion_discount_delivery_rules'] ?? $result['deals_discount_delivery_rules'] ?? $result['promo_campaign_discount_delivery_rules'] ?? []) ?: null;
 @endphp
 
 @section('discount-delivery')

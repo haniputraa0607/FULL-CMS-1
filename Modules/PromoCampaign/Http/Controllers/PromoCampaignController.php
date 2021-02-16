@@ -188,6 +188,7 @@ class PromoCampaignController extends Controller
             $outlets = MyHelper::post('outlet/list', $post);
             $outlets = isset($outlets['status'])&&isset($outlets['status'])=='success'?$outlets['result']:[];
             $data['outlets'] = array_map(function($x){return [$x['id_outlet'],$x['outlet_name']];},$outlets);
+            $data['shipment_list'] = MyHelper::post('promo-campaign/getData', ['get' => 'shipment_method']);
             $data['operator']=$post['operator']??'and';
             $data['operator2']=$post['operator2']??'and';
 
