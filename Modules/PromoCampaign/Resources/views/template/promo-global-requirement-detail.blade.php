@@ -36,12 +36,15 @@
         @endif
     </div>
 </div>
-<div class="row static-info">
-    <div class="col-md-4 name">Min Basket Size</div>
-    <div class="col-md-8 value">: 
-            {{ ($data_global['min_basket_size'] == 0) ? 'no min basket size' : 'IDR '.number_format($data_global['min_basket_size']) }}
-    </div>
-</div>
+
+@if ( ($data_global['promo_type'] ?? false) == 'Discount delivery')
+	<div class="row static-info">
+	    <div class="col-md-4 name">Min Basket Size</div>
+	    <div class="col-md-8 value">: 
+	            {{ ($data_global['min_basket_size'] == 0) ? 'no min basket size' : 'IDR '.number_format($data_global['min_basket_size']) }}
+	    </div>
+	</div>
+@endif
 {{-- <div class="row static-info">
     <div class="col-md-4 name">Payment Method</div>
     <div class="col-md-1 value">:</div>
