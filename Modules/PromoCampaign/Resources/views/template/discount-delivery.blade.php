@@ -1,4 +1,5 @@
 @include('promocampaign::template.promo-min-basket-size')
+@include('promocampaign::template.promo-shipment-method', ['promo_source' => $promo_source])
 @php
 	switch ($promo_source) {
 		case 'promo_campaign':
@@ -20,6 +21,9 @@
 @section('discount-delivery')
 
 @yield('min-basket-size')
+<div class="form-group" style="height: 55px;display: inline;">
+	@yield('promo-shipment-method')
+</div>
 
 <div class="form-group" style="height: 90px;">
 	<label class="control-label">Discount Type</label>
@@ -101,4 +105,5 @@
 		});
 	});
 </script>
+@yield('promo-shipment-method-script')
 @endSection

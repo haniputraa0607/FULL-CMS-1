@@ -211,7 +211,6 @@
             <div class="portlet-title"> 
             <span class="caption font-blue sbold uppercase">Voucher Online Rules : {{ $deals['promo_type']??'' }}</span>
             </div>
-            @include('promocampaign::template.promo-global-requirement-detail', ['promo_source' => 'deals'])
             @if ( 
             		!empty($deals['deals_product_discount_rules']) || 
             		!empty($deals['deals_tier_discount_rules']) || 
@@ -393,6 +392,7 @@
 
 				{{-- DELIVERY DISCOUNT --}}
                 @elseif (!empty($deals['deals_discount_delivery_rules'])) 
+                	@include('promocampaign::template.promo-global-requirement-detail', ['promo_source' => 'deals'])
                     <div class="row static-info">
                         <div class="col-md-4 name">Discount</div>
                         <div class="col-md-8 value">: 

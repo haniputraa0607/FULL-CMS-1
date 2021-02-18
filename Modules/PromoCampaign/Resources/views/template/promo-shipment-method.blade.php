@@ -43,10 +43,10 @@
 		        <label class="control-label">Select Shipment</label>
 	        <div class="mt-checkbox-inline">
 
-	        	<label class="mt-checkbox mt-checkbox-outline">
+	        	{{-- <label class="mt-checkbox mt-checkbox-outline">
 	                <input class="input-selected-shipment" type="checkbox" value="Pickup Order" name="shipment_method[]" @if (in_array('Pickup Order', $shipment_method)) checked @endif> Pickup Order
 	                <span></span>
-	            </label>
+	            </label> --}}
 
 	        	@foreach ($shipment_list ?? [] as $val)
 		            <label class="mt-checkbox mt-checkbox-outline">

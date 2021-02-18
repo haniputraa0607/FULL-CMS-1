@@ -6,7 +6,7 @@
 @include('deals::deals.tier-discount')
 @include('deals::deals.buyxgety-discount')
 @include('promocampaign::template.discount-delivery', ['promo_source' => $deals_type])
-@include('promocampaign::template.promo-global-requirement', ['promo_source' => $deals_type])
+{{-- @include('promocampaign::template.promo-global-requirement', ['promo_source' => $deals_type]) --}}
 @section('page-style')
 	<link href="{{ secure_url('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> 
 	<link href="{{ secure_url('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" /> 

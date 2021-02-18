@@ -6,7 +6,7 @@
 @include('promocampaign::buyXgetYForm')
 @include('promocampaign::warning-image')
 @include('promocampaign::template.discount-delivery', ['promo_source' => 'promo_campaign'])
-@include('promocampaign::template.promo-global-requirement', ['promo_source' => 'promo_campaign'])
+{{-- @include('promocampaign::template.promo-global-requirement', ['promo_source' => 'promo_campaign']) --}}
 @section('page-style')
 	<link href="{{ secure_url('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> 
 	<link href="{{ secure_url('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" /> 

@@ -476,7 +476,6 @@
                                 <div class="portlet-title"> 
                                 <span class="caption font-blue sbold uppercase">{{ $result['promo_type']??'' }} Rules </span>
                                 </div>
-                                @include('promocampaign::template.promo-global-requirement-detail', ['promo_source' => 'promo_campaign'])
                                 @if ( !empty($result['step_complete']) )
 
                                 	{{-- PRODUCT DISCOUNT --}}
@@ -650,6 +649,7 @@
 
                                     {{-- DELIVERY DISCOUNT --}}
                                     @elseif (!empty($result['promo_campaign_discount_delivery_rules'])) 
+                                    	@include('promocampaign::template.promo-global-requirement-detail', ['promo_source' => 'promo_campaign'])
                                         <div class="row static-info">
                                             <div class="col-md-4 name">Discount</div>
                                             <div class="col-md-8 value">: 
