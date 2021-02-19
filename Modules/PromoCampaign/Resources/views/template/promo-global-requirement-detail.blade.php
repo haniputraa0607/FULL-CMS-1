@@ -27,7 +27,7 @@
     <div class="col-md-7 value" style="margin-left: -35px">
     	@if ($data_global['is_all_shipment'] == '1')
             <div style="margin-left: -5px">All Shipment</div>
-        @elseif ($data_global['is_all_shipment'] == '0')
+        @elseif (!empty($data_global[$promo_source.'_shipment_method']))
         	@foreach ($data_global[$promo_source.'_shipment_method'] ?? [] as $val)
         		<div style="margin-bottom: 10px">{{ '- '. ( $shipment_list_text[$val['shipment_method']] ?? $val['shipment_method'] )  }}</div>
         	@endforeach
