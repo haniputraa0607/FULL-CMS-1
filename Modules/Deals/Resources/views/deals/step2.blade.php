@@ -5,6 +5,8 @@
 @extends('layouts.main-closed')
 @include('deals::deals.tier-discount')
 @include('deals::deals.buyxgety-discount')
+@include('promocampaign::template.discount-delivery', ['promo_source' => $deals_type])
+{{-- @include('promocampaign::template.promo-global-requirement', ['promo_source' => $deals_type]) --}}
 @section('page-style')
 	<link href="{{ secure_url('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> 
 	<link href="{{ secure_url('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" /> 
@@ -178,7 +180,7 @@
 			$('#tabContainer .tabContent').hide();
 			promo_type = $('select[name=promo_type] option:selected').val();
 			// $('#tabContainer input:not(input[name="promo_type"]),#tabContainer select').prop('disabled',true);
-			$('#productDiscount, #bulkProduct, #buyXgetYProduct').hide().find('input, textarea, select').prop('disabled', true);
+			$('#productDiscount, #bulkProduct, #buyXgetYProduct, #discount-delivery').hide().find('input, textarea, select').prop('disabled', true);
 
 			if (promo_type == 'Product Discount') {
 				product = $('select[name=filter_product] option:selected').val();
@@ -197,6 +199,10 @@
 				reOrder2();
 				$('#buyXgetYProduct').show().find('input, textarea, select').prop('disabled', false);
 				loadProduct('#multipleProduct3',reOrder2);
+			}
+			else if(promo_type == 'Discount delivery'){
+
+				$('#discount-delivery').show().find('input, textarea, select').prop('disabled', false);
 			}
 		}
 
@@ -389,6 +395,8 @@
 	</script>
 	@yield('child-script')
 	@yield('child-script2')
+	@yield('discount-delivery-script')
+	@yield('global-requirement-script')
 	<style>
 	input[type=number]::-webkit-inner-spin-button, 
 	input[type=number]::-webkit-outer-spin-button { 
@@ -537,7 +545,7 @@
 			</div>
 		</div>
 	    @endif
-	    {{-- END OFFLINE RULE --}}
+	    {{-- END OF WARNING IMAGE RULE --}}
 
 		{{-- OFFLINE RULE --}}
 		@if( ($result['is_offline']??false) == 1)
@@ -578,10 +586,14 @@
 			</div>
 		</div>
 	    @endif
-	    {{-- END OFFLINE RULE --}}
+	    {{-- END OF OFFLINE RULE --}}
 
 	    {{-- ONLINE RULE --}}
         @if( ($result['is_online']??false) == 1)
+
+        	{{-- Global Requirement --}}
+			@yield('global-requirement')
+			
 	        <div class="portlet light bordered">
 				<div class="portlet-title">
 					<div class="caption font-blue ">
@@ -627,6 +639,12 @@
 										!empty($result['deals_promotion_buyxgety_rules']) 
 										? 'selected' : '' 
 									}} title="Promo hanya berlaku untuk product tertentu"> Buy X Get Y </option>
+									<option value="Discount delivery" 
+										@if ( old('promo_type') && old('promo_type') == 'Discount delivery' ) selected 
+										@elseif ( !empty($result['deals_discount_delivery_rules']) || !empty($result['deals_promotion_discount_delivery_rules']) ) selected 
+										@endif
+										title="Promo berupa potongan harga untuk total transaksi / delivery"
+										> Discount Delivery </option>
 		                        </select>
 							</div>
 						</div>
@@ -793,11 +811,14 @@
 						<div id="buyXgetYProduct" class="p-t-10px">
 							@yield('buyXgetYForm')
 						</div>
+						<div id="discount-delivery" class="p-t-10px">
+							@yield('discount-delivery')
+						</div>
 					</div>
 				</div>
 			</div>
 		@endif
-		{{-- END ONLINE RULE --}}
+		{{-- END OF ONLINE RULE --}}
 
 		<div class="" style="height: 40px;">
 			@if( ($result['deals_total_claimed']??false) == 0 || $deals_type == 'Promotion')
