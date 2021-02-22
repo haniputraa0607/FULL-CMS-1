@@ -53,6 +53,8 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'transact
     Route::any('/setting/timer-payment-gateway', 'TransactionController@timerPaymentGateway');
     Route::get('/setting/available-payment', 'TransactionController@availablePayment');
     Route::post('/setting/available-payment', 'TransactionController@availablePaymentUpdate');
+    Route::get('/setting/available-shipment', 'TransactionController@availableShipment');
+    Route::post('/setting/available-shipment', 'TransactionController@availableShipmentUpdate');
 });
 
 Route::group(['prefix' => 'transaction', 'namespace' => 'Modules\Transaction\Http\Controllers'], function()
