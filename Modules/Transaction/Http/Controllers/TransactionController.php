@@ -1501,6 +1501,10 @@ class TransactionController extends Controller
         ];
         // return MyHelper::post('transaction/available-shipment',['show_all' => 1]);
         $data['shipments'] = MyHelper::post('transaction/available-shipment',['show_all' => 1])['result']??[];
+        $settings_raw = MyHelper::post('setting',['key-like' => 'delivery_'])['result'] ?? [];
+        foreach ($settings_raw as $setting) {
+            $data[$setting['key']] = $setting['value'];
+        }
         return view('transaction::setting.available_shipment', $data);
     }
 
@@ -1513,7 +1517,11 @@ class TransactionController extends Controller
                 'status' => $shipment['status']??0
             ];
         }
-        $data = MyHelper::post('transaction/available-shipment/update',['deliveries' => $shipments]);
+        $data = MyHelper::post('transaction/available-shipment/update',[
+            'deliveries' => $shipments,
+            'delivery_max_cup' => $request->delivery_max_cup,
+            'delivery_default' => $request->delivery_default,
+        ]);
         if (($data['status']??false) == 'success') {
             return back()->withSuccess(['Success update setting']);
         } else {

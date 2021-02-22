@@ -79,7 +79,34 @@
         </div>
     </div>
     <div class="portlet-body">
-        <div class="alert alert-info">Drag [<i class="fa fa-ellipsis-h" style="transform: rotate(90deg);"></i>] handle button to reorder delivery method</div>            <form class="form-horizontal" action="{{ url('transaction/setting/available-shipment') }}" method="post" id="form">
+        <form class="form-horizontal" action="{{ url('transaction/setting/available-shipment') }}" method="post" id="form">
+        <div class="form-group">
+            <div class="input-icon right">
+                <label class="col-md-3 control-label">
+                Maximum Item for External Delivery
+                <i class="fa fa-question-circle tooltips" data-original-title="Jumlah maksimum order untuk delivery" data-container="body"></i>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <input type="number" name="delivery_max_cup" value="{{$delivery_max_cup}}" class="form-control" value="50">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-icon right">
+                <label class="col-md-3 control-label">
+                Default Selected
+                <i class="fa fa-question-circle tooltips" data-original-title="Jumlah maksimum order untuk delivery" data-container="body"></i>
+                </label>
+            </div>
+            <div class="col-md-3">
+                <select class="form-control" name="delivery_default">
+                    <option value="price" @if($delivery_default == 'price') selected @endif>Lowest Price</option>
+                    <option value="GO-SEND" @if($delivery_default == 'GO-SEND') selected @endif>GO-SEND</option>
+                    <option value="Internal Delivery" @if($delivery_default == 'Internal Delivery') selected @endif>Internal Delivery</option>
+                </select>
+            </div>
+        </div>
+        <div class="alert alert-info">Drag [<i class="fa fa-ellipsis-h" style="transform: rotate(90deg);"></i>] handle button to reorder delivery method</div>            
             {{ csrf_field() }}
             <table class="table">
                 <thead>
