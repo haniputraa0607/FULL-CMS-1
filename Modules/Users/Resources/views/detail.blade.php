@@ -463,8 +463,8 @@
 {{--                                                <i class="fa fa-map-pin"></i> {{$profile['address']}} </li>--}}
 {{--											<li class="list-group-item" style="padding: 5px !important;" title="User Register date & time">--}}
 {{--												<i class="fa fa-registered"></i> {{date("d F Y", strtotime($profile['created_at']))}} </li>--}}
-{{--											<li class="list-group-item" style="padding: 5px !important;" title="User Membership">--}}
-{{--												<i class="icon-badge"></i> @if(isset($profile['user_membership']['membership_name'])){{$profile['user_membership']['membership_name']}} @endif</li>--}}
+											<li class="list-group-item" style="padding: 5px !important;" title="User Membership">
+												<i class="icon-badge"></i> @if(isset($profile['user_membership']['membership_name'])){{$profile['user_membership']['membership_name']}} @endif</li>
 {{--                        					<!-- <li class="list-group-item" style="padding: 5px !important;" title="User Relationship">--}}
 {{--												<i class="fa fa-heart"></i> { {$profile['relationship']} } </li> -->--}}
 {{--											<li class="list-group-item" style="padding: 5px !important;" title="Total {{env('POINT_NAME', 'Points')}} Obtained By The User">--}}
