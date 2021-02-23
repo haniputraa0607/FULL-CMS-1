@@ -183,31 +183,34 @@
                 Delivery Order
                 <i class="fa fa-question-circle tooltips" data-original-title="Jika diaktifkan, maka outlet dapat ddilakukan untuk transaksi delivery order" data-container="body"></i>
                 </label>
+                <input type="text" name="delivery_order_default" value="0">
             </div>
             <div class="col-md-9">
-                <input type="checkbox" name="delivery_order" @if(old('delivery_order',$val['delivery_order']) == '1') checked @endif  class="make-switch switch-change" data-size="small" data-on-text="Active" data-off-text="Inactive" value="1">
+                <input type="checkbox" name="delivery_order" @if(old('delivery_order',$val['delivery_order']) == '1') checked @endif  class="make-switch switch-change" data-size="small" data-on-text="Active" data-off-text="Inactive" value="1" id="delivery-only-toggle">
             </div>
         </div>
-        <div class="form-group">
-            <div class="input-icon right">
-                <label class="col-md-3 control-label">
-                GO-SEND
-                <i class="fa fa-question-circle tooltips" data-original-title="Jika diaktifkan, dapat menggunakan GO-SEND untuk Delivery" data-container="body"></i>
-                </label>
+        <div id="delivery-only-content" class="{{old('delivery_order',$val['delivery_order']) ? '' : 'hidden'}}">
+            <div class="form-group">
+                <div class="input-icon right">
+                    <label class="col-md-3 control-label">
+                    GO-SEND
+                    <i class="fa fa-question-circle tooltips" data-original-title="Jika diaktifkan, dapat menggunakan GO-SEND untuk Delivery" data-container="body"></i>
+                    </label>
+                </div>
+                <div class="col-md-9">
+                    <input type="checkbox" name="available_delivery[]" @if(in_array('GO-SEND', old('available_delivery',$val['available_delivery']))) checked @endif  class="make-switch switch-change" data-size="small" data-on-text="Active" data-off-text="Inactive" value="GO-SEND">
+                </div>
             </div>
-            <div class="col-md-9">
-                <input type="checkbox" name="available_delivery[]" @if(in_array('GO-SEND', old('available_delivery',$val['available_delivery']))) checked @endif  class="make-switch switch-change" data-size="small" data-on-text="Active" data-off-text="Inactive" value="GO-SEND">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-icon right">
-                <label class="col-md-3 control-label">
-                Internal Delivery
-                <i class="fa fa-question-circle tooltips" data-original-title="Jika diaktifkan, dapat menggunakan Delivery Internal untuk Delivery" data-container="body"></i>
-                </label>
-            </div>
-            <div class="col-md-9">
-                <input type="checkbox" name="available_delivery[]" @if(in_array('Internal Delivery', old('available_delivery',$val['available_delivery']))) checked @endif  class="make-switch switch-change" data-size="small" data-on-text="Active" data-off-text="Inactive" value="Internal Delivery">
+            <div class="form-group">
+                <div class="input-icon right">
+                    <label class="col-md-3 control-label">
+                    Internal Delivery
+                    <i class="fa fa-question-circle tooltips" data-original-title="Jika diaktifkan, dapat menggunakan Delivery Internal untuk Delivery" data-container="body"></i>
+                    </label>
+                </div>
+                <div class="col-md-9">
+                    <input type="checkbox" name="available_delivery[]" @if(in_array('Internal Delivery', old('available_delivery',$val['available_delivery']))) checked @endif  class="make-switch switch-change" data-size="small" data-on-text="Active" data-off-text="Inactive" value="Internal Delivery">
+                </div>
             </div>
         </div>
 
