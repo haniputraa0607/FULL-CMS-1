@@ -280,7 +280,7 @@ class OutletController extends Controller
                 if(!empty($post['outlet_open_hours'])) $post['outlet_open_hours']  = date('H:i:s', strtotime($post['outlet_open_hours']));
                 if(!empty($post['outlet_open_hours'])) $post['outlet_close_hours'] = date('H:i:s', strtotime($post['outlet_close_hours']));
 
-                $post = array_filter($post);
+                // $post = array_filter($post);
                 $save = MyHelper::post('outlet/update', $post);
 
                 if (isset($save['status']) && $save['status'] == "success") {

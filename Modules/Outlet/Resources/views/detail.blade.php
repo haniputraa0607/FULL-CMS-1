@@ -520,6 +520,18 @@
         return true;
     }
   </script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#delivery-only-toggle').on('switchChange.bootstrapSwitch', function(event, state) {
+        if (state) {
+          $('#delivery-only-content').removeClass('hidden');
+        } else {
+          $('#delivery-only-content').addClass('hidden');
+        }
+      });
+    });
+  </script>
 @endsection
 
 @section('content')
