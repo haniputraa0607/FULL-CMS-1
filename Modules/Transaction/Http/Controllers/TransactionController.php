@@ -1505,13 +1505,15 @@ class TransactionController extends Controller
         foreach ($settings_raw as $setting) {
             $data[$setting['key']] = $setting['value'];
         }
+        $data['delivery_max_cup'] = $data['delivery_max_cup'] ?? 50;
+        $data['delivery_default'] = $data['delivery_default'] ?? 'price';
         return view('transaction::setting.available_shipment', $data);
     }
 
     public function availableShipmentUpdate(Request $request) {
         $post = $request->except('_token');
         $shipments = [];
-        foreach ($request->shipments as $code => $shipment) {
+        foreach ($request->shipments??[] as $code => $shipment) {
             $shipments[] = [
                 'code' => $code,
                 'status' => $shipment['status']??0
