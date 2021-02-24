@@ -507,12 +507,21 @@
                                     </div>
                                     <div class="col-12 text-14px space-text text-black Ubuntu-Medium">{{ date('d F Y', strtotime($data['transaction_date'])) }}</div>
 
-                                    @if ($data['detail']['pickup_type'] == 'set time')
-                                        <div class="col-12 text-21-7px Ubuntu-Medium" style="color: #000000;">{{ $data['detail']['pickup_time'] }}</div>
-                                    @elseif($data['detail']['pickup_type'] == 'at arrival')
-                                        <div class="col-12 text-21-7px Ubuntu-Medium" style="color: #8fd6bd;">ON ARRIVAL</div>
+                                    @if(isset($data['delivery_info']))
+                                        <div class="col-12 text-14px"><b>DELIVERY</b></div>
+                                        <div class="col-12 text-12px WorkSans-Regular" style="color: #707070;">
+                                            @if(isset($data['delivery_info']['delivery_address'])) {{ $data['delivery_info']['delivery_address'] }} @endif
+                                        </div>
                                     @else
-                                        <div class="col-12 text-21-7px Ubuntu-Medium" style="color: #8fd6bd;">RIGHT NOW</div>
+                                        <div class="col-12 text-14px WorkSans-Bold" style="color: #a6ba35;">
+                                            @if ($data['detail']['pickup_type'] == 'set time')
+                                                <div class="col-12 text-21-7px Ubuntu-Medium" style="color: #000000;">{{ $data['detail']['pickup_time'] }}</div>
+                                            @elseif($data['detail']['pickup_type'] == 'at arrival')
+                                                <div class="col-12 text-21-7px Ubuntu-Medium" style="color: #8fd6bd;">ON ARRIVAL</div>
+                                            @else
+                                                <div class="col-12 text-21-7px Ubuntu-Medium" style="color: #8fd6bd;">RIGHT NOW</div>
+                                            @endif
+                                        </div>
                                     @endif
                                     </div>
                                 @endif
@@ -520,6 +529,33 @@
                         </div>
                     </div>
                 @endif
+            @endif
+
+            @if($data['trasaction_type'] == 'GO-SEND')
+            <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 15px;margin-top: 10px;box-shadow: 0 0.7px 3.3px #eeeeee;">
+                <div class="container">
+                    <div class="row text-center">
+                        <div class="col-12 text-13px space-nice WorkSans" style="color: #707070;"><img src="{{env('STORAGE_URL_VIEW')}}img/webview/motorcycle.png" style = "margin-right: 8px;">Info Driver</div>
+                        @if(isset($data['delivery_info']))
+                            <div class="col-12 text-15px space-text text-grey-light WorkSans-Bold">
+                                {{$data['delivery_info']['driver']['driver_name']}}
+                            </div>
+                            <div class="col-12 text-13px text-grey-light WorkSans-Medium" style="padding-bottom: 5px;">
+                                {{$data['delivery_info']['driver']['driver_phone']}}
+                            </div>
+                            <div class="col-12 text-13px space-nice WorkSans-Regular" style="color: #707070;">
+                                {{$data['delivery_info']['driver']['vehicle_number']}}
+                            </div>
+                            <div class="col-12 text-12px space-text WorkSans-Regular" style="color: #707070;">
+                                Status Pengiriman
+                            </div>
+                            <div class="col-12 text-13px space-nice text-grey-light WorkSans-Bold" style="padding-bottom: 10px;">
+                                {{$data['delivery_info']['delivery_status']}}
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
             @endif
 
             <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 15px;margin-top: 10px;">
@@ -571,16 +607,12 @@
                 <div class="row space-bottom">
                     <div class="col-12 text-14px Ubuntu-Bold text-black"><b>Payment Details</b></div>
                 </div>
+                @foreach($data['payment_detail'] as $payment_detail)
                 <div class="row space-bottom">
-                    <div class="col-6 text-13-3px Ubuntu-Medium text-black ">Subtotal</div>
-                    <div class="col-6 text-13-3px text-right Ubuntu text-black">@if (!is_string( $data['transaction_subtotal'])) {{ number_format($data['transaction_subtotal']) }} @else {{ $data['transaction_subtotal'] }} @endif </div>
+                    <div class="col-6 text-13-3px Ubuntu-Medium text-black ">{{$payment_detail['name']}}</div>
+                    <div class="col-6 text-13-3px text-right Ubuntu text-black" @if($payment_detail['is_discount'] ?? false)  style="color: red" @endif>{{$payment_detail['amount']}}</div>
                 </div>
-                @if($data['transaction_discount'] != 0)
-                    <div class="row space-bottom">
-                        <div class="col-6 text-13-3px Ubuntu-Medium">Discount</div>
-                        <div class="col-6 text-13-3px text-right Ubuntu" style="color: red">@if (!is_string( $data['transaction_discount'])) {{ number_format($data['transaction_discount']) }} @else {{ $data['transaction_discount'] }} @endif </div>
-                    </div>
-                @endif
+                @endforeach
                 <div class="row" style="background-color: #f0f3f7;border-radius: 5px;">
                     <div class="col-6 text-13-3px Ubuntu-Medium text-black" style="padding-top: 4px;padding-bottom: 4px;"><b>Grand Total</b></div>
                     <div class="col-6 text-13-3px text-right Ubuntu-Bold text-black" style="padding-top: 4px;padding-bottom: 4px;"><b>@if (!is_string( $data['transaction_grandtotal'])) {{ number_format($data['transaction_grandtotal']) }} @else {{ $data['transaction_grandtotal'] }} @endif</b></div>
