@@ -80,6 +80,7 @@
                   <th>Receipt Number</th>
                   <th>Customer Name</th>
                   <th>Phone</th>
+                  @if($key == 'delivery')<th>Delivery Method</th>@endif
                   <th>Total Price</th>
                   <th>Payment Status</th>
                   <th>Actions</th>
@@ -109,6 +110,7 @@
                             @else
                               <td>{{ $res['user']['phone'] }}</td>
                             @endif
+                            @if($key == 'delivery')<td>{{$res['transaction_shipping_method']}}</td>@endif
                             <td>Rp {{ number_format($res['transaction_grandtotal'], 2) }}</td>
                             <td>{{ $res['transaction_payment_status'] }}</td>
                             <td>
