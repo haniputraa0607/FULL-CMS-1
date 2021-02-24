@@ -687,6 +687,11 @@
 							<span class="title">Pickup Order</span>
 						</a>
 					</li>
+					<li class="nav-item {{($submenu_active == 'transaction-delivery') ? 'active open' : ''}}">
+						<a href="{{url('transaction/delivery/'.date('YmdHis'))}}" class="nav-link ">
+							<span class="title">Delivery</span>
+						</a>
+					</li>
 					@endif
 					@if(MyHelper::hasAccess([12, 13], $configs))
 					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-transaction-success') ? 'active open' : ''}}">
