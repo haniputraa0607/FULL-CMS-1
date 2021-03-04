@@ -87,8 +87,25 @@
                 <i class="fa fa-question-circle tooltips" data-original-title="Jumlah maksimum order untuk delivery" data-container="body"></i>
                 </label>
             </div>
-            <div class="col-md-2">
-                <input type="number" name="delivery_max_cup" value="{{$delivery_max_cup}}" class="form-control" value="50">
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="number" name="delivery_max_cup" value="{{$delivery_max_cup}}" class="form-control" value="50">
+                    <span class="input-group-addon" id="basic-addon2">Cup</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-icon right">
+                <label class="col-md-3 control-label">
+                Maximum Distance for Internal Delivery
+                <i class="fa fa-question-circle tooltips" data-original-title="Jarak maksimum untuk delivery internal" data-container="body"></i>
+                </label>
+            </div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="number" name="outlet_delivery_max_distance" value="{{$outlet_delivery_max_distance}}" class="form-control" value="50">
+                    <span class="input-group-addon" id="basic-addon2">Meter</span>
+                </div>
             </div>
         </div>
         <div class="form-group">
