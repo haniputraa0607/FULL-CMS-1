@@ -757,6 +757,14 @@
 							<span class="title">[Response] Transaction Offline Void Point</span>
 						</a>
 					</li>
+					
+					@if(MyHelper::hasAccess([80], $configs))
+						<li class="nav-item {{($submenu_active == 'delivery-status-update') ? 'active' : ''}}">
+							<a href="{{url('transaction/autoresponse/delivery-status-update')}}" class="nav-link nav-toggle">
+								<span class="title">[Response] Delivery Status Update</span>
+							</a>
+						</li>
+					@endif
 
 					<!-- <li class="nav-item {{($submenu_active == 'transaction-autoresponse-topup-success') ? 'active open' : ''}}">
 						<a href="{{url('autoresponse/transaction/topup-success')}}" class="nav-link ">
