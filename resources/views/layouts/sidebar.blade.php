@@ -760,7 +760,7 @@
 					
 					@if(MyHelper::hasAccess([80], $configs))
 						<li class="nav-item {{($submenu_active == 'delivery-status-update') ? 'active' : ''}}">
-							<a href="{{url('transaction/autoresponse/delivery-status-update')}}" class="nav-link nav-toggle">
+							<a href="{{url('autoresponse/transaction/delivery-status-update')}}" class="nav-link nav-toggle">
 								<span class="title">[Response] Delivery Status Update</span>
 							</a>
 						</li>
