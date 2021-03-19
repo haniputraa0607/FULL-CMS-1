@@ -44,4 +44,8 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'report',
     Route::any('sms', [ 'uses' => 'SmsReportController@index']);
     Route::any('sms/detail-request', [ 'uses' => 'SmsReportController@detailRequest']);
     Route::any('sms/detail-request/checkpin', [ 'uses' => 'SmsReportController@checkPin']);
+
+    // REPORT GOSEND
+    Route::any('gosend', [ 'uses' => 'ReportGosend@index']);
+    Route::any('gosend/export', [ 'uses' => 'ReportGosend@export']);
 });
