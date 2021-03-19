@@ -444,25 +444,13 @@
             ?>
     @endif
         <div class="@if(isset($data['admin'])) body-admin @endif">
-            @if(isset($data['detail']['pickup_by']) && $data['detail']['pickup_by'] == 'GO-SEND')
+            @if(!empty($data['delivery_info']))
                 <div class="kotak-biasa">
                     <div class="container">
                         <div class=" row text-center">
-                            <div class="col-12 Ubuntu text-15px space-nice text-grey">Detail Pengiriman</div>
-                            <div class="col-12 text-red text-21-7px space-bottom Ubuntu-Medium">GO-SEND</div>
+                            <div class="col-12 Ubuntu text-15px space-nice text-grey"><b>Detail Pengiriman</b></div>
                             <div class="col-12 text-16-7px text-black space-bottom Ubuntu">
-                                {{ $data['detail']['transaction_pickup_go_send']['destination_name'] }}
-                                <br>
-                                {{ $data['detail']['transaction_pickup_go_send']['destination_phone'] }}
-                            </div>
-                            <div class="kotak-inside col-12">
-                                <div class="col-12 text-13-3px text-grey-white space-nice text-center Ubuntu">{{ $data['detail']['transaction_pickup_go_send']['destination_address'] }}</div>
-                            </div>
-                            <div class="col-12 text-15px space-bottom text-black Ubuntu">Map</div>
-                            <div class="col-12 space-bottom-big">
-                                <div class="container">
-                                    <div id="map"></div>
-                                </div>
+                                {{ $data['delivery_info']['delivery_address']}}
                             </div>
                         </div>
                     </div>
@@ -531,28 +519,26 @@
                 @endif
             @endif
 
-            @if($data['trasaction_type'] == 'GO-SEND')
-            <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 15px;margin-top: 10px;box-shadow: 0 0.7px 3.3px #eeeeee;">
-                <div class="container">
-                    <div class="row text-center">
-                        <div class="col-12 text-13px space-nice WorkSans" style="color: #707070;"><img src="{{env('STORAGE_URL_VIEW')}}img/webview/motorcycle.png" style = "margin-right: 8px;">Info Driver</div>
-                        @if(isset($data['delivery_info']))
-                            <div class="col-12 text-15px space-text text-grey-light WorkSans-Bold">
-                                {{$data['delivery_info']['driver']['driver_name']}}
-                            </div>
-                            <div class="col-12 text-13px text-grey-light WorkSans-Medium" style="padding-bottom: 5px;">
-                                {{$data['delivery_info']['driver']['driver_phone']}}
-                            </div>
-                            <div class="col-12 text-13px space-nice WorkSans-Regular" style="color: #707070;">
-                                {{$data['delivery_info']['driver']['vehicle_number']}}
-                            </div>
-                            <div class="col-12 text-12px space-text WorkSans-Regular" style="color: #707070;">
-                                Status Pengiriman
-                            </div>
-                            <div class="col-12 text-13px space-nice text-grey-light WorkSans-Bold" style="padding-bottom: 10px;">
-                                {{$data['delivery_info']['delivery_status']}}
-                            </div>
-                        @endif
+            @if(!empty($data['delivery_info']))
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-12 Ubuntu text-15px space-nice text-grey"><img src="{{env('STORAGE_URL_VIEW')}}img/webview/motorcycle.png" style = "margin-right: 8px;"><b>Info Driver</b></div>
+                    @if(!empty($data['delivery_info']['driver']))
+                    <div class="col-12 text-15px space-text text-grey-light WorkSans-Bold">
+                        {{$data['delivery_info']['driver']['driver_name']}}
+                    </div>
+                    <div class="col-12 text-13px text-grey-light WorkSans-Medium" style="padding-bottom: 5px;">
+                        {{$data['delivery_info']['driver']['driver_phone']}}
+                    </div>
+                    <div class="col-12 text-13px space-nice WorkSans-Regular" style="color: #707070;">
+                        {{$data['delivery_info']['driver']['vehicle_number']}}
+                    </div>
+                    @endif
+                    <div class="col-12 text-12px space-text WorkSans-Regular" style="color: #707070;">
+                        Status Pengiriman
+                    </div>
+                    <div class="col-12 text-13px space-nice text-grey-light WorkSans-Bold" style="padding-bottom: 10px;">
+                        {{$data['delivery_info']['delivery_status']}}
                     </div>
                 </div>
             </div>
@@ -609,7 +595,7 @@
                 </div>
                 @foreach($data['payment_detail'] as $payment_detail)
                 <div class="row space-bottom">
-                    <div class="col-6 text-13-3px Ubuntu-Medium text-black ">{{$payment_detail['name']}}</div>
+                    <div class="col-6 text-13-3px Ubuntu-Medium text-black ">{{$payment_detail['name']}} ({{$payment_detail['desc']}})</div>
                     <div class="col-6 text-13-3px text-right Ubuntu text-black" @if($payment_detail['is_discount'] ?? false)  style="color: red" @endif>{{$payment_detail['amount']}}</div>
                 </div>
                 @endforeach
