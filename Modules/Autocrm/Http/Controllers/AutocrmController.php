@@ -235,29 +235,29 @@ class AutocrmController extends Controller
                 if($subject == 'transaction-point-achievement'){
                     $data['click_inbox'] = [
                         ['value' => "Home",'title' => 'Home'],
-                        ['value' => "History Transaction",'title' => 'History Transaction'],
+                        ['value' => "History Transaction",'title' => 'Transaction Detail'],
                         ['value' => "History Point",'title' => 'History Point']
                     ];
                     $data['click_notification'] = [
                         ['value' => "Home",'title' => 'Home'],
-                        ['value' => "History Transaction",'title' => 'History Transaction'],
+                        ['value' => "History Transaction",'title' => 'Transaction Detail'],
                         ['value' => "History Point",'title' => 'History Point']
                     ];
                 }elseif($subject == 'transaction-failed-point-refund' || $subject == 'rejected-order-point-refund'){
                     $data['click_inbox'] = [
                         ['value' => "Home",'title' => 'Home'],
-                        ['value' => "History Transaction",'title' => 'History Transaction']
+                        ['value' => "History Transaction",'title' => 'Transaction Detail']
                     ];
                     $data['click_notification'] = [
                         ['value' => "Home",'title' => 'Home'],
-                        ['value' => "History Transaction",'title' => 'History Transaction']
+                        ['value' => "History Transaction",'title' => 'Transaction Detail']
                     ];
                 }else{
                     $data['click_inbox'] = [
-                        ['value' => "History Transaction",'title' => 'History Transaction']
+                        ['value' => "History Transaction",'title' => 'Transaction Detail']
                     ];
                     $data['click_notification'] = [
-                        ['value' => 'History Transaction','title' => 'History Transaction']
+                        ['value' => 'History Transaction','title' => 'Transaction Detail']
                     ];
                 }
                 break;
