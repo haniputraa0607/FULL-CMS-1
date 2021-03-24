@@ -1431,6 +1431,126 @@ class TransactionController extends Controller
     }
     /*================ End POS Transaction online failed ================*/
 
+    /*================ Start POS Transaction online failed ================*/
+    public function cancelTransactionPOS(Request $request) {
+        $post = $request->post();
+        $data = [
+            'title'          => 'Transactions',
+            'menu_active'    => 'transaction-online-pos',
+            'sub_title'      => '[POS] All Transactions Online',
+            'submenu_active' => 'transaction-cancel-online-pos-list',
+            'filter_title'   => 'Filter Transaction'
+        ];
+
+        if(($post['rule']??false) && !isset($post['draw'])){
+            session(['transaction_pos_filter'=>$post]);
+            return back();
+        }
+
+        if($post['clear']??false){
+            session(['transaction_pos_filter'=>null]);
+            return back();
+        }
+
+        if(session('transaction_pos_filter')){
+            $extra=session('transaction_pos_filter');
+            $data['rule']=array_map('array_values', $extra['rule']);
+            $data['operator']=$extra['operator'];
+        } else{
+            $extra = [];
+        }
+
+        if ($request->wantsJson()) {
+            $data = MyHelper::get('transaction/cancel-online-pos', $extra + $request->all())['result'] ?? [];
+            // return \MyHelper::apiGet('product-modifier', $request->all());
+            $data['recordsFiltered'] = $data['total'];
+            $data['draw'] = $request->draw;
+            return $data;
+        }
+
+        $outlets = MyHelper::post('outlet/be/list',['simple_result' => 1])['result'] ?? [];
+        $data['outlets'] = [];
+
+        foreach ($outlets as $outlet) {
+            $data['outlets'][] = [$outlet['id_outlet'], $outlet['outlet_name']];
+        }
+
+        return view('transaction::transactionOnlinePOS.list-cancel', $data);
+    }
+
+    public function cancelTransactionFailed(Request $request) {
+        $post = $request->except('_token');
+        $data = [
+            'title'          => 'Transactions',
+            'menu_active'    => 'transaction-online-pos',
+            'sub_title'      => '[POS] Transactions Online Failed',
+            'submenu_active' => 'transaction-cancel-online-pos-failed'
+        ];
+
+        if ($request->wantsJson()) {
+            $data = MyHelper::get('transaction/cancel-online-pos', $request->all())['result'] ?? [];
+            // return \MyHelper::apiGet('product-modifier', $request->all());
+            $data['recordsFiltered'] = $data['total'];
+            $data['draw'] = $request->draw;
+            return $data;
+        }
+
+        return view('transaction::transactionOnlinePOS.list-cancel-failed', $data);
+    }
+
+    public function resendCancelTransactionFailed(Request $request){
+        $post = $request->except('_token');
+        $getData = MyHelper::post('transaction/cancel-online-pos/resend',$post);
+        return response()->json($getData);
+    }
+
+    public function autoresponseCancelTransactionFailed(Request $request){
+        $post = $request->except('_token');
+        $data = [
+            'title'          => 'Transaction',
+            'menu_active'    => 'transaction-online-pos',
+            'sub_title'      => '[Response] Transaction Online Failed',
+            'submenu_active' => 'transaction-autoresponse-cancel-online-pos'
+        ];
+        $get = MyHelper::get('transaction/cancel-online-pos/autoresponse');
+        if($post){
+            $update = MyHelper::post('transaction/cancel-online-pos/autoresponse', $post);
+
+            if (isset($update['status']) && $update['status'] == 'success') {
+                return redirect('transaction/cancel-online-pos/autoresponse')->with(['success' => ['Update success']]);
+            } else {
+                if (isset($update['errors'])) {
+                    return back()->withErrors($update['errors'])->withInput();
+                }
+
+                if (isset($update['status']) && $update['status'] == "fail") {
+                    return back()->withErrors($update['messages'])->withInput();
+                }
+                return redirect('transaction/cancel-online-pos/autoresponse')->withErrors(['Update Failed']);
+            }
+        }else{
+            if(isset($get['status']) && $get['status'] == 'success'){
+                $data['result'] = $get['result'];
+
+                $data['textreplaces'] = [];
+
+                $custom = [];
+                if (isset($get['result']['custom_text_replace'])) {
+                    $custom = explode(';', $get['result']['custom_text_replace']);
+
+                    unset($custom[count($custom) - 1]);
+                }
+
+                $data['custom'] = $custom;
+            }else{
+                $data['result'] = [];
+            }
+
+            return view('transaction::transactionOnlinePOS.forward_email_setting', $data);
+        }
+    }
+    /*================ End POS Transaction online failed ================*/
+
     /*================ Start Setting Timer Payment Gateway ================*/
     function timerPaymentGateway(Request $request){
         $post = $request->except('_token');
