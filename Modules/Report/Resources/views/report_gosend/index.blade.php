@@ -105,6 +105,8 @@
             <thead>
             <tr>
                 <th scope="col" width="10%"> Outlet </th>
+                <th scope="col" width="10%"> Latest Status </th>
+                <th scope="col" width="10%"> Link Tracking </th>
                 <th scope="col" width="10%"> Transaction Date </th>
                 <th scope="col" width="10%"> Receipt Number </th>
                 <th scope="col" width="10%"> Order ID </th>
@@ -112,7 +114,6 @@
                 <th scope="col" width="10%"> Price GoSend </th>
                 <th scope="col" width="10%"> Detail Receiver </th>
                 <th scope="col" width="10%"> Detail Driver </th>
-                <th scope="col" width="10%"> Latest Status </th>
             </tr>
             </thead>
             <tbody>
@@ -120,22 +121,6 @@
                 @foreach($trx as $val)
                     <tr>
                         <td>{{$val['outlet_code']}} - {{$val['outlet_name']}}</td>
-                        <td>{{date("d F Y H:i", strtotime($val['transaction_date']))}}</td>
-                        <td>
-                            <a target="_blank" href="{{ url('transaction/detail/') }}/{{ $val['id_transaction'] }}/delivery">{{$val['transaction_receipt_number']}}</a>
-                        </td>
-                        <td>{{$val['order_id']}}</td>
-                        <td>{{number_format($val['transaction_grandtotal'])}}</td>
-                        <td>{{number_format($val['transaction_shipment'])}}</td>
-                        <td>
-                            Name : {{$val['destination_name']}}<br>
-                            Phone : {{$val['destination_phone']}}<br>
-                            Address : {{$val['destination_address']}}<br>
-                        </td>
-                        <td>
-                            Driver Name : {{$val['driver_name']}}<br>
-                            Driver Phone : {{$val['driver_phone']}}<br>
-                        </td>
                         <td>
                             <?php
                             $latest_status = $val['latest_status'];
@@ -156,6 +141,23 @@
                                 echo '-';
                             }
                             ?>
+                        </td>
+                        <td><a href="{{$val['live_tracking_url']}}" target="_blank">{{$val['live_tracking_url']}}</a></td>
+                        <td>{{date("d F Y H:i", strtotime($val['transaction_date']))}}</td>
+                        <td>
+                            <a target="_blank" href="{{ url('transaction/detail/') }}/{{ $val['id_transaction'] }}/delivery">{{$val['transaction_receipt_number']}}</a>
+                        </td>
+                        <td>{{$val['order_id']}}</td>
+                        <td>{{number_format($val['transaction_grandtotal'])}}</td>
+                        <td>{{number_format($val['transaction_shipment'])}}</td>
+                        <td>
+                            Name : {{$val['destination_name']}}<br>
+                            Phone : {{$val['destination_phone']}}<br>
+                            Address : {{$val['destination_address']}}<br>
+                        </td>
+                        <td>
+                            Driver Name : {{$val['driver_name']}}<br>
+                            Driver Phone : {{$val['driver_phone']}}<br>
                         </td>
                     </tr>
                 @endforeach
