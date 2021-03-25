@@ -42,6 +42,12 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'transact
     Route::get('online-pos/failed', 'TransactionController@transactionFailed');
     Route::any('online-pos/resend', 'TransactionController@resendTransactionFailed');
     Route::any('online-pos/autoresponse', 'TransactionController@autoresponseTransactionFailed');
+
+    /*[POS] Cancel Transaction online failed*/
+    Route::any('cancel-online-pos', 'TransactionController@cancelTransactionPOS');
+    Route::get('cancel-online-pos/failed', 'TransactionController@cancelTransactionFailed');
+    Route::any('cancel-online-pos/resend', 'TransactionController@resendCancelTransactionFailed');
+    Route::any('cancel-online-pos/autoresponse', 'TransactionController@autoresponseCancelTransactionFailed');
 });
 
 Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'transaction', 'namespace' => 'Modules\Transaction\Http\Controllers'], function()

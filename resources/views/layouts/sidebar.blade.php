@@ -808,6 +808,21 @@
 								<span class="title">[Response] Transaction Online Failed</span>
 							</a>
 						</li>
+						<li class="nav-item {{($submenu_active == 'transaction-cancel-online-pos-list') ? 'active open' : ''}}">
+							<a href="{{url('transaction/cancel-online-pos')}}" class="nav-link ">
+								<span class="title">All Cancel Transaction Online</span>
+							</a>
+						</li>
+						<li class="nav-item {{($submenu_active == 'transaction-cancel-online-pos-failed') ? 'active open' : ''}}">
+							<a href="{{url('transaction/cancel-online-pos/failed')}}" class="nav-link ">
+								<span class="title">Cancel Transaction Online Failed</span>
+							</a>
+						</li>
+						<li class="nav-item {{($submenu_active == 'transaction-autoresponse-cancel-online-pos') ? 'active open' : ''}}">
+							<a href="{{url('transaction/cancel-online-pos/autoresponse')}}" class="nav-link ">
+								<span class="title">[Response] Cancel Transaction Online Failed</span>
+							</a>
+						</li>
 					</ul>
 				</li>
 			@endif
