@@ -444,104 +444,110 @@
             ?>
     @endif
         <div class="@if(isset($data['admin'])) body-admin @endif">
-            @if(!empty($data['delivery_info']))
-                <div class="kotak-biasa">
-                    <div class="container">
-                        <div class=" row text-center">
-                            <div class="col-12 Ubuntu text-15px space-nice text-grey"><b>Detail Pengiriman</b></div>
-                            <div class="col-12 text-16-7px text-black space-bottom Ubuntu">
-                                {{ $data['delivery_info']['delivery_address']}}
-                            </div>
+            <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 10px 0px;margin-top: 10px;">
+                <div class="container">
+                    <div class="row text-center" style="background-color: #FFFFFF;padding: 5px;padding-top: 0px;margin-top: 20px;">
+                        <div class="col-12 text-black space-text Ubuntu-Bold" style="font-size: 16.7px;">{{ $data['outlet']['outlet_name'] }}</div>
+                        <div class="kotak-inside col-12">
+                            <div class="col-12 text-14px text-grey-white space-nice text-center Ubuntu">{{ $data['outlet']['outlet_address'] }}</div>
                         </div>
+                        @if(empty($data['delivery_info']) && isset($data['transaction_payment_status']) && $data['transaction_payment_status'] != 'Cancelled' && $data['trasaction_type'] != 'Offline')
+                            @if(isset($data['detail']['order_id_qrcode']))
+                                <div class="col-12 WorkSans-Bold text-14px space-text text-black-grey-light"><b>Your Pickup Code</b></div>
+
+                                <div style="width: 135px;height: 135px;margin: 0 auto;" data-toggle="modal" data-target="#exampleModal">
+                                    <div class="col-12 text-14-3px space-top"><img class="img-responsive" style="display: block; max-width: 100%; padding-top: 10px" src="{{ $data['detail']['order_id_qrcode'] }}"></div>
+                                </div>
+                                <div class="col-12 text-black-grey-light text-20px WorkSans-SemiBold" style="font-size: 18px"><b>{{ $data['detail']['order_id'] }}</b></div>
+                            @endif
+                        @endif
                     </div>
                 </div>
-            @else
-                <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 10px 0px;margin-top: 10px;">
+            </div>
+            @if($data['trasaction_type'] != 'Offline')
+                <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 10px 0px;">
                     <div class="container">
-                        <div class="row text-center" style="background-color: #FFFFFF;padding: 5px;padding-top: 0px;margin-top: 20px;">
-                            <div class="col-12 text-black space-text Ubuntu-Bold" style="font-size: 16.7px;">{{ $data['outlet']['outlet_name'] }}</div>
-                            <div class="kotak-inside col-12">
-                                <div class="col-12 text-11-7px text-grey-white space-nice text-center Ubuntu">{{ $data['outlet']['outlet_address'] }}</div>
-                            </div>
-                            @if(isset($data['transaction_payment_status']) && $data['transaction_payment_status'] != 'Cancelled' && $data['trasaction_type'] != 'Offline')
-                                @if(isset($data['detail']['order_id_qrcode']))
-                                    <div class="col-12 WorkSans-Bold text-14px space-text text-black-grey-light"><b>Your Pickup Code</b></div>
+                        <div class="row text-center">
+                            @if(isset($data['admin']))
+                                <div class="col-12 text-16-7px text-black space-text Ubuntu">{{ strtoupper($data['user']['name']) }}</div>
+                                <div class="col-12 text-16-7px text-black Ubuntu space-nice">{{ $data['user']['phone'] }}</div>
+                            @endif
+                            @if (isset($data['transaction_payment_status']) && $data['transaction_payment_status'] == 'Cancelled')
+                                <div class="col-12 space-nice text-black Ubuntu" style="padding-bottom: 10px;">
+                                    Your order cancelled on
+                                </div>
+                                <div class="col-12 text-14px space-text text-black Ubuntu-Medium">{{ date('d F Y', strtotime($data['transaction_date'])) }}</div>
+                            @else
 
-                                    <div style="width: 135px;height: 135px;margin: 0 auto;" data-toggle="modal" data-target="#exampleModal">
-                                        <div class="col-12 text-14-3px space-top"><img class="img-responsive" style="display: block; max-width: 100%; padding-top: 10px" src="{{ $data['detail']['order_id_qrcode'] }}"></div>
+                                @if(isset($data['delivery_info']))
+                                <div class="col-12 space-nice text-black Ubuntu" style="padding-bottom: 10px;">
+                                    Your order will be processed at
+                                </div>
+                                <div class="col-12 text-14px space-text text-black Ubuntu-Medium">{{ date('d F Y', strtotime($data['transaction_date'])) }}</div>
+                                    <div class="col-12 space-text" style="margin-top: 25px; font-size: 16.7px;"><b>Delivery Address</b></div>
+                                    <div class="col-12 text-14px WorkSans-Regular" style="color: #707070;">
+                                        @if(isset($data['delivery_info']['delivery_address'])) {{ $data['delivery_info']['delivery_address'] }} @endif
                                     </div>
-                                    <div class="col-12 text-black-grey-light text-20px WorkSans-SemiBold" style="font-size: 18px"><b>{{ $data['detail']['order_id'] }}</b></div>
+                                    @if(isset($data['delivery_info']['delivery_address_note'])) 
+                                        <div class="col-12 text-16.7px"><b>Note</b></div>
+                                        <div class="col-12 text-14px WorkSans-Regular" style="color: #707070;">
+                                            {{ $data['delivery_info']['delivery_address_note'] }}
+                                        </div>
+                                    @endif
+                                @else
+                                <div class="col-12 space-nice text-black Ubuntu" style="padding-bottom: 10px;">
+                                    Your order will be ready on
+                                </div>
+                                <div class="col-12 text-14px space-text text-black Ubuntu-Medium">{{ date('d F Y', strtotime($data['transaction_date'])) }}</div>
+                                    <div class="col-12 text-14px WorkSans-Bold" style="color: #a6ba35;">
+                                        @if ($data['detail']['pickup_type'] == 'set time')
+                                            <div class="col-12 text-21-7px Ubuntu-Medium" style="color: #000000;">{{ $data['detail']['pickup_time'] }}</div>
+                                        @elseif($data['detail']['pickup_type'] == 'at arrival')
+                                            <div class="col-12 text-21-7px Ubuntu-Medium" style="color: #8fd6bd;">ON ARRIVAL</div>
+                                        @else
+                                            <div class="col-12 text-21-7px Ubuntu-Medium" style="color: #8fd6bd;">RIGHT NOW</div>
+                                        @endif
+                                    </div>
                                 @endif
+                                </div>
                             @endif
                         </div>
                     </div>
                 </div>
-                @if($data['trasaction_type'] != 'Offline')
-                    <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 10px 0px;margin-top: 10px;">
-                        <div class="container">
-                            <div class="row text-center">
-                                @if(isset($data['admin']))
-                                    <div class="col-12 text-16-7px text-black space-text Ubuntu">{{ strtoupper($data['user']['name']) }}</div>
-                                    <div class="col-12 text-16-7px text-black Ubuntu space-nice">{{ $data['user']['phone'] }}</div>
-                                @endif
-                                @if (isset($data['transaction_payment_status']) && $data['transaction_payment_status'] == 'Cancelled')
-                                    <div class="col-12 space-nice text-black Ubuntu" style="padding-bottom: 10px;">
-                                        Your order cancelled on
-                                    </div>
-                                    <div class="col-12 text-14px space-text text-black Ubuntu-Medium">{{ date('d F Y', strtotime($data['transaction_date'])) }}</div>
-                                @else
-                                    <div class="col-12 space-nice text-black Ubuntu" style="padding-bottom: 10px;">
-                                        Your order will be ready on
-                                    </div>
-                                    <div class="col-12 text-14px space-text text-black Ubuntu-Medium">{{ date('d F Y', strtotime($data['transaction_date'])) }}</div>
-
-                                    @if(isset($data['delivery_info']))
-                                        <div class="col-12 text-14px"><b>DELIVERY</b></div>
-                                        <div class="col-12 text-12px WorkSans-Regular" style="color: #707070;">
-                                            @if(isset($data['delivery_info']['delivery_address'])) {{ $data['delivery_info']['delivery_address'] }} @endif
-                                        </div>
-                                    @else
-                                        <div class="col-12 text-14px WorkSans-Bold" style="color: #a6ba35;">
-                                            @if ($data['detail']['pickup_type'] == 'set time')
-                                                <div class="col-12 text-21-7px Ubuntu-Medium" style="color: #000000;">{{ $data['detail']['pickup_time'] }}</div>
-                                            @elseif($data['detail']['pickup_type'] == 'at arrival')
-                                                <div class="col-12 text-21-7px Ubuntu-Medium" style="color: #8fd6bd;">ON ARRIVAL</div>
-                                            @else
-                                                <div class="col-12 text-21-7px Ubuntu-Medium" style="color: #8fd6bd;">RIGHT NOW</div>
-                                            @endif
-                                        </div>
-                                    @endif
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                @endif
             @endif
 
             @if(!empty($data['delivery_info']))
-            <div class="container">
-                <div class="row text-center">
-                    <div class="col-12 Ubuntu text-15px space-nice text-grey"><img src="{{env('STORAGE_URL_VIEW')}}img/webview/motorcycle.png" style = "margin-right: 8px;"><b>Info Driver</b></div>
-                    @if(!empty($data['delivery_info']['driver']))
-                    <div class="col-12 text-15px space-text text-grey-light WorkSans-Bold">
-                        {{$data['delivery_info']['driver']['driver_name']}}
-                    </div>
-                    <div class="col-12 text-13px text-grey-light WorkSans-Medium" style="padding-bottom: 5px;">
-                        {{$data['delivery_info']['driver']['driver_phone']}}
-                    </div>
-                    <div class="col-12 text-13px space-nice WorkSans-Regular" style="color: #707070;">
-                        {{$data['delivery_info']['driver']['vehicle_number']}}
-                    </div>
-                    @endif
-                    <div class="col-12 text-12px space-text WorkSans-Regular" style="color: #707070;">
-                        Status Pengiriman
-                    </div>
-                    <div class="col-12 text-13px space-nice text-grey-light WorkSans-Bold" style="padding-bottom: 10px;">
-                        {{$data['delivery_info']['delivery_status']}}
+                <div class="container" style="margin-top: 25px">
+                    <div class="row text-center">
+                        @if(!empty($data['delivery_info']['go_send_order_no']))
+                            <div class="col-12 Ubuntu space-text"><b>Gosend ID</b></div>
+                            <div class="col-12 text-14px space-nice WorkSans-Regular">
+                                {{$data['delivery_info']['go_send_order_no']}}
+                            </div>
+                            <div class="col-12">
+                                <hr style="margin: 10px 0px;border-top: dashed 1px #aaaaaa;"/>
+                            </div>
+                        @endif
+                        @if(!empty($data['delivery_info']['driver']))
+                        <div class="col-12 Ubuntu space-text"><img src="{{env('S3_URL_VIEW')}}img/webview/motorcycle.png" style = "margin-right: 8px; width:20px; font-size: 16.7px;"><b>Info Driver</b></div>
+                        <div class="col-12 text-14px WorkSans-Regular">
+                            {{$data['delivery_info']['driver']['driver_name']}}
+                        </div>
+                        <div class="col-12 text-14px WorkSans-Regular" style="padding-bottom: 5px;">
+                            {{$data['delivery_info']['driver']['driver_phone']}}
+                        </div>
+                        <div class="col-12 text-14px space-nice WorkSans-Regular" style="color: #707070;">
+                            {{$data['delivery_info']['driver']['vehicle_number']}}
+                        </div>
+                        @endif
+                        <div class="col-12 text-14px space-text WorkSans-Regular">
+                            <b>Delivery Status</b>
+                        </div>
+                        <div class="col-12 text-13px space-nice WorkSans-Bold" style="padding-bottom: 10px;">
+                            {{$data['delivery_info']['delivery_status']}}
+                        </div>
                     </div>
                 </div>
-            </div>
             @endif
 
             <div class="kotak-biasa" style="background-color: #FFFFFF;padding: 15px;margin-top: 10px;">
@@ -595,7 +601,7 @@
                 </div>
                 @foreach($data['payment_detail'] as $payment_detail)
                 <div class="row space-bottom">
-                    <div class="col-6 text-13-3px Ubuntu-Medium text-black ">{{$payment_detail['name']}} ({{$payment_detail['desc']}})</div>
+                    <div class="col-6 text-13-3px Ubuntu-Medium text-black ">{{$payment_detail['name']}} @if($payment_detail['desc'])({{$payment_detail['desc']}})@endif</div>
                     <div class="col-6 text-13-3px text-right Ubuntu text-black" @if($payment_detail['is_discount'] ?? false)  style="color: red" @endif>{{$payment_detail['amount']}}</div>
                 </div>
                 @endforeach
