@@ -76,6 +76,7 @@
             <thead>
               <tr>
                   <th>Status Cashback</th>
+                  <th>Transaction Date</th>
                   <th>Outlet</th>
                   <th>Receipt Number</th>
                   <th>Customer Name</th>
@@ -97,6 +98,7 @@
                                     <i class="fa fa-check" style="color: green"></i><br>{{number_format($res['transaction_cashback_earned'])}}
                                 @endif
                             </td>
+                            <td>{{ date('d F Y', strtotime($res['transaction_date'])) }}</td>
                             <td>{{ $res['outlet_code'] }} - {{ $res['outlet_name'] }}</td>
                             <td>{{ $res['transaction_receipt_number'] }}</td>
                             @if (isset($res['name']))
