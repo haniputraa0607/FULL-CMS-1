@@ -918,6 +918,11 @@
 								<span class="title">Setting Payment Method</span>
 							</a>
 						</li>
+						<li class="nav-item {{($submenu_active == 'refund-reject-order') ? 'active open' : ''}}">
+							<a href="{{url('transaction/setting/refund-reject-order')}}" class="nav-link ">
+								<span class="title">Setting Refund Reject Order</span>
+							</a>
+						</li>
 					@endif
 					@if(MyHelper::hasAccess([259], $grantedFeature))
 						<li class="nav-item {{($submenu_active == 'setting-shipment-method') ? 'active open' : ''}}">

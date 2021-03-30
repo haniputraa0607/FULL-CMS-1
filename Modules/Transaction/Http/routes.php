@@ -61,6 +61,8 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'transact
     Route::post('/setting/available-payment', 'TransactionController@availablePaymentUpdate');
     Route::get('/setting/available-shipment', 'TransactionController@availableShipment');
     Route::post('/setting/available-shipment', 'TransactionController@availableShipmentUpdate');
+    Route::get('/setting/refund-reject-order', 'TransactionSettingController@refundRejectOrder');
+    Route::post('/setting/refund-reject-order', 'TransactionSettingController@updateRefundRejectOrder');
 });
 
 Route::group(['prefix' => 'transaction', 'namespace' => 'Modules\Transaction\Http\Controllers'], function()
