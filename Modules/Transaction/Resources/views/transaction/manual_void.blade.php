@@ -101,7 +101,20 @@
                 },
                 // {data: 'name'},
                 // {data: 'phone'},
-                {data: 'trasaction_payment_type'},
+                {
+                    data: 'trasaction_payment_type',
+                    render: function(value, type, row) {
+                        switch (value.toLowerCase()) {
+                            case 'midtrans':
+                                return `${value} (${row.transaction_payment_midtrans.payment_type})`;
+                                break;
+                            case 'ipay88':
+                                return `${value} (${row.transaction_payment_ipay88.payment_method})`;
+                                break;
+                        }
+                        return value;
+                    }
+                },
                 {
                     data: 'transaction_grandtotal',
                     render: value => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value)
