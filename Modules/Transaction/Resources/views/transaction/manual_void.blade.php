@@ -136,7 +136,10 @@
                 {
                     data: 'transaction_receipt_number',
                     render: function(value, type, row) {
-                        return `<a class="btn ${row.need_manual_void == 1 ? 'yellow confirm-btn' : 'green detail-btn'} btn-sm btn-outline" data-data='${JSON.stringify(row)}'>${row.need_manual_void == 1 ? 'Confirm Process' : 'Detail'}</a>`;
+                        return `
+                        <button type="button" class="btn ${row.need_manual_void == 1 ? 'yellow confirm-btn' : 'green detail-btn'} btn-sm btn-outline" data-data='${JSON.stringify(row)}'>${row.need_manual_void == 1 ? 'Confirm Process' : 'Detail Refund'}</button>
+                        <a class="btn blue btn-sm btn-outline" href="{{url('transaction/detail')}}/${row.id_transaction}/${row.trasaction_type == 'Pickup Order' ? 'pickup order' : 'delivery'}">Detail Transaction</a>
+                        `;
                     }
                 },
             ],
