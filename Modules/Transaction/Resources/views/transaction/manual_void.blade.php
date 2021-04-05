@@ -124,6 +124,9 @@
                     render:  value => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value)
                 },
                 {
+                    data: 'failed_void_reason'
+                },
+                {
                     data: 'need_manual_void',
                     render: function(value) {
                         if (value == 1) {
@@ -229,6 +232,7 @@
                 <th>Payment Type</th>
                 <th>Grandtotal</th>
                 <th>Manual Refund</th>
+                <th>Failed Void Reason</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
