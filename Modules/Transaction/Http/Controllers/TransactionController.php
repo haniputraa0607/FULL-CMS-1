@@ -1628,6 +1628,7 @@ class TransactionController extends Controller
         $data['delivery_max_cup'] = $data['delivery_max_cup'] ?? 50;
         $data['delivery_default'] = $data['delivery_default'] ?? 'price';
         $data['outlet_delivery_max_distance'] = $data['outlet_delivery_max_distance'] ?? 500;
+        $data['auto_reject_time'] = MyHelper::post('setting',['key' => 'auto_reject_time'])['result']['value'] ?? 15;
         return view('transaction::setting.available_shipment', $data);
     }
 
@@ -1645,6 +1646,7 @@ class TransactionController extends Controller
             'delivery_max_cup' => $request->delivery_max_cup,
             'delivery_default' => $request->delivery_default,
             'outlet_delivery_max_distance' => $request->outlet_delivery_max_distance,
+            'auto_reject_time' => $request->auto_reject_time ?: 15
         ]);
         if (($data['status']??false) == 'success') {
             return back()->withSuccess(['Success update setting']);

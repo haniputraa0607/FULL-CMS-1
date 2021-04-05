@@ -123,6 +123,20 @@
                 </select>
             </div>
         </div>
+        <div class="form-group">
+            <div class="input-icon right">
+                <label class="col-md-3 control-label">
+                Autocancel order time
+                <i class="fa fa-question-circle tooltips" data-original-title="Waktu minimum untuk berhenti mencari driver lagi apabila driver tidak ditemukan, dan diproses cancel order" data-container="body"></i>
+                </label>
+            </div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="number" name="auto_reject_time" value="{{$auto_reject_time}}" class="form-control" value="50">
+                    <span class="input-group-addon" id="basic-addon2">Minutes</span>
+                </div>
+            </div>
+        </div>
         <div class="alert alert-info">Drag [<i class="fa fa-ellipsis-h" style="transform: rotate(90deg);"></i>] handle button to reorder delivery method</div>            
             {{ csrf_field() }}
             <table class="table">
