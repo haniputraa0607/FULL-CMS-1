@@ -939,6 +939,11 @@
 								<span class="title">Setting Delivery Method</span>
 							</a>
 						</li>
+						<li class="nav-item {{($submenu_active == 'setting-default-outlet-phone') ? 'active open' : ''}}">
+							<a href="{{url('transaction/setting/default-outlet-phone')}}" class="nav-link ">
+								<span class="title">Default Outlet Phone for Delivery</span>
+							</a>
+						</li>
 					@endif
 				</ul>
 			</li>
