@@ -106,4 +106,31 @@ class TransactionSettingController extends Controller
             return back()->withErrors(['Update failed']);
         }
     }
+
+    public function defaultOutletPhone(Request $request)
+    {
+        $data = [
+            'title'          => 'Transaction',
+            'menu_active'    => 'order',
+            'sub_title'      => 'Setting Default Outlet Phone',
+            'submenu_active' => 'setting-default-outlet-phone'
+        ];
+        // return MyHelper::post('transaction/available-shipment',['show_all' => 1]);
+        $data['default_outlet_phone'] = MyHelper::post('setting',['key' => 'default_outlet_phone'])['result']['value'] ?? '';
+        return view('transaction::setting.default_outlet_phone', $data);
+    }
+
+    public function defaultOutletPhoneUpdate(Request $request)
+    {
+        $sendData = [
+            'default_outlet_phone' => ['value', $request->default_outlet_phone],
+        ];
+        $data = MyHelper::post('setting/update2', ['update' => $sendData]);
+
+        if (($data['status']??false) == 'success') {
+            return back()->withSuccess(['Success update']);
+        } else{
+            return back()->withErrors(['Update failed']);
+        }
+    }
 }
