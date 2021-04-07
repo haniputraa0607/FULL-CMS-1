@@ -115,7 +115,7 @@ class ManualRefundController extends Controller
         $post['refund_date'] = date('Y-m-d H:i:s', strtotime($post['date_refund']));
         $post['images'] = array_map(function($item) {
             return MyHelper::encodeImage($item);
-        }, $post['images']);
+        }, $post['images'] ?? []);
         $response = MyHelper::post('transaction/failed-void-payment/confirm', $post);
         if (($response['status'] ?? false) == 'success') {
             return back()->withSuccess(['Success confirm manual refund']);
