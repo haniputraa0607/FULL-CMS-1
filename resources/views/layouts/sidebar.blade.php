@@ -719,9 +719,24 @@
 							<span class="title">[Response] Order Ready</span>
 						</a>
 					</li>
+					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-order-ready-internal-delivery') ? 'active open' : ''}}">
+						<a href="{{url('autoresponse/transaction/order-ready-internal-delivery')}}" class="nav-link ">
+							<span class="title">[Response] Order Ready Internal Delivery</span>
+						</a>
+					</li>
 					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-order-taken') ? 'active open' : ''}}">
 						<a href="{{url('autoresponse/transaction/order-taken')}}" class="nav-link ">
 							<span class="title">[Response] Order Taken</span>
+						</a>
+					</li>
+					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-order-taken-by-driver') ? 'active open' : ''}}">
+						<a href="{{url('autoresponse/transaction/order-taken-by-driver')}}" class="nav-link ">
+							<span class="title">[Response] Order Taken By Driver</span>
+						</a>
+					</li>
+					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-order-taken-internal-delivery') ? 'active open' : ''}}">
+						<a href="{{url('autoresponse/transaction/order-taken-internal-delivery')}}" class="nav-link ">
+							<span class="title">[Response] Order Taken Internal Delivery</span>
 						</a>
 					</li>
 					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-order-reject') ? 'active open' : ''}}">
