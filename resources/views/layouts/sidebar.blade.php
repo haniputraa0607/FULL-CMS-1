@@ -814,6 +814,12 @@
 						<span class="title">Failed Void Payment</span>
 					</a>
 				</li>
+				<li class="nav-item {{($menu_active == 'retry-void-payment') ? 'active open' : ''}}">
+					<a href="{{url('transaction/retry-void-payment')}}" class="nav-link ">
+						<i class="fa fa-refresh"></i>
+						<span class="title">Retry Void Payment</span>
+					</a>
+				</li>
 			@endif
 
 			@if(MyHelper::hasAccess([237], $grantedFeature))

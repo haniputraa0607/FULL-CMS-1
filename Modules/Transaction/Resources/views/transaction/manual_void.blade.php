@@ -35,7 +35,7 @@
                     ['like', 'like']
                 ],
                 opsi:[],
-                placeholder: "ex. J+123456789"
+                placeholder: "ex. TRX-123456789"
             },
             order_id:{
                 display:'Order Id',
