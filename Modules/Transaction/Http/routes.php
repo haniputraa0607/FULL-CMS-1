@@ -41,6 +41,10 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'transact
     Route::post('failed-void-payment', [ 'uses' => 'ManualRefundController@filter']);
     Route::post('failed-void-payment/confirm', [ 'uses' => 'ManualRefundController@confirmManualRefund']);
 
+    Route::get('retry-void-payment', [ 'uses' => 'TransactionVoidFailedController@index']);
+    Route::post('retry-void-payment', [ 'uses' => 'TransactionVoidFailedController@filter']);
+    Route::post('retry-void-payment/retry', [ 'uses' => 'TransactionVoidFailedController@retry']);
+
     /*[POS] Transaction online failed*/
     Route::any('online-pos', 'TransactionController@transactionPOS');
     Route::get('online-pos/failed', 'TransactionController@transactionFailed');
