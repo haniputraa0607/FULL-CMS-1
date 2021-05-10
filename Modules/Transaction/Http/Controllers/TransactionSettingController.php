@@ -133,4 +133,31 @@ class TransactionSettingController extends Controller
             return back()->withErrors(['Update failed']);
         }
     }
+
+    public function transactionEmailContact(Request $request)
+    {
+        $data = [
+            'title'          => 'Transaction',
+            'menu_active'    => 'order',
+            'sub_title'      => 'Contact Email for Refund Rejected Order',
+            'submenu_active' => 'transaction-email-contact'
+        ];
+        // return MyHelper::post('transaction/available-shipment',['show_all' => 1]);
+        $data['transaction_email_contact'] = MyHelper::post('setting',['key' => 'transaction_email_contact'])['result']['value'] ?? '';
+        return view('transaction::setting.transaction_email_contact', $data);
+    }
+
+    public function transactionEmailContactUpdate(Request $request)
+    {
+        $sendData = [
+            'transaction_email_contact' => ['value', $request->transaction_email_contact],
+        ];
+        $data = MyHelper::post('setting/update2', ['update' => $sendData]);
+
+        if (($data['status']??false) == 'success') {
+            return back()->withSuccess(['Success update']);
+        } else{
+            return back()->withErrors(['Update failed']);
+        }
+    }
 }

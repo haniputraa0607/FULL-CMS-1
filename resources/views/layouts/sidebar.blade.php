@@ -972,6 +972,11 @@
 								<span class="title">Default Outlet Phone for Delivery</span>
 							</a>
 						</li>
+						<li class="nav-item {{($submenu_active == 'transaction-email-contact') ? 'active open' : ''}}">
+							<a href="{{url('transaction/setting/transaction-email-contact')}}" class="nav-link ">
+								<span class="title">Contact Email for Refund Rejected Order</span>
+							</a>
+						</li>
 					@endif
 				</ul>
 			</li>

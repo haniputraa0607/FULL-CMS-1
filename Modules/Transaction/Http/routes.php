@@ -73,6 +73,8 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'transact
     Route::post('/setting/refund-reject-order', 'TransactionSettingController@updateRefundRejectOrder');
     Route::get('/setting/default-outlet-phone', 'TransactionSettingController@defaultOutletPhone');
     Route::post('/setting/default-outlet-phone', 'TransactionSettingController@defaultOutletPhoneUpdate');
+    Route::get('/setting/transaction-email-contact', 'TransactionSettingController@transactionEmailContact');
+    Route::post('/setting/transaction-email-contact', 'TransactionSettingController@transactionEmailContactUpdate');
 });
 
 Route::group(['prefix' => 'transaction', 'namespace' => 'Modules\Transaction\Http\Controllers'], function()
