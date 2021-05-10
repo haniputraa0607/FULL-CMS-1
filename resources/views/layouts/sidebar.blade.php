@@ -699,6 +699,11 @@
 							<span class="title">Delivery</span>
 						</a>
 					</li>
+					<li class="nav-item {{($submenu_active == 'transaction-delivery-rejected') ? 'active open' : ''}}">
+						<a href="{{url('transaction/delivery-rejected')}}" class="nav-link ">
+							<span class="title">Delivery Rejected</span>
+						</a>
+					</li>
 					@endif
 					@if(MyHelper::hasAccess([12, 13], $configs))
 					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-transaction-success') ? 'active open' : ''}}">
@@ -970,6 +975,11 @@
 						<li class="nav-item {{($submenu_active == 'setting-default-outlet-phone') ? 'active open' : ''}}">
 							<a href="{{url('transaction/setting/default-outlet-phone')}}" class="nav-link ">
 								<span class="title">Default Outlet Phone for Delivery</span>
+							</a>
+						</li>
+						<li class="nav-item {{($submenu_active == 'transaction-email-contact') ? 'active open' : ''}}">
+							<a href="{{url('transaction/setting/transaction-email-contact')}}" class="nav-link ">
+								<span class="title">Contact Email for Refund Rejected Order</span>
 							</a>
 						</li>
 					@endif

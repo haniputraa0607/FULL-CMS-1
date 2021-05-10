@@ -1654,4 +1654,21 @@ class TransactionController extends Controller
             return back()->withErrors(['Failed update setting']);
         }
     }
+
+    public function transactionDeliveryRejected(Request $request)
+    {
+        $data = [
+            'title'          => 'Transaction',
+            'menu_active'    => 'transaction',
+            'sub_title'      => 'List Transaction',
+            'submenu_active' => 'transaction-delivery-rejected'
+        ];
+
+        if ($request->wantsJson()) {
+            $data = MyHelper::post('transaction/be/delivery-rejected', $request->all());
+            return $data['result'];
+        }
+
+        return view('transaction::transaction.transaction_delivery_rejected', $data);
+    }
 }
