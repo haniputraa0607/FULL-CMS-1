@@ -94,6 +94,7 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'transact
     Route::get('/detail/{id}/{key}', ['middleware' => 'feature_control:70', 'uses' => 'TransactionController@transactionDetail']);
     Route::get('/delete/{id}', ['middleware' => 'feature_control:70', 'uses' => 'TransactionController@transactionDelete']);
 
+    Route::get('/delivery-rejected', ['middleware' => 'feature_control:70', 'uses' => 'TransactionController@transactionDeliveryRejected']);
     Route::any('/{key}/{slug}', ['middleware' => 'feature_control:70', 'uses' => 'TransactionController@transaction']);
     Route::any('/{key}/{slug}/filter', ['middleware' => 'feature_control:70', 'uses' => 'TransactionController@transactionFilter']);
 

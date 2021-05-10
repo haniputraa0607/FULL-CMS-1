@@ -699,6 +699,11 @@
 							<span class="title">Delivery</span>
 						</a>
 					</li>
+					<li class="nav-item {{($submenu_active == 'transaction-delivery-rejected') ? 'active open' : ''}}">
+						<a href="{{url('transaction/delivery-rejected')}}" class="nav-link ">
+							<span class="title">Delivery Rejected</span>
+						</a>
+					</li>
 					@endif
 					@if(MyHelper::hasAccess([12, 13], $configs))
 					<li class="nav-item {{($submenu_active == 'transaction-autoresponse-transaction-success') ? 'active open' : ''}}">
