@@ -239,7 +239,7 @@
     <div class="portlet light portlet-fit bordered">
         <div class="portlet-title">
             <div class="caption">
-                <span class="caption-subject font-blue sbold uppercase">Retry Void Payment</span>
+                <span class="caption-subject font-blue sbold uppercase">Retry Refund Payment</span>
             </div>
         </div>
         <div class="portlet-body">

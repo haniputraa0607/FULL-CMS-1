@@ -14,7 +14,7 @@ class ManualRefundController extends Controller
         $data = [
             'title'          => 'Transaction',
             'menu_active'    => 'failed-void-payment',
-            'sub_title'      => 'Failed Void Payment',
+            'sub_title'      => 'Failed Refund Payment',
             'submenu_active' => 'failed-void-payment',
             'filter_title'   => 'Filter Transaction',
             'filter_date'    => true,

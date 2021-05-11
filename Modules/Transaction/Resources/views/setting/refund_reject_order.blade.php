@@ -93,7 +93,7 @@
     <div class="portlet-title">
         <div class="caption">
             <i class=" icon-layers font-green"></i>
-            <span class="caption-subject font-green bold uppercase">Setting Refund Reject Order</span>
+            <span class="caption-subject font-green bold uppercase">Setting Refund Failed Delivery</span>
         </div>
     </div>
     <div class="portlet-body form">

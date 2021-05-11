@@ -51,7 +51,7 @@ class TransactionSettingController extends Controller
         $data = [
             'title'          => 'Setting',
             'menu_active'    => 'order',
-            'sub_title'      => 'Setting Refund Reject Order',
+            'sub_title'      => 'Setting Refund Failed Delivery',
             'submenu_active' => 'refund-reject-order'
         ];
 
