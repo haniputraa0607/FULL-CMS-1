@@ -11,6 +11,21 @@
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .status-option button span.badge {
+            position: absolute;
+            top: -8px;
+            right: -8px !important;
+            display: none;
+        }
+        .status-option button.activex span.badge {
+            display: block;
+        }
+        .status-option button {
+            position: relative  !important;
+            margin-right: 10px;
+        }
+    </style>
 @endsection
 
 @section('page-script')
@@ -70,6 +85,7 @@
             },
         };
 
+        let status = 'all';
         $('#table-failed-void').dataTable({
             ajax: {
                 url : "{{url()->current()}}",
@@ -77,6 +93,7 @@
                 data: function (data) {
                     const info = $('#table-failed-void').DataTable().page.info();
                     data.page = (info.start / info.length) + 1;
+                    data.status = status;
                 },
                 dataSrc: (res) => {
                     $('#list-filter-result-counter').text(res.total);
@@ -213,6 +230,21 @@
                 minuteStep: 1,
                 endDate: new Date()
             });
+            $('.status-option').on('change', function() {
+                $(this).find('button').removeClass('btn-outline');
+                $(this).find('button.activex').addClass('btn-outline');
+                if (status != $(this).data('value')) {
+                    status = $(this).data('value');
+                    $('#table-failed-void').DataTable().ajax.reload(null, false);
+                }
+            }).change();
+            $('.status-option button').on('click', function() {
+                $('.status-option').data('value', $(this).val());
+                $('.status-option button').removeClass('activex');
+                $(this).addClass('activex');
+                $('.status-option').change();
+                $(this).blur();
+            });
         });
     </script>
 @endsection
@@ -247,6 +279,29 @@
             </div>
         </div>
         <div class="portlet-body">
+            <div class="row status-option" data-value="all" style="margin-bottom: 10px">
+                <label class="col-md-1" style="padding-top: 3px;"><strong>Status</strong></label>
+                <div class="col-md-11">
+                    <button class="btn green btn-sm" value="processed">
+                        Processed
+                        <span class="badge badge-success">
+                            <i class="fa fa-check"></i>
+                        </span>
+                    </button>
+                    <button class="btn yellow-crusta btn-sm" value="unprocessed">
+                        Unprocessed
+                        <span class="badge badge-warning">
+                            <i class="fa fa-check"></i>
+                        </span>
+                    </button>
+                    <button class="btn activex red btn-sm" value="all">
+                        All
+                        <span class="badge badge-danger">
+                            <i class="fa fa-check"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
             <table class="table table-striped table-bordered table-hover" width="100%" id="table-failed-void">
             <thead>
               <tr>
