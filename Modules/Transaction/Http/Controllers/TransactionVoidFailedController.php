@@ -14,7 +14,7 @@ class TransactionVoidFailedController extends Controller
         $data = [
             'title'          => 'Transaction',
             'menu_active'    => 'retry-void-payment',
-            'sub_title'      => 'Retry Void Payment',
+            'sub_title'      => 'Retry Refund Payment',
             'submenu_active' => 'retry-void-payment',
             'filter_title'   => 'Filter Transaction',
             'filter_date'    => true,

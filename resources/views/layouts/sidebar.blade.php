@@ -816,13 +816,13 @@
 				<li class="nav-item {{($menu_active == 'failed-void-payment') ? 'active open' : ''}}">
 					<a href="{{url('transaction/failed-void-payment')}}" class="nav-link ">
 						<i class="fa fa-exclamation-triangle"></i>
-						<span class="title">Failed Void Payment</span>
+						<span class="title">Failed Refund Payment</span>
 					</a>
 				</li>
 				<li class="nav-item {{($menu_active == 'retry-void-payment') ? 'active open' : ''}}">
 					<a href="{{url('transaction/retry-void-payment')}}" class="nav-link ">
 						<i class="fa fa-refresh"></i>
-						<span class="title">Retry Void Payment</span>
+						<span class="title">Retry Refund Payment</span>
 					</a>
 				</li>
 			@endif
@@ -962,7 +962,7 @@
 						</li>
 						<li class="nav-item {{($submenu_active == 'refund-reject-order') ? 'active open' : ''}}">
 							<a href="{{url('transaction/setting/refund-reject-order')}}" class="nav-link ">
-								<span class="title">Setting Refund Reject Order</span>
+								<span class="title">Setting Refund Failed Delivery</span>
 							</a>
 						</li>
 					@endif
