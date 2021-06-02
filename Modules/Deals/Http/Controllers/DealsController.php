@@ -773,6 +773,20 @@ class DealsController extends Controller
 	            $post['promo_warning_image'] = MyHelper::encodeImage($post['promo_warning_image']);
 	        }
 
+	        if ($post['promo_type'] == 'Discount delivery') {
+	            if ($post['filter_shipment'] == 'all_shipment') {
+		        	$post['filter_shipment'] = 'selected_shipment';
+		        	$post['shipment_method'] = ['gosend'];
+	            } else {
+	            	foreach ($post['shipment_method'] as $key => $val) {
+	            		if ($val == 'outlet') {
+	            			unset($post['shipment_method'][$key]);
+	            			break;
+	            		}
+	            	}
+	            }
+            }
+
 			$action = MyHelper::post('promo-campaign/step2', $post);
 
             if (isset($action['status']) && $action['status'] == 'success') {
