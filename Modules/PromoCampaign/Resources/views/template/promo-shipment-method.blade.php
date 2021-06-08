@@ -49,6 +49,11 @@
 	            </label> --}}
 
 	        	@foreach ($shipment_list ?? [] as $val)
+	        		@php
+	        			if ($val['code'] == 'outlet') {
+	        				continue;
+	        			}
+	        		@endphp
 		            <label class="mt-checkbox mt-checkbox-outline">
 		                <input class="input-selected-shipment" type="checkbox" value="{{ $val['code'] }}" name="shipment_method[]" @if (in_array($val['code'], $shipment_method)) checked @endif> {{ $val['text'] }}
 		                <span></span>

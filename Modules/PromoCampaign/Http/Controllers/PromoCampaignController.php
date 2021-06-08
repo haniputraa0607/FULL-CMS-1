@@ -353,9 +353,24 @@ class PromoCampaignController extends Controller
 
             return view('promocampaign::promo-campaign-step-2', $data);
 
-        }else{
+        } else {
 
             $post['id_promo_campaign'] = $id_promo_campaign;
+
+            if ($post['promo_type'] == 'Discount delivery') {
+	            if ($post['filter_shipment'] == 'all_shipment') {
+		        	$post['filter_shipment'] = 'selected_shipment';
+		        	$post['shipment_method'] = ['gosend'];
+	            } else {
+	            	foreach ($post['shipment_method'] as $key => $val) {
+	            		if ($val == 'outlet') {
+	            			unset($post['shipment_method'][$key]);
+	            			break;
+	            		}
+	            	}
+	            }
+            }
+
             if(isset($post['promo_warning_image'])){
 	            $post['promo_warning_image'] = MyHelper::encodeImage($post['promo_warning_image']);
 	        }
