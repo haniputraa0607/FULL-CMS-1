@@ -12,6 +12,7 @@
 
 	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-minicolors/jquery.minicolors.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-summernote/summernote.css')}}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('page-plugin')
@@ -20,6 +21,7 @@
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-repeater/jquery.repeater.js') }}" type="text/javascript"></script>
 	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js') }}" type="text/javascript"></script>
     <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-minicolors/jquery.minicolors.min.js') }}" type="text/javascript"></script>
+    <script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-summernote/summernote.min.js') }}" type="text/javascript"></script>
 @endsection
 
 @section('page-script')
@@ -193,6 +195,16 @@
 
 			$( ".price" ).on( "blur", checkFormat);
 
+			$('.summernote').summernote({
+				placeholder: 'Next Level Text',
+				tabsize: 2,
+				toolbar: [
+	              ['style', ['bold', 'underline', 'clear']],
+	              ['misc', ['fullscreen', 'codeview', 'help']]
+	            ],
+				height: 120
+			});
+			$('.tooltips').tooltip();
         }, 100);
 	}
 
@@ -221,6 +233,20 @@
 			$( this ).val("");
 		}
 	}
+
+
+	function addTextContent(dom, param){
+		const parentDom = $(dom).parents('.next-level-child');
+		const textField = parentDom.find('.summernote');
+		var textvalue = textField.val();
+
+		var textvaluebaru = textvalue+" "+param;
+		textField.val(textvaluebaru);
+		textField.summernote('editor.saveRange');
+		textField.summernote('editor.restoreRange');
+		textField.summernote('editor.focus');
+		textField.summernote('editor.insertText', param);
+    }
 
 	$(document).ready(function () {
 		$('.colorpicker').minicolors({
@@ -263,6 +289,15 @@
         $('.next_level_preview_trigger').on('mouseout',function(){
         	$('.next_level_preview').css('opacity',0);
         });
+		$('.summernote').summernote({
+			placeholder: 'Next Level Text',
+			tabsize: 2,
+			toolbar: [
+              ['style', ['bold', 'underline', 'clear']],
+              ['misc', ['fullscreen', 'codeview', 'help']]
+            ],
+			height: 120
+		});
 	});
 
 		$(".file").change(function(e) {
@@ -721,6 +756,25 @@
 									<!--	</div>-->
 									<!--@endif--> --}}
 									{{-- cek configs membership benefit promo id --}}
+									<div class="col-md-12 next-level-child" style="margin-top:20px">
+										<div class="input-icon right">
+											<div class="col-md-offset-2 col-md-3" style="padding-top: 5px;">
+												Next Level Text
+												<i class="fa fa-question-circle tooltips" data-original-title="Teks yang akan ditampilkan dibawah progress perolehan point apabila masih ada level membership selanjutnya" data-container="body"></i>
+											</div>
+										</div>
+										<div class="col-md-7" >
+											<div class="input-icon right">
+												<textarea type="text" name="next_level_text" class="form-control summernote" placeholder="Next Level Text">{{$membership['next_level_text']}}</textarea>
+											</div>
+											<div class="col-md-3" style="margin-bottom:5px;">
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '%value%' with " onClick="addTextContent(this,'%value%');">%value%</span>
+											</div>
+											<div class="col-md-4" style="margin-bottom:5px;">
+												<span class="btn dark btn-xs btn-block btn-outline var" data-toggle="tooltip" title="Text will be replace '%membership%' with " onClick="addTextContent(this,'%membership%');">%membership%</span>
+											</div>
+										</div>
+									</div>
 									@if(MyHelper::hasAccess([24], $configs))
 										<div class="col-md-12" style="margin-top:20px">
 											<div class="input-icon right">
