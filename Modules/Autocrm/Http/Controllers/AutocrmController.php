@@ -159,6 +159,9 @@ class AutocrmController extends Controller
 		}
 
 		switch ($subject){
+            case 'expiry-point':
+                $data['menu_active'] = 'expiry-point';
+                break;
 			case 'report-point-reset':
 				$data['noUser'] = true;
 				$data['customNotes'] = 'Previous user point data will be attached to the attachment';
@@ -252,6 +255,13 @@ class AutocrmController extends Controller
                     $data['click_notification'] = [
                         ['value' => "Home",'title' => 'Home'],
                         ['value' => "History Transaction",'title' => 'Transaction Detail']
+                    ];
+                }elseif($subject == 'expiry-point'){
+                    $data['click_inbox'] = [
+                        ['value' => "Home",'title' => 'Home']
+                    ];
+                    $data['click_notification'] = [
+                        ['value' => "Home",'title' => 'Home']
                     ];
                 }else{
                     $data['click_inbox'] = [
