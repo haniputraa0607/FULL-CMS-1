@@ -891,6 +891,33 @@
 				@endif
 			@endif
 
+            @if(MyHelper::hasAccess([262], $grantedFeature))
+                <li class="nav-item {{($menu_active == 'expiry-point') ? 'active' : ''}}">
+                    <a href="javascript:;" class="nav-link nav-toggle">
+                        <i class="fa fa-hourglass"></i>
+                        <span class="title">Expiry {{env('POINT_NAME', 'Points')}}</span>
+                        <span class="arrow {{($menu_active == 'expiry-point') ? 'open' : ''}}"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item {{($submenu_active == 'transaction-setting-expiry-point') ? 'active open' : ''}}">
+                            <a href="{{url('transaction/setting/expiry-point')}}" class="nav-link ">
+                                <span class="title">Setting Date & Time</span>
+                            </a>
+                        </li>
+						<li class="nav-item {{($submenu_active == 'transaction-autoresponse-expiry-point') ? 'active open' : ''}}">
+							<a href="{{url('autoresponse/transaction/expiry-point')}}" class="nav-link ">
+								<span class="title">[Response] Expiry {{env('POINT_NAME', 'Points')}}</span>
+							</a>
+						</li>
+						<li class="nav-item {{($submenu_active == 'report-notification-expiry-point') ? 'active open' : ''}}">
+							<a href="{{url('transaction/report/expiry-point')}}" class="nav-link ">
+								<span class="title">Report Notification</span>
+							</a>
+						</li>
+                    </ul>
+                </li>
+            @endif
+
 			@if(MyHelper::hasAccess([58,59,60,61,62,63,247], $grantedFeature))
 			<li class="nav-item {{($menu_active == 'order') ? 'active' : ''}}">
 				<a href="javascript:;" class="nav-link nav-toggle">

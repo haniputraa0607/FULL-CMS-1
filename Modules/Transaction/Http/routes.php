@@ -75,6 +75,10 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'transact
     Route::post('/setting/default-outlet-phone', 'TransactionSettingController@defaultOutletPhoneUpdate');
     Route::get('/setting/transaction-email-contact', 'TransactionSettingController@transactionEmailContact');
     Route::post('/setting/transaction-email-contact', 'TransactionSettingController@transactionEmailContactUpdate');
+    Route::any('/setting/expiry-point', 'ExpiryPointController@settingExpiryPoint');
+    Route::get('report/expiry-point', 'ExpiryPointController@reportNotification');
+    Route::any('report/expiry-point/filter', 'ExpiryPointController@reportNotificationFilter');
+    Route::get('report/expiry-point/{type}/{id}', 'ExpiryPointController@reportNotificationOutbox');
 });
 
 Route::group(['prefix' => 'transaction', 'namespace' => 'Modules\Transaction\Http\Controllers'], function()
