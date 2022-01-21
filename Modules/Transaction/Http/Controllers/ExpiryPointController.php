@@ -162,4 +162,14 @@ class ExpiryPointController extends Controller
         $data['id_notification_expiry_point_sent_user'] = $post['page']??1;
         return view('transaction::expiry_point.'.str_replace('-', '_', $type), $data);
     }
+
+    public function processingNowExpiryPoint(){
+        $send = MyHelper::get('expiry-point/notification/processing-now');
+        return $send;
+    }
+
+    public function processingNowAdjustmentPoint(){
+        $send = MyHelper::get('adjustment-point/processing-now');
+        return $send;
+    }
 }

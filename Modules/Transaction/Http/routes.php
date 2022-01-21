@@ -79,6 +79,8 @@ Route::group(['middleware' => ['web', 'validate_session'], 'prefix' => 'transact
     Route::get('report/expiry-point', 'ExpiryPointController@reportNotification');
     Route::any('report/expiry-point/filter', 'ExpiryPointController@reportNotificationFilter');
     Route::get('report/expiry-point/{type}/{id}', 'ExpiryPointController@reportNotificationOutbox');
+    Route::post('setting/expiry-point/processing-now', 'ExpiryPointController@processingNowExpiryPoint');
+    Route::post('setting/adjustment-point/processing-now', 'ExpiryPointController@processingNowAdjustmentPoint');
 });
 
 Route::group(['prefix' => 'transaction', 'namespace' => 'Modules\Transaction\Http\Controllers'], function()
