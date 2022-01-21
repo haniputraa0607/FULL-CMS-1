@@ -54,7 +54,7 @@
                                 swal("Success!", "Success sent notification expiry point.", "success")
                             }
                             else if(result.message !== null){
-                                swal("Error!", result.message, "error")
+                                swal("Info!", result.message, "info")
                             }
                             else {
                                 swal("Error!", "Something went wrong. Failed processing now send notification.", "error")
@@ -87,10 +87,10 @@
                                 swal("Success!", "Success processing adjustment.", "success")
                             }
                             else if(result.message !== null){
-                                swal("Error!", result.message, "error")
+                                swal("Info!", result.message, "info")
                             }
                             else {
-                                swal("Error!", "Something went wrong. Failed processing now send notification.", "error")
+                                swal("Error!", "Something went wrong. Failed processing adjustment point.", "error")
                             }
                         }
                     });
