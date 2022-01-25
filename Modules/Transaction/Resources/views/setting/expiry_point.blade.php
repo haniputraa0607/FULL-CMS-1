@@ -57,7 +57,7 @@
                                 swal("Info!", result.message, "info")
                             }
                             else {
-                                swal("Error!", "Something went wrong. Failed processing now send notification.", "error")
+                                swal("Error!", "Something went wrong. Failed processing send notification.", "error")
                             }
                         }
                     });
@@ -161,7 +161,7 @@
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <a onclick="processingNowNotification()" class="btn yellow-lemon">Processing Now</a>
+                                <a onclick="processingNowNotification()" class="btn yellow-lemon">Process Now</a>
                             </div>
                         </div>
                     </div>
@@ -192,7 +192,7 @@
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <a onclick="processingNowAdjustment()" class="btn yellow-lemon">Processing Now</a>
+                                <a onclick="processingNowAdjustment()" class="btn yellow-lemon">Process Now</a>
                             </div>
                         </div>
                     </div>
