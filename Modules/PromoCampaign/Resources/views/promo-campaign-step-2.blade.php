@@ -4,24 +4,25 @@
 @extends('layouts.main-closed')
 @include('promocampaign::bulkForm')
 @include('promocampaign::buyXgetYForm')
+@include('promocampaign::promoProductCategoryForm')
 @include('promocampaign::warning-image')
 @include('promocampaign::template.discount-delivery', ['promo_source' => 'promo_campaign'])
 {{-- @include('promocampaign::template.promo-global-requirement', ['promo_source' => 'promo_campaign']) --}}
 @section('page-style')
-	<link href="{{ secure_url('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> 
-	<link href="{{ secure_url('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" /> 
-	<link href="{{ secure_url('assets/global/plugins/bootstrap-select/css/bootstrap-select.css') }}" rel="stylesheet" type="text/css" /> 
-	<link href="{{ secure_url('assets/global/plugins/jquery-multi-select/css/multi-select.css') }}" rel="stylesheet" type="text/css" /> 
-	<link href="{{ secure_url('assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css') }}" rel="stylesheet" type="text/css" /> 
-	<link href="{{ secure_url('assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css" /> 
-	<link href="{{ secure_url('assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}" rel="stylesheet" type="text/css" /> 
-	<link href="{{ secure_url('assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css" /> 
-	<link href="{{ secure_url('assets/global/plugins/clockface/css/clockface.css') }}" rel="stylesheet" type="text/css" /> 
-	<link href="{{ secure_url('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css') }}" rel="stylesheet" type="text/css" /> 
-	<link href="{{ secure_url('assets/pages/css/profile-2.min.css') }}" rel="stylesheet" type="text/css" /> 
-	<link href="{{ secure_url('assets/global/plugins/bootstrap-summernote/summernote.css')}}" rel="stylesheet" type="text/css" />
-	<link href="{{ secure_url('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css') }}" rel="stylesheet" type="text/css" /> 
-	<link href="{{ secure_url('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
+	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> 
+	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet" type="text/css" /> 
+	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-select/css/bootstrap-select.css') }}" rel="stylesheet" type="text/css" /> 
+	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-multi-select/css/multi-select.css') }}" rel="stylesheet" type="text/css" /> 
+	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css') }}" rel="stylesheet" type="text/css" /> 
+	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css" /> 
+	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}" rel="stylesheet" type="text/css" /> 
+	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css" /> 
+	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/clockface/css/clockface.css') }}" rel="stylesheet" type="text/css" /> 
+	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css') }}" rel="stylesheet" type="text/css" /> 
+	<link href="{{ env('S3_URL_VIEW') }}{{('assets/pages/css/profile-2.min.css') }}" rel="stylesheet" type="text/css" /> 
+	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-summernote/summernote.css')}}" rel="stylesheet" type="text/css" />
+	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css') }}" rel="stylesheet" type="text/css" /> 
+	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.css')}}" rel="stylesheet" type="text/css" />
 	<style type="text/css">
 		.d-none {
 			display: none;
@@ -62,33 +63,33 @@
 @endsection
 
 @section('page-plugin')
-	<script src="{{ secure_url('assets/global/plugins/bootstrap-summernote/summernote.min.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/plugins/moment.min.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/plugins/clockface/js/clockface.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/plugins/jquery-repeater/jquery.repeater.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/scripts/datatable.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/scripts/jquery.inputmask.min.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/global/plugins/bootstrap-toastr/toastr.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-summernote/summernote.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/js/select2.full.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/moment.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/clockface/js/clockface.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/jquery-repeater/jquery.repeater.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/scripts/datatable.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/scripts/jquery.inputmask.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/bootstrap-toastr/toastr.min.js') }}" type="text/javascript"></script>
 @endsection
 
 @section('page-script')
-	<script src="{{ secure_url('assets/pages/scripts/components-select2.min.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/pages/scripts/components-multi-select.min.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/pages/scripts/components-date-time-pickers.min.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/pages/scripts/form-repeater.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/pages/scripts/ui-confirmations.min.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/pages/scripts/components-editors.min.js') }}" type="text/javascript"></script>
-	<script src="{{ secure_url('assets/pages/scripts/table-datatables-buttons.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-select2.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-multi-select.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-date-time-pickers.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/form-repeater.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/ui-confirmations.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/components-editors.min.js') }}" type="text/javascript"></script>
+	<script src="{{ env('S3_URL_VIEW') }}{{('assets/pages/scripts/table-datatables-buttons.js') }}" type="text/javascript"></script>
 	
 	@php
 		$is_all_product 	= null;
@@ -126,8 +127,10 @@
 	<script>
 	$(document).ready(function() {
 		listProduct=[];
+		listCategory=[];
 		listProductSingle=[];
 		productLoad = 0;
+		categoryLoad = 0;
 		product_type = '{!! $result['product_type'] !!}';
 
 		$.ajax({
@@ -145,6 +148,7 @@
 				}
 				listProductSingle=data;
 				reOrder2();
+				reOrder3();
 			}
 		});
 		// if (productLoad == 0) {
@@ -262,11 +266,42 @@
 				});
 			}
 		}
+
+		function loadCategory(selector,callback){
+			if (categoryLoad == 0) {
+				var valuee=$(selector).data('value');
+				$.ajax({
+					type: "GET",
+					url: "getData",
+					data : {
+						get : 'Category',
+						type : product_type
+					},
+					dataType: "json",
+					success: function(data){
+						listCategory=data;
+						categoryLoad = 1;
+						$.each(data, function( key, value ) {
+							if(valuee.indexOf(value.id_product_category)>-1){
+								var more='selected';
+							}else{
+								var more='';
+							}
+							$('#multipleCategory').append("<option value='"+value.id_product_category+"' "+more+">"+value.product_category_name+"</option>");
+						});
+						$(selector).prop('required', true)
+						$(selector).prop('disabled', false)
+						if(callback){callback()}
+					}
+				});
+			}
+		}
+
 		function changeTriger () {
 			$('#tabContainer .tabContent').hide();
 			promo_type = $('select[name=promo_type] option:selected').val();
 			// $('#tabContainer input:not(input[name="promo_type"]),#tabContainer select').prop('disabled',true);
-			$('#productDiscount, #bulkProduct, #buyXgetYProduct, #discount-delivery').hide().find('input, textarea, select').prop('disabled', true);
+			$('#productDiscount, #bulkProduct, #buyXgetYProduct, #promoProductCategory, #discount-delivery').hide().find('input, textarea, select').prop('disabled', true);
 
 			if (promo_type == 'Product Discount') {
 				product = $('select[name=filter_product] option:selected').val();
@@ -286,6 +321,11 @@
 				reOrder2();
 				$('#buyXgetYProduct').show().find('input, textarea, select').prop('disabled', false);
 				loadProduct('#multipleProduct3',reOrder2);
+			}else if(promo_type=='Promo Product Category'){
+
+				reOrder3();
+				$('#promoProductCategory').show().find('input, textarea, select').prop('disabled', false);
+				loadCategory('#multipleCategory',reOrder3);
 			}
 			else if(promo_type == 'Discount delivery'){
 
@@ -436,6 +476,7 @@
 	</script>
 	@yield('child-script')
 	@yield('child-script2')
+	@yield('child-script3')
 	@yield('warning-image-script')
 	@yield('discount-delivery-script')
 	@yield('global-requirement-script')
@@ -481,7 +522,7 @@
 <div class="page-bar">
 	<ul class="page-breadcrumb">
 		<li>
-			<a href="{{ secure_url('/')}}">Home</a>
+			<a href="{{('/')}}">Home</a>
 			@if (!empty($title))
                 <i class="fa fa-circle"></i>
             @endif
@@ -692,6 +733,8 @@
 									</br>
 									</br> Buy X get Y : Promo hanya berlaku untuk product tertentu
 									</br>
+									</br> Promo Product Category: Promo hanya berlaku untuk kategori product tertentu
+									</br>
 									</br> Discount Delivery : Promo berupa potongan harga untuk biaya pengiriman" 
 									data-container="body" data-html="true"></i>
 									<select class="form-control" name="promo_type" required>
@@ -699,6 +742,7 @@
 										<option value="Product Discount" {{ !empty($result['promo_campaign_product_discount_rules']) ? 'selected' : '' }} title="Promo berlaku untuk semua product atau product tertentu tanpa jumlah minimum"> Product Discount </option>
 										<option value="Tier discount" {{ !empty($result['promo_campaign_tier_discount_rules']) ? 'selected' : '' }} title="Promo hanya berlaku untuk suatu product setelah melakukan pembelian dalam jumlah yang telah ditentukan"> Bulk/Tier Product </option>
 										<option value="Buy X Get Y" {{ !empty($result['promo_campaign_buyxgety_rules']) ? 'selected' : '' }} title="Promo hanya berlaku untuk product tertentu"> Buy X Get Y </option>
+										<option value="Promo Product Category" {{ !empty($result['promo_campaign_productcategory_rules']) ? 'selected' : '' }} title="Promo hanya berlaku untuk kategori product tertentu"> Promo Product Category </option>
 										<option value="Discount delivery" 
 											@if ( old('promo_type') && old('promo_type') == 'Discount delivery' ) selected 
 											@elseif ( !empty($result['promo_campaign_discount_delivery_rules']) ) selected 
@@ -793,6 +837,9 @@
 							</div>
 							<div id="buyXgetYProduct" class="p-t-10px">
 								@yield('buyXgetYForm')
+							</div>
+							<div id="promoProductCategory" class="p-t-10px">
+								@yield('promoProductCategoryForm')
 							</div>
 							<div id="discount-delivery" class="p-t-10px">
 								@yield('discount-delivery')

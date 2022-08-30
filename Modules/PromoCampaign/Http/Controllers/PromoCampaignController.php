@@ -294,7 +294,7 @@ class PromoCampaignController extends Controller
                   return redirect('promo-campaign')->withErrors(['Promo campaign not found']);
                 }
             }
-
+            
             return view('promocampaign::create-promo-campaign-step-1', $data);
 
 
