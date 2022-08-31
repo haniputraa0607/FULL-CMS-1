@@ -354,7 +354,7 @@ class PromoCampaignController extends Controller
             return view('promocampaign::promo-campaign-step-2', $data);
 
         } else {
-
+            
             $post['id_promo_campaign'] = $id_promo_campaign;
 
             if ($post['promo_type'] == 'Discount delivery') {

@@ -17,22 +17,21 @@
 	<div class="col-md-2 text-center">
 		<label>Min. Qty <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk dalam kategori minimal untuk mendapatkan benefit" data-container="body"></i></label>
 	</div>
-	<div class="col-md-10">
-		<div class="col-md-6 text-center">
-			<label>Benefit <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk yang akan dikenakan diskon setelah pembelian </br></br> Free : jumlah product termurah dalam pembelian yang diberikan </br></br> Discount : Besar diskon yang diberikan pada produk termurah. Persentase akan dihitung dari harga produk + harga modifier" data-html="true" data-container="body"></i></label>
-		</div>
-		<div class="col-md-1 text-center">
-		</div>
+	<div class="col-md-3 text-center">
+		<label>Benefit <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk yang akan dikenakan diskon setelah pembelian </br></br> Free : jumlah product termurah dalam pembelian yang diberikan </br></br> Discount : Besar diskon yang diberikan pada produk termurah. Persentase akan dihitung dari harga produk + harga modifier" data-html="true" data-container="body"></i></label>
 	</div>
 </div>
 <div id="ruleSectionBody3">
+</div>
+<div class="form-group">
+	<button type="button" class="btn btn-primary new">Add New</button>
 </div>
 <div class="row">
 	<div class="col-md-6">
 		<div class="form-group" style="width: 100%!important">
 			<label class="mt-checkbox mt-checkbox-outline" style="margin-bottom: 0px">
-				<input type="checkbox" id="autoapply" name="autoapply" value="1" 
-				@if ( old('autoapply') == "1" || ($result['promo_campaign_productcategory_category_requirements']??false)==1 )
+				<input type="checkbox" id="auto_apply" name="auto_apply" value="1" 
+				@if ( old('auto_apply') == "1" || ($result['promo_campaign_productcategory_category_requirements']['auto_apply']??false)==1 )
 					checked 
 				@endif> Auto Apply
 				<i class="fa fa-question-circle tooltips" data-original-title="Promo otomatis dipasang apabila belum ada promo lain yang terpasang" data-container="body"></i>
@@ -40,9 +39,6 @@
 			</label>
 		</div>
 	</div>
-</div>
-<div class="form-group">
-	<button type="button" class="btn btn-primary new">Add New</button>
 </div>
 </div>
 @endSection
@@ -60,63 +56,55 @@
 			</div>\
 			<p class="text-danger help-block" style="padding-bottom:10px;margin-top:-10px">::error1::</p>\
 		</div>\
-		<div class="col-md-10">\
-			<div class="col-md-6">\
-				<div class="form-group">\
-					<select class="form-control benefit" name="promo_rule[::n::][benefit_type]">\
-						<option value="free" ::selected_free::> Free Product</option>\
-						<option value="nominal" ::selected_nominal::> Nominal Discount </option>\
-						<option value="percent" ::selected_percent::> Percent Discount </option>\
-					</select>\
-				</div>\
+		<div class="col-md-3">\
+			<div class="form-group">\
+				<select class="form-control benefit" name="promo_rule[::n::][benefit_type]">\
+					<option value="free" ::selected_free::> Free Product</option>\
+					<option value="nominal" ::selected_nominal::> Nominal Discount </option>\
+					<option value="percent" ::selected_percent::> Percent Discount </option>\
+				</select>\
 			</div>\
-			<div class="col-md-1">\
-				<button type="button" class="btn btn-danger btn-sm remove"><i class="fa fa-trash-o"></i></button>\
+		</div>\
+		<div class="col-md-4">\
+			<div class="col-md-4 text-left">\
+				<label>Discount<span class="required" aria-required="true"> * </span></label>\
+			</div>\
+			<div class="col-md-8">\
+				<div class="form-group ::hide_qty::">\
+					<div class="input-group">\
+						<input type="text" class="form-control benefit_qty text-center digit_mask" min="0" name="promo_rule[::n::][benefit_qty]" value="::benefit_qty::" ::required_qty:: placeholder="Benefit Qty" autocomplete="off">\
+						<div class="input-group-addon">qty</div>\
+					</div>\
+				</div>\
+				<div class="form-group ::hide_nominal::">\
+					<div class="input-group">\
+						<div class="input-group-addon">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</div>\
+						<input type="text" class="form-control digit_mask text-center" min="0" name="promo_rule[::n::][discount_nominal]" value="::discount_nominal::" ::required_nominal:: placeholder="100000" autocomplete="off">\
+					</div>\
+				</div>\
+				<div class="form-group ::hide_percent::">\
+					<div class="input-group">\
+						<input type="number" class="form-control discount_value max100 benefit_percent text-center" min="0" max="100" name="promo_rule[::n::][discount_percent]" value="::discount_percent::" ::discount_prop:: ::required_percent:: style="padding-left: 7px;padding-right: 7px;text-align: center;" placeholder="50" autocomplete="off">\
+						<div class="input-group-addon">%</div>\
+					</div>\
+				</div>\
 			</div>\
 		</div>\
 		<div class="col-md-2">\
-		</div>\
-		<div class="col-md-10">\
-			<div class="col-md-6">\
-				<div class="col-md-6 p-l-0 text-right">\
-					<label>Discount<span class="required" aria-required="true"> * </span></label>\
-				</div>\
-				<div class="col-md-6 p-l-r-0">\
-					<div class="form-group ::hide_qty::">\
-						<div class="input-group">\
-							<input type="text" class="form-control benefit_qty text-center digit_mask" min="0" name="promo_rule[::n::][benefit_qty]" value="::benefit_qty::" ::required_qty:: placeholder="Benefit Qty" autocomplete="off">\
-							<div class="input-group-addon">qty</div>\
-						</div>\
-					</div>\
-					<div class="form-group ::hide_nominal::">\
-						<div class="input-group">\
-							<div class="input-group-addon">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</div>\
-							<input type="text" class="form-control digit_mask text-center" min="0" name="promo_rule[::n::][discount_nominal]" value="::discount_nominal::" ::required_nominal:: placeholder="100000" autocomplete="off">\
-						</div>\
-					</div>\
-					<div class="form-group ::hide_percent::">\
-						<div class="input-group">\
-							<input type="number" class="form-control discount_value max100 benefit_percent text-center" min="0" max="100" name="promo_rule[::n::][discount_percent]" value="::discount_percent::" ::discount_prop:: ::required_percent:: style="padding-left: 7px;padding-right: 7px;text-align: center;" placeholder="50" autocomplete="off">\
-							<div class="input-group-addon">%</div>\
-						</div>\
-					</div>\
-				</div>\
-			</div>\
+				<button type="button" class="btn btn-danger btn-sm remove"><i class="fa fa-trash-o"></i></button>\
 		</div>\
 		<div class="::hide_percent_max::">\
-			<div class="col-md-2">\
+			<div class="col-md-5">\
 			</div>\
-			<div class="col-md-10">\
-				<div class="col-md-6">\
-					<div class="col-md-6 p-l-0 text-right">\
-						<label>Max Discount</label>\
-					</div>\
-					<div class="col-md-6 p-l-r-0">\
-						<div class="form-group">\
-							<div class="input-group">\
-								<div class="input-group-addon">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</div>\
-								<input type="text" class="form-control digit_mask text-center" min="0" name="promo_rule[::n::][max_percent_discount]" value="::max_percent_discount::"  placeholder="100000" autocomplete="off">\
-							</div>\
+			<div class="col-md-4">\
+				<div class="col-md-4 text-left">\
+					<label>Max Discount</label>\
+				</div>\
+				<div class="col-md-8">\
+					<div class="form-group">\
+						<div class="input-group">\
+							<div class="input-group-addon">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</div>\
+							<input type="text" class="form-control digit_mask text-center" min="0" name="promo_rule[::n::][max_percent_discount]" value="::max_percent_discount::"  placeholder="100000" autocomplete="off">\
 						</div>\
 					</div>\
 				</div>\
@@ -310,7 +298,6 @@
 		return status;
 	}
 	$(document).ready(function(){
-		console.log('123');
 		$('#promoProductCategory').on('click','.new',function(){
 			if(!reOrder3()){
 				return false;

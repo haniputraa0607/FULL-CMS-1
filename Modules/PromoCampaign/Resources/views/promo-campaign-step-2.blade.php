@@ -602,6 +602,19 @@
 							<div class="col-md-8 value">: @if(isset($result['date_end'])){{date("d F Y", strtotime($result['date_end']))}}&nbsp;{{date("H:i", strtotime($result['date_end']))}} @endif</div>
 						</div>
 						<div class="row static-info">
+							<div class="col-md-4 name">Days</div>
+								@php
+									if($result['is_all_days'] == 1){
+										$days = 'All Days';
+									}else if($result['is_all_days'] == 0 && !empty($result['promo_campaign_days'])){
+										$selected_days = [];
+										$selected_days = array_column($result['promo_campaign_days'], 'day');
+										$days = implode(', ',$selected_days);
+									}
+								@endphp
+							<div class="col-md-8 value">: {{ $days }}</div>
+						</div>
+						<div class="row static-info">
 							<div class="col-md-4 name">Limit Usage</div>
 							<div class="col-md-8 value">: {{ $result['limitation_usage']??false != 0 ? number_format($result['limitation_usage']).' Times Usage' : 'Unlimited'}} </div>
 						</div>
