@@ -136,6 +136,7 @@
 			database2.splice(0,0,{});
 		}
 		reOrder();
+		reOrder3();
 	}
 	function update2(col,val){
 		var ncol=col.replace('promo_rule','database2').replace(/\[/g,'["').replace(/\]/g,'"]');

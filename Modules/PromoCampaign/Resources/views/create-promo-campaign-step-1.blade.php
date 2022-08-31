@@ -125,6 +125,10 @@
 			placeholder: "Input tag",
 			tags: true
 		})
+		$("#select-day").select2({
+			placeholder: "Select days",
+			tags: true
+		})
 		$("#start_date").datetimepicker({
 			format: "dd MM yyyy - hh:ii",
 			autoclose: true,
@@ -146,6 +150,7 @@
 		$('#singleCode').hide()
 		$('#multipleCode').hide()
 		$('#exampleCode').hide()
+		$('#selectedDay').hide()
 		var maxChar = 15
 		$('input[name=code_type]').change(function() {
 			code = $('input[name=code_type]:checked').val()
@@ -306,6 +311,25 @@
 				});
 			}
 		});
+
+		$('#promo_day').change(function() {
+            var promo_day = $('#promo_day option:selected').val();
+			PromoDay(promo_day);
+		});
+
+		function PromoDay(value){
+			if(value==1){
+				$('#selectedDay').hide();
+				$('#select-day').prop('required',false);
+				$('#select-day').prop('disabled',true);
+			}else if (value == 0) {
+				$('#selectedDay').show();
+				$('#select-day').prop('required',true);
+				$('#select-day').prop('disabled',false);
+			}
+		}
+		var global_promo_day = '{!! $result['is_all_days']??1 !!}'
+		PromoDay(global_promo_day);
 		var code_type = '{!!$code_type!!}'
 		var prefix_code = '{!!$prefix_code!!}'
 		var number_last_code = '{!!$number_last_code!!}'
@@ -422,6 +446,41 @@
 									<i class="fa fa-calendar"></i>
 								</button>
 							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="selectTag" class="control-label">Promo Day</label>
+						<span class="required" aria-required="true"> * </span>
+						<i class="fa fa-question-circle tooltips" data-original-title="Promo only can use in promo day" data-container="body"></i>
+						<select class="form-control" id="promo_day" name="is_all_days" required>
+							<option value="1" @if(isset($result['is_all_days']) && $result['is_all_days'] == "1") selected @endif> All Days </option>
+							<option value="0" @if(isset($result['is_all_days']) && $result['is_all_days'] == "0") selected @endif> Selected Day </option>
+                        </select>
+					</div>
+					<div id="selectedDay">
+						<div class="form-group">
+							<label class="control-label">Select Day</label>
+							<i class="fa fa-question-circle tooltips" data-original-title="Select day promo can be applied" data-container="body"></i>
+							<div class="input-group col-md-12">
+								@php
+									$selected_days = [];
+									if (old('service')) {
+										$selected_days = old('service');
+									}
+									elseif (!empty($result['promo_campaign_days'])) {
+										$selected_days = array_column($result['promo_campaign_days'], 'day');
+									}
+								@endphp
+								<select	select id="select-day" name="selected_day[]" class="form-control select2-multiple select2-hidden-accessible" multiple="multiple" tabindex="-1" aria-hidden="true">
+									<option value="Monday" @if ($selected_days) @if(in_array('Monday', $selected_days)) selected @endif @endif>Monday</option>
+									<option value="Tuesday" @if ($selected_days) @if(in_array('Tuesday', $selected_days)) selected @endif @endif>Tuesday</option>
+									<option value="Wednesday" @if ($selected_days) @if(in_array('Wednesday', $selected_days)) selected @endif @endif>Wednesday</option>
+									<option value="Thursday" @if ($selected_days) @if(in_array('Thursday', $selected_days)) selected @endif @endif>Thursday</option>
+									<option value="Friday" @if ($selected_days) @if(in_array('Friday', $selected_days)) selected @endif @endif>Friday</option>
+									<option value="Saturday" @if ($selected_days) @if(in_array('Saturday', $selected_days)) selected @endif @endif>Saturday</option>
+									<option value="Sunday" @if ($selected_days) @if(in_array('Sunday', $selected_days)) selected @endif @endif>Sunday</option>
+								</select>
+							</div>
 						</div>
 					</div>
 				</div>
