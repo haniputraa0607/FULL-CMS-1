@@ -648,8 +648,8 @@
                                         <div class="row static-info">
                                             <div class="col-md-4 name">Category Requirement</div>
                                             <div class="col-md-8 value">: 
-                                                @if ( isset($result['promo_campaign_productcategory_category_requirement']) )
-                                                    <a href="{{ url('product/category/edit/'.$result['promo_campaign_productcategory_category_requirement']['product_category']['id_product_category']??'') }}">{{ ($result['promo_campaign_productcategory_category_requirement']['product_category']['product_category_name']??'') }}</a>
+                                                @if ( isset($result['promo_campaign_productcategory_category_requirements']) )
+                                                    <a href="{{ url('product/category/edit/'.$result['promo_campaign_productcategory_category_requirements']['product_category']['id_product_category']??'') }}">{{ ($result['promo_campaign_productcategory_category_requirements']['product_category']['product_category_name']??'') }}</a>
                                                 @endif
                                             </div>
                                         </div>
