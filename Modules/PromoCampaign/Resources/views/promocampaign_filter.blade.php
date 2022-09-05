@@ -114,7 +114,8 @@
 			opsi:[
 			['Product discount','Product Discount'],
 			['Tier discount','Tier Discount'],
-			['Buy X Get Y','Buy X Get Y']
+			['Buy X Get Y','Buy X Get Y'],
+			['Promo Product Category','Promo Product Category']
 			]
 		},
 		used_code:{

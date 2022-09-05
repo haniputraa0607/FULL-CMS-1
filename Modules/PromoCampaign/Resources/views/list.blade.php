@@ -229,6 +229,16 @@
                 @else
                 <a href="{{ url('promo-campaign/list?promo_type=Buy X Get Y') }}" class="btn btn-success">Buy X get Y</a>
                 @endif
+                @if( Request::get('promo_type') == 'Promo Product Category' )
+                <a href="{{ url('promo-campaign/list?promo_type=Promo Product Category') }}" class="icon-btn checked-button" >
+                    <div style="">Promo Product Category</div>
+                    <span class="badge badge-success">
+                   <i class="fa fa-check"></i>
+                </span>
+                </a>
+                @else
+                <a href="{{ url('promo-campaign/list?promo_type=Promo Product Category') }}" class="btn btn-success">Promo Product Category</a>
+                @endif
                 <a href="{{ url('promo-campaign') }}" class="btn btn-danger">All</a>
             </div>
         </div>
