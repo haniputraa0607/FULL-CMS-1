@@ -467,6 +467,12 @@
 					                    <div class="col-md-4 name">Warning Image</div>
 					                    <div class="col-md-8 value">: {{ empty($result['promo_campaign_warning_image']) ? 'Use Global' : '' }}</div>
 					                </div>
+					                @if ($result['promo_type'] == 'Promo Product Category')
+                                    <div class="row static-info">
+                                        <div class="col-md-4 name">Auto Apply</div>
+                                        <div class="col-md-8 value">: {{ $result['promo_campaign_productcategory_category_requirements']['auto_apply'] == 1 ? 'Yes' : 'No' }} </div>
+                                    </div>
+                                    @endif
 					                @if (!empty($result['promo_campaign_warning_image']))
 						                <div class="row static-info text-center">
 						                    <div class="col-md-12 name">
