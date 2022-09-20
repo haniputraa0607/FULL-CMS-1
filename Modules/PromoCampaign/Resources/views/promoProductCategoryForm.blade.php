@@ -14,11 +14,15 @@
 	<span class="required" aria-required="true"> * </span>
 	<i class="fa fa-question-circle tooltips" data-original-title="Masukan rentang jumlah produk dan benefit yang didapatkan dalam promo ini" data-container="body"></i></label><br>
 <div class="row">
-	<div class="col-md-2 text-center">
+	<div class="col-md-1"></div>
+	<div class="col-md-2" style="padding-left: 20px;">
 		<label>Min. Qty <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk dalam kategori minimal untuk mendapatkan benefit" data-container="body"></i></label>
 	</div>
 	<div class="col-md-3 text-center">
 		<label>Benefit <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk yang akan dikenakan diskon setelah pembelian </br></br> Free : jumlah product termurah dalam pembelian yang diberikan </br></br> Discount : Besar diskon yang diberikan pada produk termurah. Persentase akan dihitung dari harga produk + harga modifier" data-html="true" data-container="body"></i></label>
+	</div>
+	<div class="col-md-2 text-center">
+		<label>Benefit. Qty <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk yang akan mendapat benefit" data-container="body"></i></label>
 	</div>
 </div>
 <div id="ruleSectionBody3">
@@ -48,15 +52,18 @@
 
 	var lastError3='';
 	var template3='<div class="row" data-id="::n::">\
-		<div class="col-md-2">\
-			<div class="col-md-2">\
-			</div>\
-			<div class="col-md-7 form-group">\
-				<input type="text" class="form-control ::classMinQty:: text-center qty_mask" min="1" name="promo_rule[::n::][min_qty_requirement]" value="::min_qty::" required autocomplete="off">\
-			</div>\
-			<p class="text-danger help-block" style="padding-bottom:10px;margin-top:-10px">::error1::</p>\
+		<div class="col-md-1 text-center">\
+				<button type="button" class="btn btn-danger btn-sm remove"><i class="fa fa-trash-o"></i></button>\
 		</div>\
-		<div class="col-md-3">\
+		<div class="col-md-2">\
+			<div class="col-md-7">\
+				<div class="form-group">\
+					<input type="text" class="form-control ::classMinQty:: text-center qty_mask" min="1" name="promo_rule[::n::][min_qty_requirement]" value="::min_qty::" required autocomplete="off">\
+				</div>\
+				<p class="text-danger help-block" style="padding-bottom:10px;margin-top:-10px">::error1::</p>\
+			</div>\
+		</div>\
+		<div class="col-md-3" style="padding-left: 0px;">\
 			<div class="form-group">\
 				<select class="form-control benefit" name="promo_rule[::n::][benefit_type]">\
 					<option value="free" ::selected_free::> Free Product</option>\
@@ -65,17 +72,21 @@
 				</select>\
 			</div>\
 		</div>\
-		<div class="col-md-4">\
+		<div class="col-md-2">\
+			<div class="col-md-2">\
+			</div>\
+			<div class="col-md-7">\
+				<div class="form-group">\
+					<input type="text" class="form-control benefit_qty ::classBenQty:: text-center digit_mask" min="0" name="promo_rule[::n::][benefit_qty]" value="::benefit_qty::" ::required_qty:: autocomplete="off">\
+				</div>\
+				<p class="text-danger help-block" style="padding-bottom:10px;margin-top:-10px">::errorBen::</p>\
+			</div>\
+		</div>\
+		<div class="col-md-4 ::hide_qty::">\
 			<div class="col-md-4 text-left">\
 				<label>Discount<span class="required" aria-required="true"> * </span></label>\
 			</div>\
 			<div class="col-md-8">\
-				<div class="form-group ::hide_qty::">\
-					<div class="input-group">\
-						<input type="text" class="form-control benefit_qty text-center digit_mask" min="0" name="promo_rule[::n::][benefit_qty]" value="::benefit_qty::" ::required_qty:: placeholder="Benefit Qty" autocomplete="off">\
-						<div class="input-group-addon">qty</div>\
-					</div>\
-				</div>\
 				<div class="form-group ::hide_nominal::">\
 					<div class="input-group">\
 						<div class="input-group-addon">{{env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR'}}</div>\
@@ -90,11 +101,10 @@
 				</div>\
 			</div>\
 		</div>\
-		<div class="col-md-2">\
-				<button type="button" class="btn btn-danger btn-sm remove"><i class="fa fa-trash-o"></i></button>\
-		</div>\
 		<div class="::hide_percent_max::">\
-			<div class="col-md-5">\
+			<div class="col-md-8">\
+			</div>\
+			<div class="col-md-8">\
 			</div>\
 			<div class="col-md-4">\
 				<div class="col-md-4 text-left">\
@@ -146,7 +156,7 @@
 			var discount_nominal_value=it['discount_nominal'];
 			var discount_percent_value=it['discount_percent'];
 			var qty = it['benefit_qty'];
-			var hide_qty = '';
+			var hide_qty = 'd-none';
 			var hide_nominal = '';
 			var hide_percent = '';
 			var selected_free = '';
@@ -160,6 +170,9 @@
 			var it_min_qty = it['min_qty_requirement']+'';
 			it_min_qty = it_min_qty.replace(/,/g , '');
 			it_min_qty = parseInt(it_min_qty);
+			var benefit_qty = it['benefit_qty']+'';
+			benefit_qty = benefit_qty.replace(/,/g , '');
+			benefit_qty = parseInt(benefit_qty);
 
 			if(it['benefit_type'] == "free"){
 
@@ -174,7 +187,7 @@
 
 			}else if(it['benefit_type'] == "percent") {
 
-				hide_qty = 'd-none';
+				hide_qty = '';
 				hide_nominal = 'd-none';
 				hide_percent_max = '';
 				selected_percent = 'selected';
@@ -183,7 +196,7 @@
 
 			}else if(it['benefit_type'] == "nominal") {
 
-				hide_qty = 'd-none';
+				hide_qty = '';
 				hide_percent = 'd-none';
 				hide_percent_max = 'd-none';
 				selected_nominal = 'selected';
@@ -196,7 +209,7 @@
 				if (it['discount_type'] == 'nominal') {
 
 					discount_nominal_value = it['discount_nominal'] ? it['discount_nominal'] : it['discount_value'];
-					hide_qty = 'd-none';
+					hide_qty = '';
 					hide_percent = 'd-none';
 					hide_percent_max = 'd-none';
 					hide_nominal = '';
@@ -209,7 +222,7 @@
 				}else if (it['discount_type'] =='percent' && it['discount_value'] != 100) {
 
 					discount_percent_value = it['discount_percent'] ? it['discount_percent'] : it['discount_value'];
-					hide_qty = 'd-none';
+					hide_qty = '';
 					hide_nominal = 'd-none';
 					hide_percent = '';
 					hide_percent_max = '';
@@ -220,6 +233,7 @@
 				}else {
 					hide_nominal = 'd-none';
 					hide_percent = 'd-none';
+					hide_qty = 'd-none';
 					hide_percent_max = 'd-none';
 					selected_free = 'selected';
 					discount_value = 100;
@@ -260,10 +274,20 @@
 					$('button[type="submit"]').prop('disabled', true);
 				}
 				status=false;
+			}else if(benefit_qty>it_min_qty){
+				if(!lastErrorReal){
+					edited=edited.replace('::errorBen::','Benefit Quantity should be greater than '+it_min_qty).replace('::classBenQty::','red');
+					errorNow='benefit_qty'+id;
+					$('button[type="submit"]').prop('disabled', true);
+				}
+				status=false;
 			}else{
 				edited=edited.replace('::error::','');
 			}
-			edited=edited.replace('::classMinQty::','').replace('::error1::','').replace('::error2::','');
+			if(!status){
+				$('button[type="submit"]').prop('disabled', true);
+			}
+			edited=edited.replace('::classMinQty::','').replace('::classBenQty::','').replace('::error1::','').replace('::errorBen::','');
 			if(!lastErrorReal){
 				lastErrorReal=errorNow;
 			}
