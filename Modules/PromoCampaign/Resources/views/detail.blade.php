@@ -683,8 +683,6 @@
                                                         	@endif
                                                         @endif
                                                         </td>
-                                                        <td>
-                                                        {{ ( ($res['discount_percent']??'') == 100) ? 'Free' : ( ($res['discount_percent']??false) ? $res['discount_percent'].' % (Max : '.(env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($res['max_percent_discount']).')' : (($res['discount_nominal']??false) ? (env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($res['discount_nominal']) : '' ) ) }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
