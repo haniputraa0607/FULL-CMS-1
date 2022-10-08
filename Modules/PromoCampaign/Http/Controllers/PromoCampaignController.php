@@ -329,7 +329,6 @@ class PromoCampaignController extends Controller
         if (empty($post)) {
 
             $get_data = MyHelper::post('promo-campaign/show-step2', ['id_promo_campaign' => $id_promo_campaign]);
-
             $data = [
                 'title'             => 'Promo Campaign',
                 'sub_title'         => 'Step 2',
@@ -349,6 +348,7 @@ class PromoCampaignController extends Controller
                 return redirect('promo-campaign')->withErrors($get_data['messages']);
             }
 
+            $data['variants'] = MyHelper::get('promo-campaign/get-all-variant')['result']??[];
             $data['warning_image'] = MyHelper::post('setting', ['key' => 'promo_warning_image'])['result']['value'];
 
             return view('promocampaign::promo-campaign-step-2', $data);

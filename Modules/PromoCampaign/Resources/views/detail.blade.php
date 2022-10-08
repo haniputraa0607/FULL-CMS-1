@@ -654,8 +654,18 @@
                                         <div class="row static-info">
                                             <div class="col-md-4 name">Category Requirement</div>
                                             <div class="col-md-8 value">: 
-                                                @if ( isset($result['promo_campaign_productcategory_category_requirements']) )
-                                                    <a href="{{ url('product/category/edit/'.$result['promo_campaign_productcategory_category_requirements']['product_category']['id_product_category']??'') }}">{{ ($result['promo_campaign_productcategory_category_requirements']['product_category']['product_category_name']??'') }}</a>
+                                                @if ( isset($result['promo_campaign_productcategory_category_requirements']) && isset($result['promo_campaign_productcategory_category_requirements']['product_category']) )
+                                                @foreach ($result['promo_campaign_productcategory_category_requirements']['product_category'] as $key_pro_cat => $product_cat)
+                                                    <a href="{{ url('product/category/edit/'.$product_cat['id_product_category']??'') }}">{{ ($product_cat['product_category']['product_category_name']??'') }}</a>@if(($key_pro_cat+1)<count($result['promo_campaign_productcategory_category_requirements']['product_category'])), @endif
+                                                @endforeach
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="row static-info">
+                                            <div class="col-md-4 name">Variant Requirement</div>
+                                            <div class="col-md-8 value">: 
+                                                @if ( isset($result['promo_campaign_productcategory_category_requirements']) && isset($result['promo_campaign_productcategory_category_requirements']['product_variant']) )
+                                                {{ $result['promo_campaign_productcategory_category_requirements']['product_variant']['product_variant_name'] }}
                                                 @endif
                                             </div>
                                         </div>

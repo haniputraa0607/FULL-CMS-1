@@ -1,10 +1,36 @@
 @section('promoProductCategoryForm')
+@php
+	$category_products = [];
+	if(isset($result['promo_campaign_productcategory_category_requirements'])){
+		if(isset($result['promo_campaign_productcategory_category_requirements']['product_category'])){
+			$category_products = array_column($result['promo_campaign_productcategory_category_requirements']['product_category'], 'id_product_category');
+		}
+	}
+@endphp
 <div class="row">
 	<div class="col-md-6">
 		<div id="selectProduct2" class="form-group" style="width: 100%!important">
 			<label for="multipleProduct2" class="control-label">Main Category<span class="required" aria-required="true"> * </span>
 			<i class="fa fa-question-circle tooltips" data-original-title="Pilih kategori produk yang akan dijadikan syarat promo" data-container="body" data-html="true"></i></label>
-			<select id="multipleCategory" name="category_product" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" data-value="{{ ($result['promo_campaign_productcategory_category_requirements']??false) ? json_encode( ([$result['promo_campaign_productcategory_category_requirements']['id_product_category']] ?? ([$result['promo_campaign_productcategory_category_requirements'][0]['id_product_category']]??'') ) ) :''}}" style="width: 100%!important">
+			<select id="multipleCategory" name="category_product[]" class="form-control select2-multiple select2-hidden-accessible" tabindex="-1" aria-hidden="true" multiple="multiple" data-value="{{ json_encode($category_products??[]) }}" style="width: 100%!important">
+			</select>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-4">
+		<div id="selectVariant" class="form-group" style="width: 100%!important">
+			<label for="variant" class="control-label">Product Variant
+			<i class="fa fa-question-circle tooltips" data-original-title="Pilih variant produk yang akan dijadikan syarat promo" data-container="body" data-html="true"></i></label>
+			<select id="id_product_variant" name="id_product_variant" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" style="width: 100%!important">
+				<option value="" selected disabled></option>
+				@foreach ($variants as $key_variant_1 => $parent)
+				<optgroup label="{{ $parent['product_variant_name'] }}">
+					@foreach ($parent['children'] as $key_variant_2 => $children)
+					<option value="{{ $children['id_product_variant'] }}" @if(isset($result['promo_campaign_productcategory_category_requirements']) && $result['promo_campaign_productcategory_category_requirements']['id_product_variant'] == $children['id_product_variant']) selected @endif>{{ $children['product_variant_name'] }}</option>
+					@endforeach
+				</optgroup>
+				@endforeach
 			</select>
 		</div>
 	</div>
@@ -138,7 +164,9 @@
 	}
 	function update3(col,val){
 		var ncol=col.replace('promo_rule','database3').replace(/\[/g,'["').replace(/\]/g,'"]');
-		eval(ncol+'=val');
+		if(ncol!='category_product[""]'){
+			eval(ncol+'=val');
+		}
 	}
 	function reOrder3(drawIfTrue=true){
 		var html='';
