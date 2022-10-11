@@ -22,16 +22,23 @@
 		<div id="selectVariant" class="form-group" style="width: 100%!important">
 			<label for="variant" class="control-label">Product Variant
 			<i class="fa fa-question-circle tooltips" data-original-title="Pilih variant produk yang akan dijadikan syarat promo" data-container="body" data-html="true"></i></label>
-			<select id="id_product_variant" name="id_product_variant" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" style="width: 100%!important">
-				<option value="" selected disabled></option>
-				@foreach ($variants as $key_variant_1 => $parent)
-				<optgroup label="{{ $parent['product_variant_name'] }}">
-					@foreach ($parent['children'] as $key_variant_2 => $children)
-					<option value="{{ $children['id_product_variant'] }}" @if(isset($result['promo_campaign_productcategory_category_requirements']) && $result['promo_campaign_productcategory_category_requirements']['id_product_variant'] == $children['id_product_variant']) selected @endif>{{ $children['product_variant_name'] }}</option>
-					@endforeach
-				</optgroup>
-				@endforeach
-			</select>
+			<div class="row">
+				<div class="col-md-10">
+					<select id="id_product_variant" name="id_product_variant" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" style="width: 100%!important">
+						<option value="" selected disabled></option>
+						@foreach ($variants as $key_variant_1 => $parent)
+						<optgroup label="{{ $parent['product_variant_name'] }}">
+							@foreach ($parent['children'] as $key_variant_2 => $children)
+							<option value="{{ $children['id_product_variant'] }}" @if(isset($result['promo_campaign_productcategory_category_requirements']) && $result['promo_campaign_productcategory_category_requirements']['id_product_variant'] == $children['id_product_variant']) selected @endif>@if($children['product_variant_name']=='general_size') Without Variant Size @elseif($children['product_variant_name']=='general_type') Without Variant Type @else {{ $children['product_variant_name'] }} @endif</option>
+							@endforeach
+						</optgroup>
+						@endforeach
+					</select>
+				</div>
+				<div class="col-md-2 text-center">
+					<button type="button" class="btn btn-danger btn-sm" id="remove-variant"><i class="fa fa-trash-o"></i></button>
+			</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -366,6 +373,13 @@
 			var id=$($(this).parents('.row')[0]).data('id');
 			delete database3[id];
 			database3=database3.filter(function(x){return x!==undefined;});
+			reOrder3();
+		});
+		$('#promoProductCategory').on('click','#remove-variant',function(){
+			var delete_variant = $('#id_product_variant').val('').change();
+			var col= 'id_product_variant';
+			var val= null;
+			update3(col,val);
 			reOrder3();
 		});
 		$('#promoProductCategory').on('change','input,select',function(){
