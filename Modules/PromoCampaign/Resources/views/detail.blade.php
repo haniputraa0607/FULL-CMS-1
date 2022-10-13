@@ -666,7 +666,13 @@
                                             <div class="col-md-4 name">Variant Requirement</div>
                                             <div class="col-md-8 value">: 
                                                 @if ( isset($result['promo_campaign_productcategory_category_requirements']) && isset($result['promo_campaign_productcategory_category_requirements']['product_variant']) )
+                                                @if ($result['promo_campaign_productcategory_category_requirements']['product_variant']['product_variant_name']=='general_size')
+                                                Without Variant Size
+                                                @elseif ($result['promo_campaign_productcategory_category_requirements']['product_variant']['product_variant_name']=='general_type')
+                                                Without Variant Type
+                                                @else
                                                 {{ $result['promo_campaign_productcategory_category_requirements']['product_variant']['product_variant_name'] }}
+                                                @endif
                                                 @endif
                                             </div>
                                         </div>
