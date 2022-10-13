@@ -661,6 +661,7 @@
                                                 @endif
                                             </div>
                                         </div>
+                                        @if (isset($result['promo_campaign_productcategory_category_requirements']['product_variant']))
                                         <div class="row static-info">
                                             <div class="col-md-4 name">Variant Requirement</div>
                                             <div class="col-md-8 value">: 
@@ -669,6 +670,7 @@
                                                 @endif
                                             </div>
                                         </div>
+                                        @endif
                                         <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_7">
                                             <thead>
                                                 <tr>
