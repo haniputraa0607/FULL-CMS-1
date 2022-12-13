@@ -1846,4 +1846,30 @@ class DealsController extends Controller
             return redirect('deals/transaction/list-export')->withErrors(['Failed create export to queue']);
         }
     }
+
+    public function createSecondDeals(Request $request){
+        $post = $request->except('_token');
+        $configs = session('configs');
+        if(empty($post)){
+
+            $data = [
+                "title" => "Second Deals",
+                "sub_title" => "Second Deals Create",
+                "menu_active" => "second-deals",
+                "submenu_active" => "second-deals-create",
+                "deals_type" => "WelcomeVoucher"
+            ];
+
+            if(MyHelper::hasAccess([97], $configs)){
+
+                $data['brands'] = parent::getData(MyHelper::get('brand/be/list'));
+            }
+
+        	$data['outlets'] = parent::getData(MyHelper::get('outlet/be/list'));
+            return view('deals::deals.second-deals-step1', $data);
+
+        }else{
+
+        }
+    }
 }

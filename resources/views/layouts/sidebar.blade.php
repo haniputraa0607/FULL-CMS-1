@@ -1376,6 +1376,39 @@
 						</ul>
 					</li>
 				@endif
+
+				@if(MyHelper::hasAccess([263,264,265,266,267], $grantedFeature))
+					<li class="nav-item {{($menu_active == 'second-deals') ? 'active open' : ''}}">
+						<a href="javascript:;" class="nav-link nav-toggle">
+							<i class="fa fa-rocket"></i>
+							<span class="title">Second Deals</span>
+							<span class="arrow {{($menu_active == 'second-deals') ? 'open' : ''}}"></span>
+						</a>
+						<ul class="sub-menu">
+							@if(MyHelper::hasAccess([181], $grantedFeature))
+								<li class="nav-item {{($submenu_active == 'second-deals-create') ? 'active open' : ''}}">
+									<a href="{{url('second-deals/create')}}" class="nav-link ">
+										<span class="title">New Second Deals</span>
+									</a>
+								</li>
+							@endif
+							@if(MyHelper::hasAccess([179], $grantedFeature))
+								<li class="nav-item {{($submenu_active == 'second-deals-list') ? 'active open' : ''}}">
+									<a href="{{url('second-deals')}}" class="nav-link ">
+										<span class="title">Second Deals List</span>
+									</a>
+								</li>
+							@endif
+							@if(MyHelper::hasAccess([179,182], $grantedFeature))
+								<li class="nav-item {{($submenu_active == 'second-deals-setting') ? 'active open' : ''}}">
+									<a href="{{url('second-deals/setting')}}" class="nav-link ">
+										<span class="title">Second Deals Setting</span>
+									</a>
+								</li>
+							@endif
+						</ul>
+					</li>
+				@endif
 			@endif
 
 			@if(MyHelper::hasAccess([72], $grantedFeature))
