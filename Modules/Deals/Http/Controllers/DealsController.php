@@ -111,6 +111,8 @@ class DealsController extends Controller
                 $rpage = 'promotion/deals';
         	}elseif($post['deals_type'] == 'WelcomeVoucher'){
                 $rpage = 'welcome-voucher';
+            }elseif($post['deals_type'] == 'SecondDeals'){
+                $rpage = 'second-deals';
             }else{
                 $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
             }
@@ -976,6 +978,7 @@ class DealsController extends Controller
         // UPDATE DATA DEALS
         $post = $this->update($post);
         // SAVE
+        return $post;
         $update = MyHelper::post('deals/update', $post);
 
         if ( ($update['status']??false) == 'success') {
@@ -1857,7 +1860,7 @@ class DealsController extends Controller
                 "sub_title" => "Second Deals Create",
                 "menu_active" => "second-deals",
                 "submenu_active" => "second-deals-create",
-                "deals_type" => "WelcomeVoucher"
+                "deals_type" => "SecondDeals"
             ];
 
             if(MyHelper::hasAccess([97], $configs)){
@@ -1868,8 +1871,17 @@ class DealsController extends Controller
         	$data['outlets'] = parent::getData(MyHelper::get('outlet/be/list'));
             return view('deals::deals.second-deals-step1', $data);
 
-        }else{
-
         }
+    }
+
+    public function checkCode()
+    {
+        $action = MyHelper::post('deals/check-code', $_GET);
+
+        return $action;
+    }
+
+    public function step2SecondDeals(Request $request, $id){
+        return $id;
     }
 }

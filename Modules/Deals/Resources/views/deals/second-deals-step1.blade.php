@@ -189,8 +189,20 @@
             oldOutlet=list;
         }
 
+        function delay(callback, ms) {
+            var timer = 0;
+            return function() {
+                var context = this, args = arguments;
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                callback.apply(context, args);
+                }, ms || 0);
+            };
+        }
+
         $(document).ready(function() {
             token = '<?php echo csrf_token();?>';
+            deals_id = {!! $result['id_deals']??"false" !!}
 
             $('.digit-mask').inputmask({
 				removeMaskOnSubmit: true, 
@@ -218,6 +230,78 @@
 		        }
 		    });
 
+            $('#multiplePrefixCode').keyup(function() {	
+                $('#multiplePrefixCode').val (function () {
+                    return this.value.toUpperCase();
+                })
+            });
+            $('#multiplePrefixCode').keyup(delay(function() {
+                if ($(this).val()) {
+                    $.ajax({
+                        type: "GET",
+                        url: "check",
+                        data: {
+                            'type_code' 	: 'prefix',
+                            'search_code' 	: this.value,
+                            'deals_id' 		: deals_id
+                        },
+                        dataType: "json",
+                        success: function(msg){
+                            if (msg.status == 'available') {
+                                $(':input[type="submit"]').prop('disabled', false);
+                                $('#alertMultipleCode').removeClass( "has-error" );
+                                $('#alertMultiplePromoCode').hide();
+                            } else {
+                                $(':input[type="submit"]').prop('disabled', true);
+                                $('#alertMultipleCode').addClass( "has-error" );
+                                $('#alertMultiplePromoCode').show();
+                            }
+                        }
+                    });
+                    $('#multipleNumberLastCode').val('')
+                    $('#multipleNumberLastCode').attr('max', 15 - this.value.length)
+                }
+                else {
+                    $(':input[type="submit"]').prop('disabled', false);
+                    $('#alertMultipleCode').removeClass( "has-error" );
+                    $('#alertMultiplePromoCode').hide();
+                    $('#multipleNumberLastCode').attr('max', 15 - this.value.length)
+                }
+
+            }, 1000));
+
+            $('#multipleNumberLastCode').keyup(function() {
+                prefix = ($('#multiplePrefixCode').val())
+                last_code = ($('#multipleNumberLastCode').val())
+                max = +$(this).attr('max');
+                val = +$(this).val();
+
+                if (val > max) {
+                    $('#multipleNumberLastCode').val(max);
+                    last_code = max;
+                }
+
+                if(val < 6) {
+                    $(':input[type="submit"]').prop('disabled', true);
+                    $('#number_last_code').addClass( "has-error" );
+                    $('#alertDigitRandom').show();
+                }else{
+                    $(':input[type="submit"]').prop('disabled', false);
+                    $('#number_last_code').removeClass( "has-error" );
+                    $('#alertDigitRandom').hide();
+                }
+            });
+
+            $('#multipleNumberLastCode').keyup(function() {
+                prefix = ($('#multiplePrefixCode').val())
+                last_code = ($('#multipleNumberLastCode').val())
+                max = +$(this).attr('max');
+                val = +$(this).val();
+                
+                if (val > max) {
+                    $('#multipleNumberLastCode').val(max);
+                }
+            });
             /* Days */
             $('input[name=is_all_days]').click(function() {
                 // tampil duluk
@@ -519,6 +603,13 @@
         });
 
     </script>
+    <style>
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        </style>
 @endsection
 
 @section('content')
@@ -578,7 +669,7 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="info">
                 	<div class="portlet-body form">
-					    <form id="form" class="form-horizontal" role="form" action=" @if($deals_type == "Deals") {{ url('deals/update') }} @else {{ url('inject-voucher/update') }} @endif" method="post" enctype="multipart/form-data">
+					    <form id="form" class="form-horizontal" role="form" action="{{ url('second-deals/create') }}" method="post" enctype="multipart/form-data">
                 				@include('deals::deals.second-deals-step1-form')
 				                <div class="form-actions">
 				                @if(empty($deals['deals_total_claimed']) || $deals['deals_total_claimed'] == 0)
@@ -602,6 +693,9 @@
 				            <input type="hidden" name="slug" value="{{ $deals['slug']??'' }}">
 				            <input type="hidden" name="deals_type" value="{{ $deals['deals_type']??$deals_type??'' }}">
 				            <input type="hidden" name="template" value="{{ $deals['template']??0 }}">
+				            <input type="hidden" name="total_voucher_type" value="Auto generated">
+				            <input type="hidden" name="deals_voucher_type" value="Auto generated">
+				            <input type="hidden" name="duration" value="Auto duration">
 					    </form>
 					</div>
                 </div>

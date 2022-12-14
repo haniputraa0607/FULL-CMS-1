@@ -45,7 +45,7 @@ Route::group(['middleware' => ['web', 'validate_session', 'config_control:26'], 
 /* HIDDEN */
 Route::group(['middleware' => ['web', 'validate_session', 'config_control:26'], 'prefix' => 'inject-voucher', 'namespace' => 'Modules\Deals\Http\Controllers'], function () {
     Route::any('/', ['middleware' => 'feature_control:77', 'uses' => 'DealsController@deals']);
-    Route::any('create', ['middleware' => 'feature_control:79', 'uses' => 'DealsController@create']);
+    Route::get('create', ['middleware' => 'feature_control:79', 'uses' => 'DealsController@create']);
     Route::any('step1/{id}', ['middleware' => 'feature_control:80', 'uses' => 'DealsController@step1']);
     Route::any('step2/{id}', ['middleware' => 'feature_control:80', 'uses' => 'DealsController@step2']);
     Route::any('step3/{id}', ['middleware' => 'feature_control:80', 'uses' => 'DealsController@step3']);
@@ -97,9 +97,11 @@ Route::group(['middleware' => ['web', 'validate_session', 'config_control:26'], 
 /* Second Deals */
 Route::group(['middleware' => ['web', 'validate_session', 'config_control:26'], 'prefix' => 'second-deals', 'namespace' => 'Modules\Deals\Http\Controllers'], function () {
     Route::any('/', ['middleware' => 'feature_control:263', 'uses' => 'DealsController@deals']);
-    Route::any('create', ['middleware' => 'feature_control:265', 'uses' => 'DealsController@createSecondDeals']);
+    Route::get('create', ['middleware' => 'feature_control:265', 'uses' => 'DealsController@createSecondDeals']);
+    Route::post('create', ['middleware' => 'feature_control:265', 'uses' => 'DealsController@updateReq']);
+    Route::get('check', ['middleware' => 'feature_control:265', 'uses' => 'DealsController@checkCode']);
     Route::any('step1/{id}', ['middleware' => 'feature_control:266', 'uses' => 'DealsController@step1']);
-    Route::any('step2/{id}', ['middleware' => 'feature_control:266', 'uses' => 'DealsController@step2']);
+    Route::any('step2/{id}', ['middleware' => 'feature_control:266', 'uses' => 'DealsController@step2SecondDeals']);
     Route::any('step3/{id}', ['middleware' => 'feature_control:266', 'uses' => 'DealsController@step3']);
     Route::post('update-complete', ['middleware' => 'feature_control:266', 'uses' => 'DealsController@updateComplete']);
     Route::any('detail/{id}', ['middleware' => 'feature_control:264', 'uses' => 'DealsController@detail']);

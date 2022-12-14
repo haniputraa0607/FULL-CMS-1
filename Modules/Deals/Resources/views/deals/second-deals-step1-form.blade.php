@@ -314,7 +314,83 @@
                     @endif
 
                     {{-- AutoGenerate --}}
+                    <div class="form-group">
+                        <div id="alertMultipleCode">
+                            <div class="input-icon right">
+                                <label class="col-md-3 control-label">
+                                Voucher Prefix Code
+                                <span class="required" aria-required="true"> * </span>
+                                <i class="fa fa-question-circle tooltips" data-original-title="Prefix awalan dari tiap voucher code" data-container="body"></i>
+                                </label>
+                            </div>
+                            <div class="col-md-3">
+                                <input id="multiplePrefixCode" maxlength="9" type="text" class="form-control" name="prefix_code" onkeyup="this.value=this.value.replace(/[^abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]/g,'');" placeholder="Prefix Code" @if(isset($deals['prefix_code']) && $deals['prefix_code'] != "") value="{{$result['prefix_code']}}" @elseif(old('prefix_code') != "") value="{{old('prefix_code')}}" @endif autocomplete="off">
+                                <p id="alertMultiplePromoCode" style="display: none;" class="help-block">Prefix code has already been made</p>
+                            </div>
+                        </div>
+                        <div id="number_last_code">
+                            <div class="input-icon right">
+                                <label class="col-md-3 control-label">
+                                Voucher Digit
+                                <span class="required" aria-required="true"> * </span>
+                                <i class="fa fa-question-circle tooltips" data-original-title="Angka random voucher code setelah prefix" data-container="body"></i>
+                                </label>
+                            </div>
+                            <div class="col-md-3">
+                                <input id="multipleNumberLastCode" type="number" class="form-control" name="number_last_code" placeholder="Total Digit Random Last Code" @if(isset($data['number_last_code']) && $data['number_last_code'] != "") value="{{$data['number_last_code']}}" @elseif(old('number_last_code') != "") value="{{old('number_last_code')}}" @endif autocomplete="off" min="6" max="15">
+                                <p id="alertDigitRandom" style="display: none;" class="help-block">Digit Random minimum value is 6</p>
+                            </div>
+                        </div>
+                    </div>
 
+                    {{-- Total --}}
+                    <div class="form-group">
+                        <div class="input-icon right">
+                            <label class="col-md-3 control-label">
+                            Total Voucher
+                            <span class="required" aria-required="true"> * </span>
+                            <i class="fa fa-question-circle tooltips" data-original-title="Total voucher yang dapat digunakan oleh user, 0 untuk unlimitied" data-container="body"></i>
+                            </label>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="input-icon right">
+                                <input type="text" class="form-control digit-mask" name="deals_total_voucher" value="{{ old('deals_total_voucher',($deals['deals_total_voucher']??false)) }}" min="0" placeholder="Total Voucher" autocomplete="off">
+
+                            </div>
+                        </div>
+                        <div class="input-icon right">
+                            <label class="col-md-3 control-label">
+                            User Limit
+                            <span class="required" aria-required="true"> * </span>
+                            <i class="fa fa-question-circle tooltips" data-original-title="Batasan user untuk klaim voucher, input 0 untuk unlimited" data-container="body"></i>
+                            </label>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="input-icon right">
+                                <input type="text" class="form-control digit-mask" min="0" name="user_limit" value="{{ old('user_limit')??$deals['user_limit']??'' }}" placeholder="User limit" maxlength="30" autocomplete="off" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- User Limit --}}
+                    {{--  <div class="form-group">
+                        <div class="input-icon right">
+                            <label class="col-md-3 control-label">
+                            User Limit
+                            <span class="required" aria-required="true"> * </span>
+                            <i class="fa fa-question-circle tooltips" data-original-title="Batasan user untuk klaim voucher, input 0 untuk unlimited" data-container="body"></i>
+                            </label>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="input-icon right">
+                                <input type="text" class="form-control digit-mask" min="0" name="user_limit" value="{{ old('user_limit')??$deals['user_limit']??'' }}" placeholder="User limit" maxlength="30" autocomplete="off" required>
+                            </div>
+                        </div>
+                    </div>  --}}
+                    
                     {{-- Voucher Expiry --}}
                     <div class="form-group">
                         <div class="input-icon right">
@@ -324,7 +400,7 @@
                             <i class="fa fa-question-circle tooltips" data-original-title="Masa berlaku voucher, bisa diatur berdasarkan durasi deal atau tanggal expirednya" data-container="body"></i>
                             </label>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-6">
                             <div class="input-group">
                                 <input type="text" min="1" class="form-control duration datesOpp digit-mask" name="deals_voucher_duration" value="{{ old('deals_voucher_duration')??$deals['deals_voucher_duration']??'' }}" autocomplete="off">
                                 <span class="input-group-addon">
@@ -335,6 +411,7 @@
                         </div>
                     </div>
                     
+                   
                     {{-- days --}}
                     <div class="form-group">
                         <div class="input-icon right">
@@ -386,7 +463,7 @@
                     </div>
 
                     {{-- Product type --}}
-                    <div class="form-group" id="selectedDay" @if( isset($deals['is_all_days']) && ($deals['is_all_days']??false) == "0" ) hidden @endif>
+                    <div class="form-group" id="selectedDay" @if( isset($deals['is_all_days']) && ($deals['is_all_days']??false) == "1" ) @else hidden @endif>
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
                             Select Days
