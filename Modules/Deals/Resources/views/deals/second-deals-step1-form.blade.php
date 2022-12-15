@@ -6,7 +6,6 @@
                 <div class="form-body">
 
                 	{{-- Deals Type, Offline, Online --}}
-                    <input type="hidden" name="is_offline" value="0">
                     <input type="hidden" name="is_online" value="1">
 
                     {{-- Brand --}}
@@ -64,7 +63,7 @@
                     @endif
 
                     {{-- Deals Periode --}}
-                    @if ( $deals_type == "Deals" || $deals_type == "WelcomeVoucher" )
+                    @if ( $deals_type == "Deals" || $deals_type == "WelcomeVoucher"|| $deals_type == "SecondDeals" )
                     <div class="form-group">
                         <label class="col-md-3 control-label"> Deals Periode <span class="required" aria-required="true"> * </span> </label>
                         <div class="col-md-4">
@@ -324,7 +323,7 @@
                                 </label>
                             </div>
                             <div class="col-md-3">
-                                <input id="multiplePrefixCode" maxlength="9" type="text" class="form-control" name="prefix_code" onkeyup="this.value=this.value.replace(/[^abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]/g,'');" placeholder="Prefix Code" @if(isset($deals['prefix_code']) && $deals['prefix_code'] != "") value="{{$result['prefix_code']}}" @elseif(old('prefix_code') != "") value="{{old('prefix_code')}}" @endif autocomplete="off">
+                                <input id="multiplePrefixCode" maxlength="9" type="text" class="form-control" name="prefix_code" onkeyup="this.value=this.value.replace(/[^abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]/g,'');" placeholder="Prefix Code" @if(isset($deals['prefix']) && $deals['prefix'] != "") value="{{$deals['prefix']}}" @elseif(old('prefix_code') != "") value="{{old('prefix_code')}}" @endif autocomplete="off">
                                 <p id="alertMultiplePromoCode" style="display: none;" class="help-block">Prefix code has already been made</p>
                             </div>
                         </div>
@@ -337,9 +336,23 @@
                                 </label>
                             </div>
                             <div class="col-md-3">
-                                <input id="multipleNumberLastCode" type="number" class="form-control" name="number_last_code" placeholder="Total Digit Random Last Code" @if(isset($data['number_last_code']) && $data['number_last_code'] != "") value="{{$data['number_last_code']}}" @elseif(old('number_last_code') != "") value="{{old('number_last_code')}}" @endif autocomplete="off" min="6" max="15">
+                                <input id="multipleNumberLastCode" type="number" class="form-control" name="number_last_code" placeholder="Total Digit Random Last Code" @if(isset($deals['digit_random']) && $deals['digit_random'] != "") value="{{$deals['digit_random']}}" @elseif(old('number_last_code') != "") value="{{old('number_last_code')}}" @endif autocomplete="off" min="6" max="15">
                                 <p id="alertDigitRandom" style="display: none;" class="help-block">Digit Random minimum value is 6</p>
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="code-example" hidden>
+                        <div class="input-icon right">
+                            <label class="col-md-3 control-label">
+                            Example Code
+                            <span class="required" aria-required="true"> * </span>
+                            <i class="fa fa-question-circle tooltips" data-original-title="Contoh kode voucher yang akan dibuat" data-container="body"></i>
+                            </label>
+                        </div>
+                        <div class="col-md-3" style="margin-top: 0.7%">
+                            <span id="exampleCode1"></span><br>
+                            <span id="exampleCode2"></span><br>
+                            <span id="exampleCode3"></span>
                         </div>
                     </div>
 
@@ -463,7 +476,7 @@
                     </div>
 
                     {{-- Product type --}}
-                    <div class="form-group" id="selectedDay" @if( isset($deals['is_all_days']) && ($deals['is_all_days']??false) == "1" ) @else hidden @endif>
+                    <div class="form-group" id="selectedDay" @if( isset($deals['is_all_days']) && ($deals['is_all_days']??false) == "0" ) @else hidden @endif>
                         <div class="input-icon right">
                             <label class="col-md-3 control-label">
                             Select Days
@@ -478,8 +491,8 @@
 									if (old('selected_day[]')) {
 										$selected_days = old('selected_day[]');
 									}
-									elseif (!empty($result['deals_days'])) {
-										$selected_days = array_column($result['deals_days'], 'day');
+									elseif (!empty($deals['deals_days'])) {
+										$selected_days = array_column($deals['deals_days'], 'day');
 									}
 								@endphp
 								<select	select id="select-day" name="selected_day[]" class="form-control select2-multiple select2-hidden-accessible" multiple="multiple" tabindex="-1" aria-hidden="true">

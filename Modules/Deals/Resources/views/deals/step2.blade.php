@@ -6,6 +6,7 @@
 @include('deals::deals.tier-discount')
 @include('deals::deals.buyxgety-discount')
 @include('promocampaign::template.discount-delivery', ['promo_source' => $deals_type])
+@include('deals::deals.dealsproductcategory-form')
 {{-- @include('promocampaign::template.promo-global-requirement', ['promo_source' => $deals_type]) --}}
 @section('page-style')
 	<link href="{{ env('S3_URL_VIEW') }}{{('assets/global/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> 
@@ -121,8 +122,70 @@
 		listProduct=[];
 		listProductSingle=[];
 		productLoad = 0;
+		categoryLoad = 0;
 		product_type = '{!! $result['product_type']??'single' !!}';
 		brand = '{!!$result['id_brand']!!}';
+
+		$('.summernote').summernote({
+                placeholder: true,
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                  ['style', ['style']],
+                  ['style', ['bold', 'underline', 'clear']],
+                  ['color', ['color']],
+                  ['para', ['ul', 'ol', 'paragraph']],
+                  ['insert', ['table']],
+                  ['insert', ['link', 'picture', 'video']],
+                  ['misc', ['fullscreen', 'codeview', 'help']]
+                ],
+                callbacks: {
+                    onInit: function(e) {
+                      this.placeholder
+                        ? e.editingArea.find(".note-placeholder").html(this.placeholder)
+                        : e.editingArea.remove(".note-placeholder");
+                    },
+                    onImageUpload: function(files){
+                        sendFile(files[0]);
+                    },
+                    onMediaDelete: function(target){
+                        var name = target[0].src;
+                        token = "{{ csrf_token() }}";
+                        $.ajax({
+                            type: 'post',
+                            data: 'filename='+name+'&_token='+token,
+                            url: "{{url('summernote/picture/delete/deals')}}",
+                            success: function(data){
+                                // console.log(data);
+                            }
+                        });
+                    }
+                }
+            });
+
+            function sendFile(file){
+                token = "{{ csrf_token() }}";
+                var data = new FormData();
+                data.append('image', file);
+                data.append('_token', token);
+                // document.getElementById('loadingDiv').style.display = "inline";
+                $.ajax({
+                    url : "{{url('summernote/picture/upload/deals')}}",
+                    data: data,
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    success: function(url) {
+                        if (url['status'] == "success") {
+                            $('#field_content_long').summernote('insertImage', url['result']['pathinfo'], url['result']['filename']);
+                        }
+                        // document.getElementById('loadingDiv').style.display = "none";
+                    },
+                    error: function(data){
+                        // document.getElementById('loadingDiv').style.display = "none";
+                    }
+                })
+            }
 
 		$.ajax({
 			type: "GET",
@@ -175,12 +238,44 @@
 					}
 				});
 			}
+
 		}
+
+		function loadCategory(selector,callback){
+			if (categoryLoad == 0) {
+				var valuee=$(selector).data('value');
+				$.ajax({
+					type: "GET",
+					url: "{{url('promo-campaign/step2/getData')}}",
+					data : {
+						get : 'Category',
+						type : product_type
+					},
+					dataType: "json",
+					success: function(data){
+						listCategory=data;
+						categoryLoad = 1;
+						$.each(data, function( key, value ) {
+							if(valuee.indexOf(value.id_product_category)>-1){
+								var more='selected';
+							}else{
+								var more='';
+							}
+							$('#category_product').append("<option value='"+value.id_product_category+"' "+more+">"+value.product_category_name+"</option>");
+						});
+						$(selector).prop('required', true)
+						$(selector).prop('disabled', false)
+						if(callback){callback()}
+					}
+				});
+			}
+		}
+
 		function changeTriger () {
 			$('#tabContainer .tabContent').hide();
 			promo_type = $('select[name=promo_type] option:selected').val();
 			// $('#tabContainer input:not(input[name="promo_type"]),#tabContainer select').prop('disabled',true);
-			$('#productDiscount, #bulkProduct, #buyXgetYProduct, #discount-delivery').hide().find('input, textarea, select').prop('disabled', true);
+			$('#productDiscount, #bulkProduct, #buyXgetYProduct, #discount-delivery, #promoProductCategory').hide().find('input, textarea, select').prop('disabled', true);
 
 			if (promo_type == 'Product Discount') {
 				product = $('select[name=filter_product] option:selected').val();
@@ -199,6 +294,11 @@
 				reOrder2();
 				$('#buyXgetYProduct').show().find('input, textarea, select').prop('disabled', false);
 				loadProduct('#multipleProduct3',reOrder2);
+			}else if(promo_type == 'Voucher Product Category'){
+
+				reOrder3();
+				$('#promoProductCategory').show().find('input, textarea, select').prop('disabled', false);
+				loadCategory('#category_product',reOrder3);
 			}
 			else if(promo_type == 'Discount delivery'){
 
@@ -395,6 +495,7 @@
 	</script>
 	@yield('child-script')
 	@yield('child-script2')
+	@yield('child-script3')
 	@yield('discount-delivery-script')
 	@yield('global-requirement-script')
 	<style>
@@ -607,13 +708,19 @@
 								<label class="control-label">Promo Type</label>
 								<span class="required" aria-required="true"> * </span>
 								<i class="fa fa-question-circle tooltips" data-original-title="Pilih tipe promo
+								@if ($deals_type != 'SecondDeals')
 								</br>
 								</br> Product Discount : Promo berlaku untuk semua product atau product tertentu tanpa jumlah minimum
 								</br>
 								</br> Bulk/Tier Product : Promo hanya berlaku untuk suatu product setelah melakukan pembelian dalam jumlah yang telah ditentukan
 								</br>
-								</br> Buy X get Y : Promo hanya berlaku untuk product tertentu" data-container="body" data-html="true"></i>
+								</br> Buy X get Y : Promo hanya berlaku untuk product tertentu
+								@else
+								</br>
+								</br> Voucher Product Category : Promo hanya berlaku untuk kategori product tertentu
+								@endif" data-container="body" data-html="true"></i>
 								<select class="form-control" name="promo_type" required>
+									@if ($deals_type != 'SecondDeals')
 									<option value="" disabled {{ 
 										( 	empty($result['deals_product_discount_rules']) && 
 											empty($result['deals_tier_discount_rules']) && 
@@ -645,6 +752,9 @@
 										@endif
 										title="Promo berupa potongan harga untuk total transaksi / delivery"
 										> Discount Delivery </option>
+									@else
+									<option value="Voucher Product Category" {{ !empty($result['deals_productcategory_rules']) ? 'selected' : '' }}  title="Promo hanya berlaku untuk product tertentu"> Voucher Product Category </option>
+									@endif
 		                        </select>
 							</div>
 						</div>
@@ -814,11 +924,55 @@
 						<div id="discount-delivery" class="p-t-10px">
 							@yield('discount-delivery')
 						</div>
+						<div id="promoProductCategory" class="p-t-10px">
+							@yield('promoProductCategoryForm')
+						</div>
 					</div>
 				</div>
 			</div>
 		@endif
 		{{-- END OF ONLINE RULE --}}
+
+		@if ($deals_type == 'SecondDeals')
+
+			
+	        <div class="portlet light bordered">
+				<div class="portlet-title">
+					<div class="caption font-blue ">
+						<span class="caption-subject bold uppercase">{{ 'Auto Response Second Deals' }}</span>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="form-group" style="height: 55px;display: inline;">
+						<div class="row">
+							<div class="col-md-3">
+								<label class="control-label">Auto Response Inbox</label>
+								<span class="required" aria-required="true"> * </span>
+								<i class="fa fa-question-circle tooltips" data-original-title="Teks yang akan ditampilkan lewat inbox saat mendapatkan voucher" data-container="body" data-html="true"></i>
+							</div>
+							<div class="col-md-9">
+								<textarea name="autoresponse_inbox" id="autoresponse_inbox" class="form-control summernote" placeholder="Custom text autoresponse inbox deal">{{ old('autoresponse_inbox')??$result['autoresponse_inbox']??'' }}</textarea>
+
+							</div>
+						</div>
+					</div>	
+					<div class="form-group" style="height: 55px;display: inline;">
+						<div class="row">
+							<div class="col-md-3">
+								<label class="control-label">Auto Response Notification</label>
+								<span class="required" aria-required="true"> * </span>
+								<i class="fa fa-question-circle tooltips" data-original-title="Teks yang akan ditampilkan lewat notifikasi saat mendapatkan voucher" data-container="body" data-html="true"></i>
+							</div>
+							<div class="col-md-9">
+								<textarea name="autoresponse_notification" id="autoresponse_notification" class="form-control summernote" placeholder="Custom text autoresponse notification deal">{{ old('autoresponse_notification')??$result['autoresponse_notification']??'' }}</textarea>
+
+							</div>
+						</div>
+					</div>	
+				</div>
+			</div>
+
+		@endif
 
 		<div class="" style="height: 40px;">
 			@if( ($result['deals_total_claimed']??false) == 0 || $deals_type == 'Promotion')

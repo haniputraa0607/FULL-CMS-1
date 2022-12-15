@@ -200,9 +200,31 @@
             };
         }
 
+        function getExample(){
+            prefix = ($('#multiplePrefixCode').val())
+            last_code = ($('#multipleNumberLastCode').val())
+            if(prefix != '' && last_code != ''){
+                var result1          = '';
+                var result2          = '';
+                var result3          = '';
+                var characters       = 'ABCDEFGHJKLMNPQRTUVWXYZ1234567890';
+                var charactersLength = characters.length;
+                for ( var i = 0; i < last_code; i++ ) {
+                    result1 += characters.charAt(Math.floor(Math.random() * charactersLength));
+                    result2 += characters.charAt(Math.floor(Math.random() * charactersLength));
+                    result3 += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                $('#exampleCode1').text(prefix+result1)
+                $('#exampleCode2').text(prefix+result2)
+                $('#exampleCode3').text(prefix+result3)
+                $('#code-example').show();
+            }
+        }
         $(document).ready(function() {
             token = '<?php echo csrf_token();?>';
             deals_id = {!! $result['id_deals']??"false" !!}
+
+            getExample()
 
             $('.digit-mask').inputmask({
 				removeMaskOnSubmit: true, 
@@ -239,7 +261,7 @@
                 if ($(this).val()) {
                     $.ajax({
                         type: "GET",
-                        url: "check",
+                        url: "{{url('second-deals/check')}}",
                         data: {
                             'type_code' 	: 'prefix',
                             'search_code' 	: this.value,
@@ -267,6 +289,11 @@
                     $('#alertMultiplePromoCode').hide();
                     $('#multipleNumberLastCode').attr('max', 15 - this.value.length)
                 }
+                $('#exampleCode1').text('')
+                $('#exampleCode2').text('')
+                $('#exampleCode3').text('')
+                $('#code-example').hide();
+
 
             }, 1000));
 
@@ -275,20 +302,43 @@
                 last_code = ($('#multipleNumberLastCode').val())
                 max = +$(this).attr('max');
                 val = +$(this).val();
-
                 if (val > max) {
                     $('#multipleNumberLastCode').val(max);
                     last_code = max;
                 }
-
+                var example = false;
                 if(val < 6) {
                     $(':input[type="submit"]').prop('disabled', true);
                     $('#number_last_code').addClass( "has-error" );
                     $('#alertDigitRandom').show();
+
                 }else{
                     $(':input[type="submit"]').prop('disabled', false);
                     $('#number_last_code').removeClass( "has-error" );
                     $('#alertDigitRandom').hide();
+                    example = true;
+                }
+
+                if(example){
+                    var result1          = '';
+                    var result2          = '';
+                    var result3          = '';
+                    var characters       = 'ABCDEFGHJKLMNPQRTUVWXYZ1234567890';
+                    var charactersLength = characters.length;
+                    for ( var i = 0; i < last_code; i++ ) {
+                        result1 += characters.charAt(Math.floor(Math.random() * charactersLength));
+                        result2 += characters.charAt(Math.floor(Math.random() * charactersLength));
+                        result3 += characters.charAt(Math.floor(Math.random() * charactersLength));
+                    }
+                    $('#exampleCode1').text(prefix+result1)
+                    $('#exampleCode2').text(prefix+result2)
+                    $('#exampleCode3').text(prefix+result3)
+                    $('#code-example').show();
+                }else{
+                    $('#exampleCode1').text('')
+                    $('#exampleCode2').text('')
+                    $('#exampleCode3').text('')
+                    $('#code-example').hide();
                 }
             });
 

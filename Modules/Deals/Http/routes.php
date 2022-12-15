@@ -101,13 +101,13 @@ Route::group(['middleware' => ['web', 'validate_session', 'config_control:26'], 
     Route::post('create', ['middleware' => 'feature_control:265', 'uses' => 'DealsController@updateReq']);
     Route::get('check', ['middleware' => 'feature_control:265', 'uses' => 'DealsController@checkCode']);
     Route::any('step1/{id}', ['middleware' => 'feature_control:266', 'uses' => 'DealsController@step1']);
-    Route::any('step2/{id}', ['middleware' => 'feature_control:266', 'uses' => 'DealsController@step2SecondDeals']);
+    Route::any('step2/{id}', ['middleware' => 'feature_control:266', 'uses' => 'DealsController@step2']);
     Route::any('step3/{id}', ['middleware' => 'feature_control:266', 'uses' => 'DealsController@step3']);
     Route::post('update-complete', ['middleware' => 'feature_control:266', 'uses' => 'DealsController@updateComplete']);
     Route::any('detail/{id}', ['middleware' => 'feature_control:264', 'uses' => 'DealsController@detail']);
     Route::any('update', ['middleware' => 'feature_control:266', 'uses' => 'DealsController@updateReq']);
-    Route::any('setting', 'DealsController@welcomeVoucherSetting');
-    Route::any('update/status', 'DealsController@welcomeVoucherUpdateStatus');
+    Route::any('setting', 'DealsController@secondDealsSetting');
+    Route::any('update/status', 'DealsController@secondDealsUpdateStatus');
 });
 
 /* Promotion Deals */

@@ -177,7 +177,7 @@ $grantedFeature     = session('granted_features');
                         <th> Brand </th>
                         @endif
                         <th> Price </th>
-                        @if($deals_type != "Hidden" && $deals_type !='WelcomeVoucher')
+                        @if(($deals_type !='WelcomeVoucher' && $deals_type !='SecondDeals') && $deals_type != "Hidden")
                             <th> Date Publish </th>
                         @endif
                         @if($deals_type != "Hidden")
@@ -223,7 +223,7 @@ $grantedFeature     = session('granted_features');
                                 		{{ (env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').number_format($value['deals_voucher_price_cash']) }}
                                 	@endif
                                 </td>
-                                @if($deals_type !='WelcomeVoucher' && $deals_type != "Hidden")
+                                @if(($deals_type !='WelcomeVoucher' && $deals_type !='SecondDeals') && $deals_type != "Hidden")
                                 <td>
                                     @php
                                         $bulan   = date('m', strtotime($value['deals_publish_start']));
@@ -267,6 +267,8 @@ $grantedFeature     = session('granted_features');
                                     <a href="{{ url('deals-point/detail') }}/{{ $value['id_deals'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
                                     @elseif ($deals_type == "WelcomeVoucher" && MyHelper::hasAccess([180], $grantedFeature))
                                         <a href="{{ url('welcome-voucher/detail') }}/{{ $value['id_deals'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
+                                    @elseif ($deals_type == "SecondDeals" && MyHelper::hasAccess([264], $grantedFeature))
+                                        <a href="{{ url('second-deals/detail') }}/{{ $value['id_deals'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
                                     @else
                                         @if(MyHelper::hasAccess([78], $grantedFeature))
                                             <a href="{{ url('inject-voucher/detail') }}/{{ $value['id_deals'] }}" class="btn btn-sm blue"><i class="fa fa-search"></i></a>
