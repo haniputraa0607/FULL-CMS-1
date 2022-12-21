@@ -464,8 +464,8 @@
 							<div class="input-group col-md-12">
 								@php
 									$selected_days = [];
-									if (old('service')) {
-										$selected_days = old('service');
+									if (old('selected_day[]')) {
+										$selected_days = old('selected_day[]');
 									}
 									elseif (!empty($result['promo_campaign_days'])) {
 										$selected_days = array_column($result['promo_campaign_days'], 'day');

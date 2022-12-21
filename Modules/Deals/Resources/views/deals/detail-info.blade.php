@@ -88,7 +88,7 @@
                 </div>
                 @endif
             @endif
-            @if($deals_type != 'WelcomeVoucher' && $deals_type != 'Promotion')
+            @if($deals_type != 'WelcomeVoucher' && $deals_type != 'Promotion' && $deals_type != 'SecondDeals')
                 @if($deals_type != 'Hidden')
 	                @if(isset($deals['deals_end']))
 	                <div class="row static-info">
@@ -106,10 +106,35 @@
                     <div class="col-md-4 name">Created</div>
                     <div class="col-md-8 value">: {{date("d M Y", strtotime($deals['created_at']))}}&nbsp;{{date("H:i", strtotime($deals['created_at']))}}</div>
                 </div>
+                @if ($deals_type != 'SecondDeals')
                 <div class="row static-info">
                     <div class="col-md-4 name">Product Type</div>
                     <div class="col-md-8 value">: {{ $deals['product_type']??'' }}</div>
                 </div>
+                @endif
+                @if ($deals_type == 'SecondDeals')
+                <div class="row static-info">
+                    <div class="col-md-4 name">Days</div>
+                    @php
+                        if($deals['is_all_days'] == 1){
+                            $days = 'All Days';
+                        }else if($deals['is_all_days'] == 0 && !empty($deals['deals_days'])){
+                            $selected_days = [];
+                            $selected_days = array_column($deals['deals_days'], 'day');
+                            $days = implode(', ',$selected_days);
+                        }
+                    @endphp
+                    <div class="col-md-8 value">: {{ $days }}</div>
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-4 name">Prefix Code</div>
+                    <div class="col-md-8 value">: {{ $deals['prefix']?:'No Prefix Code' }}</div>
+                </div>
+                <div class="row static-info">
+                    <div class="col-md-4 name">Number Last Code</div>
+                    <div class="col-md-8 value">: {{ $deals['digit_random']??'' }}</div>
+                </div>
+                @endif
                 <div class="row static-info">
                     <div class="col-md-4 name">Total Voucher</div>
                     <div class="col-md-8 value">: {{ !empty($deals['deals_total_voucher']) ? number_format($deals['deals_total_voucher']).' Vouchers' : (isset($deals['deals_total_voucher']) ? 'unlimited' : '') }}</div>
@@ -126,10 +151,18 @@
                     <div class="col-md-4 name">Voucher Expiry</div>
                     <div class="col-md-8 value">: {{ ($deals['deals_voucher_duration']??false) ? 'By Duration ( '.number_format($deals['deals_voucher_duration']).' Days )' : (($deals['deals_voucher_expired']??false) ? 'By Date ( '.date("d M Y", strtotime($deals['deals_voucher_expired'])).' '.date("H:i", strtotime($deals['deals_voucher_expired'])).' )' : '-') }}</div>
                 </div>
+                @if ($deals_type != 'SecondDeals')
                 <div class="row static-info">
                     <div class="col-md-4 name">Voucher Start</div>
                     <div class="col-md-8 value">: {{ $deals['deals_voucher_start']??false ? date("d M Y", strtotime($deals['deals_voucher_start'])) : '-' }}</div>
                 </div>
+                @endif
+                @if ($deals['promo_type'] == 'Voucher Product Category')
+                <div class="row static-info">
+                    <div class="col-md-4 name">Auto Apply</div>
+                    <div class="col-md-8 value">: {{ $deals['deals_productcategory_category_requirements']['auto_apply'] == 1 ? 'Yes' : 'No' }} </div>
+                </div>
+                @endif
                 <div class="row static-info">
                     <div class="col-md-4 name">Image</div>
                     <div class="col-md-8 value">
@@ -215,6 +248,7 @@
             		!empty($deals['deals_product_discount_rules']) || 
             		!empty($deals['deals_tier_discount_rules']) || 
             		!empty($deals['deals_buyxgety_rules']) ||
+            		!empty($deals['deals_productcategory_rules']) ||
             		!empty($deals['deals_promotion_product_discount_rules']) || 
             		!empty($deals['deals_promotion_tier_discount_rules']) || 
             		!empty($deals['deals_promotion_buyxgety_rules']) ||
@@ -405,6 +439,66 @@
                             @endif
                         </div>
                     </div>
+
+                {{-- PRODUCT CATEGORY --}}
+                @elseif (isset($deals['deals_productcategory_rules']) && $deals['deals_productcategory_rules'] != null)
+                    <div class="row static-info">
+                        <div class="col-md-4 name">Category Requirement</div>
+                        <div class="col-md-8 value">: 
+                            @if ( isset($deals['deals_productcategory_category_requirements']) && isset($deals['deals_productcategory_category_requirements']['product_category']) )
+                            @foreach ($deals['deals_productcategory_category_requirements']['product_category'] as $key_pro_cat => $product_cat)
+                                <a href="{{ url('product/category/edit/'.$product_cat['id_product_category']??'') }}">{{ ($product_cat['product_category']['product_category_name']??'') }}</a>@if(($key_pro_cat+1)<count($deals['deals_productcategory_category_requirements']['product_category'])), @endif
+                            @endforeach
+                            @endif
+                        </div>
+                    </div>
+                    @if (isset($deals['deals_productcategory_category_requirements']['product_variant']))
+                    <div class="row static-info">
+                        <div class="col-md-4 name">Variant Requirement</div>
+                        <div class="col-md-8 value">: 
+                            @if ( isset($deals['deals_productcategory_category_requirements']) && isset($deals['deals_productcategory_category_requirements']['product_variant']) )
+                                @foreach ($deals['deals_productcategory_category_requirements']['product_variant'] as $key_pro_var => $pro_var)
+                                    @if ($pro_var['product_variant']['product_variant_name']=='general_size')
+                                    {{ 'Without Variant Size' }}@if(($key_pro_var+1)<count($deals['deals_productcategory_category_requirements']['product_variant'])), @endif
+                                    @elseif ($pro_var['product_variant']['product_variant_name']=='general_type')
+                                    {{ 'Without Variant Type' }}@if(($key_pro_var+1)<count($deals['deals_productcategory_category_requirements']['product_variant'])), @endif
+                                    @else
+                                    {{ $pro_var['product_variant']['product_variant_name'] }}@if(($key_pro_var+1)<count($deals['deals_productcategory_category_requirements']['product_variant'])), @endif
+                                    @endif
+                                    
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                    @endif
+                    <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_7">
+                        <thead>
+                            <tr>
+                                <th>Min Qty</th>
+                                <th>Benefit Qty</th>
+                                <th>Benefit Discount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($deals['deals_productcategory_rules'] as $res)
+                                <tr>
+                                    <td>{{ $res['min_qty_requirement'] }}</td>
+                                    <td>{{ $res['benefit_qty'] }}</td>
+                                    <td>
+                                    @if( ($res['discount_type']??false) == 'nominal' )
+                                        {{(env('COUNTRY_CODE') == 'SG' ? 'SGD' : 'IDR').' '.number_format($res['discount_value'])}}
+                                    @elseif( ($res['discount_type']??false) == 'percent' )
+                                        @if( ($res['discount_value']??false) == 100 )
+                                            Free
+                                        @else
+                                            {{ ($res['discount_value']??false).'%' }}
+                                        @endif
+                                    @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 @endif
 
                 @if( $deals_type == 'Promotion' || $deals['deals_total_claimed'] == 0 )

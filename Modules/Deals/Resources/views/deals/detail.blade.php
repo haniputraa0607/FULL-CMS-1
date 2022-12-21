@@ -7,6 +7,8 @@ $grantedFeature     = session('granted_features');
         $rpage = 'promotion/deals';
 	}elseif($deals_type == 'WelcomeVoucher'){
         $rpage = 'welcome-voucher';
+    }elseif($deals_type == 'SecondDeals'){
+        $rpage = 'second-deals';
     }else{
         $rpage = $deals_type=='Deals'?'deals':'inject-voucher';
     }

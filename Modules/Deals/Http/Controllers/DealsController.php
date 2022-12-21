@@ -99,7 +99,7 @@ class DealsController extends Controller
         if (isset($post['deals_voucher_start']) && !empty($post['deals_voucher_start'])) {
             $post['deals_voucher_start'] = date('Y-m-d H:i:s', strtotime($post['deals_voucher_start']));
         }
-
+        
         $save = MyHelper::post('deals/create', $post);
 
         if (isset($save['status']) && $save['status'] == "success") {
@@ -111,6 +111,8 @@ class DealsController extends Controller
                 $rpage = 'promotion/deals';
         	}elseif($post['deals_type'] == 'WelcomeVoucher'){
                 $rpage = 'welcome-voucher';
+            }elseif($post['deals_type'] == 'SecondDeals'){
+                $rpage = 'second-deals';
             }else{
                 $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
             }
@@ -348,6 +350,49 @@ class DealsController extends Controller
                 $data['deals_type'] = "WelcomeVoucher";
             break;
 
+            case 'second-deals':
+                if($type == "create"){
+                    $data = [
+                        'title'          => 'Second Deals',
+                        'sub_title'      => 'Second Deals Create',
+                        'menu_active'    => 'second-deals',
+                        'submenu_active' => 'second-deals-create'
+                    ];
+                }elseif($type == "setting"){
+                    $data = [
+                        'title'          => 'Second Deals',
+                        'sub_title'      => 'Second Deals Setting',
+                        'menu_active'    => 'second-deals',
+                        'submenu_active' => 'second-deals-setting'
+                    ];
+                }elseif($type == "detail"){
+                    $data = [
+                        'title'          => 'Second Deals',
+                        'sub_title'      => 'Second Deals Detail',
+                        'menu_active'    => 'second-deals',
+                        'submenu_active' => 'second-deals-list'
+                    ];
+                }elseif ($type == "import") {
+                    $data = [
+                        'title'          => 'Second Deals',
+                        'sub_title'      => 'Second Deals Import',
+                        'menu_active'    => 'second-deals',
+                        'submenu_active' => 'second-deals-import'
+                    ];
+                }else {
+                    $data = [
+                        'title'          => 'Second Deals',
+                        'sub_title'      => 'Second Deals List',
+                        'menu_active'    => 'second-deals',
+                        'submenu_active' => 'second-deals-list'
+                    ];
+                }
+
+                // IDENTIFIER
+                $post['deals_type'] = "SecondDeals";
+                $data['deals_type'] = "SecondDeals";
+            break;
+
             case 'promotion':
                 if($type == "create"){
                 	$data = [
@@ -486,6 +531,8 @@ class DealsController extends Controller
             $rpage = 'promotion/deals';
     	}elseif($dataDeals['post']['deals_type'] == 'WelcomeVoucher'){
             $rpage = 'welcome-voucher';
+        }elseif($dataDeals['post']['deals_type'] == 'SecondDeals'){
+            $rpage = 'second-deals';
         }else{
             $rpage = $dataDeals['post']['deals_type'] =='Deals'?'deals':'inject-voucher';
         }
@@ -520,6 +567,7 @@ class DealsController extends Controller
         	return redirect($rpage);
         	dd($request->except('_token','page'));
         }
+        // return $post;
         $get_data = MyHelper::post('deals/be/list?page='.$request->get('page'), $post);
 
 		if(!empty($get_data['result']['data']) && $get_data['status'] == 'success' && !empty($get_data['result']['data'])){
@@ -590,6 +638,8 @@ class DealsController extends Controller
             $rpage = 'promotion/deals';
     	}elseif($post['deals_type'] == 'WelcomeVoucher'){
             $rpage = 'welcome-voucher';
+        }elseif($post['deals_type'] == 'SecondDeals'){
+            $rpage = 'second-deals';
         }else{
             $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
         }
@@ -674,7 +724,7 @@ class DealsController extends Controller
         }else{
             $data['conditions'] = [];
         }
-
+        
         return view('deals::deals.detail', $data);
     }
 
@@ -723,8 +773,12 @@ class DealsController extends Controller
         }else{
             $data['conditions'] = [];
         }
-
-        return view('deals::deals.step1', $data);
+        
+        if($data['deals_type'] == 'SecondDeals'){
+            return view('deals::deals.second-deals-step1', $data);
+        }else{
+            return view('deals::deals.step1', $data);
+        }
         if($post['deals_type'] == 'WelcomeVoucher'){
             return view('deals::welcome_voucher.detail', $data);
         }else{
@@ -763,7 +817,8 @@ class DealsController extends Controller
 	            return redirect('deals')->withErrors($deals['messages']);
 	        }
 	        $data['warning_image'] = MyHelper::post('setting', ['key' => 'promo_warning_image'])['result']['value'];
-
+            $data['variants'] = MyHelper::get('promo-campaign/get-all-variant')['result']??[];
+            
 	        return view('deals::deals.step2', $data);
 	        
 	    }else{
@@ -786,7 +841,7 @@ class DealsController extends Controller
 	            	}
 	            }
             }
-
+            
 			$action = MyHelper::post('promo-campaign/step2', $post);
 
             if (isset($action['status']) && $action['status'] == 'success') {
@@ -822,6 +877,8 @@ class DealsController extends Controller
 	                $rpage = 'promotion/deals';
 	        	}elseif($post['deals_type'] == 'WelcomeVoucher'){
 	                $rpage = 'welcome-voucher';
+	            }elseif($post['deals_type'] == 'SecondDeals'){
+	                $rpage = 'second-deals';
 	            }else{
 	                $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
 	            }
@@ -888,6 +945,8 @@ class DealsController extends Controller
 	                $rpage = 'promotion/deals';
 	        	}elseif($post['deals_type'] == 'WelcomeVoucher'){
 	                $rpage = 'welcome-voucher';
+	            }elseif($post['deals_type'] == 'SecondDeals'){
+	                $rpage = 'second-deals';
 	            }else{
 	                $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
 	            }
@@ -912,6 +971,8 @@ class DealsController extends Controller
             $rpage = 'promotion/deals';
     	}elseif($post['deals_type'] == 'WelcomeVoucher'){
             $rpage = 'welcome-voucher';
+        }elseif($post['deals_type'] == 'SecondDeals'){
+            $rpage = 'second-deals';
         }else{
             $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
         }
@@ -1565,7 +1626,7 @@ class DealsController extends Controller
         }else{
             $data['all_deals'] = [];
         }
-
+        
         return view('deals::welcome_voucher.setting', $data);
     }
 
@@ -1595,6 +1656,8 @@ class DealsController extends Controller
             $rpage = 'promotion/deals';
     	}elseif($post['deals_type'] == 'WelcomeVoucher'){
             $rpage = 'welcome-voucher';
+        }elseif($post['deals_type'] == 'SecondDeals'){
+            $rpage = 'second-deals';
         }else{
             $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
         }
@@ -1741,6 +1804,8 @@ class DealsController extends Controller
             $rpage = 'promotion/deals';
     	}elseif($post['deals_type'] == 'WelcomeVoucher'){
             $rpage = 'welcome-voucher';
+        }elseif($post['deals_type'] == 'SecondDeals'){
+            $rpage = 'second-deals';
         }else{
             $rpage = $post['deals_type']=='Deals'?'deals':'inject-voucher';
         }
@@ -1844,6 +1909,82 @@ class DealsController extends Controller
             return redirect('deals/transaction/list-export')->withSuccess(['Success create export to queue']);
         }else{
             return redirect('deals/transaction/list-export')->withErrors(['Failed create export to queue']);
+        }
+    }
+
+    public function createSecondDeals(Request $request){
+        $post = $request->except('_token');
+        $configs = session('configs');
+        if(empty($post)){
+
+            $data = [
+                "title" => "Second Deals",
+                "sub_title" => "Second Deals Create",
+                "menu_active" => "second-deals",
+                "submenu_active" => "second-deals-create",
+                "deals_type" => "SecondDeals"
+            ];
+
+            if(MyHelper::hasAccess([97], $configs)){
+
+                $data['brands'] = parent::getData(MyHelper::get('brand/be/list'));
+            }
+
+        	$data['outlets'] = parent::getData(MyHelper::get('outlet/be/list'));
+            return view('deals::deals.second-deals-step1', $data);
+
+        }
+    }
+
+    public function checkCode()
+    {
+        $action = MyHelper::post('deals/check-code', $_GET);
+
+        return $action;
+    }
+
+    function secondDealsSetting(Request $request){
+        $post = $request->except('_token');
+        $identifier = $this->identifier();
+        $dataDeals  = $this->dataDeals($identifier, "setting");
+        $data       = $dataDeals['data'];
+        if($post){
+            $updateSetting =  MyHelper::post('deals/second-deals/setting/update', $post);
+            if($updateSetting){
+                return redirect('second-deals/setting')->withSuccess(['Setting Second Deals has been updated.']);
+            }else{
+                return redirect('second-deals/setting')->withErrors(['Setting Second Deals failed.']);
+            }
+        }
+        $setting = MyHelper::post('deals/second-deals/setting', $post);
+        $listDeals = MyHelper::post('deals/second-deals/list/deals', ['deals_type' => 'SecondDeals', 'web' => 1]);
+
+        if(isset($setting['status']) && $setting['status'] == 'success'){
+            $data['setting'] = $setting['data']['setting'];
+            $data['deals'] = $setting['data']['deals'];
+        }else{
+            $data['setting'] = [];
+            $data['deals'] = [];
+        }
+
+        if(isset($listDeals['status']) && $listDeals['status'] == 'success'){
+            $data['all_deals'] = $listDeals['result'];
+        }else{
+            $data['all_deals'] = [];
+        }
+        
+        return view('deals::deals.second_deals_setting', $data);
+    }
+
+    function secondDealsUpdateStatus(Request $request){
+        $post = $request->except('_token');
+        $update = MyHelper::post('deals/second-deals/setting/update/status', $post);
+        if (isset($update['status']) && $update['status'] == "success") {
+            return ['status' => 'success'];
+        }elseif (isset($update['status']) && $update['status'] == 'fail') {
+            return ['status' => 'fail', 'messages' => $update['messages']];
+        } else {
+            return ['status' => 'fail', 'messages' => 'Something went wrong. Failed update status welcome pack'];
         }
     }
 }
