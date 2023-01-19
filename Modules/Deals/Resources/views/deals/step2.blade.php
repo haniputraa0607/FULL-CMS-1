@@ -951,8 +951,8 @@
 								<i class="fa fa-question-circle tooltips" data-original-title="Teks yang akan ditampilkan lewat inbox saat mendapatkan voucher" data-container="body" data-html="true"></i>
 							</div>
 							<div class="col-md-9">
-								<textarea name="autoresponse_inbox" id="autoresponse_inbox" class="form-control summernote" placeholder="Custom text autoresponse inbox deal">{{ old('autoresponse_inbox')??$result['autoresponse_inbox']??'' }}</textarea>
-
+								<textarea name="autoresponse_inbox" id="autoresponse_inbox" class="form-control" placeholder="Custom text autoresponse inbox deal">{{ old('autoresponse_inbox')??$result['autoresponse_inbox']??'' }}</textarea>
+								<br><br>
 							</div>
 						</div>
 					</div>	
@@ -964,8 +964,8 @@
 								<i class="fa fa-question-circle tooltips" data-original-title="Teks yang akan ditampilkan lewat notifikasi saat mendapatkan voucher" data-container="body" data-html="true"></i>
 							</div>
 							<div class="col-md-9">
-								<textarea name="autoresponse_notification" id="autoresponse_notification" class="form-control summernote" placeholder="Custom text autoresponse notification deal">{{ old('autoresponse_notification')??$result['autoresponse_notification']??'' }}</textarea>
-
+								<textarea name="autoresponse_notification" id="autoresponse_notification" class="form-control" placeholder="Custom text autoresponse notification deal">{{ old('autoresponse_notification')??$result['autoresponse_notification']??'' }}</textarea>
+								<br><br>
 							</div>
 						</div>
 					</div>	
