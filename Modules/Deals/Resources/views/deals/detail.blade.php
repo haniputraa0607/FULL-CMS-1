@@ -599,7 +599,7 @@ $grantedFeature     = session('granted_features');
                     <div class="number">
                         <span data-counter="counterup" data-value="{{ $deals['deals_total_voucher'] }}">
                         @if (!empty($deals['deals_voucher_type']))
-                        	@if ( $deals['deals_voucher_type'] == "Unlimited")
+                        	@if ( $deals['deals_voucher_type'] == "Unlimited" || ($deals['deals_type'] == "SecondDeals" && $deals['deals_total_voucher'] == 0))
                         		{{ 'Unlimited' }}
                         	@else
                         		{{ number_format(($deals['deals_total_voucher']??0)-($deals['deals_total_claimed']??0)) }}
