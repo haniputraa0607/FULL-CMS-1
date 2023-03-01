@@ -42,6 +42,49 @@
 		</div>
 	</div>
 </div>
+<div id="ruleSection4">
+	<label class="control-label">Promo Variant
+	<span class="required" aria-required="true"> * </span>
+	<i class="fa fa-question-circle tooltips" data-original-title="Pilih variant produk yang akan dijadikan syarat promo" data-container="body"></i></label><br>
+<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-3" style="padding-left: 20px;">
+		<label>Size <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Ukuran produk yang akan dikenakan promo" data-container="body"></i></label>
+	</div>
+	<div class="col-md-3 text-center">
+		<label>Type <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Tipe produk yang akan dikenakan promo" data-container="body"></i></label>
+	</div>
+</div>
+<div id="ruleSectionBody4">
+	<div class="row" data-id="0">
+		<div class="col-md-1 text-center">
+				<button type="button" class="btn btn-danger btn-sm remove-variant"><i class="fa fa-trash-o"></i></button>
+		</div>
+		<div class="col-md-3" style="padding-left: 0px;">
+			<div class="form-group">
+				<select class="form-control benefit" name="variants[0][size]">
+					<option value="free" ::selected_free::> Free Product</option>
+					<option value="nominal" ::selected_nominal::> Nominal Discount </option>
+					<option value="percent" ::selected_percent::> Percent Discount </option>
+				</select>
+			</div>
+		</div>
+		<div class="col-md-1" style="padding-left: 0px;">
+		</div>
+		<div class="col-md-3" style="padding-left: 0px;">
+			<div class="form-group">
+				<select class="form-control benefit" name="variants[0][type]">
+					<option value="free" ::selected_free::> Free Product</option>
+					<option value="nominal" ::selected_nominal::> Nominal Discount </option>
+					<option value="percent" ::selected_percent::> Percent Discount </option>
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<button type="button" class="btn btn-primary new-variant">Add New Variant Rule</button>
+</div>
 <div id="ruleSection3">
 	<label class="control-label">Promo Rule
 	<span class="required" aria-required="true"> * </span>
@@ -61,7 +104,7 @@
 <div id="ruleSectionBody3">
 </div>
 <div class="form-group">
-	<button type="button" class="btn btn-primary new">Add New</button>
+	<button type="button" class="btn btn-primary new">Add New Promo Rule</button>
 </div>
 <div class="row">
 	<div class="col-md-6">
@@ -154,6 +197,33 @@
 			</div>\
 		</div>\
 	</div>';
+
+	var lastError4='';
+	var template4=`
+		<div class="row" data-id="::n::">\
+			<div class="col-md-1 text-center">\
+					<button type="button" class="btn btn-danger btn-sm remove-variant"><i class="fa fa-trash-o"></i></button>\
+			</div>\
+			<div class="col-md-3" style="padding-left: 0px;">\
+				<div class="form-group">\
+					<select class="form-control benefit" name="variants[::n::][size]">\
+						<option value="free" ::selected_free::> Free Product</option>\
+						<option value="nominal" ::selected_nominal::> Nominal Discount </option>\
+						<option value="percent" ::selected_percent::> Percent Discount </option>\
+					</select>\
+				</div>\
+			</div>\
+			<div class="col-md-3" style="padding-left: 0px;">\
+				<div class="form-group">\
+					<select class="form-control benefit" name="variants[::n::][type]">\
+						<option value="free" ::selected_free::> Free Product</option>\
+						<option value="nominal" ::selected_nominal::> Nominal Discount </option>\
+						<option value="percent" ::selected_percent::> Percent Discount </option>\
+					</select>\
+				</div>\
+			</div>\
+		</div>
+	`
 
 	@if(isset($result['promo_campaign_productcategory_rules']))
 		database3={!!json_encode($result['promo_campaign_productcategory_rules'])!!};
