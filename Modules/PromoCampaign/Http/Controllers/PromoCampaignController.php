@@ -328,7 +328,7 @@ class PromoCampaignController extends Controller
         $shipment_list = MyHelper::post('promo-campaign/getData', ['get' => 'shipment_method']);
         if (empty($post)) {
 
-            return $get_data = MyHelper::post('promo-campaign/show-step2', ['id_promo_campaign' => $id_promo_campaign]);
+            $get_data = MyHelper::post('promo-campaign/show-step2', ['id_promo_campaign' => $id_promo_campaign]);
             $data = [
                 'title'             => 'Promo Campaign',
                 'sub_title'         => 'Step 2',

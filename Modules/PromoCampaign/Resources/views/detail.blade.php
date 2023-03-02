@@ -663,20 +663,30 @@
                                         </div>
                                         @if (isset($result['promo_campaign_productcategory_category_requirements']['product_variant']))
                                         <div class="row static-info">
-                                            <div class="col-md-4 name">Variant Requirement</div>
-                                            <div class="col-md-8 value">: 
-                                                @if ( isset($result['promo_campaign_productcategory_category_requirements']) && isset($result['promo_campaign_productcategory_category_requirements']['product_variant']) )
-                                                @if ($result['promo_campaign_productcategory_category_requirements']['product_variant']['product_variant_name']=='general_size')
-                                                Without Variant Size
-                                                @elseif ($result['promo_campaign_productcategory_category_requirements']['product_variant']['product_variant_name']=='general_type')
-                                                Without Variant Type
-                                                @else
-                                                {{ $result['promo_campaign_productcategory_category_requirements']['product_variant']['product_variant_name'] }}
-                                                @endif
-                                                @endif
-                                            </div>
+                                            <div class="col-md-4 name">Variant Requirements</div>
+                                            <div class="col-md-8 value">:</div>
                                         </div>
+                                        <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_7">
+                                            <thead>
+                                                <tr>
+                                                    <th>Size</th>
+                                                    <th>Type</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($result['promo_campaign_productcategory_category_requirements']['product_variant'] as $variant)
+                                                    <tr>
+                                                        <td>{{ $variant['variant_size']['product_variant_name'] }}</td>
+                                                        <td>{{ $variant['variant_type']['product_variant_name'] }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                         @endif
+                                        <div class="row static-info">
+                                            <div class="col-md-4 name">Promo Rules</div>
+                                            <div class="col-md-8 value">:</div>
+                                        </div>
                                         <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_7">
                                             <thead>
                                                 <tr>
