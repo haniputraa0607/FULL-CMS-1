@@ -45,9 +45,9 @@
 </div> --}}
 
 <div id="ruleSection3">
-		<label class="control-label">Promo Variant
-		<span class="required" aria-required="true"> * </span>
-		<i class="fa fa-question-circle tooltips" data-original-title="Pilih variant produk yang akan dijadikan syarat promo" data-container="body"></i></label><br>
+	<label class="control-label">Promo Variant
+	<span class="required" aria-required="true"> * </span>
+	<i class="fa fa-question-circle tooltips" data-original-title="Pilih variant produk yang akan dijadikan syarat promo" data-container="body"></i></label><br>
 	<div class="row">
 		<div class="col-md-2"></div>
 		<div class="col-md-3" style="padding-left: 20px;">
@@ -232,7 +232,6 @@
 		noRule++;
         $('#ruleSectionBody4').append(html);
 	}
-
 
 	var lastError3='';
 	var template3='<div class="row" data-id="::n::">\
