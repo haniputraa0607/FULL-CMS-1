@@ -17,7 +17,7 @@
 		</div>
 	</div>
 </div>
-<div class="row">
+{{-- <div class="row">
 	<div class="col-md-4">
 		<div id="selectVariant" class="form-group" style="width: 100%!important">
 			<label for="variant" class="control-label">Product Variant
@@ -32,6 +32,7 @@
 							<option value="{{ $children['id_product_variant'] }}" @if(isset($result['promo_campaign_productcategory_category_requirements']) && $result['promo_campaign_productcategory_category_requirements']['id_product_variant'] == $children['id_product_variant']) selected @endif>@if($children['product_variant_name']=='general_size') Without Variant Size @elseif($children['product_variant_name']=='general_type') Without Variant Type @else {{ $children['product_variant_name'] }} @endif</option>
 							@endforeach
 						</optgroup>
+						@foreach ($variants as $key_variant_1 => $parent)
 						@endforeach
 					</select>
 				</div>
@@ -41,47 +42,196 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> --}}
+
 <div id="ruleSection3">
+	<label class="control-label">Promo Variant
+	<span class="required" aria-required="true"> * </span>
+	<i class="fa fa-question-circle tooltips" data-original-title="Pilih variant produk yang akan dijadikan syarat promo" data-container="body"></i></label><br>
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-3" style="padding-left: 20px;">
+			<label>Size <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Ukuran produk yang akan dikenakan promo" data-container="body"></i></label>
+		</div>
+		<div class="col-md-3 text-center">
+			<label>Type <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Tipe produk yang akan dikenakan promo" data-container="body"></i></label>
+		</div>
+	</div>
+	<div id="ruleSectionBody4">
+		@if (!empty($result['promo_campaign_productcategory_category_requirements']['product_variant']))
+			@foreach ($result['promo_campaign_productcategory_category_requirements']['product_variant'] as $key_var => $variant_rule)
+				<div class="row" data-id="{{ $key_var }}">
+					<div class="col-md-1 text-center">
+							<button type="button" class="btn btn-danger btn-sm" @if($key_var == 0) disabled @endif onclick="deleteVariant({{ $key_var }})"><i class="fa fa-trash-o"></i></button>
+					</div>
+					<div class="col-md-3" style="padding-left: 0px;">
+						<div class="form-group">
+							<select class="form-control" id="variant-rule" name="variants[{{ $key_var }}][size]">
+								<option value="" selected disabled>Select Variant Size</option>
+								@foreach ($variants as $key_variant_1 => $parent)
+									@if ($parent['product_variant_code']=='size')
+										@foreach ($parent['children'] as $key_variant_2 => $children)
+										<option value="{{ $children['id_product_variant'] }}" @if($variant_rule['size'] == $children['id_product_variant']) selected @endif>@if($children['product_variant_name']=='general_size') Without Variant Size @else {{ $children['product_variant_name'] }} @endif</option>
+										@endforeach
+									@endif
+								@endforeach
+							</select>
+						</div>
+					</div>
+					<div class="col-md-1" style="padding-left: 0px;">
+					</div>
+					<div class="col-md-3" style="padding-left: 0px;">
+						<div class="form-group">
+							<select class="form-control" id="variant-rule" name="variants[{{ $key_var }}][type]">
+								<option value="" selected disabled>Select Variant Type</option>
+								@foreach ($variants as $key_variant_1 => $parent)
+									@if ($parent['product_variant_code']=='type')
+										@foreach ($parent['children'] as $key_variant_2 => $children)
+										<option value="{{ $children['id_product_variant'] }}" @if($variant_rule['type'] == $children['id_product_variant']) selected @endif>@if($children['product_variant_name']=='general_type') Without Variant Type @else {{ $children['product_variant_name'] }} @endif</option>
+										@endforeach
+									@endif
+								@endforeach
+							</select>
+						</div>
+					</div>
+				</div>
+			@endforeach
+		@else
+		<div class="row" data-id="0">
+			<div class="col-md-1 text-center">
+					<button type="button" class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i></button>
+			</div>
+			<div class="col-md-3" style="padding-left: 0px;">
+				<div class="form-group">
+					<select class="form-control" id="variant-rule" name="variants[0][size]">
+						<option value="" selected disabled>Select Variant Size</option>
+						@foreach ($variants as $key_variant_1 => $parent)
+							@if ($parent['product_variant_code']=='size')
+								@foreach ($parent['children'] as $key_variant_2 => $children)
+								<option value="{{ $children['id_product_variant'] }}">@if($children['product_variant_name']=='general_size') Without Variant Size @else {{ $children['product_variant_name'] }} @endif</option>
+								@endforeach
+							@endif
+						@endforeach
+					</select>
+				</div>
+			</div>
+			<div class="col-md-1" style="padding-left: 0px;">
+			</div>
+			<div class="col-md-3" style="padding-left: 0px;">
+				<div class="form-group">
+					<select class="form-control" id="variant-rule" name="variants[0][type]">
+						<option value="" selected disabled>Select Variant Type</option>
+						@foreach ($variants as $key_variant_1 => $parent)
+							@if ($parent['product_variant_code']=='type')
+								@foreach ($parent['children'] as $key_variant_2 => $children)
+								<option value="{{ $children['id_product_variant'] }}">@if($children['product_variant_name']=='general_type') Without Variant Type @else {{ $children['product_variant_name'] }} @endif</option>
+								@endforeach
+							@endif
+						@endforeach
+					</select>
+				</div>
+			</div>
+		</div>
+		@endif
+	</div>
+	<div class="form-group">
+		<button type="button" class="btn btn-primary new-variant" onclick="addVariantRule()">Add New Variant Rule</button>
+	</div>
 	<label class="control-label">Promo Rule
 	<span class="required" aria-required="true"> * </span>
 	<i class="fa fa-question-circle tooltips" data-original-title="Masukan rentang jumlah produk dan benefit yang didapatkan dalam promo ini" data-container="body"></i></label><br>
-<div class="row">
-	<div class="col-md-1"></div>
-	<div class="col-md-2" style="padding-left: 20px;">
-		<label>Min. Qty <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk dalam kategori minimal untuk mendapatkan benefit" data-container="body"></i></label>
-	</div>
-	<div class="col-md-3 text-center">
-		<label>Benefit <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk yang akan dikenakan diskon setelah pembelian </br></br> Free : jumlah product termurah dalam pembelian yang diberikan </br></br> Discount : Besar diskon yang diberikan pada produk termurah. Persentase akan dihitung dari harga produk + harga modifier" data-html="true" data-container="body"></i></label>
-	</div>
-	<div class="col-md-2 text-center">
-		<label>Benefit. Qty <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk yang akan mendapat benefit" data-container="body"></i></label>
-	</div>
-</div>
-<div id="ruleSectionBody3">
-</div>
-<div class="form-group">
-	<button type="button" class="btn btn-primary new">Add New</button>
-</div>
-<div class="row">
-	<div class="col-md-6">
-		<div class="form-group" style="width: 100%!important">
-			<label class="mt-checkbox mt-checkbox-outline" style="margin-bottom: 0px">
-				<input type="checkbox" id="auto_apply" name="auto_apply" value="1" 
-				@if ( old('auto_apply') == "1" || ($result['promo_campaign_productcategory_category_requirements']['auto_apply']??false)==1 )
-					checked 
-				@endif> Auto Apply
-				<i class="fa fa-question-circle tooltips" data-original-title="Promo otomatis dipasang apabila belum ada promo lain yang terpasang" data-container="body"></i>
-				<span></span>
-			</label>
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-2" style="padding-left: 20px;">
+			<label>Min. Qty <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk dalam kategori minimal untuk mendapatkan benefit" data-container="body"></i></label>
+		</div>
+		<div class="col-md-3 text-center">
+			<label>Benefit <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk yang akan dikenakan diskon setelah pembelian </br></br> Free : jumlah product termurah dalam pembelian yang diberikan </br></br> Discount : Besar diskon yang diberikan pada produk termurah. Persentase akan dihitung dari harga produk + harga modifier" data-html="true" data-container="body"></i></label>
+		</div>
+		<div class="col-md-2 text-center">
+			<label>Benefit. Qty <span class="required" aria-required="true"> * </span><i class="fa fa-question-circle tooltips" data-original-title="Jumlah produk yang akan mendapat benefit" data-container="body"></i></label>
 		</div>
 	</div>
-</div>
+	<div id="ruleSectionBody3">
+	</div>
+	<div class="form-group">
+		<button type="button" class="btn btn-primary new">Add New Promo Rule</button>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group" style="width: 100%!important">
+				<label class="mt-checkbox mt-checkbox-outline" style="margin-bottom: 0px">
+					<input type="checkbox" id="auto_apply" name="auto_apply" value="1" 
+					@if ( old('auto_apply') == "1" || ($result['promo_campaign_productcategory_category_requirements']['auto_apply']??false)==1 )
+						checked 
+					@endif> Auto Apply
+					<i class="fa fa-question-circle tooltips" data-original-title="Promo otomatis dipasang apabila belum ada promo lain yang terpasang" data-container="body"></i>
+					<span></span>
+				</label>
+			</div>
+		</div>
+	</div>
 </div>
 @endSection
 
 @section('child-script3')
 <script type="text/javascript">
+
+	@if (!empty($result['promo_campaign_productcategory_category_requirements']['product_variant']))
+		var noRule = {{ count($result['promo_campaign_productcategory_category_requirements']['product_variant']) }};
+		variants={!!json_encode($result['promo_campaign_productcategory_category_requirements']['product_variant'])!!};
+	@else
+		var noRule = 1;
+		variants = [];
+	@endif
+
+	function deleteVariant(no){
+		if(no != 0){
+			$(`#ruleSectionBody4 div[data-id=${no}]`).remove();
+		}
+	}
+
+	function addVariantRule(){
+		var html = `
+            <div class="row" data-id="${noRule}">
+				<div class="col-md-1 text-center">
+						<button type="button" class="btn btn-danger btn-sm" onclick="deleteVariant(${noRule})"><i class="fa fa-trash-o"></i></button>
+				</div>
+				<div class="col-md-3" style="padding-left: 0px;">
+					<div class="form-group">
+						<select class="form-control" id="variant-rule" name="variants[${noRule}][size]">
+							<option value="" selected disabled>Select Variant Size</option>
+							@foreach ($variants as $key_variant_1 => $parent)
+								@if ($parent['product_variant_code']=='size')
+									@foreach ($parent['children'] as $key_variant_2 => $children)
+									<option value="{{ $children['id_product_variant'] }}">@if($children['product_variant_name']=='general_size') Without Variant Size @else {{ $children['product_variant_name'] }} @endif</option>
+									@endforeach
+								@endif
+							@endforeach
+						</select>
+					</div>
+				</div>
+				<div class="col-md-1" style="padding-left: 0px;">
+				</div>
+				<div class="col-md-3" style="padding-left: 0px;">
+					<div class="form-group">
+						<select class="form-control" id="variant-rule" name="variants[${noRule}][type]">
+							<option value="" selected disabled>Select Variant Type</option>
+							@foreach ($variants as $key_variant_1 => $parent)
+								@if ($parent['product_variant_code']=='type')
+									@foreach ($parent['children'] as $key_variant_2 => $children)
+									<option value="{{ $children['id_product_variant'] }}">@if($children['product_variant_name']=='general_type') Without Variant Type @else {{ $children['product_variant_name'] }} @endif</option>
+									@endforeach
+								@endif
+							@endforeach
+						</select>
+					</div>
+				</div>
+			</div>
+		`;
+		noRule++;
+        $('#ruleSectionBody4').append(html);
+	}
 
 	var lastError3='';
 	var template3='<div class="row" data-id="::n::">\
@@ -171,6 +321,8 @@
 	}
 	function update3(col,val){
 		var ncol=col.replace('promo_rule','database3').replace(/\[/g,'["').replace(/\]/g,'"]');
+		console.log(ncol);
+		console.log(val);
 		if(ncol!='category_product[""]'){
 			eval(ncol+'=val');
 		}
@@ -383,9 +535,12 @@
 			reOrder3();
 		});
 		$('#promoProductCategory').on('change','input,select',function(){
-			var col=$(this).prop('name');
-			var val=$(this).val();
-			update3(col,val);
+			// console.log(this);
+			if($(this).attr('id') != 'variant-rule'){
+				var col=$(this).prop('name');
+				var val=$(this).val();
+				update3(col,val);
+			}
 			reOrder3();
 		});
 		$('#promoProductCategory').on('change','input[name="discount_type"]',function(){

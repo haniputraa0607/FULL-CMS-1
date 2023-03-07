@@ -1251,7 +1251,7 @@ class DealsController extends Controller
     /* DELETE VOUCHER */
     function deleteVoucher(Request $request) {
         $post    = $request->except('_token');
-        $voucher = MyHelper::post('deals/voucher/delete', ['id_deals_voucher' => $post['id_deals_voucher']]);
+        return $voucher = MyHelper::post('deals/voucher/delete', ['id_deals_voucher' => $post['id_deals_voucher']]);
 
         if (isset($voucher['status']) && $voucher['status'] == "success") {
             return "success";

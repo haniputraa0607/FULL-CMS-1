@@ -453,24 +453,31 @@
                         </div>
                     </div>
                     @if (isset($deals['deals_productcategory_category_requirements']['product_variant']))
-                    <div class="row static-info">
-                        <div class="col-md-4 name">Variant Requirement</div>
-                        <div class="col-md-8 value">: 
-                            @if ( isset($deals['deals_productcategory_category_requirements']) && isset($deals['deals_productcategory_category_requirements']['product_variant']) )
-                                @foreach ($deals['deals_productcategory_category_requirements']['product_variant'] as $key_pro_var => $pro_var)
-                                    @if ($pro_var['product_variant']['product_variant_name']=='general_size')
-                                    {{ 'Without Variant Size' }}@if(($key_pro_var+1)<count($deals['deals_productcategory_category_requirements']['product_variant'])), @endif
-                                    @elseif ($pro_var['product_variant']['product_variant_name']=='general_type')
-                                    {{ 'Without Variant Type' }}@if(($key_pro_var+1)<count($deals['deals_productcategory_category_requirements']['product_variant'])), @endif
-                                    @else
-                                    {{ $pro_var['product_variant']['product_variant_name'] }}@if(($key_pro_var+1)<count($deals['deals_productcategory_category_requirements']['product_variant'])), @endif
-                                    @endif
-                                    
-                                @endforeach
-                            @endif
+                        <div class="row static-info">
+                            <div class="col-md-4 name">Variant Requirements</div>
+                            <div class="col-md-8 value">:</div>
                         </div>
-                    </div>
+                        <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_7">
+                            <thead>
+                                <tr>
+                                    <th>Size</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($deals['deals_productcategory_category_requirements']['product_variant'] as $variant)
+                                    <tr>
+                                        <td>{{ $variant['variant_size']['product_variant_name'] }}</td>
+                                        <td>{{ $variant['variant_type']['product_variant_name'] }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     @endif
+                    <div class="row static-info">
+                        <div class="col-md-4 name">Promo Rules</div>
+                        <div class="col-md-8 value">:</div>
+                    </div>
                     <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="sample_7">
                         <thead>
                             <tr>
