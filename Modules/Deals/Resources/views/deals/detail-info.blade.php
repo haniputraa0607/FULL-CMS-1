@@ -467,8 +467,8 @@
                             <tbody>
                                 @foreach($deals['deals_productcategory_category_requirements']['product_variant'] as $variant)
                                     <tr>
-                                        <td>{{ $variant['variant_size']['product_variant_name'] }}</td>
-                                        <td>{{ $variant['variant_type']['product_variant_name'] }}</td>
+                                        <td>{{ $variant['variant_size']['product_variant_name'] == 'general_size' ? 'Without Variant Size' : $variant['variant_size']['product_variant_name'] }}</td>
+                                        <td>{{ $variant['variant_type']['product_variant_name'] == 'general_type' ? 'Without Variant Type' : $variant['variant_size']['product_variant_name'] }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
