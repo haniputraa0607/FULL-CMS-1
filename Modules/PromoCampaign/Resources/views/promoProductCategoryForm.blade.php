@@ -66,7 +66,7 @@
 					</div>
 					<div class="col-md-3" style="padding-left: 0px;">
 						<div class="form-group">
-							<select class="form-control" id="variant-rule" name="variants[{{ $key_var }}][size]">
+							<select class="form-control" id="variant-rule" name="variants[{{ $key_var }}][size]" required>
 								<option value="" selected disabled>Select Variant Size</option>
 								@foreach ($variants as $key_variant_1 => $parent)
 									@if ($parent['product_variant_code']=='size')
@@ -82,7 +82,7 @@
 					</div>
 					<div class="col-md-3" style="padding-left: 0px;">
 						<div class="form-group">
-							<select class="form-control" id="variant-rule" name="variants[{{ $key_var }}][type]">
+							<select class="form-control" id="variant-rule" name="variants[{{ $key_var }}][type]" required>
 								<option value="" selected disabled>Select Variant Type</option>
 								@foreach ($variants as $key_variant_1 => $parent)
 									@if ($parent['product_variant_code']=='type')
@@ -103,7 +103,7 @@
 			</div>
 			<div class="col-md-3" style="padding-left: 0px;">
 				<div class="form-group">
-					<select class="form-control" id="variant-rule" name="variants[0][size]">
+					<select class="form-control" id="variant-rule" name="variants[0][size]" required>
 						<option value="" selected disabled>Select Variant Size</option>
 						@foreach ($variants as $key_variant_1 => $parent)
 							@if ($parent['product_variant_code']=='size')
@@ -119,7 +119,7 @@
 			</div>
 			<div class="col-md-3" style="padding-left: 0px;">
 				<div class="form-group">
-					<select class="form-control" id="variant-rule" name="variants[0][type]">
+					<select class="form-control" id="variant-rule" name="variants[0][type]" required>
 						<option value="" selected disabled>Select Variant Type</option>
 						@foreach ($variants as $key_variant_1 => $parent)
 							@if ($parent['product_variant_code']=='type')
@@ -199,7 +199,7 @@
 				</div>
 				<div class="col-md-3" style="padding-left: 0px;">
 					<div class="form-group">
-						<select class="form-control" id="variant-rule" name="variants[${noRule}][size]">
+						<select class="form-control" id="variant-rule" name="variants[${noRule}][size]" required>
 							<option value="" selected disabled>Select Variant Size</option>
 							@foreach ($variants as $key_variant_1 => $parent)
 								@if ($parent['product_variant_code']=='size')
@@ -215,7 +215,7 @@
 				</div>
 				<div class="col-md-3" style="padding-left: 0px;">
 					<div class="form-group">
-						<select class="form-control" id="variant-rule" name="variants[${noRule}][type]">
+						<select class="form-control" id="variant-rule" name="variants[${noRule}][type]" required>
 							<option value="" selected disabled>Select Variant Type</option>
 							@foreach ($variants as $key_variant_1 => $parent)
 								@if ($parent['product_variant_code']=='type')
